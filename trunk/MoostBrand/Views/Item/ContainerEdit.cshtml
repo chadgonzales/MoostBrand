@@ -1,0 +1,23 @@
+﻿@model MoostBrand.Models.Container
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<a href="@Url.Action("ContainerList")">Back to List</a>
+<br/>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(x => x.ID)
+
+    <label>@Html.LabelFor(model => model.Description):</label>
+    <div>
+        @Html.EditorFor(model => model.Description)
+        @Html.ValidationMessageFor(model => model.Description)
+    </div>
+    
+    <input type="submit" value="Save"/>
+}

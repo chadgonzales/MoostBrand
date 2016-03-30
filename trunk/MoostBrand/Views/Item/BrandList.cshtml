@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MoostBrand.Models.Brand>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<a href="@Url.Action("BrandCreate")" >Create</a>
+
+<table>
+    <tr>
+        <th>
+            Brand
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            @*<td>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("BrandEdit", new { id = item.ID })" >Edit</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("BrandDelete", new { id = item.ID })" >Delete</a>
+                    </li>
+                </ul>
+            </td>*@
+        </tr>
+    }
+</table>

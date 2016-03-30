@@ -1,0 +1,60 @@
+﻿@model PagedList.IPagedList<MoostBrand.Models.Vendor>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<a href="@Url.Action("Create")" >Create</a>
+<br/>
+
+<table>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            General Name
+        </th>
+        <th>
+            City
+        </th>
+        <th>
+            Email
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VendorGeneralName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("Edit", new { id = item.ID })" >Edit</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Details", new { id = item.ID })" >Details</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Delete", new { id = item.ID })" >Delete</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    }
+</table>
+<br />
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager( Model, id => Url.Action("Index", new { id }) )

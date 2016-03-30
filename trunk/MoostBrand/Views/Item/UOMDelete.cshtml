@@ -1,0 +1,25 @@
+﻿@model MoostBrand.Models.UnitOfMeasurement
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<a href="@Url.Action("UOMList")">Back to List</a>
+<br/>
+
+<div>
+    <label style="font-weight: bold;">@Html.DisplayNameFor(model => model.Description):</label>
+    <div>
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    <label style="font-weight: bold;">@Html.DisplayNameFor(model => model.QuantityOfMeasure):</label>
+    <div>
+        @Html.DisplayFor(model => model.QuantityOfMeasure)
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        <input type="submit" value="Delete" />
+    }
+</div>

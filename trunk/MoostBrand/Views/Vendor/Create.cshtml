@@ -1,0 +1,56 @@
+﻿@model MoostBrand.Models.Vendor
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(x => x.ID)
+
+    <label>@Html.LabelFor(model => model.VendorName):</label>
+    <div>
+        @Html.EditorFor(model => model.VendorName)
+        @Html.ValidationMessageFor(model => model.VendorName)
+    </div>
+    
+    <label>@Html.LabelFor(model => model.VendorGeneralName):</label>
+    <div>
+        @Html.EditorFor(model => model.VendorGeneralName)
+        @Html.ValidationMessageFor(model => model.VendorGeneralName)
+    </div>
+    
+    <label>@Html.LabelFor(model => model.Attn):</label>
+    <div>
+        @Html.EditorFor(model => model.Attn)
+        @Html.ValidationMessageFor(model => model.Attn)
+    </div>
+    
+    <label>@Html.LabelFor(model => model.Address):</label>
+    <div>
+        @Html.EditorFor(model => model.Address)
+        @Html.ValidationMessageFor(model => model.Address)
+    </div>
+    
+    <label>@Html.LabelFor(model => model.City):</label>
+    <div>
+        @Html.EditorFor(model => model.City)
+        @Html.ValidationMessageFor(model => model.City)
+    </div>
+    
+    <label>@Html.LabelFor(model => model.ContactNo):</label>
+    <div>
+        @Html.EditorFor(model => model.ContactNo)
+        @Html.ValidationMessageFor(model => model.ContactNo)
+    </div>
+    
+    <label>@Html.LabelFor(model => model.Email):</label>
+    <div>
+        @Html.EditorFor(model => model.Email)
+        @Html.ValidationMessageFor(model => model.Email)
+    </div>
+    
+    <input type="submit" value="Create"/>
+}

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<MoostBrand.Models.Size>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<a href="@Url.Action("SizeCreate")" >Create</a>
+
+<table>
+    <tr>
+        <th>
+            Container
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("SizeEdit", new { id = item.ID })" >Edit</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("SizeDelete", new { id = item.ID })" >Delete</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    }
+</table>

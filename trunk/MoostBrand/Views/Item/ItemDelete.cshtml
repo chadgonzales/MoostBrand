@@ -1,0 +1,40 @@
+﻿@model MoostBrand.Models.Item
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<a href="@Url.Action("Index")">Back to List</a>
+<br/>
+
+<div>
+    <label style="font-weight: bold;">@Html.DisplayNameFor(model => model.Description):</label>
+    <div>
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    <label style="font-weight: bold;">@Html.DisplayNameFor(model => model.Brand.Description):</label>
+    <div>
+        @Html.DisplayFor(model => model.Brand.Description)
+    </div>
+
+    <label style="font-weight: bold;">@Html.DisplayNameFor(model => model.UnitOfMeasurement.Description):</label>
+    <div>
+        @Html.DisplayFor(model => model.UnitOfMeasurement.Description)
+    </div>
+
+    <label style="font-weight: bold;">@Html.DisplayNameFor(model => model.Quantity):</label>
+    <div>
+        @Html.DisplayFor(model => model.Quantity)
+    </div>
+
+    <label style="font-weight: bold;">@Html.DisplayNameFor(model => model.Location.Description):</label>
+    <div>
+        @Html.DisplayFor(model => model.Location.Description)
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        <input type="submit" value="Delete" />
+    }
+</div>

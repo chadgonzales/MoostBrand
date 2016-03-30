@@ -1,0 +1,35 @@
+﻿@model MoostBrand.Models.Employee
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<a href="@Url.Action("Index")">Back to List</a>
+<br/>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    @Html.HiddenFor(x => x.ID)
+
+    <label>@Html.LabelFor(model => model.FirstName):</label>
+    <div>
+        @Html.EditorFor(model => model.FirstName)
+        @Html.ValidationMessageFor(model => model.FirstName)
+    </div>
+    
+    <label>@Html.LabelFor(model => model.LastName):</label>
+    <div>
+        @Html.EditorFor(model => model.LastName)
+        @Html.ValidationMessageFor(model => model.LastName)
+    </div>
+    
+    <label>@Html.LabelFor(model => model.Position):</label>
+    <div>
+        @Html.EditorFor(model => model.Position)
+        @Html.ValidationMessageFor(model => model.Position)
+    </div>
+    
+    <input type="submit" value="Create"/>
+}

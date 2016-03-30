@@ -1,0 +1,49 @@
+﻿@model IEnumerable<MoostBrand.Models.Item>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<a href="@Url.Action("ItemCreate")" >Create</a>
+<br/>
+<table>
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Brand
+        </th>
+        <th>
+            Quantity
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("ItemEdit", new { id = item.ID })" >Edit</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("ItemDetails", new { id = item.ID })" >Details</a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("ItemDelete", new { id = item.ID })" >Delete</a>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    }
+</table>

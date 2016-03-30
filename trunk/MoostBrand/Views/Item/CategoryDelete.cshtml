@@ -1,0 +1,20 @@
+﻿@model MoostBrand.Models.Category
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<a href="@Url.Action("CategoryList")">Back to List</a>
+<br/>
+
+<div>
+    <label style="font-weight: bold;">@Html.DisplayNameFor(model => model.Description):</label>
+    <div>
+        @Html.DisplayFor(model => model.Description)
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        <input type="submit" value="Delete" />
+    }
+</div>

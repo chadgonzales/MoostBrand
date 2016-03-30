@@ -1,0 +1,31 @@
+﻿@model MoostBrand.Models.User
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<a href="@Url.Action("Index")">Back to List</a>
+<br/>
+
+<div>
+    <label style="font-weight: bold;">@Html.DisplayNameFor(model => model.Username):</label>
+    <div>
+        @Html.DisplayFor(model => model.Username)
+    </div>
+
+    <label style="font-weight: bold;">Employee Name:</label>
+    <div>
+        @Html.DisplayFor(model => model.Employee.LastName), 
+        @Html.DisplayFor(model => model.Employee.FirstName)
+    </div>
+
+    <label style="font-weight: bold;">@Html.DisplayNameFor(model => model.Designation):</label>
+    <div>
+        @Html.DisplayFor(model => model.Designation)
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        <input type="submit" value="Delete" />
+    }
+</div>
