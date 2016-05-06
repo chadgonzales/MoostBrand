@@ -216,12 +216,18 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\ContainerLocationController.cs" />
+    <Compile Include="Controllers\ContainerStorageController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SubCategoryController.cs" />
+    <Compile Include="Controllers\UnitOfMeasureController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="DAL\ApprovalStatu.cs">
       <DependentUpon>MoostBrandEntity.tt</DependentUpon>
     </Compile>
@@ -442,6 +448,36 @@
     <Content Include="Views\Category\Edit.cshtml" />
     <Content Include="Views\Category\Delete.cshtml" />
     <Content Include="Views\SubCategory\Index.cshtml" />
+    <Content Include="Views\Brand\Index.cshtml" />
+    <Content Include="Views\Brand\Details.cshtml" />
+    <Content Include="Views\Brand\Create.cshtml" />
+    <Content Include="Views\Brand\Edit.cshtml" />
+    <Content Include="Views\Brand\Delete.cshtml" />
+    <Content Include="Views\UnitOfMeasure\Index.cshtml" />
+    <Content Include="Views\UnitOfMeasure\Details.cshtml" />
+    <Content Include="Views\UnitOfMeasure\Create.cshtml" />
+    <Content Include="Views\UnitOfMeasure\Edit.cshtml" />
+    <Content Include="Views\UnitOfMeasure\Delete.cshtml" />
+    <Content Include="Views\ContainerStorage\Index.cshtml" />
+    <Content Include="Views\ContainerStorage\Details.cshtml" />
+    <Content Include="Views\ContainerStorage\Create.cshtml" />
+    <Content Include="Views\ContainerStorage\Edit.cshtml" />
+    <Content Include="Views\ContainerStorage\Delete.cshtml" />
+    <Content Include="Views\ContainerLocation\Index.cshtml" />
+    <Content Include="Views\ContainerLocation\Details.cshtml" />
+    <Content Include="Views\ContainerLocation\Create.cshtml" />
+    <Content Include="Views\ContainerLocation\Edit.cshtml" />
+    <Content Include="Views\ContainerLocation\Delete.cshtml" />
+    <Content Include="Views\Location\Index.cshtml" />
+    <Content Include="Views\Location\Details.cshtml" />
+    <Content Include="Views\Location\Create.cshtml" />
+    <Content Include="Views\Location\Edit.cshtml" />
+    <Content Include="Views\Location\Delete.cshtml" />
+    <Content Include="Views\Vendor\Index.cshtml" />
+    <Content Include="Views\Vendor\Details.cshtml" />
+    <Content Include="Views\Vendor\Create.cshtml" />
+    <Content Include="Views\Vendor\Edit.cshtml" />
+    <Content Include="Views\Vendor\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
