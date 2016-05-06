@@ -1,29 +1,25 @@
-﻿@*@model IEnumerable<MoostBrand.DAL.SubCategory>*@
+﻿@*@model IEnumerable<MoostBrand.DAL.ContainerLocation>*@
 
-@model PagedList.IPagedList<MoostBrand.DAL.SubCategory>
+@model PagedList.IPagedList<MoostBrand.DAL.ContainerLocation>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Container Locations";
 }
 
-<h2>Index</h2>
+<h2>Container Locations</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-@using (Html.BeginForm("Index", "SubCategory", FormMethod.Post))
+@using (Html.BeginForm("Index", "ContainerLocation", FormMethod.Post))
 {
     <p>
         @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-        <input type="submit" value="Search" /> 
-        @*@Html.DropDownList("Categories", new SelectList(ViewBag.Categories, "ID", "Description"), new { onchange = @"form.submit();" });*@
+        <input type="submit" value="Search" />
     </p>
 }
-<p>
-    
-</p>
 <table class="table">
     <tr>
         <th>
@@ -32,18 +28,10 @@
         <th>
             @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
-        <th>
-            @Html.ActionLink("Category", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
-        </th>
-        <th>
-            Picture
-        </th>
-        
         <th></th>
     </tr>
 
-@foreach (var item in Model)
-{
+@foreach (var item in Model) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Code)
@@ -52,15 +40,9 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Category.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Picture)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>
 }
