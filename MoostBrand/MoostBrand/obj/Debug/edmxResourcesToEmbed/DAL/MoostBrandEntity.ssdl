@@ -7,17 +7,6 @@
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Status" Type="nvarchar" MaxLength="50" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Booking">
-          <Property Name="ID" Type="int" />
-          <Property Name="DateRequest" Type="datetime" />
-          <Property Name="ItemID" Type="int" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" />
-          <Property Name="Quantity" Type="int" />
-          <Property Name="LocationID" Type="int" />
-          <Property Name="RequestedBy" Type="int" />
-        </EntityType>-->
   <EntityType Name="Brands">
     <Key>
       <PropertyRef Name="ID" />
@@ -46,7 +35,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CategoryID" Type="int" />
     <Property Name="Code" Type="nvarchar" MaxLength="50" />
     <Property Name="Description" Type="nvarchar" MaxLength="50" />
   </EntityType>
@@ -99,9 +87,10 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
     <Property Name="Barcode" Type="nvarchar" MaxLength="50" />
     <Property Name="Description" Type="nvarchar" MaxLength="50" />
     <Property Name="CategoryID" Type="int" />
+    <Property Name="SubCategoryID" Type="int" />
+    <Property Name="BrandID" Type="int" />
     <Property Name="ColorID" Type="int" />
     <Property Name="SizeID" Type="int" />
-    <Property Name="VendorID" Type="int" />
     <Property Name="UnitOfMeasurementID" Type="int" />
     <Property Name="ReOrderLevel" Type="int" />
     <Property Name="MinimumStock" Type="int" />
@@ -270,7 +259,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Code" Type="nvarchar" MaxLength="50" />
-    <Property Name="CategoryID" Type="int" />
     <Property Name="Description" Type="nvarchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="StockAllocationDetails">
@@ -367,6 +355,18 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
     <Property Name="ContactNo" Type="nvarchar" MaxLength="50" />
     <Property Name="Email" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <Association Name="FK__Items__BrandID__2F9A1060">
+    <End Role="Brands" Type="Self.Brands" Multiplicity="0..1" />
+    <End Role="Items" Type="Self.Items" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brands">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="BrandID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__Items__CategoryI__47A6A41B">
     <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
     <End Role="Items" Type="Self.Items" Multiplicity="*" />
@@ -400,6 +400,18 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
       </Principal>
       <Dependent Role="Items">
         <PropertyRef Name="SizeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Items__SubCatego__308E3499">
+    <End Role="SubCategories" Type="Self.SubCategories" Multiplicity="0..1" />
+    <End Role="Items" Type="Self.Items" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SubCategories">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="SubCategoryID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -532,18 +544,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
       </Principal>
       <Dependent Role="RequisitionDetails">
         <PropertyRef Name="RequisitionID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Sizes__CategoryI__245D67DE">
-    <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
-    <End Role="Sizes" Type="Self.Sizes" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Categories">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Sizes">
-        <PropertyRef Name="CategoryID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -739,18 +739,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Colors_Categories">
-    <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
-    <End Role="Colors" Type="Self.Colors" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Categories">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Colors">
-        <PropertyRef Name="CategoryID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Items_Brands">
     <End Role="Brands" Type="Self.Brands" Multiplicity="0..1" />
     <End Role="Items" Type="Self.Items" Multiplicity="*" />
@@ -870,6 +858,10 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
     <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Vendors" EntityType="Self.Vendors" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Items__BrandID__2F9A1060" Association="Self.FK__Items__BrandID__2F9A1060">
+      <End Role="Brands" EntitySet="Brands" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
     <AssociationSet Name="FK__Items__CategoryI__47A6A41B" Association="Self.FK__Items__CategoryI__47A6A41B">
       <End Role="Categories" EntitySet="Categories" />
       <End Role="Items" EntitySet="Items" />
@@ -880,6 +872,10 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
     </AssociationSet>
     <AssociationSet Name="FK__Items__SizeID__2B0A656D" Association="Self.FK__Items__SizeID__2B0A656D">
       <End Role="Sizes" EntitySet="Sizes" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Items__SubCatego__308E3499" Association="Self.FK__Items__SubCatego__308E3499">
+      <End Role="SubCategories" EntitySet="SubCategories" />
       <End Role="Items" EntitySet="Items" />
     </AssociationSet>
     <AssociationSet Name="FK__Receiving__Appro__756D6ECB" Association="Self.FK__Receiving__Appro__756D6ECB">
@@ -925,10 +921,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
     <AssociationSet Name="FK__Requisiti__Requi__3E1D39E1" Association="Self.FK__Requisiti__Requi__3E1D39E1">
       <End Role="Requisitions" EntitySet="Requisitions" />
       <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Sizes__CategoryI__245D67DE" Association="Self.FK__Sizes__CategoryI__245D67DE">
-      <End Role="Categories" EntitySet="Categories" />
-      <End Role="Sizes" EntitySet="Sizes" />
     </AssociationSet>
     <AssociationSet Name="FK__StockAllo__Conta__70A8B9AE" Association="Self.FK__StockAllo__Conta__70A8B9AE">
       <End Role="ContainerStorages" EntitySet="ContainerStorages" />
@@ -993,10 +985,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
     <AssociationSet Name="FK__Users__LocationI__3587F3E0" Association="Self.FK__Users__LocationI__3587F3E0">
       <End Role="Locations" EntitySet="Locations" />
       <End Role="Users" EntitySet="Users" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Colors_Categories" Association="Self.FK_Colors_Categories">
-      <End Role="Categories" EntitySet="Categories" />
-      <End Role="Colors" EntitySet="Colors" />
     </AssociationSet>
     <AssociationSet Name="FK_Items_Brands" Association="Self.FK_Items_Brands">
       <End Role="Brands" EntitySet="Brands" />

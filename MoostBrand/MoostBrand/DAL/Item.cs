@@ -28,18 +28,21 @@ namespace MoostBrand.DAL
         public string Barcode { get; set; }
         public string Description { get; set; }
         public Nullable<int> CategoryID { get; set; }
+        public Nullable<int> SubCategoryID { get; set; }
+        public Nullable<int> BrandID { get; set; }
         public Nullable<int> ColorID { get; set; }
         public Nullable<int> SizeID { get; set; }
-        public Nullable<int> VendorID { get; set; }
         public Nullable<int> UnitOfMeasurementID { get; set; }
         public Nullable<int> ReOrderLevel { get; set; }
         public Nullable<int> MinimumStock { get; set; }
         public Nullable<int> MaximumStock { get; set; }
     
         public virtual Brand Brand { get; set; }
+        public virtual Brand Brand1 { get; set; }
         public virtual Category Category { get; set; }
         public virtual Color Color { get; set; }
         public virtual Size Size { get; set; }
+        public virtual SubCategory SubCategory { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceivingDetail> ReceivingDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

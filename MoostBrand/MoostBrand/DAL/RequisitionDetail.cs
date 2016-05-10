@@ -25,10 +25,10 @@ namespace MoostBrand.DAL
         public Nullable<int> ItemID { get; set; }
         public Nullable<int> Quantity { get; set; }
     
-        public virtual Item Item { get; set; }
-        public virtual Item Item1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceivingDetail> ReceivingDetails { get; set; }
         public virtual Requisition Requisition { get; set; }
+        public virtual Item Item { get; set; }
+        public virtual Item Item1 { get; set; }
     }
 }

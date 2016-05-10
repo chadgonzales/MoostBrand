@@ -1,4 +1,4 @@
-﻿@model MoostBrand.DAL.UnitOfMeasurement
+﻿@model MoostBrand.DAL.Size
 
 @{
     ViewBag.Title = "Create";
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>UnitOfMeasurement</h4>
+        <h4>Size</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -28,14 +28,6 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.QuantityOfMeasure, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.QuantityOfMeasure, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.QuantityOfMeasure, "", new { @class = "text-danger" })
             </div>
         </div>
 

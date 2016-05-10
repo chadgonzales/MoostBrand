@@ -14,6 +14,12 @@ namespace MoostBrand.DAL
     
     public partial class SubCategory
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public SubCategory()
+        {
+            this.Items = new HashSet<Item>();
+        }
+    
         public int ID { get; set; }
         public Nullable<int> CategoryID { get; set; }
         public string Code { get; set; }
@@ -21,5 +27,7 @@ namespace MoostBrand.DAL
         public string Picture { get; set; }
     
         public virtual Category Category { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Item> Items { get; set; }
     }
 }

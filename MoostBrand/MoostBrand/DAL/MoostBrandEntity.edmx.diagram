@@ -9,13 +9,11 @@
         <EntityTypeShape EntityType="MoostBrandModel.Brand" Width="1.5" PointX="3" PointY="9" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.Category" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.Client" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MoostBrandModel.Color" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.ContainerLocation" Width="1.5" PointX="10.5" PointY="5.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.ContainerStorage" Width="1.5" PointX="10.5" PointY="13.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.Downpayment" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.DropShipType" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.Employee" Width="1.5" PointX="3" PointY="23.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MoostBrandModel.Item" Width="1.5" PointX="5.25" PointY="8.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.Location" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.LocationType" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.ReasonForAdjustment" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
@@ -28,29 +26,16 @@
         <EntityTypeShape EntityType="MoostBrandModel.ReturnedItem" Width="1.5" PointX="12.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.ReturnType" Width="1.5" PointX="13.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.ShipmentType" Width="1.5" PointX="12.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="MoostBrandModel.Size" Width="1.5" PointX="3" PointY="14.25" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.StockAllocationDetail" Width="1.5" PointX="12.75" PointY="9.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.SubCategory" Width="1.5" PointX="3" PointY="17.125" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.UnitOfMeasurement" Width="1.5" PointX="3" PointY="20.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.User" Width="1.5" PointX="5.25" PointY="14.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.UserType" Width="1.5" PointX="3" PointY="37.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MoostBrandModel.Vendor" Width="1.5" PointX="14.75" PointY="3.75" IsExpanded="true" />
-        <AssociationConnector Association="MoostBrandModel.FK_Items_Brands" ManuallyRouted="false" />
-        <AssociationConnector Association="MoostBrandModel.FK__Items__CategoryI__47A6A41B" ManuallyRouted="false" />
-        <AssociationConnector Association="MoostBrandModel.FK__Sizes__CategoryI__245D67DE" ManuallyRouted="false" />
-        <AssociationConnector Association="MoostBrandModel.FK_Colors_Categories" ManuallyRouted="false" />
         <AssociationConnector Association="MoostBrandModel.FK_SubCategories_Categories" ManuallyRouted="false" />
-        <AssociationConnector Association="MoostBrandModel.FK__Items__ColorID__2A164134" ManuallyRouted="false" />
         <AssociationConnector Association="MoostBrandModel.FK__StockAllo__Conta__719CDDE7" ManuallyRouted="false" />
         <AssociationConnector Association="MoostBrandModel.FK__StockAllo__Conta__70A8B9AE" ManuallyRouted="false" />
         <AssociationConnector Association="MoostBrandModel.FK_Users_Employees" ManuallyRouted="false" />
-        <AssociationConnector Association="MoostBrandModel.FK__Items__SizeID__2B0A656D" ManuallyRouted="false" />
-        <AssociationConnector Association="MoostBrandModel.FK__Receiving__ItemI__73852659" ManuallyRouted="false" />
-        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__ItemI__3F115E1A" ManuallyRouted="false" />
-        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__ItemI__72910220" ManuallyRouted="false" />
-        <AssociationConnector Association="MoostBrandModel.FK__StockAllo__ItemI__6AEFE058" ManuallyRouted="false" />
-        <AssociationConnector Association="MoostBrandModel.FK_Items_Locations" ManuallyRouted="false" />
-        <AssociationConnector Association="MoostBrandModel.FK_Items_UnitOfMeasurements" ManuallyRouted="false" />
         <AssociationConnector Association="MoostBrandModel.FK__Users__LocationI__3587F3E0" ManuallyRouted="false" />
         <AssociationConnector Association="MoostBrandModel.FK_Locations_LocationType" ManuallyRouted="false" />
         <AssociationConnector Association="MoostBrandModel.FK__Receiving__Requi__55009F39" ManuallyRouted="false" />
@@ -78,7 +63,22 @@
         <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Requi__3E1D39E1" />
         <AssociationConnector Association="MoostBrandModel.FK__StockAllo__Stock__690797E6" />
         <AssociationConnector Association="MoostBrandModel.FK__StockAllo__Stock__662B2B3B" />
-      </Diagram>
+        <EntityTypeShape EntityType="MoostBrandModel.Color" Width="1.5" PointX="3" PointY="12.375" />
+        <EntityTypeShape EntityType="MoostBrandModel.Size" Width="1.5" PointX="16.375" PointY="0.875" />
+        <EntityTypeShape EntityType="MoostBrandModel.Item" Width="1.5" PointX="20.625" PointY="8.875" />
+        <AssociationConnector Association="MoostBrandModel.FK__Items__BrandID__2F9A1060" />
+        <AssociationConnector Association="MoostBrandModel.FK_Items_Brands" />
+        <AssociationConnector Association="MoostBrandModel.FK__Items__CategoryI__47A6A41B" />
+        <AssociationConnector Association="MoostBrandModel.FK__Items__ColorID__2A164134" />
+        <AssociationConnector Association="MoostBrandModel.FK__Items__SizeID__2B0A656D" />
+        <AssociationConnector Association="MoostBrandModel.FK__Items__SubCatego__308E3499" />
+        <AssociationConnector Association="MoostBrandModel.FK__Receiving__ItemI__73852659" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__ItemI__3F115E1A" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__ItemI__72910220" />
+        <AssociationConnector Association="MoostBrandModel.FK__StockAllo__ItemI__6AEFE058" />
+        <AssociationConnector Association="MoostBrandModel.FK_Items_Locations" />
+        <AssociationConnector Association="MoostBrandModel.FK_Items_UnitOfMeasurements" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

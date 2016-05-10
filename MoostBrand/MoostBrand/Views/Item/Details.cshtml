@@ -1,0 +1,114 @@
+﻿@model MoostBrand.DAL.Item
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Item</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Code
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+
+        <dt>
+            Barcode
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Barcode)
+        </dd>
+
+        <dt>
+            Description
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            Category
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category.Description)
+        </dd>
+
+        <dt>
+            Sub Category
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SubCategory.Description)
+        </dd>
+
+        <dt>
+            Brand
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Brand.Description)
+        </dd>
+
+        <dt>
+            Color
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Color.Description)
+        </dd>
+
+        <dt>
+            Size
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Size.Description)
+        </dd>
+
+        <dt>
+            Unit Of Measure
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UnitOfMeasurement.Description)
+        </dd>
+
+        <dt>
+            Re Order Level
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReOrderLevel)
+        </dd>
+
+        <dt>
+            Minimum Stock
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MinimumStock)
+        </dd>
+
+        <dt>
+            Maximum Stock
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaximumStock)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

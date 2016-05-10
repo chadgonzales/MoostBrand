@@ -5,22 +5,20 @@ using System.Web;
 using System.Web.Mvc;
 using MoostBrand.DAL;
 using PagedList;
-using System.Configuration;
 using System.Data.Entity;
+using System.Configuration;
 
 namespace MoostBrand.Controllers
 {
-    public class SubCategoryController : Controller
+    public class SizeController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
-        // GET: SubCategory
+        // GET: Sizes
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "code" : "";
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "desc" : "";
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "catdesc" : "";
-            ViewBag.Categories = entity.Categories.ToList();
 
             if (searchString != null)
             {
@@ -34,71 +32,65 @@ namespace MoostBrand.Controllers
             ViewBag.CurrentFilter = searchString;
 
 
-            var sub = from c in entity.SubCategories
-                             select c;
+            var sizes = from s in entity.Sizes
+                         select s;
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                sub = sub.Where(c => c.Code.Contains(searchString)
-                                       || c.Description.Contains(searchString)
-                                       || c.Category.Description.Contains(searchString));
+                sizes = sizes.Where(s => s.Code.Contains(searchString)
+                                       || s.Description.Contains(searchString));
             }
 
             switch (sortOrder)
             {
                 case "code":
-                    sub = sub.OrderByDescending(c => c.Code);
+                    sizes = sizes.OrderByDescending(s => s.Code);
                     break;
                 case "desc":
-                    sub = sub.OrderByDescending(c => c.Description);
-                    break;
-                case "catdesc":
-                    sub = sub.OrderByDescending(c => c.Category.Description);
+                    sizes = sizes.OrderByDescending(s => s.Description);
                     break;
                 default:
-                    sub = sub.OrderBy(c => c.ID);
+                    sizes = sizes.OrderBy(s => s.ID);
                     break;
             }
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
-            return View(sub.ToPagedList(pageNumber, pageSize));
+            return View(sizes.ToPagedList(pageNumber, pageSize));
         }
 
-        // GET: SubCategory/Details/5
+        // GET: Size/Details/5
         public ActionResult Details(int id)
         {
-            var sub = entity.SubCategories.Find(id);
-            return View(sub);
+            var size = entity.Sizes.Find(id);
+            return View(size);
         }
 
-        // GET: SubCategory/Create
+        // GET: Size/Create
         public ActionResult Create()
         {
-            ViewBag.Categories = entity.Categories.ToList();
             return View();
         }
 
-        // POST: SubCategory/Create
+        // POST: Size/Create
         [HttpPost]
         public ActionResult Create(FormCollection collection)
         {
             try
             {
-                var sub = new SubCategory();
+                var size = new Size();
 
                 if (collection.Count > 0)
                 {
-                    sub.Code = collection["Code"];
-                    sub.Description = collection["Description"];
-                    sub.CategoryID = Convert.ToInt32(collection["CategoryID"]);
+                    size.Code = collection["Code"];
+                    size.Description = collection["Description"];
 
                     try
                     {
-                        entity.SubCategories.Add(sub);
+                        entity.Sizes.Add(size);
                         entity.SaveChanges();
                     }
-                    catch (Exception err) { }
+                    catch { }
                 }
 
                 return RedirectToAction("Index");
@@ -109,37 +101,34 @@ namespace MoostBrand.Controllers
             }
         }
 
-        // GET: SubCategory/Edit/5
+        // GET: Size/Edit/5
         public ActionResult Edit(int id)
         {
-            ViewBag.Categories = entity.Categories.ToList();
-
-            var sub = entity.SubCategories.Find(id);
-
-            return View(sub);
+            var size = entity.Sizes.Find(id);
+            return View(size);
         }
 
-        // POST: SubCategory/Edit/5
+        // POST: Size/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, FormCollection collection)
         {
             try
             {
                 // TODO: Add update logic here
-                var sub = entity.SubCategories.Find(id);
+
+                var size = entity.Sizes.Find(id);
 
                 if (collection.Count > 0)
                 {
-                    sub.Code = collection["Code"];
-                    sub.Description = collection["Description"];
-                    sub.CategoryID = Convert.ToInt32(collection["CategoryID"]);
+                    size.Code = collection["Code"];
+                    size.Description = collection["Description"];
 
                     try
                     {
-                        entity.Entry(sub).State = EntityState.Modified;
+                        entity.Entry(size).State = EntityState.Modified;
                         entity.SaveChanges();
                     }
-                    catch (Exception err) { }
+                    catch { }
                 }
 
                 return RedirectToAction("Index");
@@ -150,28 +139,28 @@ namespace MoostBrand.Controllers
             }
         }
 
-        // GET: SubCategory/Delete/5
+        // GET: Size/Delete/5
         public ActionResult Delete(int id)
         {
-            var sub = entity.SubCategories.Find(id);
-            return View(sub);
+            var size = entity.Sizes.Find(id);
+            return View(size);
         }
 
-        // POST: SubCategory/Delete/5
+        // POST: Size/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
             try
             {
-                // TODO: Add delete logic here
-                var sub = entity.SubCategories.Find(id);
+                var size = entity.Sizes.Find(id);
 
                 try
                 {
-                    entity.SubCategories.Remove(sub);
+                    entity.Sizes.Remove(size);
                     entity.SaveChanges();
                 }
                 catch { }
+                // TODO: Add delete logic here
 
                 return RedirectToAction("Index");
             }

@@ -18,6 +18,7 @@ namespace MoostBrand.DAL
         public Brand()
         {
             this.Items = new HashSet<Item>();
+            this.Items1 = new HashSet<Item>();
         }
     
         public int ID { get; set; }
@@ -26,5 +27,7 @@ namespace MoostBrand.DAL
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Item> Items { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Item> Items1 { get; set; }
     }
 }
