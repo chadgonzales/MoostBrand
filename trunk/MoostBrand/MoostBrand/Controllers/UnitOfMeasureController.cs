@@ -84,6 +84,7 @@ namespace MoostBrand.Controllers
                 {
                     uom.Code = collection["Code"];
                     uom.Description = collection["Description"];
+                    uom.QuantityOfMeasure = Convert.ToInt32(collection["QuantityOfMeasure"]);
                     try
                     {
                         entity.UnitOfMeasurements.Add(uom);
@@ -121,6 +122,7 @@ namespace MoostBrand.Controllers
                 {
                     uom.Code = collection["Code"];
                     uom.Description = collection["Description"];
+                    uom.QuantityOfMeasure = Convert.ToInt32(collection["QuantityOfMeasure"]);
 
                     try
                     {

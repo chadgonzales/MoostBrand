@@ -35,16 +35,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Colors">
-      <EntityTypeMapping TypeName="MoostBrandModel.Color">
-        <MappingFragment StoreEntitySet="Colors">
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-          <ScalarProperty Name="Code" ColumnName="Code" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="ContainerLocations">
       <EntityTypeMapping TypeName="MoostBrandModel.ContainerLocation">
         <MappingFragment StoreEntitySet="ContainerLocations">
@@ -87,24 +77,6 @@
           <ScalarProperty Name="LastName" ColumnName="LastName" />
           <ScalarProperty Name="FirstName" ColumnName="FirstName" />
           <ScalarProperty Name="Position" ColumnName="Position" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Items">
-      <EntityTypeMapping TypeName="MoostBrandModel.Item">
-        <MappingFragment StoreEntitySet="Items">
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="Code" ColumnName="Code" />
-          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-          <ScalarProperty Name="ColorID" ColumnName="ColorID" />
-          <ScalarProperty Name="SizeID" ColumnName="SizeID" />
-          <ScalarProperty Name="VendorID" ColumnName="VendorID" />
-          <ScalarProperty Name="UnitOfMeasurementID" ColumnName="UnitOfMeasurementID" />
-          <ScalarProperty Name="ReOrderLevel" ColumnName="ReOrderLevel" />
-          <ScalarProperty Name="MinimumStock" ColumnName="MinimumStock" />
-          <ScalarProperty Name="MaximumStock" ColumnName="MaximumStock" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -226,16 +198,6 @@
         <MappingFragment StoreEntitySet="ShipmentTypes">
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="Type" ColumnName="Type" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Sizes">
-      <EntityTypeMapping TypeName="MoostBrandModel.Size">
-        <MappingFragment StoreEntitySet="Sizes">
-          <ScalarProperty Name="ID" ColumnName="ID" />
-          <ScalarProperty Name="Code" ColumnName="Code" />
-          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -387,6 +349,43 @@
           <ScalarProperty Name="TransferID" ColumnName="TransferID" />
           <ScalarProperty Name="ReceivingID" ColumnName="ReceivingID" />
           <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Colors">
+      <EntityTypeMapping TypeName="MoostBrandModel.Color">
+        <MappingFragment StoreEntitySet="Colors">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sizes">
+      <EntityTypeMapping TypeName="MoostBrandModel.Size">
+        <MappingFragment StoreEntitySet="Sizes">
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Items">
+      <EntityTypeMapping TypeName="MoostBrandModel.Item">
+        <MappingFragment StoreEntitySet="Items">
+          <ScalarProperty Name="MaximumStock" ColumnName="MaximumStock" />
+          <ScalarProperty Name="MinimumStock" ColumnName="MinimumStock" />
+          <ScalarProperty Name="ReOrderLevel" ColumnName="ReOrderLevel" />
+          <ScalarProperty Name="UnitOfMeasurementID" ColumnName="UnitOfMeasurementID" />
+          <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+          <ScalarProperty Name="ColorID" ColumnName="ColorID" />
+          <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+          <ScalarProperty Name="SubCategoryID" ColumnName="SubCategoryID" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>

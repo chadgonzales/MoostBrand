@@ -21,11 +21,9 @@ namespace MoostBrand.DAL
         }
     
         public int ID { get; set; }
-        public Nullable<int> CategoryID { get; set; }
         public string Code { get; set; }
         public string Description { get; set; }
     
-        public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Item> Items { get; set; }
     }

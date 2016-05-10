@@ -1,0 +1,113 @@
+﻿@model PagedList.IPagedList<MoostBrand.DAL.Item>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Items";
+}
+
+<h2>Items</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm("Index", "Item", FormMethod.Post))
+{
+    <p>
+        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Code", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            Barcode
+        </th>
+        <th>
+            @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            Category
+        </th>
+        <th>
+            Sub Category
+        </th>
+        <th>
+            Brand
+        </th>
+        <th>
+            Color
+        </th>
+        <th>
+            Size
+        </th>
+        <th>
+            Unit Of Measure
+        </th>
+        <th>
+            Re Order Level
+        </th>
+        <th>
+            Minimum Stock
+        </th>
+        <th>
+            Maximum Stock
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Code)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Barcode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Category.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubCategory.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Brand.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Color.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Size.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UnitOfMeasurement.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReOrderLevel)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MinimumStock)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaximumStock)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

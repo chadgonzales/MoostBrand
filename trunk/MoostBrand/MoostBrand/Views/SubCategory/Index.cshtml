@@ -27,18 +27,14 @@
 <table class="table">
     <tr>
         <th>
+            @Html.ActionLink("Category", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
             @Html.ActionLink("Code", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
             @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
-        <th>
-            @Html.ActionLink("Category", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
-        </th>
-        <th>
-            Picture
-        </th>
-        
         <th></th>
     </tr>
 
@@ -46,17 +42,17 @@
 {
     <tr>
         <td>
+            @Html.DisplayFor(modelItem => item.Category.Description)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Code)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Description)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category.Description)
-        </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.Picture)
-        </td>
+        </td>*@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
             @Html.ActionLink("Details", "Details", new { id = item.ID }) |

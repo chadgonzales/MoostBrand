@@ -17,11 +17,11 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Location()
         {
-            this.Items = new HashSet<Item>();
             this.Users = new HashSet<User>();
             this.Requisitions = new HashSet<Requisition>();
             this.StockAllocations = new HashSet<StockAllocation>();
             this.StockTransfers = new HashSet<StockTransfer>();
+            this.Items = new HashSet<Item>();
         }
     
         public int ID { get; set; }
@@ -29,8 +29,6 @@ namespace MoostBrand.DAL
         public string Description { get; set; }
         public Nullable<int> LocationTypeID { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Item> Items { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
         public virtual LocationType LocationType { get; set; }
@@ -40,5 +38,7 @@ namespace MoostBrand.DAL
         public virtual ICollection<StockAllocation> StockAllocations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransfer> StockTransfers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Item> Items { get; set; }
     }
 }

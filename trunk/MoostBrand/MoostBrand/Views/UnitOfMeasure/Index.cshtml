@@ -28,9 +28,9 @@
         <th>
             @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
-        @*<th>
-            @Html.DisplayNameFor(model => model.QuantityOfMeasure)
-        </th>*@
+        <th>
+            Quantity Per Measure
+        </th>
         <th></th>
     </tr>
 
@@ -42,9 +42,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.Description)
         </td>
-        @*<td>
+        <td>
             @Html.DisplayFor(modelItem => item.QuantityOfMeasure)
-        </td>*@
+        </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
             @Html.ActionLink("Details", "Details", new { id=item.ID }) |
