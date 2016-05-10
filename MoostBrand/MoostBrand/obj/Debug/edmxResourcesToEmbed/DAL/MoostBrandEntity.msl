@@ -294,33 +294,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Requisitions">
-      <EntityTypeMapping TypeName="MoostBrandModel.Requisition">
-        <MappingFragment StoreEntitySet="Requisitions">
-          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
-          <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
-          <ScalarProperty Name="Destination" ColumnName="Destination" />
-          <ScalarProperty Name="ValidatedBy" ColumnName="ValidatedBy" />
-          <ScalarProperty Name="ReservedBy" ColumnName="ReservedBy" />
-          <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
-          <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
-          <ScalarProperty Name="DropShipID" ColumnName="DropShipID" />
-          <ScalarProperty Name="ShipmentType" ColumnName="ShipmentType" />
-          <ScalarProperty Name="ReservationTypeID" ColumnName="ReservationTypeID" />
-          <ScalarProperty Name="Customer" ColumnName="Customer" />
-          <ScalarProperty Name="ShipmentDate" ColumnName="ShipmentDate" />
-          <ScalarProperty Name="VendorID" ColumnName="VendorID" />
-          <ScalarProperty Name="DateRequired" ColumnName="DateRequired" />
-          <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-          <ScalarProperty Name="RequestedDate" ColumnName="RequestedDate" />
-          <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
-          <ScalarProperty Name="RequisitionTypeID" ColumnName="RequisitionTypeID" />
-          <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="StockAllocations">
       <EntityTypeMapping TypeName="MoostBrandModel.StockAllocation">
         <MappingFragment StoreEntitySet="StockAllocations">
@@ -386,6 +359,33 @@
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Barcode" ColumnName="Barcode" />
           <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Requisitions">
+      <EntityTypeMapping TypeName="MoostBrandModel.Requisition">
+        <MappingFragment StoreEntitySet="Requisitions">
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+          <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+          <ScalarProperty Name="Destination" ColumnName="Destination" />
+          <ScalarProperty Name="ValidatedBy" ColumnName="ValidatedBy" />
+          <ScalarProperty Name="ReservedBy" ColumnName="ReservedBy" />
+          <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+          <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+          <ScalarProperty Name="DropShipID" ColumnName="DropShipID" />
+          <ScalarProperty Name="ShipmentType" ColumnName="ShipmentType" />
+          <ScalarProperty Name="ReservationTypeID" ColumnName="ReservationTypeID" />
+          <ScalarProperty Name="Customer" ColumnName="Customer" />
+          <ScalarProperty Name="ShipmentDate" ColumnName="ShipmentDate" />
+          <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+          <ScalarProperty Name="DateRequired" ColumnName="DateRequired" />
+          <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+          <ScalarProperty Name="RequestedDate" ColumnName="RequestedDate" />
+          <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
+          <ScalarProperty Name="RequisitionTypeID" ColumnName="RequisitionTypeID" />
+          <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
           <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>

@@ -18,10 +18,11 @@ namespace MoostBrand.DAL
         public Location()
         {
             this.Users = new HashSet<User>();
-            this.Requisitions = new HashSet<Requisition>();
             this.StockAllocations = new HashSet<StockAllocation>();
             this.StockTransfers = new HashSet<StockTransfer>();
             this.Items = new HashSet<Item>();
+            this.Requisitions = new HashSet<Requisition>();
+            this.Requisitions1 = new HashSet<Requisition>();
         }
     
         public int ID { get; set; }
@@ -33,12 +34,14 @@ namespace MoostBrand.DAL
         public virtual ICollection<User> Users { get; set; }
         public virtual LocationType LocationType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Requisition> Requisitions { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAllocation> StockAllocations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransfer> StockTransfers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Item> Items { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Requisition> Requisitions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Requisition> Requisitions1 { get; set; }
     }
 }

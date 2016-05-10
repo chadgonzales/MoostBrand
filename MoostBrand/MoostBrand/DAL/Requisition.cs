@@ -39,15 +39,24 @@ namespace MoostBrand.DAL
         public Nullable<int> ReservedBy { get; set; }
         public Nullable<int> ValidatedBy { get; set; }
         public Nullable<int> Destination { get; set; }
-        public Nullable<int> ApprovalStatus { get; set; }
+        public int ApprovalStatus { get; set; }
         public Nullable<int> ApprovedBy { get; set; }
         public string Remarks { get; set; }
     
+        public virtual ApprovalStatu ApprovalStatu { get; set; }
+        public virtual DropShipType DropShipType { get; set; }
         public virtual Employee Employee { get; set; }
+        public virtual Employee Employee1 { get; set; }
+        public virtual Employee Employee2 { get; set; }
+        public virtual Employee Employee3 { get; set; }
         public virtual Location Location { get; set; }
+        public virtual Location Location1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Receiving> Receivings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequisitionDetail> RequisitionDetails { get; set; }
+        public virtual RequisitionType RequisitionType { get; set; }
+        public virtual ReservationType ReservationType { get; set; }
+        public virtual Vendor Vendor { get; set; }
     }
 }

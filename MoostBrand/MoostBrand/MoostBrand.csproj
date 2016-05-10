@@ -226,6 +226,7 @@
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PRController.cs" />
     <Compile Include="Controllers\SizeController.cs" />
     <Compile Include="Controllers\SubCategoryController.cs" />
     <Compile Include="Controllers\UnitOfMeasureController.cs" />
@@ -500,6 +501,8 @@
     <Content Include="Views\SubCategory\Create.cshtml" />
     <Content Include="Views\SubCategory\Edit.cshtml" />
     <Content Include="Views\SubCategory\Delete.cshtml" />
+    <Content Include="Views\PR\Index.cshtml" />
+    <Content Include="Views\PR\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

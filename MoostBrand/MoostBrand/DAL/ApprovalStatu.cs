@@ -14,7 +14,16 @@ namespace MoostBrand.DAL
     
     public partial class ApprovalStatu
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ApprovalStatu()
+        {
+            this.Requisitions = new HashSet<Requisition>();
+        }
+    
         public int ID { get; set; }
         public string Status { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Requisition> Requisitions { get; set; }
     }
 }

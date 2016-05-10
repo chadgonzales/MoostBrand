@@ -42,25 +42,20 @@
         <AssociationConnector Association="MoostBrandModel.FK__StockAllo__Stock__69FBBC1F" ManuallyRouted="false" />
         <AssociationConnector Association="MoostBrandModel.FK_Users_UserType" ManuallyRouted="false" />
         <EntityTypeShape EntityType="MoostBrandModel.Receiving" Width="1.5" PointX="10.5" PointY="18.875" />
-        <EntityTypeShape EntityType="MoostBrandModel.Requisition" Width="1.5" PointX="8.25" PointY="13.5" />
         <EntityTypeShape EntityType="MoostBrandModel.StockAllocation" Width="1.5" PointX="18" PointY="8.625" />
         <EntityTypeShape EntityType="MoostBrandModel.StockTransfer" Width="1.5" PointX="15.75" PointY="12.625" />
         <AssociationConnector Association="MoostBrandModel.FK__Receiving__Appro__756D6ECB" />
-        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Appro__74794A92" />
         <AssociationConnector Association="MoostBrandModel.FK__StockTran__Appro__607251E5" />
         <AssociationConnector Association="MoostBrandModel.FK__StockTran__Count__625A9A57" />
         <AssociationConnector Association="MoostBrandModel.FK__StockTran__Poste__634EBE90" />
         <AssociationConnector Association="MoostBrandModel.FK__StockTran__Recei__5E8A0973" />
         <AssociationConnector Association="MoostBrandModel.FK__StockTran__Relea__6166761E" />
         <AssociationConnector Association="MoostBrandModel.FK__StockTran__Reque__5F7E2DAC" />
-        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Locat__0697FACD" />
         <AssociationConnector Association="MoostBrandModel.FK__StockAllo__Locat__16CE6296" />
         <AssociationConnector Association="MoostBrandModel.FK__StockTran__Locat__1209AD79" />
         <AssociationConnector Association="MoostBrandModel.FK__Receiving__Recei__540C7B00" />
         <AssociationConnector Association="MoostBrandModel.FK__Receiving__Recei__503BEA1C" />
-        <AssociationConnector Association="MoostBrandModel.FK__Receiving__Requi__51300E55" />
         <AssociationConnector Association="MoostBrandModel.FK__StockTran__Recei__5D95E53A" />
-        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Requi__3E1D39E1" />
         <AssociationConnector Association="MoostBrandModel.FK__StockAllo__Stock__690797E6" />
         <AssociationConnector Association="MoostBrandModel.FK__StockAllo__Stock__662B2B3B" />
         <EntityTypeShape EntityType="MoostBrandModel.Color" Width="1.5" PointX="3" PointY="12.375" />
@@ -78,6 +73,20 @@
         <AssociationConnector Association="MoostBrandModel.FK__StockAllo__ItemI__6AEFE058" />
         <AssociationConnector Association="MoostBrandModel.FK_Items_Locations" />
         <AssociationConnector Association="MoostBrandModel.FK_Items_UnitOfMeasurements" />
+        <EntityTypeShape EntityType="MoostBrandModel.Requisition" Width="1.5" PointX="18" PointY="12.5" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Appro__3A179ED3" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__DropS__3CF40B7E" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Appro__74794A92" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Reque__41B8C09B" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Reser__3EDC53F0" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Valid__3FD07829" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Desti__40C49C62" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Locat__0697FACD" />
+        <AssociationConnector Association="MoostBrandModel.FK__Receiving__Requi__51300E55" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Requi__3E1D39E1" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Requi__318258D2" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Reser__3BFFE745" />
+        <AssociationConnector Association="MoostBrandModel.FK__Requisiti__Vendo__3B0BC30C" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

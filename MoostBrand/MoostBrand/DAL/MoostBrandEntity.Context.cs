@@ -53,11 +53,11 @@ namespace MoostBrand.DAL
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<Vendor> Vendors { get; set; }
         public virtual DbSet<Receiving> Receivings { get; set; }
-        public virtual DbSet<Requisition> Requisitions { get; set; }
         public virtual DbSet<StockAllocation> StockAllocations { get; set; }
         public virtual DbSet<StockTransfer> StockTransfers { get; set; }
         public virtual DbSet<Color> Colors { get; set; }
         public virtual DbSet<Size> Sizes { get; set; }
         public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<Requisition> Requisitions { get; set; }
     }
 }
