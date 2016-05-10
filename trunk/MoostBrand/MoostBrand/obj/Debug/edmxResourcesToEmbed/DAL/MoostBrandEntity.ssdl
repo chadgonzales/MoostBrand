@@ -190,7 +190,7 @@
     <Property Name="ReservedBy" Type="int" />
     <Property Name="ValidatedBy" Type="int" />
     <Property Name="Destination" Type="int" />
-    <Property Name="ApprovalStatus" Type="int" />
+    <Property Name="ApprovalStatus" Type="int" Nullable="false" />
     <Property Name="ApprovedBy" Type="int" />
     <Property Name="Remarks" Type="nvarchar(max)" />
   </EntityType>
@@ -487,6 +487,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK__Requisiti__Appro__3A179ED3">
+    <End Role="ApprovalStatus" Type="Self.ApprovalStatus" Multiplicity="1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ApprovalStatus">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ApprovalStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__Requisiti__Appro__74794A92">
     <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
     <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
@@ -496,6 +508,30 @@
       </Principal>
       <Dependent Role="Requisitions">
         <PropertyRef Name="ApprovedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Requisiti__Desti__40C49C62">
+    <End Role="Locations" Type="Self.Locations" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="Destination" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Requisiti__DropS__3CF40B7E">
+    <End Role="DropShipTypes" Type="Self.DropShipTypes" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DropShipTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="DropShipID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -535,6 +571,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK__Requisiti__Reque__41B8C09B">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="RequestedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Requisiti__Requi__318258D2">
+    <End Role="RequisitionTypes" Type="Self.RequisitionTypes" Multiplicity="1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RequisitionTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="RequisitionTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK__Requisiti__Requi__3E1D39E1">
     <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="0..1" />
     <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
@@ -544,6 +604,54 @@
       </Principal>
       <Dependent Role="RequisitionDetails">
         <PropertyRef Name="RequisitionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Requisiti__Reser__3BFFE745">
+    <End Role="ReservationTypes" Type="Self.ReservationTypes" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReservationTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ReservationTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Requisiti__Reser__3EDC53F0">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ReservedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Requisiti__Valid__3FD07829">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ValidatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Requisiti__Vendo__3B0BC30C">
+    <End Role="Vendors" Type="Self.Vendors" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vendors">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="VendorID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -739,30 +847,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Items_Brands">
-    <End Role="Brands" Type="Self.Brands" Multiplicity="0..1" />
-    <End Role="Items" Type="Self.Items" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Brands">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Items">
-        <PropertyRef Name="ColorID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Items_Locations">
-    <End Role="Locations" Type="Self.Locations" Multiplicity="0..1" />
-    <End Role="Items" Type="Self.Items" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Locations">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Items">
-        <PropertyRef Name="MinimumStock" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Items_UnitOfMeasurements">
     <End Role="UnitOfMeasurements" Type="Self.UnitOfMeasurements" Multiplicity="0..1" />
     <End Role="Items" Type="Self.Items" Multiplicity="*" />
@@ -902,8 +986,20 @@
       <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
       <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
     </AssociationSet>
+    <AssociationSet Name="FK__Requisiti__Appro__3A179ED3" Association="Self.FK__Requisiti__Appro__3A179ED3">
+      <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
     <AssociationSet Name="FK__Requisiti__Appro__74794A92" Association="Self.FK__Requisiti__Appro__74794A92">
       <End Role="Employees" EntitySet="Employees" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Requisiti__Desti__40C49C62" Association="Self.FK__Requisiti__Desti__40C49C62">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Requisiti__DropS__3CF40B7E" Association="Self.FK__Requisiti__DropS__3CF40B7E">
+      <End Role="DropShipTypes" EntitySet="DropShipTypes" />
       <End Role="Requisitions" EntitySet="Requisitions" />
     </AssociationSet>
     <AssociationSet Name="FK__Requisiti__ItemI__3F115E1A" Association="Self.FK__Requisiti__ItemI__3F115E1A">
@@ -918,9 +1014,33 @@
       <End Role="Locations" EntitySet="Locations" />
       <End Role="Requisitions" EntitySet="Requisitions" />
     </AssociationSet>
+    <AssociationSet Name="FK__Requisiti__Reque__41B8C09B" Association="Self.FK__Requisiti__Reque__41B8C09B">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Requisiti__Requi__318258D2" Association="Self.FK__Requisiti__Requi__318258D2">
+      <End Role="RequisitionTypes" EntitySet="RequisitionTypes" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
     <AssociationSet Name="FK__Requisiti__Requi__3E1D39E1" Association="Self.FK__Requisiti__Requi__3E1D39E1">
       <End Role="Requisitions" EntitySet="Requisitions" />
       <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Requisiti__Reser__3BFFE745" Association="Self.FK__Requisiti__Reser__3BFFE745">
+      <End Role="ReservationTypes" EntitySet="ReservationTypes" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Requisiti__Reser__3EDC53F0" Association="Self.FK__Requisiti__Reser__3EDC53F0">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Requisiti__Valid__3FD07829" Association="Self.FK__Requisiti__Valid__3FD07829">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Requisiti__Vendo__3B0BC30C" Association="Self.FK__Requisiti__Vendo__3B0BC30C">
+      <End Role="Vendors" EntitySet="Vendors" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
     </AssociationSet>
     <AssociationSet Name="FK__StockAllo__Conta__70A8B9AE" Association="Self.FK__StockAllo__Conta__70A8B9AE">
       <End Role="ContainerStorages" EntitySet="ContainerStorages" />
@@ -985,14 +1105,6 @@
     <AssociationSet Name="FK__Users__LocationI__3587F3E0" Association="Self.FK__Users__LocationI__3587F3E0">
       <End Role="Locations" EntitySet="Locations" />
       <End Role="Users" EntitySet="Users" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Items_Brands" Association="Self.FK_Items_Brands">
-      <End Role="Brands" EntitySet="Brands" />
-      <End Role="Items" EntitySet="Items" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Items_Locations" Association="Self.FK_Items_Locations">
-      <End Role="Locations" EntitySet="Locations" />
-      <End Role="Items" EntitySet="Items" />
     </AssociationSet>
     <AssociationSet Name="FK_Items_UnitOfMeasurements" Association="Self.FK_Items_UnitOfMeasurements">
       <End Role="UnitOfMeasurements" EntitySet="UnitOfMeasurements" />

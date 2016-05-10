@@ -14,6 +14,12 @@ namespace MoostBrand.DAL
     
     public partial class Vendor
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Vendor()
+        {
+            this.Requisitions = new HashSet<Requisition>();
+        }
+    
         public int ID { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }
@@ -23,5 +29,8 @@ namespace MoostBrand.DAL
         public string City { get; set; }
         public string ContactNo { get; set; }
         public string Email { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Requisition> Requisitions { get; set; }
     }
 }
