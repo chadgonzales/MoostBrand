@@ -42,7 +42,8 @@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
             @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID }) 
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID }) |
+            @Html.ActionLink("Sub Categories", "Index", "SubCategory", new { SearchString = item.Description },' ') 
         </td>
     </tr>
 }
