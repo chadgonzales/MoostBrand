@@ -84,6 +84,21 @@ namespace MoostBrand.Controllers
                 {
                     location.Code = collection["Code"];
                     location.Description = collection["Description"];
+
+                    if (location.Code.Trim() == string.Empty || location.Description.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
+
+                    var loc = entity.Locations.ToList().FindAll(b => b.Code == location.Code);
+
+                    if (loc.Count() > 0)
+                    {
+                        ModelState.AddModelError("", "The code already exists.");
+                        return View();
+                    }
+
                     try
                     {
                         entity.ContainerLocations.Add(location);
@@ -121,6 +136,12 @@ namespace MoostBrand.Controllers
                 {
                     location.Code = collection["Code"];
                     location.Description = collection["Description"];
+
+                    if (location.Code.Trim() == string.Empty || location.Description.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
 
                     try
                     {

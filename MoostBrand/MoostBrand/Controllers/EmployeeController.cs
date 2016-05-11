@@ -85,6 +85,12 @@ namespace MoostBrand.Controllers
                     employee.FirstName = collection["FirstName"];
                     employee.Position = collection["Position"];
 
+                    if (employee.LastName.Trim() == string.Empty || employee.FirstName.Trim() == string.Empty || employee.Position.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
+
                     try
                     {
                         entity.Employees.Add(employee);
@@ -123,6 +129,12 @@ namespace MoostBrand.Controllers
                     employee.LastName = collection["LastName"];
                     employee.FirstName = collection["FirstName"];
                     employee.Position = collection["Position"];
+
+                    if (employee.LastName.Trim() == string.Empty || employee.FirstName.Trim() == string.Empty || employee.Position.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
 
                     try
                     {

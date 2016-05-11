@@ -85,6 +85,20 @@ namespace MoostBrand.Controllers
                     size.Code = collection["Code"];
                     size.Description = collection["Description"];
 
+                    if (size.Code.Trim() == string.Empty || size.Description.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
+
+                    var siz = entity.Colors.ToList().FindAll(b => b.Code == size.Code);
+
+                    if (siz.Count() > 0)
+                    {
+                        ModelState.AddModelError("", "The code already exists.");
+                        return View();
+                    }
+
                     try
                     {
                         entity.Sizes.Add(size);
@@ -122,6 +136,12 @@ namespace MoostBrand.Controllers
                 {
                     size.Code = collection["Code"];
                     size.Description = collection["Description"];
+
+                    if (size.Code.Trim() == string.Empty || size.Description.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
 
                     try
                     {

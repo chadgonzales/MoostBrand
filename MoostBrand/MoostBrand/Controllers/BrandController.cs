@@ -85,12 +85,28 @@ namespace MoostBrand.Controllers
                     brand.Code = collection["Code"];
                     brand.Description = collection["Description"];
 
-                    try
+                    if(brand.Code.Trim() == string.Empty || brand.Description.Trim() == string.Empty)
                     {
-                        entity.Brands.Add(brand);
-                        entity.SaveChanges();
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
                     }
-                    catch { }
+
+                    var brnd = entity.Brands.ToList().FindAll(b => b.Code == brand.Code);
+
+                    if(brnd.Count() > 0)
+                    {
+                        ModelState.AddModelError("", "The code already exists.");
+                        return View();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            entity.Brands.Add(brand);
+                            entity.SaveChanges();
+                        }
+                        catch { }
+                    }
                 }
 
                 return RedirectToAction("Index");
@@ -123,20 +139,26 @@ namespace MoostBrand.Controllers
                     brand.Code = collection["Code"];
                     brand.Description = collection["Description"];
 
+                    if (brand.Code.Trim() == string.Empty || brand.Description.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
+
                     try
                     {
                         entity.Entry(brand).State = EntityState.Modified;
                         entity.SaveChanges();
+
+                        return RedirectToAction("Index");
                     }
                     catch { }
                 }
-
-                return RedirectToAction("Index");
             }
             catch
             {
-                return View();
             }
+            return View();
         }
 
         // GET: Brand/Delete/5

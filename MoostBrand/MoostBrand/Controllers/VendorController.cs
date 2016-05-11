@@ -93,6 +93,27 @@ namespace MoostBrand.Controllers
                     vendor.ContactNo = collection["ContactNo"];
                     vendor.Email = collection["Email"];
 
+                    if (vendor.Code.Trim() == string.Empty ||
+                        vendor.Name.Trim() == string.Empty ||
+                        vendor.GeneralName.Trim() == string.Empty ||
+                        vendor.Attn.Trim() == string.Empty ||
+                        vendor.Address.Trim() == string.Empty ||
+                        vendor.City.Trim() == string.Empty ||
+                        vendor.ContactNo.Trim() == string.Empty ||
+                        vendor.Email.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
+
+                    var vendr = entity.Colors.ToList().FindAll(b => b.Code == vendor.Code);
+
+                    if (vendr.Count() > 0)
+                    {
+                        ModelState.AddModelError("", "The code already exists.");
+                        return View();
+                    }
+
                     try
                     {
                         entity.Vendors.Add(vendor);
@@ -136,6 +157,19 @@ namespace MoostBrand.Controllers
                     vendor.City = collection["City"];
                     vendor.ContactNo = collection["ContactNo"];
                     vendor.Email = collection["Email"];
+
+                    if (vendor.Code.Trim() == string.Empty ||
+                        vendor.Name.Trim() == string.Empty ||
+                        vendor.GeneralName.Trim() == string.Empty ||
+                        vendor.Attn.Trim() == string.Empty ||
+                        vendor.Address.Trim() == string.Empty ||
+                        vendor.City.Trim() == string.Empty ||
+                        vendor.ContactNo.Trim() == string.Empty ||
+                        vendor.Email.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
 
                     try
                     {

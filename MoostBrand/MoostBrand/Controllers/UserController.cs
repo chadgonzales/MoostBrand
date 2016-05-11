@@ -103,6 +103,25 @@ namespace MoostBrand.Controllers
                     user.EmployeeID = Convert.ToInt32(collection["EmployeeID"]);
                     user.LocationID = Convert.ToInt32(collection["LocationID"]);
 
+                    if (user.Username.Trim() == string.Empty ||
+                        user.Password.Trim() == string.Empty ||
+                        user.UserTypeID == 0 ||
+                        user.Department.Trim() == string.Empty ||
+                        user.EmployeeID == 0 ||
+                        user.LocationID == 0)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
+
+                    var usr = entity.Colors.ToList().FindAll(b => b.Code == user.Username);
+
+                    if (usr.Count() > 0)
+                    {
+                        ModelState.AddModelError("", "Username already exists.");
+                        return View();
+                    }
+
                     try
                     {
                         entity.Users.Add(user);
@@ -148,6 +167,17 @@ namespace MoostBrand.Controllers
                     user.Department = collection["Department"];
                     user.EmployeeID = Convert.ToInt32(collection["EmployeeID"]);
                     user.LocationID = Convert.ToInt32(collection["LocationID"]);
+
+                    if (user.Username.Trim() == string.Empty ||
+                        user.Password.Trim() == string.Empty ||
+                        user.UserTypeID == 0 ||
+                        user.Department.Trim() == string.Empty ||
+                        user.EmployeeID == 0 ||
+                        user.LocationID == 0)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
 
                     try
                     {
