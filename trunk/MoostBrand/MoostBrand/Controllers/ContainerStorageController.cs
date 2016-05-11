@@ -84,6 +84,21 @@ namespace MoostBrand.Controllers
                 {
                     storage.Code = collection["Code"];
                     storage.Description = collection["Description"];
+
+                    if (storage.Code.Trim() == string.Empty || storage.Description.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
+
+                    var storge = entity.Colors.ToList().FindAll(b => b.Code == storage.Code);
+
+                    if (storge.Count() > 0)
+                    {
+                        ModelState.AddModelError("", "The code already exists.");
+                        return View();
+                    }
+
                     try
                     {
                         entity.ContainerStorages.Add(storage);
@@ -121,6 +136,12 @@ namespace MoostBrand.Controllers
                 {
                     storage.Code = collection["Code"];
                     storage.Description = collection["Description"];
+
+                    if (storage.Code.Trim() == string.Empty || storage.Description.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
 
                     try
                     {

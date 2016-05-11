@@ -101,6 +101,31 @@ namespace MoostBrand.Controllers
                     item.MinimumStock = Convert.ToInt32(collection["MinimumStock"]);
                     item.MaximumStock = Convert.ToInt32(collection["MaximumStock"]);
 
+                    if (item.Code.Trim() == string.Empty ||
+                        item.Barcode.Trim() == string.Empty ||
+                        item.Description.Trim() == string.Empty ||
+                        item.CategoryID == 0 ||
+                        item.SubCategoryID == 0||
+                        item.BrandID == 0 ||
+                        item.ColorID == 0 ||
+                        item.SizeID == 0 ||
+                        item.UnitOfMeasurementID == 0 ||
+                        item.ReOrderLevel == 0 ||
+                        item.MinimumStock == 0 ||
+                        item.MaximumStock == 0)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
+
+                    var itm = entity.Colors.ToList().FindAll(b => b.Code == item.Code);
+
+                    if (itm.Count() > 0)
+                    {
+                        ModelState.AddModelError("", "The code already exists.");
+                        return View();
+                    }
+
                     try
                     {
                         entity.Items.Add(item);
@@ -154,6 +179,23 @@ namespace MoostBrand.Controllers
                     item.ReOrderLevel = Convert.ToInt32(collection["ReOrderLevel"]);
                     item.MinimumStock = Convert.ToInt32(collection["MinimumStock"]);
                     item.MaximumStock = Convert.ToInt32(collection["MaximumStock"]);
+
+                    if (item.Code.Trim() == string.Empty ||
+                        item.Barcode.Trim() == string.Empty ||
+                        item.Description.Trim() == string.Empty ||
+                        item.CategoryID == 0 ||
+                        item.SubCategoryID == 0 ||
+                        item.BrandID == 0 ||
+                        item.ColorID == 0 ||
+                        item.SizeID == 0 ||
+                        item.UnitOfMeasurementID == 0 ||
+                        item.ReOrderLevel == 0 ||
+                        item.MinimumStock == 0 ||
+                        item.MaximumStock == 0)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
 
                     try
                     {

@@ -85,6 +85,20 @@ namespace MoostBrand.Controllers
                     color.Code = collection["Code"];
                     color.Description = collection["Description"];
 
+                    if (color.Code.Trim() == string.Empty || color.Description.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
+
+                    var colorr = entity.Colors.ToList().FindAll(b => b.Code == color.Code);
+
+                    if (colorr.Count() > 0)
+                    {
+                        ModelState.AddModelError("", "The code already exists.");
+                        return View();
+                    }
+
                     try
                     {
                         entity.Colors.Add(color);
@@ -122,6 +136,12 @@ namespace MoostBrand.Controllers
                 {
                     color.Code = collection["Code"];
                     color.Description = collection["Description"];
+
+                    if (color.Code.Trim() == string.Empty || color.Description.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
 
                     try
                     {

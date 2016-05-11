@@ -88,6 +88,20 @@ namespace MoostBrand.Controllers
                     category.Code = collection["Code"];
                     category.Description = collection["Description"];
 
+                    if (category.Code.Trim() == string.Empty || category.Description.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
+
+                    var cat = entity.Categories.ToList().FindAll(b => b.Code == category.Code);
+
+                    if (cat.Count() > 0)
+                    {
+                        ModelState.AddModelError("", "The code already exists.");
+                        return View();
+                    }
+
                     try
                     {
                         entity.Categories.Add(category);
@@ -125,6 +139,12 @@ namespace MoostBrand.Controllers
                 {
                     category.Code = collection["Code"];
                     category.Description = collection["Description"];
+
+                    if (category.Code.Trim() == string.Empty || category.Description.Trim() == string.Empty)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
 
                     try
                     {

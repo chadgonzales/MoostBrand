@@ -85,6 +85,23 @@ namespace MoostBrand.Controllers
                     uom.Code = collection["Code"];
                     uom.Description = collection["Description"];
                     uom.QuantityOfMeasure = Convert.ToInt32(collection["QuantityOfMeasure"]);
+
+                    if (uom.Code.Trim() == string.Empty ||
+                        uom.Description.Trim() == string.Empty ||
+                        uom.QuantityOfMeasure == 0)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
+
+                    var uomm = entity.Colors.ToList().FindAll(b => b.Code == uom.Code);
+
+                    if (uomm.Count() > 0)
+                    {
+                        ModelState.AddModelError("", "The code already exists.");
+                        return View();
+                    }
+
                     try
                     {
                         entity.UnitOfMeasurements.Add(uom);
@@ -123,6 +140,14 @@ namespace MoostBrand.Controllers
                     uom.Code = collection["Code"];
                     uom.Description = collection["Description"];
                     uom.QuantityOfMeasure = Convert.ToInt32(collection["QuantityOfMeasure"]);
+
+                    if (uom.Code.Trim() == string.Empty ||
+                        uom.Description.Trim() == string.Empty ||
+                        uom.QuantityOfMeasure == 0)
+                    {
+                        ModelState.AddModelError("", "Fill all fields");
+                        return View();
+                    }
 
                     try
                     {
