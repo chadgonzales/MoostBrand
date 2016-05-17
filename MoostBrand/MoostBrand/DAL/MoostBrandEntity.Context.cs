@@ -29,35 +29,36 @@ namespace MoostBrand.DAL
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
+        public virtual DbSet<Color> Colors { get; set; }
         public virtual DbSet<ContainerLocation> ContainerLocations { get; set; }
         public virtual DbSet<ContainerStorage> ContainerStorages { get; set; }
         public virtual DbSet<Downpayment> Downpayments { get; set; }
         public virtual DbSet<DropShipType> DropShipTypes { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<LocationType> LocationTypes { get; set; }
+        public virtual DbSet<PaymentStatu> PaymentStatus { get; set; }
         public virtual DbSet<ReasonForAdjustment> ReasonForAdjustments { get; set; }
         public virtual DbSet<ReceivingDetail> ReceivingDetails { get; set; }
+        public virtual DbSet<Receiving> Receivings { get; set; }
         public virtual DbSet<ReceivingType> ReceivingTypes { get; set; }
         public virtual DbSet<RequisitionDetail> RequisitionDetails { get; set; }
+        public virtual DbSet<Requisition> Requisitions { get; set; }
         public virtual DbSet<RequisitionType> RequisitionTypes { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<ReservationType> ReservationTypes { get; set; }
         public virtual DbSet<ReturnedItem> ReturnedItems { get; set; }
         public virtual DbSet<ReturnType> ReturnTypes { get; set; }
         public virtual DbSet<ShipmentType> ShipmentTypes { get; set; }
+        public virtual DbSet<Size> Sizes { get; set; }
         public virtual DbSet<StockAllocationDetail> StockAllocationDetails { get; set; }
+        public virtual DbSet<StockAllocation> StockAllocations { get; set; }
+        public virtual DbSet<StockTransfer> StockTransfers { get; set; }
         public virtual DbSet<SubCategory> SubCategories { get; set; }
         public virtual DbSet<UnitOfMeasurement> UnitOfMeasurements { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<Vendor> Vendors { get; set; }
-        public virtual DbSet<Receiving> Receivings { get; set; }
-        public virtual DbSet<StockAllocation> StockAllocations { get; set; }
-        public virtual DbSet<StockTransfer> StockTransfers { get; set; }
-        public virtual DbSet<Color> Colors { get; set; }
-        public virtual DbSet<Size> Sizes { get; set; }
-        public virtual DbSet<Item> Items { get; set; }
-        public virtual DbSet<Requisition> Requisitions { get; set; }
     }
 }

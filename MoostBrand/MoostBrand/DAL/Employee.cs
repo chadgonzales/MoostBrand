@@ -17,7 +17,6 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Employee()
         {
-            this.Users = new HashSet<User>();
             this.Receivings = new HashSet<Receiving>();
             this.StockTransfers = new HashSet<StockTransfer>();
             this.StockTransfers1 = new HashSet<StockTransfer>();
@@ -25,10 +24,13 @@ namespace MoostBrand.DAL
             this.StockTransfers3 = new HashSet<StockTransfer>();
             this.StockTransfers4 = new HashSet<StockTransfer>();
             this.StockTransfers5 = new HashSet<StockTransfer>();
+            this.Receivings1 = new HashSet<Receiving>();
+            this.Receivings2 = new HashSet<Receiving>();
+            this.Receivings3 = new HashSet<Receiving>();
             this.Requisitions = new HashSet<Requisition>();
             this.Requisitions1 = new HashSet<Requisition>();
             this.Requisitions2 = new HashSet<Requisition>();
-            this.Requisitions3 = new HashSet<Requisition>();
+            this.Users = new HashSet<User>();
         }
     
         public int ID { get; set; }
@@ -36,8 +38,6 @@ namespace MoostBrand.DAL
         public string FirstName { get; set; }
         public string Position { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<User> Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Receiving> Receivings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -53,12 +53,18 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransfer> StockTransfers5 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Receiving> Receivings1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Receiving> Receivings2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Receiving> Receivings3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Requisition> Requisitions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Requisition> Requisitions1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Requisition> Requisitions2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Requisition> Requisitions3 { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

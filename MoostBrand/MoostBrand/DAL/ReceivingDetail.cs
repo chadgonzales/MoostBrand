@@ -27,10 +27,10 @@ namespace MoostBrand.DAL
         public int QuantityRequested { get; set; }
         public int QuantityReceived { get; set; }
     
+        public virtual Item Item { get; set; }
+        public virtual Receiving Receiving { get; set; }
         public virtual RequisitionDetail RequisitionDetail { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAllocationDetail> StockAllocationDetails { get; set; }
-        public virtual Receiving Receiving { get; set; }
-        public virtual Item Item { get; set; }
     }
 }
