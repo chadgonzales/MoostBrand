@@ -24,8 +24,8 @@ namespace MoostBrand.DAL
     
         public virtual ContainerLocation ContainerLocation { get; set; }
         public virtual ContainerStorage ContainerStorage { get; set; }
+        public virtual Item Item { get; set; }
         public virtual ReceivingDetail ReceivingDetail { get; set; }
         public virtual StockAllocation StockAllocation { get; set; }
-        public virtual Item Item { get; set; }
     }
 }

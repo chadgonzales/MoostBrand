@@ -14,7 +14,16 @@ namespace MoostBrand.DAL
     
     public partial class ShipmentType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ShipmentType()
+        {
+            this.Requisitions = new HashSet<Requisition>();
+        }
+    
         public int ID { get; set; }
         public string Type { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Requisition> Requisitions { get; set; }
     }
 }
