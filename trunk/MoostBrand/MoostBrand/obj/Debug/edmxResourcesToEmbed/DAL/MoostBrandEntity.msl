@@ -35,6 +35,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Colors">
+      <EntityTypeMapping TypeName="MoostBrandModel.Color">
+        <MappingFragment StoreEntitySet="Colors">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="ContainerLocations">
       <EntityTypeMapping TypeName="MoostBrandModel.ContainerLocation">
         <MappingFragment StoreEntitySet="ContainerLocations">
@@ -80,6 +89,25 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Items">
+      <EntityTypeMapping TypeName="MoostBrandModel.Item">
+        <MappingFragment StoreEntitySet="Items">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="SubCategoryID" ColumnName="SubCategoryID" />
+          <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+          <ScalarProperty Name="ColorID" ColumnName="ColorID" />
+          <ScalarProperty Name="SizeID" ColumnName="SizeID" />
+          <ScalarProperty Name="UnitOfMeasurementID" ColumnName="UnitOfMeasurementID" />
+          <ScalarProperty Name="ReOrderLevel" ColumnName="ReOrderLevel" />
+          <ScalarProperty Name="MinimumStock" ColumnName="MinimumStock" />
+          <ScalarProperty Name="MaximumStock" ColumnName="MaximumStock" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="Locations">
       <EntityTypeMapping TypeName="MoostBrandModel.Location">
         <MappingFragment StoreEntitySet="Locations">
@@ -98,6 +126,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="PaymentStatus">
+      <EntityTypeMapping TypeName="MoostBrandModel.PaymentStatu">
+        <MappingFragment StoreEntitySet="PaymentStatus">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="ReasonForAdjustments">
       <EntityTypeMapping TypeName="MoostBrandModel.ReasonForAdjustment">
         <MappingFragment StoreEntitySet="ReasonForAdjustments">
@@ -111,10 +147,33 @@
         <MappingFragment StoreEntitySet="ReceivingDetails">
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="ReceivingID" ColumnName="ReceivingID" />
-          <ScalarProperty Name="RequisitionDetailID" ColumnName="RequisitionDetailID" />
-          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-          <ScalarProperty Name="QuantityRequested" ColumnName="QuantityRequested" />
-          <ScalarProperty Name="QuantityReceived" ColumnName="QuantityReceived" />
+          <ScalarProperty Name="StockTransferDetailID" ColumnName="StockTransferDetailID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="IsReturn" ColumnName="IsReturn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Receivings">
+      <EntityTypeMapping TypeName="MoostBrandModel.Receiving">
+        <MappingFragment StoreEntitySet="Receivings">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+          <ScalarProperty Name="ReceivingTypeID" ColumnName="ReceivingTypeID" />
+          <ScalarProperty Name="ReceivingID" ColumnName="ReceivingID" />
+          <ScalarProperty Name="StockTransferID" ColumnName="StockTransferID" />
+          <ScalarProperty Name="ReceivingDate" ColumnName="ReceivingDate" />
+          <ScalarProperty Name="EncodedBy" ColumnName="EncodedBy" />
+          <ScalarProperty Name="CheckedBy" ColumnName="CheckedBy" />
+          <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+          <ScalarProperty Name="PONumber" ColumnName="PONumber" />
+          <ScalarProperty Name="DRNumber" ColumnName="DRNumber" />
+          <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+          <ScalarProperty Name="VesselNumber" ColumnName="VesselNumber" />
+          <ScalarProperty Name="VoyageNumber" ColumnName="VoyageNumber" />
+          <ScalarProperty Name="VanNumber" ColumnName="VanNumber" />
+          <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -133,6 +192,41 @@
           <ScalarProperty Name="RequisitionID" ColumnName="RequisitionID" />
           <ScalarProperty Name="ItemID" ColumnName="ItemID" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="AprovalStatusID" ColumnName="AprovalStatusID" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Requisitions">
+      <EntityTypeMapping TypeName="MoostBrandModel.Requisition">
+        <MappingFragment StoreEntitySet="Requisitions">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
+          <ScalarProperty Name="RequisitionTypeID" ColumnName="RequisitionTypeID" />
+          <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
+          <ScalarProperty Name="RequestedDate" ColumnName="RequestedDate" />
+          <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+          <ScalarProperty Name="DateRequired" ColumnName="DateRequired" />
+          <ScalarProperty Name="VendorID" ColumnName="VendorID" />
+          <ScalarProperty Name="ShipmentDate" ColumnName="ShipmentDate" />
+          <ScalarProperty Name="Customer" ColumnName="Customer" />
+          <ScalarProperty Name="ReservationTypeID" ColumnName="ReservationTypeID" />
+          <ScalarProperty Name="ShipmentTypeID" ColumnName="ShipmentTypeID" />
+          <ScalarProperty Name="DropShipID" ColumnName="DropShipID" />
+          <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+          <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+          <ScalarProperty Name="ReservedBy" ColumnName="ReservedBy" />
+          <ScalarProperty Name="AuthorizedPerson" ColumnName="AuthorizedPerson" />
+          <ScalarProperty Name="ValidatedBy" ColumnName="ValidatedBy" />
+          <ScalarProperty Name="Destination" ColumnName="Destination" />
+          <ScalarProperty Name="TimeDeparted" ColumnName="TimeDeparted" />
+          <ScalarProperty Name="TimeArrived" ColumnName="TimeArrived" />
+          <ScalarProperty Name="Driver" ColumnName="Driver" />
+          <ScalarProperty Name="PlateNumber" ColumnName="PlateNumber" />
+          <ScalarProperty Name="Others" ColumnName="Others" />
+          <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
+          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -201,16 +295,72 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Sizes">
+      <EntityTypeMapping TypeName="MoostBrandModel.Size">
+        <MappingFragment StoreEntitySet="Sizes">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="StockAllocationDetails">
       <EntityTypeMapping TypeName="MoostBrandModel.StockAllocationDetail">
         <MappingFragment StoreEntitySet="StockAllocationDetails">
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="StockAllocationID" ColumnName="StockAllocationID" />
-          <ScalarProperty Name="StockReceivingDetailID" ColumnName="StockReceivingDetailID" />
-          <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+          <ScalarProperty Name="ReceivingDetailID" ColumnName="ReceivingDetailID" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
           <ScalarProperty Name="ContainerStorageID" ColumnName="ContainerStorageID" />
           <ScalarProperty Name="ContainerLocationID" ColumnName="ContainerLocationID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StockAllocations">
+      <EntityTypeMapping TypeName="MoostBrandModel.StockAllocation">
+        <MappingFragment StoreEntitySet="StockAllocations">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+          <ScalarProperty Name="ReceivingID" ColumnName="ReceivingID" />
+          <ScalarProperty Name="SADate" ColumnName="SADate" />
+          <ScalarProperty Name="BatchNumber" ColumnName="BatchNumber" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StockTransferDetails">
+      <EntityTypeMapping TypeName="MoostBrandModel.StockTransferDetail">
+        <MappingFragment StoreEntitySet="StockTransferDetails">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="StockTransferID" ColumnName="StockTransferID" />
+          <ScalarProperty Name="RequisitionDetailID" ColumnName="RequisitionDetailID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="IsReturn" ColumnName="IsReturn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StockTransfers">
+      <EntityTypeMapping TypeName="MoostBrandModel.StockTransfer">
+        <MappingFragment StoreEntitySet="StockTransfers">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="RequisitionID" ColumnName="RequisitionID" />
+          <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+          <ScalarProperty Name="TransferID" ColumnName="TransferID" />
+          <ScalarProperty Name="STDAte" ColumnName="STDAte" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+          <ScalarProperty Name="Driver" ColumnName="Driver" />
+          <ScalarProperty Name="Helper" ColumnName="Helper" />
+          <ScalarProperty Name="TimeReceived" ColumnName="TimeReceived" />
+          <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
+          <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
+          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
+          <ScalarProperty Name="ReleasedBy" ColumnName="ReleasedBy" />
+          <ScalarProperty Name="Operator" ColumnName="Operator" />
+          <ScalarProperty Name="CounterCheckedBy" ColumnName="CounterCheckedBy" />
+          <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+          <ScalarProperty Name="ApprovedStatus" ColumnName="ApprovedStatus" />
+          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -268,125 +418,6 @@
           <ScalarProperty Name="City" ColumnName="City" />
           <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
           <ScalarProperty Name="Email" ColumnName="Email" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Receivings">
-      <EntityTypeMapping TypeName="MoostBrandModel.Receiving">
-        <MappingFragment StoreEntitySet="Receivings">
-          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
-          <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
-          <ScalarProperty Name="VanNumber" ColumnName="VanNumber" />
-          <ScalarProperty Name="VoyageNumber" ColumnName="VoyageNumber" />
-          <ScalarProperty Name="VesselNumber" ColumnName="VesselNumber" />
-          <ScalarProperty Name="DRNumber" ColumnName="DRNumber" />
-          <ScalarProperty Name="PONumber" ColumnName="PONumber" />
-          <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
-          <ScalarProperty Name="CheckedBy" ColumnName="CheckedBy" />
-          <ScalarProperty Name="EncodedBy" ColumnName="EncodedBy" />
-          <ScalarProperty Name="ReceivingDate" ColumnName="ReceivingDate" />
-          <ScalarProperty Name="RequisitionID" ColumnName="RequisitionID" />
-          <ScalarProperty Name="ReceivingID" ColumnName="ReceivingID" />
-          <ScalarProperty Name="ReceivingTypeID" ColumnName="ReceivingTypeID" />
-          <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="StockAllocations">
-      <EntityTypeMapping TypeName="MoostBrandModel.StockAllocation">
-        <MappingFragment StoreEntitySet="StockAllocations">
-          <ScalarProperty Name="BatchNumber" ColumnName="BatchNumber" />
-          <ScalarProperty Name="SADate" ColumnName="SADate" />
-          <ScalarProperty Name="StockTransferID" ColumnName="StockTransferID" />
-          <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="StockTransfers">
-      <EntityTypeMapping TypeName="MoostBrandModel.StockTransfer">
-        <MappingFragment StoreEntitySet="StockTransfers">
-          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-          <ScalarProperty Name="ApprovedStatus" ColumnName="ApprovedStatus" />
-          <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
-          <ScalarProperty Name="CounterCheckedBy" ColumnName="CounterCheckedBy" />
-          <ScalarProperty Name="ReleasedBy" ColumnName="ReleasedBy" />
-          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
-          <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
-          <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
-          <ScalarProperty Name="Helper" ColumnName="Helper" />
-          <ScalarProperty Name="Driver" ColumnName="Driver" />
-          <ScalarProperty Name="STDAte" ColumnName="STDAte" />
-          <ScalarProperty Name="TransferID" ColumnName="TransferID" />
-          <ScalarProperty Name="ReceivingID" ColumnName="ReceivingID" />
-          <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Colors">
-      <EntityTypeMapping TypeName="MoostBrandModel.Color">
-        <MappingFragment StoreEntitySet="Colors">
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Code" ColumnName="Code" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Sizes">
-      <EntityTypeMapping TypeName="MoostBrandModel.Size">
-        <MappingFragment StoreEntitySet="Sizes">
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Code" ColumnName="Code" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Items">
-      <EntityTypeMapping TypeName="MoostBrandModel.Item">
-        <MappingFragment StoreEntitySet="Items">
-          <ScalarProperty Name="MaximumStock" ColumnName="MaximumStock" />
-          <ScalarProperty Name="MinimumStock" ColumnName="MinimumStock" />
-          <ScalarProperty Name="ReOrderLevel" ColumnName="ReOrderLevel" />
-          <ScalarProperty Name="UnitOfMeasurementID" ColumnName="UnitOfMeasurementID" />
-          <ScalarProperty Name="SizeID" ColumnName="SizeID" />
-          <ScalarProperty Name="ColorID" ColumnName="ColorID" />
-          <ScalarProperty Name="BrandID" ColumnName="BrandID" />
-          <ScalarProperty Name="SubCategoryID" ColumnName="SubCategoryID" />
-          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Barcode" ColumnName="Barcode" />
-          <ScalarProperty Name="Code" ColumnName="Code" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Requisitions">
-      <EntityTypeMapping TypeName="MoostBrandModel.Requisition">
-        <MappingFragment StoreEntitySet="Requisitions">
-          <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-          <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
-          <ScalarProperty Name="ApprovalStatus" ColumnName="ApprovalStatus" />
-          <ScalarProperty Name="Destination" ColumnName="Destination" />
-          <ScalarProperty Name="ValidatedBy" ColumnName="ValidatedBy" />
-          <ScalarProperty Name="ReservedBy" ColumnName="ReservedBy" />
-          <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
-          <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
-          <ScalarProperty Name="DropShipID" ColumnName="DropShipID" />
-          <ScalarProperty Name="ShipmentType" ColumnName="ShipmentType" />
-          <ScalarProperty Name="ReservationTypeID" ColumnName="ReservationTypeID" />
-          <ScalarProperty Name="Customer" ColumnName="Customer" />
-          <ScalarProperty Name="ShipmentDate" ColumnName="ShipmentDate" />
-          <ScalarProperty Name="VendorID" ColumnName="VendorID" />
-          <ScalarProperty Name="DateRequired" ColumnName="DateRequired" />
-          <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-          <ScalarProperty Name="RequestedDate" ColumnName="RequestedDate" />
-          <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
-          <ScalarProperty Name="RequisitionTypeID" ColumnName="RequisitionTypeID" />
-          <ScalarProperty Name="RefNumber" ColumnName="RefNumber" />
-          <ScalarProperty Name="ID" ColumnName="ID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

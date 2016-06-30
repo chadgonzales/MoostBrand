@@ -18,117 +18,123 @@
         <input type="submit" value="Search" />
     </p>
 }
-<table class="table">
-    <tr>
-        <th>
-            @Html.ActionLink("Ref #", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
-        </th>
-        <th>
-            @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
-        </th>
-        <th>
-            Location
-        </th>
-        <th>
-            Requested By
-        </th>
-        <th>
-            Requested Date
-        </th>
-        <th>
-            Date Required
-        </th>
-        <th>
-            Vendor
-        </th>
-        <th>
-            Project/Customer
-        </th>
-        <th>
-            Reservation Type
-        </th>
-        <th>
-            Shipment Type
-        </th>
-        <th>
-            Payment Status
-        </th>
-        <th>
-            Destination
-        </th>
-        <th>
-            Status
-        </th>
-        <th>
-            Approved By
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.RefNumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RequisitionType.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location1.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employee1.LastName + ", " + item.Employee1.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RequestedDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateRequired)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Vendor.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Customer)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Customer)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ReservationType.Type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ShipmentType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DropShipID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PaymentStatus)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ApprovalStatu.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Employee.LastName + ", " + item.Employee.FirstName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-            @Html.ActionLink("Items", "Items", new { id = item.ID })
-            @Html.ActionLink("Approve", "Approve", new { id = item.ID })
-            @Html.ActionLink("Denied", "Denied", new { id = item.ID })
-        </td>
-    </tr>
-}
+<form id="action_form">
+    @Html.AntiForgeryToken()
+    <table class="table">
+        <tr>
+            <th>
+                @Html.ActionLink("Ref #", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+                Requested By
+            </th>
+            <th>
+                Requested Date
+            </th>
+            <th>
+                Date Required
+            </th>
+            <th>
+                Vendor
+            </th>
+            <th>
+                Project/Customer
+            </th>
+            <th>
+                Payment Status
+            </th>
+            <th>
+                Status
+            </th>
+        </tr>
 
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RefNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequisitionType.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location1.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee1.LastName),
+                    @Html.DisplayFor(modelItem => item.Employee1.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateRequired)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vendor.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ApprovalStatu.Status)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    @Html.ActionLink("Items", "Items", new { id = item.ID })
+                    <a href="#" id="approve_button" onclick="Approve(@item.ID)">Approve</a>
+                    <a href="#" id="deny_button" onclick="Deny(@item.ID)">Deny</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+</form>
 <br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-@Html.PagedListPager(Model, page => Url.Action("Index",
+    @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+
+    <script type="text/javascript">
+        function Approve() {
+            var prID = arguments[0];
+
+            var url = '@Url.Action("Approve", "PR")/' + prID;
+
+            var frm = $("#action_form").serialize();
+
+            $.post(url, frm, ReloadFunction);
+
+            function ReloadFunction() {
+                location.reload();
+            }
+        }
+
+        function Deny() {
+            var prID = arguments[0];
+
+            var url = '@Url.Action("Denied", "PR")/' + prID;
+
+            var frm = $("#action_form").serialize();
+
+            $.post(url, frm, ReloadFunction);
+
+            function ReloadFunction() {
+                location.reload();
+            }
+        }
+    </script>

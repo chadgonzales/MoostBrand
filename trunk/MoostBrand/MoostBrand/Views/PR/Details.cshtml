@@ -27,22 +27,6 @@
         </dd>
 
         <dt>
-            Location
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Location1.Description)
-        </dd>
-
-        <dt>
-            Requested By
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Employee1.LastName + ", " + model.Employee1.FirstName)
-        </dd>
-
-        <dt>
             Requested Date
         </dt>
 
@@ -51,9 +35,25 @@
         </dd>
 
         <dt>
-            Date Required
+            Requested By
         </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.Employee1.LastName),
+            @Html.DisplayFor(model => model.Employee1.FirstName)
+        </dd>
+
+        <dt>
+            Location
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Location1.Description)
+        </dd>
+        <dt>
+            Date Required
+        </dt>
+        
         <dd>
             @Html.DisplayFor(model => model.DateRequired)
         </dd>
@@ -143,7 +143,8 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Employee2.LastName + ", " + model.Employee2.FirstName)
+            @Html.DisplayFor(model => model.Employee2.LastName), 
+            @Html.DisplayFor(model => model.Employee2.FirstName)
         </dd>
 
         <dt>
@@ -151,7 +152,8 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Employee3.LastName + ", " + model.Employee3.FirstName)
+            @Html.DisplayFor(model => model.Employee3.LastName), 
+            @Html.DisplayFor(model => model.Employee3.FirstName)
         </dd>
 
         <dt>
@@ -175,7 +177,8 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Employee.LastName + ", " + model.Employee.FirstName)
+            @Html.DisplayFor(model => model.Employee.LastName), 
+            @Html.DisplayFor(model => model.Employee.FirstName)
         </dd>
 
         <dt>
@@ -185,12 +188,14 @@
         <dd>
             @Html.DisplayFor(model => model.Remarks)
         </dd>
-
-        
-
     </dl>
 </div>
+
 <p>
+    @Html.ActionLink("Pending Items", "PendingItems", new { id = Model.ID }) |
+    @Html.ActionLink("Approved Items", "ApprovedItems", new { id = Model.ID }) |
+    @Html.ActionLink("Denied Items", "DeniedItems", new { id = Model.ID })
+    <br/>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index") |
 </p>
