@@ -17,25 +17,30 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public StockTransfer()
         {
-            this.StockAllocations = new HashSet<StockAllocation>();
+            this.Receivings = new HashSet<Receiving>();
         }
     
         public int ID { get; set; }
+        public int RequisitionID { get; set; }
         public int LocationID { get; set; }
-        public int ReceivingID { get; set; }
         public string TransferID { get; set; }
         public System.DateTime STDAte { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
         public string Driver { get; set; }
         public string Helper { get; set; }
+        public string TimeReceived { get; set; }
         public int ReceivedBy { get; set; }
         public int RequestedBy { get; set; }
         public Nullable<int> ApprovedBy { get; set; }
         public int ReleasedBy { get; set; }
+        public string Operator { get; set; }
         public int CounterCheckedBy { get; set; }
         public int PostedBy { get; set; }
         public Nullable<int> ApprovedStatus { get; set; }
         public string Remarks { get; set; }
     
+        public virtual ApprovalStatu ApprovalStatu { get; set; }
         public virtual Employee Employee { get; set; }
         public virtual Employee Employee1 { get; set; }
         public virtual Employee Employee2 { get; set; }
@@ -43,8 +48,8 @@ namespace MoostBrand.DAL
         public virtual Employee Employee4 { get; set; }
         public virtual Employee Employee5 { get; set; }
         public virtual Location Location { get; set; }
-        public virtual Receiving Receiving { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StockAllocation> StockAllocations { get; set; }
+        public virtual ICollection<Receiving> Receivings { get; set; }
+        public virtual Requisition Requisition { get; set; }
     }
 }

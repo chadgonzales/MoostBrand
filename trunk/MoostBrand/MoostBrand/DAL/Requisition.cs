@@ -17,8 +17,8 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Requisition()
         {
-            this.Receivings = new HashSet<Receiving>();
             this.RequisitionDetails = new HashSet<RequisitionDetail>();
+            this.StockTransfers = new HashSet<StockTransfer>();
         }
     
         public int ID { get; set; }
@@ -45,7 +45,7 @@ namespace MoostBrand.DAL
         public string Driver { get; set; }
         public string PlateNumber { get; set; }
         public string Others { get; set; }
-        public int ApprovalStatus { get; set; }
+        public Nullable<int> ApprovalStatus { get; set; }
         public Nullable<int> ApprovedBy { get; set; }
         public string Remarks { get; set; }
     
@@ -54,15 +54,16 @@ namespace MoostBrand.DAL
         public virtual Employee Employee { get; set; }
         public virtual Employee Employee1 { get; set; }
         public virtual Employee Employee2 { get; set; }
+        public virtual Employee Employee3 { get; set; }
         public virtual Location Location { get; set; }
         public virtual Location Location1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Receiving> Receivings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequisitionDetail> RequisitionDetails { get; set; }
         public virtual RequisitionType RequisitionType { get; set; }
         public virtual ReservationType ReservationType { get; set; }
         public virtual ShipmentType ShipmentType { get; set; }
         public virtual Vendor Vendor { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockTransfer> StockTransfers { get; set; }
     }
 }

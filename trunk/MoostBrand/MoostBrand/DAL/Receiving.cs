@@ -18,20 +18,21 @@ namespace MoostBrand.DAL
         public Receiving()
         {
             this.ReceivingDetails = new HashSet<ReceivingDetail>();
-            this.StockTransfers = new HashSet<StockTransfer>();
+            this.StockAllocations = new HashSet<StockAllocation>();
         }
     
         public int ID { get; set; }
         public int LocationID { get; set; }
         public int ReceivingTypeID { get; set; }
         public string ReceivingID { get; set; }
-        public int RequisitionID { get; set; }
+        public int StockTransferID { get; set; }
         public System.DateTime ReceivingDate { get; set; }
         public Nullable<int> EncodedBy { get; set; }
         public Nullable<int> CheckedBy { get; set; }
         public int ReceivedBy { get; set; }
         public string PONumber { get; set; }
         public string DRNumber { get; set; }
+        public string InvoiceNumber { get; set; }
         public string VesselNumber { get; set; }
         public string VoyageNumber { get; set; }
         public string VanNumber { get; set; }
@@ -48,8 +49,8 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceivingDetail> ReceivingDetails { get; set; }
         public virtual ReceivingType ReceivingType { get; set; }
-        public virtual Requisition Requisition { get; set; }
+        public virtual StockTransfer StockTransfer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StockTransfer> StockTransfers { get; set; }
+        public virtual ICollection<StockAllocation> StockAllocations { get; set; }
     }
 }

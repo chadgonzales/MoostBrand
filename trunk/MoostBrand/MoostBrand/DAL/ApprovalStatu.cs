@@ -18,7 +18,9 @@ namespace MoostBrand.DAL
         public ApprovalStatu()
         {
             this.Receivings = new HashSet<Receiving>();
+            this.RequisitionDetails = new HashSet<RequisitionDetail>();
             this.Requisitions = new HashSet<Requisition>();
+            this.StockTransfers = new HashSet<StockTransfer>();
         }
     
         public int ID { get; set; }
@@ -27,6 +29,10 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Receiving> Receivings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RequisitionDetail> RequisitionDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Requisition> Requisitions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockTransfer> StockTransfers { get; set; }
     }
 }

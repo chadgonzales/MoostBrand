@@ -22,13 +22,14 @@ namespace MoostBrand.DAL
     
         public int ID { get; set; }
         public int LocationID { get; set; }
-        public int StockTransferID { get; set; }
+        public int ReceivingID { get; set; }
         public Nullable<System.DateTime> SADate { get; set; }
         public string BatchNumber { get; set; }
+        public string Remarks { get; set; }
     
         public virtual Location Location { get; set; }
+        public virtual Receiving Receiving { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAllocationDetail> StockAllocationDetails { get; set; }
-        public virtual StockTransfer StockTransfer { get; set; }
     }
 }

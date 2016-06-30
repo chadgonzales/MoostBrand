@@ -17,10 +17,7 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Item()
         {
-            this.ReceivingDetails = new HashSet<ReceivingDetail>();
             this.RequisitionDetails = new HashSet<RequisitionDetail>();
-            this.RequisitionDetails1 = new HashSet<RequisitionDetail>();
-            this.StockAllocationDetails = new HashSet<StockAllocationDetail>();
         }
     
         public int ID { get; set; }
@@ -42,14 +39,8 @@ namespace MoostBrand.DAL
         public virtual Color Color { get; set; }
         public virtual Size Size { get; set; }
         public virtual SubCategory SubCategory { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReceivingDetail> ReceivingDetails { get; set; }
+        public virtual UnitOfMeasurement UnitOfMeasurement { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequisitionDetail> RequisitionDetails { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RequisitionDetail> RequisitionDetails1 { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StockAllocationDetail> StockAllocationDetails { get; set; }
-        public virtual UnitOfMeasurement UnitOfMeasurement { get; set; }
     }
 }
