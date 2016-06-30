@@ -1,0 +1,154 @@
+﻿@model MoostBrand.DAL.StockTransfer
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Stock Transfer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Stock Transfer #
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransferID)
+        </dd>
+
+        <dt>
+            Requisition #
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Requisition.RefNumber)
+        </dd>
+
+        <dt>
+            Date
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.STDAte)
+        </dd>
+
+        <dt>
+            Time Started
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.StartTime)
+        </dd>
+
+        <dt>
+            Time End
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndTime)
+        </dd>
+
+        <dt>
+            Driver
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Driver)
+        </dd>
+        <dt>
+            Helper
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Helper)
+        </dd>
+
+        <dt>
+            Received By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee3.FirstName), 
+            @Html.DisplayFor(model => model.Employee3.LastName)
+        </dd>
+
+        <dt>
+            Requested By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee5.FirstName),
+            @Html.DisplayFor(model => model.Employee5.LastName)
+        </dd>
+
+        <dt>
+            Released By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee4.FirstName),
+            @Html.DisplayFor(model => model.Employee4.LastName)
+        </dd>
+
+        <dt>
+            Operator
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Operator)
+        </dd>
+
+        <dt>
+            Checked By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee1.FirstName),
+            @Html.DisplayFor(model => model.Employee1.LastName)
+        </dd>
+
+        <dt>
+            Posted By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee2.FirstName),
+            @Html.DisplayFor(model => model.Employee2.LastName)
+        </dd>
+
+        <dt>
+            Approval Status
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovalStatu.Status)
+        </dd>
+
+        <dt>
+            Approved By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.FirstName),
+            @Html.DisplayFor(model => model.Employee.LastName)
+        </dd>
+
+        <dt>
+            Remarks
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Items", "Items", new { id = Model.ID })
+    <br />
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index") |
+</p>
+

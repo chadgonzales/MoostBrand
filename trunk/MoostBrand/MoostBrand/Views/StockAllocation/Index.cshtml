@@ -1,0 +1,57 @@
+﻿@model PagedList.IPagedList<MoostBrand.DAL.StockAllocation>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Stock Allocations";
+}
+
+<h2>Stock Allocations</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm("Index", "StockAllocation", FormMethod.Post))
+{
+    <p>
+        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<form id="action_form">
+    @Html.AntiForgeryToken()
+    <table class="table">
+        <tr>
+            <th>
+                @Html.ActionLink("Batch #", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BatchNumber)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    @Html.ActionLink("Items", "Items", new { id = item.ID })
+                    <a href="#" id="approve_button" onclick="Approve(@item.ID)">Approve</a>
+                    <a href="#" id="deny_button" onclick="Deny(@item.ID)">Deny</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+</form>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

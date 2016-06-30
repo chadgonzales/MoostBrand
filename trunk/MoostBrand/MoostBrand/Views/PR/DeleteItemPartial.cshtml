@@ -1,0 +1,55 @@
+﻿@model MoostBrand.DAL.RequisitionDetail
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Delete Item</h4>
+    </div>
+    @using (Html.BeginForm())
+            {
+        <div class="modal-body">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <table>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Item, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Item.Description)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Quantity)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.ApprovalStatu, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.ApprovalStatu.Status)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Remarks)
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <input type="submit" value="Delete" class="btn btn-primary" />
+        </div>
+    }
+</div><!-- /.modal-content -->

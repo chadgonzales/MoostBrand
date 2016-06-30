@@ -1,0 +1,208 @@
+﻿@model MoostBrand.DAL.Requisition
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Requisition</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Ref #
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RefNumber)
+        </dd>
+
+        <dt>
+            Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequisitionType.Type)
+        </dd>
+
+        <dt>
+            Location
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Location1.Description)
+        </dd>
+
+        <dt>
+            Requested By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee1.LastName),
+            @Html.DisplayFor(model => model.Employee1.FirstName)
+        </dd>
+
+        <dt>
+            Requested Date
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RequestedDate)
+        </dd>
+
+        <dt>
+            Date Required
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateRequired)
+        </dd>
+
+        <dt>
+            Vendor
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vendor.Name)
+        </dd>
+
+        <dt>
+            Vendor Code
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vendor.Code)
+        </dd>
+
+        <dt>
+            Attention
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Vendor.Attn)
+        </dd>
+
+        <dt>
+            Shipment Date
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShipmentDate)
+        </dd>
+
+        <dt>
+            Project/Customer
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer)
+        </dd>
+
+        <dt>
+            Reservation Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReservationType.Type)
+        </dd>
+
+        <dt>
+            Shipment Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShipmentType)
+        </dd>
+
+        <dt>
+            Drop Ship Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DropShipType.Type)
+        </dd>
+
+        <dt>
+            Payment Status
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentStatus)
+        </dd>
+
+        <dt>
+            Invoice #
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvoiceNumber)
+        </dd>
+
+        <dt>
+            Reserved By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee2.LastName),
+            @Html.DisplayFor(model => model.Employee2.FirstName)
+        </dd>
+
+        <dt>
+            Validated By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee3.LastName),
+            @Html.DisplayFor(model => model.Employee3.FirstName)
+        </dd>
+
+        <dt>
+            Destination
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Location.Description)
+        </dd>
+
+        <dt>
+            Approval Status
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ApprovalStatu.Status)
+        </dd>
+
+        <dt>
+            Approved By
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Employee.LastName),
+            @Html.DisplayFor(model => model.Employee.FirstName)
+        </dd>
+
+        <dt>
+            Remarks
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+
+
+
+    </dl>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" />
+        </div>
+    }
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

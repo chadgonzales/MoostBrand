@@ -1,0 +1,63 @@
+﻿@model PagedList.IPagedList<MoostBrand.DAL.RequisitionDetail>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Approved Items";
+}
+
+<h2>Approved Items</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Item Name
+        </th>
+        <th>
+            Quantity
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                <a href="#" id="ShowPopopEdit" onclick="ShowEdit(@item.ID)">Edit</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div id="EditItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div id="ShowDialogEdit" class="modal-dialog" role="document">
+
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("ApprovedItems",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+<p>
+    @Html.ActionLink("Back to PR Details", "Details", new { id = ViewBag.PRid })
+</p>
+
+<script>
+    function ShowEdit(id) {
+        var url = '@Url.Action("EditItemPartial", "PR")/' + id;
+        $.get(url, function (data) {
+            $('#ShowDialogEdit').html(data);
+
+            $('#EditItemWindow').modal('show');
+        });
+    }
+</script>
