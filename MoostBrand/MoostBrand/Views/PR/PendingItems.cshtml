@@ -1,0 +1,98 @@
+﻿@model PagedList.IPagedList<MoostBrand.DAL.RequisitionDetail>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Pending Items";
+}
+
+<h2>Pending Items</h2>
+
+<b><font color="red">@TempData["PartialError"]</font></b>
+<table class="table">
+    <tr>
+        <th>
+            Item Name
+        </th>
+        <th>
+            Quantity
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                <a href="#" id="ShowPopopEdit" onclick="ShowEdit(@item.ID)">Edit</a> |
+                <a href="#" id="ShowPopopDelete" onclick="ShowDelete(@item.ID)">Delete</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<div id="AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.PRid })">
+    <div id="ShowDialogAdd" class="modal-dialog" role="document">
+        
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="EditItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div id="ShowDialogEdit" class="modal-dialog" role="document">
+
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="DeleteItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div id="ShowDialogDelete" class="modal-dialog" role="document">
+
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("PendingItems",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+<p>
+    <a href="#" id="ShowPopop">Add Item</a>
+    <br />
+    @Html.ActionLink("Back to PR Details", "Details", new { id = ViewBag.PRid })
+</p>
+
+<script>
+    $('#ShowPopop').click(function () {
+        
+        var url = $('#AddItemWindow').data('url');
+        $.get(url, function (data) {
+            $('#ShowDialogAdd').html(data);
+
+            $('#AddItemWindow').modal('show');
+        });
+    });
+
+    function ShowEdit(id){
+        var url = '@Url.Action("EditItemPartial", "PR")/' + id;
+        $.get(url, function (data) {
+            $('#ShowDialogEdit').html(data);
+
+            $('#EditItemWindow').modal('show');
+        });
+    }
+
+    function ShowDelete(id) {
+        var url = '@Url.Action("DeleteItemPartial", "PR")/' + id;
+        $.get(url, function (data) {
+            $('#ShowDialogDelete').html(data);
+
+            $('#DeleteItemWindow').modal('show');
+        });
+    }
+</script>
