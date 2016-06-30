@@ -148,10 +148,9 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ReceivingID" Type="int" Nullable="false" />
-          <Property Name="RequisitionDetailID" Type="int" Nullable="false" />
-          <Property Name="ItemID" Type="int" Nullable="false" />
-          <Property Name="QuantityRequested" Type="int" Nullable="false" />
-          <Property Name="QuantityReceived" Type="int" Nullable="false" />
+          <Property Name="StockTransferDetailID" Type="int" />
+          <Property Name="Status" Type="int" />
+          <Property Name="IsReturn" Type="bit" />
         </EntityType>
         <EntityType Name="Receivings">
           <Key>
@@ -161,13 +160,14 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
           <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="ReceivingTypeID" Type="int" Nullable="false" />
           <Property Name="ReceivingID" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="RequisitionID" Type="int" Nullable="false" />
+          <Property Name="StockTransferID" Type="int" Nullable="false" />
           <Property Name="ReceivingDate" Type="datetime" Nullable="false" />
           <Property Name="EncodedBy" Type="int" />
           <Property Name="CheckedBy" Type="int" />
           <Property Name="ReceivedBy" Type="int" Nullable="false" />
           <Property Name="PONumber" Type="nvarchar" MaxLength="50" />
           <Property Name="DRNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="InvoiceNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="VesselNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="VoyageNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="VanNumber" Type="nvarchar" MaxLength="50" />
@@ -187,9 +187,11 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RequisitionID" Type="int" />
-          <Property Name="ItemID" Type="int" />
-          <Property Name="Quantity" Type="int" />
+          <Property Name="RequisitionID" Type="int" Nullable="false" />
+          <Property Name="ItemID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="AprovalStatusID" Type="int" />
+          <Property Name="Remarks" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Requisitions">
           <Key>
@@ -219,7 +221,7 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
           <Property Name="Driver" Type="nvarchar" MaxLength="50" />
           <Property Name="PlateNumber" Type="nvarchar" MaxLength="20" />
           <Property Name="Others" Type="nvarchar" MaxLength="50" />
-          <Property Name="ApprovalStatus" Type="int" Nullable="false" />
+          <Property Name="ApprovalStatus" Type="int" />
           <Property Name="ApprovedBy" Type="int" />
           <Property Name="Remarks" Type="nvarchar(max)" />
         </EntityType>
@@ -296,11 +298,10 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="StockAllocationID" Type="int" Nullable="false" />
-          <Property Name="StockReceivingDetailID" Type="int" Nullable="false" />
-          <Property Name="ItemID" Type="int" Nullable="false" />
-          <Property Name="Quantity" Type="int" Nullable="false" />
-          <Property Name="ContainerStorageID" Type="int" Nullable="false" />
-          <Property Name="ContainerLocationID" Type="int" Nullable="false" />
+          <Property Name="ReceivingDetailID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="ContainerStorageID" Type="int" />
+          <Property Name="ContainerLocationID" Type="int" />
         </EntityType>
         <EntityType Name="StockAllocations">
           <Key>
@@ -308,25 +309,40 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LocationID" Type="int" Nullable="false" />
-          <Property Name="StockTransferID" Type="int" Nullable="false" />
+          <Property Name="ReceivingID" Type="int" Nullable="false" />
           <Property Name="SADate" Type="datetime" />
           <Property Name="BatchNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Remarks" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="StockTransferDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StockTransferID" Type="int" />
+          <Property Name="RequisitionDetailID" Type="int" />
+          <Property Name="Status" Type="int" />
+          <Property Name="IsReturn" Type="bit" />
         </EntityType>
         <EntityType Name="StockTransfers">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequisitionID" Type="int" Nullable="false" />
           <Property Name="LocationID" Type="int" Nullable="false" />
-          <Property Name="ReceivingID" Type="int" Nullable="false" />
           <Property Name="TransferID" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="STDAte" Type="datetime" Nullable="false" />
+          <Property Name="StartTime" Type="nvarchar" MaxLength="20" />
+          <Property Name="EndTime" Type="nvarchar" MaxLength="20" />
           <Property Name="Driver" Type="nvarchar" MaxLength="150" />
           <Property Name="Helper" Type="nvarchar" MaxLength="150" />
+          <Property Name="TimeReceived" Type="nvarchar" MaxLength="20" />
           <Property Name="ReceivedBy" Type="int" Nullable="false" />
           <Property Name="RequestedBy" Type="int" Nullable="false" />
           <Property Name="ApprovedBy" Type="int" />
           <Property Name="ReleasedBy" Type="int" Nullable="false" />
+          <Property Name="Operator" Type="nvarchar" MaxLength="150" />
           <Property Name="CounterCheckedBy" Type="int" Nullable="false" />
           <Property Name="PostedBy" Type="int" Nullable="false" />
           <Property Name="ApprovedStatus" Type="int" />
@@ -342,11 +358,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary ke
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
           <Property Name="Picture" Type="nvarchar" MaxLength="100" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Table_1">
-          <Property Name="ID" Type="int" />
-        </EntityType>-->
         <EntityType Name="UnitOfMeasurements">
           <Key>
             <PropertyRef Name="ID" />
@@ -461,18 +472,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Receiving__ItemI__73852659">
-          <End Role="Items" Type="Self.Items" Multiplicity="1" />
-          <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ReceivingDetails">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Receiving__Recei__503BEA1C">
           <End Role="ReceivingTypes" Type="Self.ReceivingTypes" Multiplicity="1" />
           <End Role="Receivings" Type="Self.Receivings" Multiplicity="*" />
@@ -482,162 +481,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Principal>
             <Dependent Role="Receivings">
               <PropertyRef Name="ReceivingTypeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Receiving__Recei__540C7B00">
-          <End Role="Receivings" Type="Self.Receivings" Multiplicity="1" />
-          <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Receivings">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ReceivingDetails">
-              <PropertyRef Name="ReceivingID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Receiving__Requi__51300E55">
-          <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="1" />
-          <End Role="Receivings" Type="Self.Receivings" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Requisitions">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Receivings">
-              <PropertyRef Name="RequisitionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Receiving__Requi__55009F39">
-          <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="1" />
-          <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RequisitionDetails">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ReceivingDetails">
-              <PropertyRef Name="RequisitionDetailID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Requisiti__ItemI__3F115E1A">
-          <End Role="Items" Type="Self.Items" Multiplicity="0..1" />
-          <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="RequisitionDetails">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Requisiti__ItemI__72910220">
-          <End Role="Items" Type="Self.Items" Multiplicity="0..1" />
-          <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="RequisitionDetails">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Requisiti__Requi__3E1D39E1">
-          <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="0..1" />
-          <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Requisitions">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="RequisitionDetails">
-              <PropertyRef Name="RequisitionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__StockAllo__Conta__70A8B9AE">
-          <End Role="ContainerStorages" Type="Self.ContainerStorages" Multiplicity="1" />
-          <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ContainerStorages">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="StockAllocationDetails">
-              <PropertyRef Name="ContainerStorageID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__StockAllo__Conta__719CDDE7">
-          <End Role="ContainerLocations" Type="Self.ContainerLocations" Multiplicity="1" />
-          <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ContainerLocations">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="StockAllocationDetails">
-              <PropertyRef Name="ContainerLocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__StockAllo__ItemI__6AEFE058">
-          <End Role="Items" Type="Self.Items" Multiplicity="1" />
-          <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="StockAllocationDetails">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__StockAllo__Locat__16CE6296">
-          <End Role="Locations" Type="Self.Locations" Multiplicity="1" />
-          <End Role="StockAllocations" Type="Self.StockAllocations" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Locations">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="StockAllocations">
-              <PropertyRef Name="LocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__StockAllo__Stock__662B2B3B">
-          <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="1" />
-          <End Role="StockAllocations" Type="Self.StockAllocations" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StockTransfers">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="StockAllocations">
-              <PropertyRef Name="StockTransferID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__StockAllo__Stock__690797E6">
-          <End Role="StockAllocations" Type="Self.StockAllocations" Multiplicity="1" />
-          <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StockAllocations">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="StockAllocationDetails">
-              <PropertyRef Name="StockAllocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__StockAllo__Stock__69FBBC1F">
-          <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="1" />
-          <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ReceivingDetails">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="StockAllocationDetails">
-              <PropertyRef Name="StockReceivingDetailID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -686,18 +529,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Principal>
             <Dependent Role="StockTransfers">
               <PropertyRef Name="PostedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__StockTran__Recei__5D95E53A">
-          <End Role="Receivings" Type="Self.Receivings" Multiplicity="1" />
-          <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Receivings">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="StockTransfers">
-              <PropertyRef Name="ReceivingID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -773,6 +604,44 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ReceivingDetails_ReasonForAdjustments">
+          <End Role="ReasonForAdjustments" Type="Self.ReasonForAdjustments" Multiplicity="0..1" />
+          <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReasonForAdjustments">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReceivingDetails">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReceivingDetails_Receivings">
+          <End Role="Receivings" Type="Self.Receivings" Multiplicity="1" />
+          <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receivings">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReceivingDetails">
+              <PropertyRef Name="ReceivingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReceivingDetails_StockTransferDetails">
+          <End Role="StockTransferDetails" Type="Self.StockTransferDetails" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockTransferDetails">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReceivingDetails">
+              <PropertyRef Name="StockTransferDetailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Receivings_ApprovalStatus">
           <End Role="ApprovalStatus" Type="Self.ApprovalStatus" Multiplicity="0..1" />
           <End Role="Receivings" Type="Self.Receivings" Multiplicity="*" />
@@ -833,8 +702,60 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Receivings_StockTransfers">
+          <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Receivings" Type="Self.Receivings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockTransfers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Receivings">
+              <PropertyRef Name="StockTransferID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequisitionDetails_ApprovalStatus">
+          <End Role="ApprovalStatus" Type="Self.ApprovalStatus" Multiplicity="0..1" />
+          <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApprovalStatus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RequisitionDetails">
+              <PropertyRef Name="AprovalStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequisitionDetails_Items">
+          <End Role="Items" Type="Self.Items" Multiplicity="1" />
+          <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RequisitionDetails">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequisitionDetails_Requisitions">
+          <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Requisitions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RequisitionDetails">
+              <PropertyRef Name="RequisitionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Requisitions_ApprovalStatus">
-          <End Role="ApprovalStatus" Type="Self.ApprovalStatus" Multiplicity="1" />
+          <End Role="ApprovalStatus" Type="Self.ApprovalStatus" Multiplicity="0..1" />
           <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ApprovalStatus">
@@ -857,7 +778,31 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Requisitions_Employees">
+        <Association Name="FK_Requisitions_Employees_ApprovedBy">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requisitions">
+              <PropertyRef Name="ApprovedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requisitions_Employees_RequestedBy">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requisitions">
+              <PropertyRef Name="RequestedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requisitions_Employees_ReservedBy">
           <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
           <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
           <ReferentialConstraint>
@@ -869,7 +814,7 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Requisitions_Employees1">
+        <Association Name="FK_Requisitions_Employees_ValidatedBy">
           <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
           <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
           <ReferentialConstraint>
@@ -878,18 +823,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Principal>
             <Dependent Role="Requisitions">
               <PropertyRef Name="ValidatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Requisitions_Employees2">
-          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
-          <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employees">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Requisitions">
-              <PropertyRef Name="ApprovedBy" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -965,6 +898,134 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_StockAllocationDetails_ContainerLocations">
+          <End Role="ContainerLocations" Type="Self.ContainerLocations" Multiplicity="0..1" />
+          <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContainerLocations">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockAllocationDetails">
+              <PropertyRef Name="ContainerLocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockAllocationDetails_ContainerStorages">
+          <End Role="ContainerStorages" Type="Self.ContainerStorages" Multiplicity="0..1" />
+          <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ContainerStorages">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockAllocationDetails">
+              <PropertyRef Name="ContainerStorageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockAllocationDetails_ReceivingDetails">
+          <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReceivingDetails">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockAllocationDetails">
+              <PropertyRef Name="ReceivingDetailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockAllocationDetails_StockAllocations">
+          <End Role="StockAllocations" Type="Self.StockAllocations" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StockAllocations">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockAllocationDetails">
+              <PropertyRef Name="StockAllocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockAllocations_Locations">
+          <End Role="Locations" Type="Self.Locations" Multiplicity="1" />
+          <End Role="StockAllocations" Type="Self.StockAllocations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockAllocations">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockAllocations_Receivings">
+          <End Role="Receivings" Type="Self.Receivings" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StockAllocations" Type="Self.StockAllocations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Receivings">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockAllocations">
+              <PropertyRef Name="ReceivingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockTransferDetails_ReasonForAdjustments">
+          <End Role="ReasonForAdjustments" Type="Self.ReasonForAdjustments" Multiplicity="0..1" />
+          <End Role="StockTransferDetails" Type="Self.StockTransferDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReasonForAdjustments">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockTransferDetails">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockTransferDetails_RequisitionDetails">
+          <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StockTransferDetails" Type="Self.StockTransferDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequisitionDetails">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockTransferDetails">
+              <PropertyRef Name="RequisitionDetailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockTransfers_ApprovalStatus">
+          <End Role="ApprovalStatus" Type="Self.ApprovalStatus" Multiplicity="0..1" />
+          <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApprovalStatus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockTransfers">
+              <PropertyRef Name="ApprovedStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockTransfers_Requisitions">
+          <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="1" />
+          <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Requisitions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockTransfers">
+              <PropertyRef Name="RequisitionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_SubCategories_Categories">
           <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
           <End Role="SubCategories" Type="Self.SubCategories" Multiplicity="*" />
@@ -1031,6 +1092,7 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           <EntitySet Name="Sizes" EntityType="Self.Sizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StockAllocationDetails" EntityType="Self.StockAllocationDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StockAllocations" EntityType="Self.StockAllocations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StockTransferDetails" EntityType="Self.StockTransferDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StockTransfers" EntityType="Self.StockTransfers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubCategories" EntityType="Self.SubCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UnitOfMeasurements" EntityType="Self.UnitOfMeasurements" Schema="dbo" store:Type="Tables" />
@@ -1061,65 +1123,9 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Receivings" EntitySet="Receivings" />
           </AssociationSet>
-          <AssociationSet Name="FK__Receiving__ItemI__73852659" Association="Self.FK__Receiving__ItemI__73852659">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
-          </AssociationSet>
           <AssociationSet Name="FK__Receiving__Recei__503BEA1C" Association="Self.FK__Receiving__Recei__503BEA1C">
             <End Role="ReceivingTypes" EntitySet="ReceivingTypes" />
             <End Role="Receivings" EntitySet="Receivings" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Receiving__Recei__540C7B00" Association="Self.FK__Receiving__Recei__540C7B00">
-            <End Role="Receivings" EntitySet="Receivings" />
-            <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Receiving__Requi__51300E55" Association="Self.FK__Receiving__Requi__51300E55">
-            <End Role="Requisitions" EntitySet="Requisitions" />
-            <End Role="Receivings" EntitySet="Receivings" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Receiving__Requi__55009F39" Association="Self.FK__Receiving__Requi__55009F39">
-            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
-            <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Requisiti__ItemI__3F115E1A" Association="Self.FK__Requisiti__ItemI__3F115E1A">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Requisiti__ItemI__72910220" Association="Self.FK__Requisiti__ItemI__72910220">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Requisiti__Requi__3E1D39E1" Association="Self.FK__Requisiti__Requi__3E1D39E1">
-            <End Role="Requisitions" EntitySet="Requisitions" />
-            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__Conta__70A8B9AE" Association="Self.FK__StockAllo__Conta__70A8B9AE">
-            <End Role="ContainerStorages" EntitySet="ContainerStorages" />
-            <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__Conta__719CDDE7" Association="Self.FK__StockAllo__Conta__719CDDE7">
-            <End Role="ContainerLocations" EntitySet="ContainerLocations" />
-            <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__ItemI__6AEFE058" Association="Self.FK__StockAllo__ItemI__6AEFE058">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__Locat__16CE6296" Association="Self.FK__StockAllo__Locat__16CE6296">
-            <End Role="Locations" EntitySet="Locations" />
-            <End Role="StockAllocations" EntitySet="StockAllocations" />
-          </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__Stock__662B2B3B" Association="Self.FK__StockAllo__Stock__662B2B3B">
-            <End Role="StockTransfers" EntitySet="StockTransfers" />
-            <End Role="StockAllocations" EntitySet="StockAllocations" />
-          </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__Stock__690797E6" Association="Self.FK__StockAllo__Stock__690797E6">
-            <End Role="StockAllocations" EntitySet="StockAllocations" />
-            <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__Stock__69FBBC1F" Association="Self.FK__StockAllo__Stock__69FBBC1F">
-            <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
-            <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
           </AssociationSet>
           <AssociationSet Name="FK__StockTran__Appro__607251E5" Association="Self.FK__StockTran__Appro__607251E5">
             <End Role="Employees" EntitySet="Employees" />
@@ -1135,10 +1141,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           </AssociationSet>
           <AssociationSet Name="FK__StockTran__Poste__634EBE90" Association="Self.FK__StockTran__Poste__634EBE90">
             <End Role="Employees" EntitySet="Employees" />
-            <End Role="StockTransfers" EntitySet="StockTransfers" />
-          </AssociationSet>
-          <AssociationSet Name="FK__StockTran__Recei__5D95E53A" Association="Self.FK__StockTran__Recei__5D95E53A">
-            <End Role="Receivings" EntitySet="Receivings" />
             <End Role="StockTransfers" EntitySet="StockTransfers" />
           </AssociationSet>
           <AssociationSet Name="FK__StockTran__Recei__5E8A0973" Association="Self.FK__StockTran__Recei__5E8A0973">
@@ -1165,6 +1167,18 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <End Role="LocationTypes" EntitySet="LocationTypes" />
             <End Role="Locations" EntitySet="Locations" />
           </AssociationSet>
+          <AssociationSet Name="FK_ReceivingDetails_ReasonForAdjustments" Association="Self.FK_ReceivingDetails_ReasonForAdjustments">
+            <End Role="ReasonForAdjustments" EntitySet="ReasonForAdjustments" />
+            <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReceivingDetails_Receivings" Association="Self.FK_ReceivingDetails_Receivings">
+            <End Role="Receivings" EntitySet="Receivings" />
+            <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReceivingDetails_StockTransferDetails" Association="Self.FK_ReceivingDetails_StockTransferDetails">
+            <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
+            <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_Receivings_ApprovalStatus" Association="Self.FK_Receivings_ApprovalStatus">
             <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
             <End Role="Receivings" EntitySet="Receivings" />
@@ -1185,6 +1199,22 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <End Role="Locations" EntitySet="Locations" />
             <End Role="Receivings" EntitySet="Receivings" />
           </AssociationSet>
+          <AssociationSet Name="FK_Receivings_StockTransfers" Association="Self.FK_Receivings_StockTransfers">
+            <End Role="StockTransfers" EntitySet="StockTransfers" />
+            <End Role="Receivings" EntitySet="Receivings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequisitionDetails_ApprovalStatus" Association="Self.FK_RequisitionDetails_ApprovalStatus">
+            <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequisitionDetails_Items" Association="Self.FK_RequisitionDetails_Items">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequisitionDetails_Requisitions" Association="Self.FK_RequisitionDetails_Requisitions">
+            <End Role="Requisitions" EntitySet="Requisitions" />
+            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_Requisitions_ApprovalStatus" Association="Self.FK_Requisitions_ApprovalStatus">
             <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
             <End Role="Requisitions" EntitySet="Requisitions" />
@@ -1193,15 +1223,19 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <End Role="DropShipTypes" EntitySet="DropShipTypes" />
             <End Role="Requisitions" EntitySet="Requisitions" />
           </AssociationSet>
-          <AssociationSet Name="FK_Requisitions_Employees" Association="Self.FK_Requisitions_Employees">
+          <AssociationSet Name="FK_Requisitions_Employees_ApprovedBy" Association="Self.FK_Requisitions_Employees_ApprovedBy">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Requisitions" EntitySet="Requisitions" />
           </AssociationSet>
-          <AssociationSet Name="FK_Requisitions_Employees1" Association="Self.FK_Requisitions_Employees1">
+          <AssociationSet Name="FK_Requisitions_Employees_RequestedBy" Association="Self.FK_Requisitions_Employees_RequestedBy">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Requisitions" EntitySet="Requisitions" />
           </AssociationSet>
-          <AssociationSet Name="FK_Requisitions_Employees2" Association="Self.FK_Requisitions_Employees2">
+          <AssociationSet Name="FK_Requisitions_Employees_ReservedBy" Association="Self.FK_Requisitions_Employees_ReservedBy">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Requisitions" EntitySet="Requisitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requisitions_Employees_ValidatedBy" Association="Self.FK_Requisitions_Employees_ValidatedBy">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Requisitions" EntitySet="Requisitions" />
           </AssociationSet>
@@ -1229,6 +1263,46 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <End Role="Vendors" EntitySet="Vendors" />
             <End Role="Requisitions" EntitySet="Requisitions" />
           </AssociationSet>
+          <AssociationSet Name="FK_StockAllocationDetails_ContainerLocations" Association="Self.FK_StockAllocationDetails_ContainerLocations">
+            <End Role="ContainerLocations" EntitySet="ContainerLocations" />
+            <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockAllocationDetails_ContainerStorages" Association="Self.FK_StockAllocationDetails_ContainerStorages">
+            <End Role="ContainerStorages" EntitySet="ContainerStorages" />
+            <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockAllocationDetails_ReceivingDetails" Association="Self.FK_StockAllocationDetails_ReceivingDetails">
+            <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
+            <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockAllocationDetails_StockAllocations" Association="Self.FK_StockAllocationDetails_StockAllocations">
+            <End Role="StockAllocations" EntitySet="StockAllocations" />
+            <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockAllocations_Locations" Association="Self.FK_StockAllocations_Locations">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="StockAllocations" EntitySet="StockAllocations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockAllocations_Receivings" Association="Self.FK_StockAllocations_Receivings">
+            <End Role="Receivings" EntitySet="Receivings" />
+            <End Role="StockAllocations" EntitySet="StockAllocations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockTransferDetails_ReasonForAdjustments" Association="Self.FK_StockTransferDetails_ReasonForAdjustments">
+            <End Role="ReasonForAdjustments" EntitySet="ReasonForAdjustments" />
+            <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockTransferDetails_RequisitionDetails" Association="Self.FK_StockTransferDetails_RequisitionDetails">
+            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+            <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockTransfers_ApprovalStatus" Association="Self.FK_StockTransfers_ApprovalStatus">
+            <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+            <End Role="StockTransfers" EntitySet="StockTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockTransfers_Requisitions" Association="Self.FK_StockTransfers_Requisitions">
+            <End Role="Requisitions" EntitySet="Requisitions" />
+            <End Role="StockTransfers" EntitySet="StockTransfers" />
+          </AssociationSet>
           <AssociationSet Name="FK_SubCategories_Categories" Association="Self.FK_SubCategories_Categories">
             <End Role="Categories" EntitySet="Categories" />
             <End Role="SubCategories" EntitySet="SubCategories" />
@@ -1254,7 +1328,9 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Receivings" Relationship="Self.FK_Receivings_ApprovalStatus" FromRole="ApprovalStatus" ToRole="Receivings" />
+          <NavigationProperty Name="RequisitionDetails" Relationship="Self.FK_RequisitionDetails_ApprovalStatus" FromRole="ApprovalStatus" ToRole="RequisitionDetails" />
           <NavigationProperty Name="Requisitions" Relationship="Self.FK_Requisitions_ApprovalStatus" FromRole="ApprovalStatus" ToRole="Requisitions" />
+          <NavigationProperty Name="StockTransfers" Relationship="Self.FK_StockTransfers_ApprovalStatus" FromRole="ApprovalStatus" ToRole="StockTransfers" />
         </EntityType>
         <EntityType Name="Brand">
           <Key>
@@ -1298,7 +1374,7 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK__StockAllo__Conta__719CDDE7" FromRole="ContainerLocations" ToRole="StockAllocationDetails" />
+          <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK_StockAllocationDetails_ContainerLocations" FromRole="ContainerLocations" ToRole="StockAllocationDetails" />
         </EntityType>
         <EntityType Name="ContainerStorage">
           <Key>
@@ -1307,7 +1383,7 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK__StockAllo__Conta__70A8B9AE" FromRole="ContainerStorages" ToRole="StockAllocationDetails" />
+          <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK_StockAllocationDetails_ContainerStorages" FromRole="ContainerStorages" ToRole="StockAllocationDetails" />
         </EntityType>
         <EntityType Name="Downpayment">
           <Key>
@@ -1343,9 +1419,10 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           <NavigationProperty Name="Receivings1" Relationship="Self.FK_Receivings_Employees" FromRole="Employees" ToRole="Receivings" />
           <NavigationProperty Name="Receivings2" Relationship="Self.FK_Receivings_Employees1" FromRole="Employees" ToRole="Receivings" />
           <NavigationProperty Name="Receivings3" Relationship="Self.FK_Receivings_Employees2" FromRole="Employees" ToRole="Receivings" />
-          <NavigationProperty Name="Requisitions" Relationship="Self.FK_Requisitions_Employees" FromRole="Employees" ToRole="Requisitions" />
-          <NavigationProperty Name="Requisitions1" Relationship="Self.FK_Requisitions_Employees1" FromRole="Employees" ToRole="Requisitions" />
-          <NavigationProperty Name="Requisitions2" Relationship="Self.FK_Requisitions_Employees2" FromRole="Employees" ToRole="Requisitions" />
+          <NavigationProperty Name="Requisitions" Relationship="Self.FK_Requisitions_Employees_ApprovedBy" FromRole="Employees" ToRole="Requisitions" />
+          <NavigationProperty Name="Requisitions1" Relationship="Self.FK_Requisitions_Employees_RequestedBy" FromRole="Employees" ToRole="Requisitions" />
+          <NavigationProperty Name="Requisitions2" Relationship="Self.FK_Requisitions_Employees_ReservedBy" FromRole="Employees" ToRole="Requisitions" />
+          <NavigationProperty Name="Requisitions3" Relationship="Self.FK_Requisitions_Employees_ValidatedBy" FromRole="Employees" ToRole="Requisitions" />
           <NavigationProperty Name="Users" Relationship="Self.FK_Users_Employees" FromRole="Employees" ToRole="Users" />
         </EntityType>
         <EntityType Name="Item">
@@ -1370,11 +1447,8 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           <NavigationProperty Name="Color" Relationship="Self.FK__Items__ColorID__2A164134" FromRole="Items" ToRole="Colors" />
           <NavigationProperty Name="Size" Relationship="Self.FK__Items__SizeID__2B0A656D" FromRole="Items" ToRole="Sizes" />
           <NavigationProperty Name="SubCategory" Relationship="Self.FK__Items__SubCatego__308E3499" FromRole="Items" ToRole="SubCategories" />
-          <NavigationProperty Name="ReceivingDetails" Relationship="Self.FK__Receiving__ItemI__73852659" FromRole="Items" ToRole="ReceivingDetails" />
-          <NavigationProperty Name="RequisitionDetails" Relationship="Self.FK__Requisiti__ItemI__3F115E1A" FromRole="Items" ToRole="RequisitionDetails" />
-          <NavigationProperty Name="RequisitionDetails1" Relationship="Self.FK__Requisiti__ItemI__72910220" FromRole="Items" ToRole="RequisitionDetails" />
-          <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK__StockAllo__ItemI__6AEFE058" FromRole="Items" ToRole="StockAllocationDetails" />
           <NavigationProperty Name="UnitOfMeasurement" Relationship="Self.FK_Items_UnitOfMeasurements" FromRole="Items" ToRole="UnitOfMeasurements" />
+          <NavigationProperty Name="RequisitionDetails" Relationship="Self.FK_RequisitionDetails_Items" FromRole="Items" ToRole="RequisitionDetails" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -1384,13 +1458,13 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="LocationTypeID" Type="Int32" />
-          <NavigationProperty Name="StockAllocations" Relationship="Self.FK__StockAllo__Locat__16CE6296" FromRole="Locations" ToRole="StockAllocations" />
           <NavigationProperty Name="StockTransfers" Relationship="Self.FK__StockTran__Locat__1209AD79" FromRole="Locations" ToRole="StockTransfers" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Users__LocationI__3587F3E0" FromRole="Locations" ToRole="Users" />
           <NavigationProperty Name="LocationType" Relationship="Self.FK_Locations_LocationType" FromRole="Locations" ToRole="LocationTypes" />
           <NavigationProperty Name="Receivings" Relationship="Self.FK_Receivings_Locations" FromRole="Locations" ToRole="Receivings" />
           <NavigationProperty Name="Requisitions" Relationship="Self.FK_Requisitions_Locations" FromRole="Locations" ToRole="Requisitions" />
           <NavigationProperty Name="Requisitions1" Relationship="Self.FK_Requisitions_Locations1" FromRole="Locations" ToRole="Requisitions" />
+          <NavigationProperty Name="StockAllocations" Relationship="Self.FK_StockAllocations_Locations" FromRole="Locations" ToRole="StockAllocations" />
         </EntityType>
         <EntityType Name="LocationType">
           <Key>
@@ -1413,6 +1487,8 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Reason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ReceivingDetails" Relationship="Self.FK_ReceivingDetails_ReasonForAdjustments" FromRole="ReasonForAdjustments" ToRole="ReceivingDetails" />
+          <NavigationProperty Name="StockTransferDetails" Relationship="Self.FK_StockTransferDetails_ReasonForAdjustments" FromRole="ReasonForAdjustments" ToRole="StockTransferDetails" />
         </EntityType>
         <EntityType Name="ReceivingDetail">
           <Key>
@@ -1420,14 +1496,13 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ReceivingID" Type="Int32" Nullable="false" />
-          <Property Name="RequisitionDetailID" Type="Int32" Nullable="false" />
-          <Property Name="ItemID" Type="Int32" Nullable="false" />
-          <Property Name="QuantityRequested" Type="Int32" Nullable="false" />
-          <Property Name="QuantityReceived" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Item" Relationship="Self.FK__Receiving__ItemI__73852659" FromRole="ReceivingDetails" ToRole="Items" />
-          <NavigationProperty Name="Receiving" Relationship="Self.FK__Receiving__Recei__540C7B00" FromRole="ReceivingDetails" ToRole="Receivings" />
-          <NavigationProperty Name="RequisitionDetail" Relationship="Self.FK__Receiving__Requi__55009F39" FromRole="ReceivingDetails" ToRole="RequisitionDetails" />
-          <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK__StockAllo__Stock__69FBBC1F" FromRole="ReceivingDetails" ToRole="StockAllocationDetails" />
+          <Property Name="StockTransferDetailID" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="IsReturn" Type="Boolean" />
+          <NavigationProperty Name="ReasonForAdjustment" Relationship="Self.FK_ReceivingDetails_ReasonForAdjustments" FromRole="ReceivingDetails" ToRole="ReasonForAdjustments" />
+          <NavigationProperty Name="Receiving" Relationship="Self.FK_ReceivingDetails_Receivings" FromRole="ReceivingDetails" ToRole="Receivings" />
+          <NavigationProperty Name="StockTransferDetail" Relationship="Self.FK_ReceivingDetails_StockTransferDetails" FromRole="ReceivingDetails" ToRole="StockTransferDetails" />
+          <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK_StockAllocationDetails_ReceivingDetails" FromRole="ReceivingDetails" ToRole="StockAllocationDetails" />
         </EntityType>
         <EntityType Name="Receiving">
           <Key>
@@ -1437,13 +1512,14 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           <Property Name="LocationID" Type="Int32" Nullable="false" />
           <Property Name="ReceivingTypeID" Type="Int32" Nullable="false" />
           <Property Name="ReceivingID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="RequisitionID" Type="Int32" Nullable="false" />
+          <Property Name="StockTransferID" Type="Int32" Nullable="false" />
           <Property Name="ReceivingDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EncodedBy" Type="Int32" />
           <Property Name="CheckedBy" Type="Int32" />
           <Property Name="ReceivedBy" Type="Int32" Nullable="false" />
           <Property Name="PONumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DRNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="VesselNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="VoyageNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="VanNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
@@ -1456,10 +1532,10 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           <NavigationProperty Name="Employee2" Relationship="Self.FK_Receivings_Employees1" FromRole="Receivings" ToRole="Employees" />
           <NavigationProperty Name="Employee3" Relationship="Self.FK_Receivings_Employees2" FromRole="Receivings" ToRole="Employees" />
           <NavigationProperty Name="Location" Relationship="Self.FK_Receivings_Locations" FromRole="Receivings" ToRole="Locations" />
-          <NavigationProperty Name="ReceivingDetails" Relationship="Self.FK__Receiving__Recei__540C7B00" FromRole="Receivings" ToRole="ReceivingDetails" />
+          <NavigationProperty Name="ReceivingDetails" Relationship="Self.FK_ReceivingDetails_Receivings" FromRole="Receivings" ToRole="ReceivingDetails" />
           <NavigationProperty Name="ReceivingType" Relationship="Self.FK__Receiving__Recei__503BEA1C" FromRole="Receivings" ToRole="ReceivingTypes" />
-          <NavigationProperty Name="Requisition" Relationship="Self.FK__Receiving__Requi__51300E55" FromRole="Receivings" ToRole="Requisitions" />
-          <NavigationProperty Name="StockTransfers" Relationship="Self.FK__StockTran__Recei__5D95E53A" FromRole="Receivings" ToRole="StockTransfers" />
+          <NavigationProperty Name="StockTransfer" Relationship="Self.FK_Receivings_StockTransfers" FromRole="Receivings" ToRole="StockTransfers" />
+          <NavigationProperty Name="StockAllocations" Relationship="Self.FK_StockAllocations_Receivings" FromRole="Receivings" ToRole="StockAllocations" />
         </EntityType>
         <EntityType Name="ReceivingType">
           <Key>
@@ -1474,13 +1550,15 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RequisitionID" Type="Int32" />
-          <Property Name="ItemID" Type="Int32" />
-          <Property Name="Quantity" Type="Int32" />
-          <NavigationProperty Name="Item" Relationship="Self.FK__Requisiti__ItemI__3F115E1A" FromRole="RequisitionDetails" ToRole="Items" />
-          <NavigationProperty Name="Item1" Relationship="Self.FK__Requisiti__ItemI__72910220" FromRole="RequisitionDetails" ToRole="Items" />
-          <NavigationProperty Name="ReceivingDetails" Relationship="Self.FK__Receiving__Requi__55009F39" FromRole="RequisitionDetails" ToRole="ReceivingDetails" />
-          <NavigationProperty Name="Requisition" Relationship="Self.FK__Requisiti__Requi__3E1D39E1" FromRole="RequisitionDetails" ToRole="Requisitions" />
+          <Property Name="RequisitionID" Type="Int32" Nullable="false" />
+          <Property Name="ItemID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="AprovalStatusID" Type="Int32" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ApprovalStatu" Relationship="Self.FK_RequisitionDetails_ApprovalStatus" FromRole="RequisitionDetails" ToRole="ApprovalStatus" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_RequisitionDetails_Items" FromRole="RequisitionDetails" ToRole="Items" />
+          <NavigationProperty Name="Requisition" Relationship="Self.FK_RequisitionDetails_Requisitions" FromRole="RequisitionDetails" ToRole="Requisitions" />
+          <NavigationProperty Name="StockTransferDetails" Relationship="Self.FK_StockTransferDetails_RequisitionDetails" FromRole="RequisitionDetails" ToRole="StockTransferDetails" />
         </EntityType>
         <EntityType Name="Requisition">
           <Key>
@@ -1510,22 +1588,23 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           <Property Name="Driver" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="PlateNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Others" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="ApprovalStatus" Type="Int32" Nullable="false" />
+          <Property Name="ApprovalStatus" Type="Int32" />
           <Property Name="ApprovedBy" Type="Int32" />
           <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ApprovalStatu" Relationship="Self.FK_Requisitions_ApprovalStatus" FromRole="Requisitions" ToRole="ApprovalStatus" />
           <NavigationProperty Name="DropShipType" Relationship="Self.FK_Requisitions_DropShipTypes" FromRole="Requisitions" ToRole="DropShipTypes" />
-          <NavigationProperty Name="Employee" Relationship="Self.FK_Requisitions_Employees" FromRole="Requisitions" ToRole="Employees" />
-          <NavigationProperty Name="Employee1" Relationship="Self.FK_Requisitions_Employees1" FromRole="Requisitions" ToRole="Employees" />
-          <NavigationProperty Name="Employee2" Relationship="Self.FK_Requisitions_Employees2" FromRole="Requisitions" ToRole="Employees" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_Requisitions_Employees_ApprovedBy" FromRole="Requisitions" ToRole="Employees" />
+          <NavigationProperty Name="Employee1" Relationship="Self.FK_Requisitions_Employees_RequestedBy" FromRole="Requisitions" ToRole="Employees" />
+          <NavigationProperty Name="Employee2" Relationship="Self.FK_Requisitions_Employees_ReservedBy" FromRole="Requisitions" ToRole="Employees" />
+          <NavigationProperty Name="Employee3" Relationship="Self.FK_Requisitions_Employees_ValidatedBy" FromRole="Requisitions" ToRole="Employees" />
           <NavigationProperty Name="Location" Relationship="Self.FK_Requisitions_Locations" FromRole="Requisitions" ToRole="Locations" />
           <NavigationProperty Name="Location1" Relationship="Self.FK_Requisitions_Locations1" FromRole="Requisitions" ToRole="Locations" />
-          <NavigationProperty Name="Receivings" Relationship="Self.FK__Receiving__Requi__51300E55" FromRole="Requisitions" ToRole="Receivings" />
-          <NavigationProperty Name="RequisitionDetails" Relationship="Self.FK__Requisiti__Requi__3E1D39E1" FromRole="Requisitions" ToRole="RequisitionDetails" />
+          <NavigationProperty Name="RequisitionDetails" Relationship="Self.FK_RequisitionDetails_Requisitions" FromRole="Requisitions" ToRole="RequisitionDetails" />
           <NavigationProperty Name="RequisitionType" Relationship="Self.FK_Requisitions_RequisitionTypes" FromRole="Requisitions" ToRole="RequisitionTypes" />
           <NavigationProperty Name="ReservationType" Relationship="Self.FK_Requisitions_ReservationTypes" FromRole="Requisitions" ToRole="ReservationTypes" />
           <NavigationProperty Name="ShipmentType" Relationship="Self.FK_Requisitions_ShipmentTypes" FromRole="Requisitions" ToRole="ShipmentTypes" />
           <NavigationProperty Name="Vendor" Relationship="Self.FK_Requisitions_Vendors" FromRole="Requisitions" ToRole="Vendors" />
+          <NavigationProperty Name="StockTransfers" Relationship="Self.FK_StockTransfers_Requisitions" FromRole="Requisitions" ToRole="StockTransfers" />
         </EntityType>
         <EntityType Name="RequisitionType">
           <Key>
@@ -1604,16 +1683,14 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StockAllocationID" Type="Int32" Nullable="false" />
-          <Property Name="StockReceivingDetailID" Type="Int32" Nullable="false" />
-          <Property Name="ItemID" Type="Int32" Nullable="false" />
-          <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="ContainerStorageID" Type="Int32" Nullable="false" />
-          <Property Name="ContainerLocationID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ContainerLocation" Relationship="Self.FK__StockAllo__Conta__719CDDE7" FromRole="StockAllocationDetails" ToRole="ContainerLocations" />
-          <NavigationProperty Name="ContainerStorage" Relationship="Self.FK__StockAllo__Conta__70A8B9AE" FromRole="StockAllocationDetails" ToRole="ContainerStorages" />
-          <NavigationProperty Name="Item" Relationship="Self.FK__StockAllo__ItemI__6AEFE058" FromRole="StockAllocationDetails" ToRole="Items" />
-          <NavigationProperty Name="ReceivingDetail" Relationship="Self.FK__StockAllo__Stock__69FBBC1F" FromRole="StockAllocationDetails" ToRole="ReceivingDetails" />
-          <NavigationProperty Name="StockAllocation" Relationship="Self.FK__StockAllo__Stock__690797E6" FromRole="StockAllocationDetails" ToRole="StockAllocations" />
+          <Property Name="ReceivingDetailID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="ContainerStorageID" Type="Int32" />
+          <Property Name="ContainerLocationID" Type="Int32" />
+          <NavigationProperty Name="ContainerLocation" Relationship="Self.FK_StockAllocationDetails_ContainerLocations" FromRole="StockAllocationDetails" ToRole="ContainerLocations" />
+          <NavigationProperty Name="ContainerStorage" Relationship="Self.FK_StockAllocationDetails_ContainerStorages" FromRole="StockAllocationDetails" ToRole="ContainerStorages" />
+          <NavigationProperty Name="ReceivingDetail" Relationship="Self.FK_StockAllocationDetails_ReceivingDetails" FromRole="StockAllocationDetails" ToRole="ReceivingDetails" />
+          <NavigationProperty Name="StockAllocation" Relationship="Self.FK_StockAllocationDetails_StockAllocations" FromRole="StockAllocationDetails" ToRole="StockAllocations" />
         </EntityType>
         <EntityType Name="StockAllocation">
           <Key>
@@ -1621,32 +1698,51 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
-          <Property Name="StockTransferID" Type="Int32" Nullable="false" />
+          <Property Name="ReceivingID" Type="Int32" Nullable="false" />
           <Property Name="SADate" Type="DateTime" Precision="3" />
           <Property Name="BatchNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Location" Relationship="Self.FK__StockAllo__Locat__16CE6296" FromRole="StockAllocations" ToRole="Locations" />
-          <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK__StockAllo__Stock__690797E6" FromRole="StockAllocations" ToRole="StockAllocationDetails" />
-          <NavigationProperty Name="StockTransfer" Relationship="Self.FK__StockAllo__Stock__662B2B3B" FromRole="StockAllocations" ToRole="StockTransfers" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Location" Relationship="Self.FK_StockAllocations_Locations" FromRole="StockAllocations" ToRole="Locations" />
+          <NavigationProperty Name="Receiving" Relationship="Self.FK_StockAllocations_Receivings" FromRole="StockAllocations" ToRole="Receivings" />
+          <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK_StockAllocationDetails_StockAllocations" FromRole="StockAllocations" ToRole="StockAllocationDetails" />
+        </EntityType>
+        <EntityType Name="StockTransferDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StockTransferID" Type="Int32" />
+          <Property Name="RequisitionDetailID" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="IsReturn" Type="Boolean" />
+          <NavigationProperty Name="ReasonForAdjustment" Relationship="Self.FK_StockTransferDetails_ReasonForAdjustments" FromRole="StockTransferDetails" ToRole="ReasonForAdjustments" />
+          <NavigationProperty Name="ReceivingDetails" Relationship="Self.FK_ReceivingDetails_StockTransferDetails" FromRole="StockTransferDetails" ToRole="ReceivingDetails" />
+          <NavigationProperty Name="RequisitionDetail" Relationship="Self.FK_StockTransferDetails_RequisitionDetails" FromRole="StockTransferDetails" ToRole="RequisitionDetails" />
         </EntityType>
         <EntityType Name="StockTransfer">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequisitionID" Type="Int32" Nullable="false" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
-          <Property Name="ReceivingID" Type="Int32" Nullable="false" />
           <Property Name="TransferID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="STDAte" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StartTime" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="EndTime" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Driver" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="Helper" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="TimeReceived" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="ReceivedBy" Type="Int32" Nullable="false" />
           <Property Name="RequestedBy" Type="Int32" Nullable="false" />
           <Property Name="ApprovedBy" Type="Int32" />
           <Property Name="ReleasedBy" Type="Int32" Nullable="false" />
+          <Property Name="Operator" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <Property Name="CounterCheckedBy" Type="Int32" Nullable="false" />
           <Property Name="PostedBy" Type="Int32" Nullable="false" />
           <Property Name="ApprovedStatus" Type="Int32" />
           <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ApprovalStatu" Relationship="Self.FK_StockTransfers_ApprovalStatus" FromRole="StockTransfers" ToRole="ApprovalStatus" />
           <NavigationProperty Name="Employee" Relationship="Self.FK__StockTran__Appro__607251E5" FromRole="StockTransfers" ToRole="Employees" />
           <NavigationProperty Name="Employee1" Relationship="Self.FK__StockTran__Count__625A9A57" FromRole="StockTransfers" ToRole="Employees" />
           <NavigationProperty Name="Employee2" Relationship="Self.FK__StockTran__Poste__634EBE90" FromRole="StockTransfers" ToRole="Employees" />
@@ -1654,8 +1750,8 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           <NavigationProperty Name="Employee4" Relationship="Self.FK__StockTran__Relea__6166761E" FromRole="StockTransfers" ToRole="Employees" />
           <NavigationProperty Name="Employee5" Relationship="Self.FK__StockTran__Reque__5F7E2DAC" FromRole="StockTransfers" ToRole="Employees" />
           <NavigationProperty Name="Location" Relationship="Self.FK__StockTran__Locat__1209AD79" FromRole="StockTransfers" ToRole="Locations" />
-          <NavigationProperty Name="Receiving" Relationship="Self.FK__StockTran__Recei__5D95E53A" FromRole="StockTransfers" ToRole="Receivings" />
-          <NavigationProperty Name="StockAllocations" Relationship="Self.FK__StockAllo__Stock__662B2B3B" FromRole="StockTransfers" ToRole="StockAllocations" />
+          <NavigationProperty Name="Receivings" Relationship="Self.FK_Receivings_StockTransfers" FromRole="StockTransfers" ToRole="Receivings" />
+          <NavigationProperty Name="Requisition" Relationship="Self.FK_StockTransfers_Requisitions" FromRole="StockTransfers" ToRole="Requisitions" />
         </EntityType>
         <EntityType Name="SubCategory">
           <Key>
@@ -1729,8 +1825,20 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_RequisitionDetails_ApprovalStatus">
+          <End Role="ApprovalStatus" Type="Self.ApprovalStatu" Multiplicity="0..1" />
+          <End Role="RequisitionDetails" Type="Self.RequisitionDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApprovalStatus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="RequisitionDetails">
+              <PropertyRef Name="AprovalStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Requisitions_ApprovalStatus">
-          <End Role="ApprovalStatus" Type="Self.ApprovalStatu" Multiplicity="1" />
+          <End Role="ApprovalStatus" Type="Self.ApprovalStatu" Multiplicity="0..1" />
           <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ApprovalStatus">
@@ -1738,6 +1846,18 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Principal>
             <Dependent Role="Requisitions">
               <PropertyRef Name="ApprovalStatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockTransfers_ApprovalStatus">
+          <End Role="ApprovalStatus" Type="Self.ApprovalStatu" Multiplicity="0..1" />
+          <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ApprovalStatus">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockTransfers">
+              <PropertyRef Name="ApprovedStatus" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1789,8 +1909,8 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StockAllo__Conta__719CDDE7">
-          <End Role="ContainerLocations" Type="Self.ContainerLocation" Multiplicity="1" />
+        <Association Name="FK_StockAllocationDetails_ContainerLocations">
+          <End Role="ContainerLocations" Type="Self.ContainerLocation" Multiplicity="0..1" />
           <End Role="StockAllocationDetails" Type="Self.StockAllocationDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContainerLocations">
@@ -1801,8 +1921,8 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StockAllo__Conta__70A8B9AE">
-          <End Role="ContainerStorages" Type="Self.ContainerStorage" Multiplicity="1" />
+        <Association Name="FK_StockAllocationDetails_ContainerStorages">
+          <End Role="ContainerStorages" Type="Self.ContainerStorage" Multiplicity="0..1" />
           <End Role="StockAllocationDetails" Type="Self.StockAllocationDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ContainerStorages">
@@ -1945,7 +2065,31 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Requisitions_Employees">
+        <Association Name="FK_Requisitions_Employees_ApprovedBy">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requisitions">
+              <PropertyRef Name="ApprovedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requisitions_Employees_RequestedBy">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Requisitions">
+              <PropertyRef Name="RequestedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Requisitions_Employees_ReservedBy">
           <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
           <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1957,7 +2101,7 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Requisitions_Employees1">
+        <Association Name="FK_Requisitions_Employees_ValidatedBy">
           <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
           <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1966,18 +2110,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Principal>
             <Dependent Role="Requisitions">
               <PropertyRef Name="ValidatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Requisitions_Employees2">
-          <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
-          <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Employees">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Requisitions">
-              <PropertyRef Name="ApprovedBy" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2017,54 +2149,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Receiving__ItemI__73852659">
-          <End Role="Items" Type="Self.Item" Multiplicity="1" />
-          <End Role="ReceivingDetails" Type="Self.ReceivingDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ReceivingDetails">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Requisiti__ItemI__3F115E1A">
-          <End Role="Items" Type="Self.Item" Multiplicity="0..1" />
-          <End Role="RequisitionDetails" Type="Self.RequisitionDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="RequisitionDetails">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Requisiti__ItemI__72910220">
-          <End Role="Items" Type="Self.Item" Multiplicity="0..1" />
-          <End Role="RequisitionDetails" Type="Self.RequisitionDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="RequisitionDetails">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__StockAllo__ItemI__6AEFE058">
-          <End Role="Items" Type="Self.Item" Multiplicity="1" />
-          <End Role="StockAllocationDetails" Type="Self.StockAllocationDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Items">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="StockAllocationDetails">
-              <PropertyRef Name="ItemID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Items_UnitOfMeasurements">
           <End Role="UnitOfMeasurements" Type="Self.UnitOfMeasurement" Multiplicity="0..1" />
           <End Role="Items" Type="Self.Item" Multiplicity="*" />
@@ -2077,15 +2161,15 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StockAllo__Locat__16CE6296">
-          <End Role="Locations" Type="Self.Location" Multiplicity="1" />
-          <End Role="StockAllocations" Type="Self.StockAllocation" Multiplicity="*" />
+        <Association Name="FK_RequisitionDetails_Items">
+          <End Role="Items" Type="Self.Item" Multiplicity="1" />
+          <End Role="RequisitionDetails" Type="Self.RequisitionDetail" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Locations">
+            <Principal Role="Items">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="StockAllocations">
-              <PropertyRef Name="LocationID" />
+            <Dependent Role="RequisitionDetails">
+              <PropertyRef Name="ItemID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2161,7 +2245,43 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Receiving__Recei__540C7B00">
+        <Association Name="FK_StockAllocations_Locations">
+          <End Role="Locations" Type="Self.Location" Multiplicity="1" />
+          <End Role="StockAllocations" Type="Self.StockAllocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Locations">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockAllocations">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReceivingDetails_ReasonForAdjustments">
+          <End Role="ReasonForAdjustments" Type="Self.ReasonForAdjustment" Multiplicity="0..1" />
+          <End Role="ReceivingDetails" Type="Self.ReceivingDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReasonForAdjustments">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ReceivingDetails">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockTransferDetails_ReasonForAdjustments">
+          <End Role="ReasonForAdjustments" Type="Self.ReasonForAdjustment" Multiplicity="0..1" />
+          <End Role="StockTransferDetails" Type="Self.StockTransferDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ReasonForAdjustments">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockTransferDetails">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ReceivingDetails_Receivings">
           <End Role="Receivings" Type="Self.Receiving" Multiplicity="1" />
           <End Role="ReceivingDetails" Type="Self.ReceivingDetail" Multiplicity="*" />
           <ReferentialConstraint>
@@ -2173,27 +2293,31 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Receiving__Requi__55009F39">
-          <End Role="RequisitionDetails" Type="Self.RequisitionDetail" Multiplicity="1" />
+        <Association Name="FK_ReceivingDetails_StockTransferDetails">
+          <End Role="StockTransferDetails" Type="Self.StockTransferDetail" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ReceivingDetails" Type="Self.ReceivingDetail" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="RequisitionDetails">
+            <Principal Role="StockTransferDetails">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="ReceivingDetails">
-              <PropertyRef Name="RequisitionDetailID" />
+              <PropertyRef Name="StockTransferDetailID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StockAllo__Stock__69FBBC1F">
-          <End Role="ReceivingDetails" Type="Self.ReceivingDetail" Multiplicity="1" />
+        <Association Name="FK_StockAllocationDetails_ReceivingDetails">
+          <End Role="ReceivingDetails" Type="Self.ReceivingDetail" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="StockAllocationDetails" Type="Self.StockAllocationDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ReceivingDetails">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="StockAllocationDetails">
-              <PropertyRef Name="StockReceivingDetailID" />
+              <PropertyRef Name="ReceivingDetailID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2209,32 +2333,38 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Receiving__Requi__51300E55">
-          <End Role="Requisitions" Type="Self.Requisition" Multiplicity="1" />
+        <Association Name="FK_Receivings_StockTransfers">
+          <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Receivings" Type="Self.Receiving" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Requisitions">
+            <Principal Role="StockTransfers">
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Receivings">
-              <PropertyRef Name="RequisitionID" />
+              <PropertyRef Name="StockTransferID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StockTran__Recei__5D95E53A">
-          <End Role="Receivings" Type="Self.Receiving" Multiplicity="1" />
-          <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="*" />
+        <Association Name="FK_StockAllocations_Receivings">
+          <End Role="Receivings" Type="Self.Receiving" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StockAllocations" Type="Self.StockAllocation" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Receivings">
               <PropertyRef Name="ID" />
             </Principal>
-            <Dependent Role="StockTransfers">
+            <Dependent Role="StockAllocations">
               <PropertyRef Name="ReceivingID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Requisiti__Requi__3E1D39E1">
-          <End Role="Requisitions" Type="Self.Requisition" Multiplicity="0..1" />
+        <Association Name="FK_RequisitionDetails_Requisitions">
+          <End Role="Requisitions" Type="Self.Requisition" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="RequisitionDetails" Type="Self.RequisitionDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Requisitions">
@@ -2242,6 +2372,20 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Principal>
             <Dependent Role="RequisitionDetails">
               <PropertyRef Name="RequisitionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockTransferDetails_RequisitionDetails">
+          <End Role="RequisitionDetails" Type="Self.RequisitionDetail" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="StockTransferDetails" Type="Self.StockTransferDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequisitionDetails">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockTransferDetails">
+              <PropertyRef Name="RequisitionDetailID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2293,8 +2437,22 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__StockAllo__Stock__690797E6">
-          <End Role="StockAllocations" Type="Self.StockAllocation" Multiplicity="1" />
+        <Association Name="FK_StockTransfers_Requisitions">
+          <End Role="Requisitions" Type="Self.Requisition" Multiplicity="1" />
+          <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Requisitions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="StockTransfers">
+              <PropertyRef Name="RequisitionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StockAllocationDetails_StockAllocations">
+          <End Role="StockAllocations" Type="Self.StockAllocation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="StockAllocationDetails" Type="Self.StockAllocationDetail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="StockAllocations">
@@ -2302,18 +2460,6 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             </Principal>
             <Dependent Role="StockAllocationDetails">
               <PropertyRef Name="StockAllocationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__StockAllo__Stock__662B2B3B">
-          <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="1" />
-          <End Role="StockAllocations" Type="Self.StockAllocation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StockTransfers">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="StockAllocations">
-              <PropertyRef Name="StockTransferID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -2359,6 +2505,7 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
           <EntitySet Name="Sizes" EntityType="Self.Size" />
           <EntitySet Name="StockAllocationDetails" EntityType="Self.StockAllocationDetail" />
           <EntitySet Name="StockAllocations" EntityType="Self.StockAllocation" />
+          <EntitySet Name="StockTransferDetails" EntityType="Self.StockTransferDetail" />
           <EntitySet Name="StockTransfers" EntityType="Self.StockTransfer" />
           <EntitySet Name="SubCategories" EntityType="Self.SubCategory" />
           <EntitySet Name="UnitOfMeasurements" EntityType="Self.UnitOfMeasurement" />
@@ -2369,9 +2516,17 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
             <End Role="Receivings" EntitySet="Receivings" />
           </AssociationSet>
+          <AssociationSet Name="FK_RequisitionDetails_ApprovalStatus" Association="Self.FK_RequisitionDetails_ApprovalStatus">
+            <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+          </AssociationSet>
           <AssociationSet Name="FK_Requisitions_ApprovalStatus" Association="Self.FK_Requisitions_ApprovalStatus">
             <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
             <End Role="Requisitions" EntitySet="Requisitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockTransfers_ApprovalStatus" Association="Self.FK_StockTransfers_ApprovalStatus">
+            <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+            <End Role="StockTransfers" EntitySet="StockTransfers" />
           </AssociationSet>
           <AssociationSet Name="FK__Items__BrandID__2F9A1060" Association="Self.FK__Items__BrandID__2F9A1060">
             <End Role="Brands" EntitySet="Brands" />
@@ -2389,11 +2544,11 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <End Role="Colors" EntitySet="Colors" />
             <End Role="Items" EntitySet="Items" />
           </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__Conta__719CDDE7" Association="Self.FK__StockAllo__Conta__719CDDE7">
+          <AssociationSet Name="FK_StockAllocationDetails_ContainerLocations" Association="Self.FK_StockAllocationDetails_ContainerLocations">
             <End Role="ContainerLocations" EntitySet="ContainerLocations" />
             <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__Conta__70A8B9AE" Association="Self.FK__StockAllo__Conta__70A8B9AE">
+          <AssociationSet Name="FK_StockAllocationDetails_ContainerStorages" Association="Self.FK_StockAllocationDetails_ContainerStorages">
             <End Role="ContainerStorages" EntitySet="ContainerStorages" />
             <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
           </AssociationSet>
@@ -2441,15 +2596,19 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Receivings" EntitySet="Receivings" />
           </AssociationSet>
-          <AssociationSet Name="FK_Requisitions_Employees" Association="Self.FK_Requisitions_Employees">
+          <AssociationSet Name="FK_Requisitions_Employees_ApprovedBy" Association="Self.FK_Requisitions_Employees_ApprovedBy">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Requisitions" EntitySet="Requisitions" />
           </AssociationSet>
-          <AssociationSet Name="FK_Requisitions_Employees1" Association="Self.FK_Requisitions_Employees1">
+          <AssociationSet Name="FK_Requisitions_Employees_RequestedBy" Association="Self.FK_Requisitions_Employees_RequestedBy">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Requisitions" EntitySet="Requisitions" />
           </AssociationSet>
-          <AssociationSet Name="FK_Requisitions_Employees2" Association="Self.FK_Requisitions_Employees2">
+          <AssociationSet Name="FK_Requisitions_Employees_ReservedBy" Association="Self.FK_Requisitions_Employees_ReservedBy">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Requisitions" EntitySet="Requisitions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Requisitions_Employees_ValidatedBy" Association="Self.FK_Requisitions_Employees_ValidatedBy">
             <End Role="Employees" EntitySet="Employees" />
             <End Role="Requisitions" EntitySet="Requisitions" />
           </AssociationSet>
@@ -2465,29 +2624,13 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <End Role="SubCategories" EntitySet="SubCategories" />
             <End Role="Items" EntitySet="Items" />
           </AssociationSet>
-          <AssociationSet Name="FK__Receiving__ItemI__73852659" Association="Self.FK__Receiving__ItemI__73852659">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Requisiti__ItemI__3F115E1A" Association="Self.FK__Requisiti__ItemI__3F115E1A">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Requisiti__ItemI__72910220" Association="Self.FK__Requisiti__ItemI__72910220">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__ItemI__6AEFE058" Association="Self.FK__StockAllo__ItemI__6AEFE058">
-            <End Role="Items" EntitySet="Items" />
-            <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
-          </AssociationSet>
           <AssociationSet Name="FK_Items_UnitOfMeasurements" Association="Self.FK_Items_UnitOfMeasurements">
             <End Role="UnitOfMeasurements" EntitySet="UnitOfMeasurements" />
             <End Role="Items" EntitySet="Items" />
           </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__Locat__16CE6296" Association="Self.FK__StockAllo__Locat__16CE6296">
-            <End Role="Locations" EntitySet="Locations" />
-            <End Role="StockAllocations" EntitySet="StockAllocations" />
+          <AssociationSet Name="FK_RequisitionDetails_Items" Association="Self.FK_RequisitionDetails_Items">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
           </AssociationSet>
           <AssociationSet Name="FK__StockTran__Locat__1209AD79" Association="Self.FK__StockTran__Locat__1209AD79">
             <End Role="Locations" EntitySet="Locations" />
@@ -2513,15 +2656,27 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <End Role="Locations" EntitySet="Locations" />
             <End Role="Requisitions" EntitySet="Requisitions" />
           </AssociationSet>
-          <AssociationSet Name="FK__Receiving__Recei__540C7B00" Association="Self.FK__Receiving__Recei__540C7B00">
+          <AssociationSet Name="FK_StockAllocations_Locations" Association="Self.FK_StockAllocations_Locations">
+            <End Role="Locations" EntitySet="Locations" />
+            <End Role="StockAllocations" EntitySet="StockAllocations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReceivingDetails_ReasonForAdjustments" Association="Self.FK_ReceivingDetails_ReasonForAdjustments">
+            <End Role="ReasonForAdjustments" EntitySet="ReasonForAdjustments" />
+            <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockTransferDetails_ReasonForAdjustments" Association="Self.FK_StockTransferDetails_ReasonForAdjustments">
+            <End Role="ReasonForAdjustments" EntitySet="ReasonForAdjustments" />
+            <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ReceivingDetails_Receivings" Association="Self.FK_ReceivingDetails_Receivings">
             <End Role="Receivings" EntitySet="Receivings" />
             <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK__Receiving__Requi__55009F39" Association="Self.FK__Receiving__Requi__55009F39">
-            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+          <AssociationSet Name="FK_ReceivingDetails_StockTransferDetails" Association="Self.FK_ReceivingDetails_StockTransferDetails">
+            <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
             <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
           </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__Stock__69FBBC1F" Association="Self.FK__StockAllo__Stock__69FBBC1F">
+          <AssociationSet Name="FK_StockAllocationDetails_ReceivingDetails" Association="Self.FK_StockAllocationDetails_ReceivingDetails">
             <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
             <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
           </AssociationSet>
@@ -2529,17 +2684,21 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <End Role="ReceivingTypes" EntitySet="ReceivingTypes" />
             <End Role="Receivings" EntitySet="Receivings" />
           </AssociationSet>
-          <AssociationSet Name="FK__Receiving__Requi__51300E55" Association="Self.FK__Receiving__Requi__51300E55">
-            <End Role="Requisitions" EntitySet="Requisitions" />
-            <End Role="Receivings" EntitySet="Receivings" />
-          </AssociationSet>
-          <AssociationSet Name="FK__StockTran__Recei__5D95E53A" Association="Self.FK__StockTran__Recei__5D95E53A">
-            <End Role="Receivings" EntitySet="Receivings" />
+          <AssociationSet Name="FK_Receivings_StockTransfers" Association="Self.FK_Receivings_StockTransfers">
             <End Role="StockTransfers" EntitySet="StockTransfers" />
+            <End Role="Receivings" EntitySet="Receivings" />
           </AssociationSet>
-          <AssociationSet Name="FK__Requisiti__Requi__3E1D39E1" Association="Self.FK__Requisiti__Requi__3E1D39E1">
+          <AssociationSet Name="FK_StockAllocations_Receivings" Association="Self.FK_StockAllocations_Receivings">
+            <End Role="Receivings" EntitySet="Receivings" />
+            <End Role="StockAllocations" EntitySet="StockAllocations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequisitionDetails_Requisitions" Association="Self.FK_RequisitionDetails_Requisitions">
             <End Role="Requisitions" EntitySet="Requisitions" />
             <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockTransferDetails_RequisitionDetails" Association="Self.FK_StockTransferDetails_RequisitionDetails">
+            <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+            <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_Requisitions_RequisitionTypes" Association="Self.FK_Requisitions_RequisitionTypes">
             <End Role="RequisitionTypes" EntitySet="RequisitionTypes" />
@@ -2557,13 +2716,13 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <End Role="Vendors" EntitySet="Vendors" />
             <End Role="Requisitions" EntitySet="Requisitions" />
           </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__Stock__690797E6" Association="Self.FK__StockAllo__Stock__690797E6">
+          <AssociationSet Name="FK_StockTransfers_Requisitions" Association="Self.FK_StockTransfers_Requisitions">
+            <End Role="Requisitions" EntitySet="Requisitions" />
+            <End Role="StockTransfers" EntitySet="StockTransfers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StockAllocationDetails_StockAllocations" Association="Self.FK_StockAllocationDetails_StockAllocations">
             <End Role="StockAllocations" EntitySet="StockAllocations" />
             <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK__StockAllo__Stock__662B2B3B" Association="Self.FK__StockAllo__Stock__662B2B3B">
-            <End Role="StockTransfers" EntitySet="StockTransfers" />
-            <End Role="StockAllocations" EntitySet="StockAllocations" />
           </AssociationSet>
           <AssociationSet Name="FK_Users_UserType" Association="Self.FK_Users_UserType">
             <End Role="UserType" EntitySet="UserTypes" />
@@ -2722,10 +2881,9 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
               <MappingFragment StoreEntitySet="ReceivingDetails">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ReceivingID" ColumnName="ReceivingID" />
-                <ScalarProperty Name="RequisitionDetailID" ColumnName="RequisitionDetailID" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-                <ScalarProperty Name="QuantityRequested" ColumnName="QuantityRequested" />
-                <ScalarProperty Name="QuantityReceived" ColumnName="QuantityReceived" />
+                <ScalarProperty Name="StockTransferDetailID" ColumnName="StockTransferDetailID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IsReturn" ColumnName="IsReturn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2736,13 +2894,14 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />
                 <ScalarProperty Name="ReceivingTypeID" ColumnName="ReceivingTypeID" />
                 <ScalarProperty Name="ReceivingID" ColumnName="ReceivingID" />
-                <ScalarProperty Name="RequisitionID" ColumnName="RequisitionID" />
+                <ScalarProperty Name="StockTransferID" ColumnName="StockTransferID" />
                 <ScalarProperty Name="ReceivingDate" ColumnName="ReceivingDate" />
                 <ScalarProperty Name="EncodedBy" ColumnName="EncodedBy" />
                 <ScalarProperty Name="CheckedBy" ColumnName="CheckedBy" />
                 <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
                 <ScalarProperty Name="PONumber" ColumnName="PONumber" />
                 <ScalarProperty Name="DRNumber" ColumnName="DRNumber" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
                 <ScalarProperty Name="VesselNumber" ColumnName="VesselNumber" />
                 <ScalarProperty Name="VoyageNumber" ColumnName="VoyageNumber" />
                 <ScalarProperty Name="VanNumber" ColumnName="VanNumber" />
@@ -2767,6 +2926,8 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
                 <ScalarProperty Name="RequisitionID" ColumnName="RequisitionID" />
                 <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="AprovalStatusID" ColumnName="AprovalStatusID" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2882,8 +3043,7 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
               <MappingFragment StoreEntitySet="StockAllocationDetails">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="StockAllocationID" ColumnName="StockAllocationID" />
-                <ScalarProperty Name="StockReceivingDetailID" ColumnName="StockReceivingDetailID" />
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="ReceivingDetailID" ColumnName="ReceivingDetailID" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="ContainerStorageID" ColumnName="ContainerStorageID" />
                 <ScalarProperty Name="ContainerLocationID" ColumnName="ContainerLocationID" />
@@ -2895,9 +3055,21 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
               <MappingFragment StoreEntitySet="StockAllocations">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="StockTransferID" ColumnName="StockTransferID" />
+                <ScalarProperty Name="ReceivingID" ColumnName="ReceivingID" />
                 <ScalarProperty Name="SADate" ColumnName="SADate" />
                 <ScalarProperty Name="BatchNumber" ColumnName="BatchNumber" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StockTransferDetails">
+            <EntityTypeMapping TypeName="MoostBrandModel.StockTransferDetail">
+              <MappingFragment StoreEntitySet="StockTransferDetails">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="StockTransferID" ColumnName="StockTransferID" />
+                <ScalarProperty Name="RequisitionDetailID" ColumnName="RequisitionDetailID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IsReturn" ColumnName="IsReturn" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2905,16 +3077,20 @@ warning 6013: The table/view 'MoostBrand.dbo.Table_1' does not have a primary ke
             <EntityTypeMapping TypeName="MoostBrandModel.StockTransfer">
               <MappingFragment StoreEntitySet="StockTransfers">
                 <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RequisitionID" ColumnName="RequisitionID" />
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="ReceivingID" ColumnName="ReceivingID" />
                 <ScalarProperty Name="TransferID" ColumnName="TransferID" />
                 <ScalarProperty Name="STDAte" ColumnName="STDAte" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="Driver" ColumnName="Driver" />
                 <ScalarProperty Name="Helper" ColumnName="Helper" />
+                <ScalarProperty Name="TimeReceived" ColumnName="TimeReceived" />
                 <ScalarProperty Name="ReceivedBy" ColumnName="ReceivedBy" />
                 <ScalarProperty Name="RequestedBy" ColumnName="RequestedBy" />
                 <ScalarProperty Name="ApprovedBy" ColumnName="ApprovedBy" />
                 <ScalarProperty Name="ReleasedBy" ColumnName="ReleasedBy" />
+                <ScalarProperty Name="Operator" ColumnName="Operator" />
                 <ScalarProperty Name="CounterCheckedBy" ColumnName="CounterCheckedBy" />
                 <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
                 <ScalarProperty Name="ApprovedStatus" ColumnName="ApprovedStatus" />

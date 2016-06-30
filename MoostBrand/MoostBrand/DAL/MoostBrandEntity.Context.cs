@@ -54,6 +54,7 @@ namespace MoostBrand.DAL
         public virtual DbSet<Size> Sizes { get; set; }
         public virtual DbSet<StockAllocationDetail> StockAllocationDetails { get; set; }
         public virtual DbSet<StockAllocation> StockAllocations { get; set; }
+        public virtual DbSet<StockTransferDetail> StockTransferDetails { get; set; }
         public virtual DbSet<StockTransfer> StockTransfers { get; set; }
         public virtual DbSet<SubCategory> SubCategories { get; set; }
         public virtual DbSet<UnitOfMeasurement> UnitOfMeasurements { get; set; }

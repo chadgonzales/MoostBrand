@@ -30,6 +30,7 @@ namespace MoostBrand.DAL
             this.Requisitions = new HashSet<Requisition>();
             this.Requisitions1 = new HashSet<Requisition>();
             this.Requisitions2 = new HashSet<Requisition>();
+            this.Requisitions3 = new HashSet<Requisition>();
             this.Users = new HashSet<User>();
         }
     
@@ -64,6 +65,8 @@ namespace MoostBrand.DAL
         public virtual ICollection<Requisition> Requisitions1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Requisition> Requisitions2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Requisition> Requisitions3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
     }

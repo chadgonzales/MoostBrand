@@ -16,15 +16,13 @@ namespace MoostBrand.DAL
     {
         public int ID { get; set; }
         public int StockAllocationID { get; set; }
-        public int StockReceivingDetailID { get; set; }
-        public int ItemID { get; set; }
-        public int Quantity { get; set; }
-        public int ContainerStorageID { get; set; }
-        public int ContainerLocationID { get; set; }
+        public int ReceivingDetailID { get; set; }
+        public Nullable<int> Quantity { get; set; }
+        public Nullable<int> ContainerStorageID { get; set; }
+        public Nullable<int> ContainerLocationID { get; set; }
     
         public virtual ContainerLocation ContainerLocation { get; set; }
         public virtual ContainerStorage ContainerStorage { get; set; }
-        public virtual Item Item { get; set; }
         public virtual ReceivingDetail ReceivingDetail { get; set; }
         public virtual StockAllocation StockAllocation { get; set; }
     }
