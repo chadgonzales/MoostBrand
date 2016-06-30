@@ -227,7 +227,10 @@
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PRController.cs" />
+    <Compile Include="Controllers\ReceivingController.cs" />
     <Compile Include="Controllers\SizeController.cs" />
+    <Compile Include="Controllers\StockAllocationController.cs" />
+    <Compile Include="Controllers\StockTransferController.cs" />
     <Compile Include="Controllers\SubCategoryController.cs" />
     <Compile Include="Controllers\UnitOfMeasureController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -286,6 +289,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MoostBrandEntity.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DAL\PaymentStatu.cs">
+      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAL\ReasonForAdjustment.cs">
       <DependentUpon>MoostBrandEntity.tt</DependentUpon>
     </Compile>
@@ -334,6 +340,9 @@
     <Compile Include="DAL\StockTransfer.cs">
       <DependentUpon>MoostBrandEntity.tt</DependentUpon>
     </Compile>
+    <Compile Include="DAL\StockTransferDetail.cs">
+      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAL\SubCategory.cs">
       <DependentUpon>MoostBrandEntity.tt</DependentUpon>
     </Compile>
@@ -353,6 +362,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\CustomValidations.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -503,6 +513,31 @@
     <Content Include="Views\SubCategory\Delete.cshtml" />
     <Content Include="Views\PR\Index.cshtml" />
     <Content Include="Views\PR\Details.cshtml" />
+    <Content Include="Views\PR\Create.cshtml" />
+    <Content Include="Views\PR\Edit.cshtml" />
+    <Content Include="Views\PR\Delete.cshtml" />
+    <Content Include="Views\PR\Items.cshtml" />
+    <Content Include="Views\PR\AddItem.cshtml" />
+    <Content Include="Views\PR\EditItem.cshtml" />
+    <Content Include="Views\Receiving\Index.cshtml" />
+    <Content Include="Views\Receiving\Create.cshtml" />
+    <Content Include="Views\StockTransfer\Index.cshtml" />
+    <Content Include="Views\StockTransfer\Create.cshtml" />
+    <Content Include="Views\StockTransfer\Items.cshtml" />
+    <Content Include="Views\Receiving\Items.cshtml" />
+    <Content Include="Views\Receiving\AddItem.cshtml" />
+    <Content Include="Views\StockAllocation\Index.cshtml" />
+    <Content Include="Views\StockAllocation\Create.cshtml" />
+    <Content Include="Views\PR\ApprovedItems.cshtml" />
+    <Content Include="Views\PR\PendingItems.cshtml" />
+    <Content Include="Views\PR\DeniedItems.cshtml" />
+    <Content Include="Views\PR\AddItemPartial.cshtml" />
+    <Content Include="Views\PR\EditItemPartial.cshtml" />
+    <Content Include="Views\PR\DeleteItemPartial.cshtml" />
+    <Content Include="Views\StockTransfer\Edit.cshtml" />
+    <Content Include="Views\StockTransfer\Details.cshtml" />
+    <Content Include="Views\StockTransfer\Delete.cshtml" />
+    <Content Include="Views\Receiving\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

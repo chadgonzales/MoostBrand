@@ -6,7 +6,10 @@
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Requisitions" Relationship="MoostBrandModel.FK__Requisiti__Appro__3A179ED3" FromRole="ApprovalStatu" ToRole="Requisition" />
+    <NavigationProperty Name="Receivings" Relationship="Self.FK_Receivings_ApprovalStatus" FromRole="ApprovalStatus" ToRole="Receivings" />
+    <NavigationProperty Name="RequisitionDetails" Relationship="Self.FK_RequisitionDetails_ApprovalStatus" FromRole="ApprovalStatus" ToRole="RequisitionDetails" />
+    <NavigationProperty Name="Requisitions" Relationship="Self.FK_Requisitions_ApprovalStatus" FromRole="ApprovalStatus" ToRole="Requisitions" />
+    <NavigationProperty Name="StockTransfers" Relationship="Self.FK_StockTransfers_ApprovalStatus" FromRole="ApprovalStatus" ToRole="StockTransfers" />
   </EntityType>
   <EntityType Name="Brand">
     <Key>
@@ -15,8 +18,7 @@
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Items" Relationship="MoostBrandModel.FK__Items__BrandID__2F9A1060" FromRole="Brand" ToRole="Item" />
-    <NavigationProperty Name="Items1" Relationship="MoostBrandModel.FK_Items_Brands" FromRole="Brand" ToRole="Item" />
+    <NavigationProperty Name="Items" Relationship="Self.FK__Items__BrandID__2F9A1060" FromRole="Brands" ToRole="Items" />
   </EntityType>
   <EntityType Name="Category">
     <Key>
@@ -25,8 +27,8 @@
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Items" Relationship="Self.FK__Items__CategoryI__47A6A41B" FromRole="Categories" ToRole="Items" />
     <NavigationProperty Name="SubCategories" Relationship="Self.FK_SubCategories_Categories" FromRole="Categories" ToRole="SubCategories" />
-    <NavigationProperty Name="Items" Relationship="MoostBrandModel.FK__Items__CategoryI__47A6A41B" FromRole="Category" ToRole="Item" />
   </EntityType>
   <EntityType Name="Client">
     <Key>
@@ -35,6 +37,15 @@
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ClientDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
+  <EntityType Name="Color">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Items" Relationship="Self.FK__Items__ColorID__2A164134" FromRole="Colors" ToRole="Items" />
+  </EntityType>
   <EntityType Name="ContainerLocation">
     <Key>
       <PropertyRef Name="ID" />
@@ -42,7 +53,7 @@
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK__StockAllo__Conta__719CDDE7" FromRole="ContainerLocations" ToRole="StockAllocationDetails" />
+    <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK_StockAllocationDetails_ContainerLocations" FromRole="ContainerLocations" ToRole="StockAllocationDetails" />
   </EntityType>
   <EntityType Name="ContainerStorage">
     <Key>
@@ -51,7 +62,7 @@
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK__StockAllo__Conta__70A8B9AE" FromRole="ContainerStorages" ToRole="StockAllocationDetails" />
+    <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK_StockAllocationDetails_ContainerStorages" FromRole="ContainerStorages" ToRole="StockAllocationDetails" />
   </EntityType>
   <EntityType Name="Downpayment">
     <Key>
@@ -67,7 +78,7 @@
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Requisitions" Relationship="MoostBrandModel.FK__Requisiti__DropS__3CF40B7E" FromRole="DropShipType" ToRole="Requisition" />
+    <NavigationProperty Name="Requisitions" Relationship="Self.FK_Requisitions_DropShipTypes" FromRole="DropShipTypes" ToRole="Requisitions" />
   </EntityType>
   <EntityType Name="Employee">
     <Key>
@@ -77,18 +88,46 @@
     <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Receivings" Relationship="Self.FK__Receiving__Appro__756D6ECB" FromRole="Employees" ToRole="Receivings" />
+    <NavigationProperty Name="StockTransfers" Relationship="Self.FK__StockTran__Appro__607251E5" FromRole="Employees" ToRole="StockTransfers" />
+    <NavigationProperty Name="StockTransfers1" Relationship="Self.FK__StockTran__Count__625A9A57" FromRole="Employees" ToRole="StockTransfers" />
+    <NavigationProperty Name="StockTransfers2" Relationship="Self.FK__StockTran__Poste__634EBE90" FromRole="Employees" ToRole="StockTransfers" />
+    <NavigationProperty Name="StockTransfers3" Relationship="Self.FK__StockTran__Recei__5E8A0973" FromRole="Employees" ToRole="StockTransfers" />
+    <NavigationProperty Name="StockTransfers4" Relationship="Self.FK__StockTran__Relea__6166761E" FromRole="Employees" ToRole="StockTransfers" />
+    <NavigationProperty Name="StockTransfers5" Relationship="Self.FK__StockTran__Reque__5F7E2DAC" FromRole="Employees" ToRole="StockTransfers" />
+    <NavigationProperty Name="Receivings1" Relationship="Self.FK_Receivings_Employees" FromRole="Employees" ToRole="Receivings" />
+    <NavigationProperty Name="Receivings2" Relationship="Self.FK_Receivings_Employees1" FromRole="Employees" ToRole="Receivings" />
+    <NavigationProperty Name="Receivings3" Relationship="Self.FK_Receivings_Employees2" FromRole="Employees" ToRole="Receivings" />
+    <NavigationProperty Name="Requisitions" Relationship="Self.FK_Requisitions_Employees_ApprovedBy" FromRole="Employees" ToRole="Requisitions" />
+    <NavigationProperty Name="Requisitions1" Relationship="Self.FK_Requisitions_Employees_RequestedBy" FromRole="Employees" ToRole="Requisitions" />
+    <NavigationProperty Name="Requisitions2" Relationship="Self.FK_Requisitions_Employees_ReservedBy" FromRole="Employees" ToRole="Requisitions" />
+    <NavigationProperty Name="Requisitions3" Relationship="Self.FK_Requisitions_Employees_ValidatedBy" FromRole="Employees" ToRole="Requisitions" />
     <NavigationProperty Name="Users" Relationship="Self.FK_Users_Employees" FromRole="Employees" ToRole="Users" />
-    <NavigationProperty Name="Receivings" Relationship="MoostBrandModel.FK__Receiving__Appro__756D6ECB" FromRole="Employee" ToRole="Receiving" />
-    <NavigationProperty Name="StockTransfers" Relationship="MoostBrandModel.FK__StockTran__Appro__607251E5" FromRole="Employee" ToRole="StockTransfer" />
-    <NavigationProperty Name="StockTransfers1" Relationship="MoostBrandModel.FK__StockTran__Count__625A9A57" FromRole="Employee" ToRole="StockTransfer" />
-    <NavigationProperty Name="StockTransfers2" Relationship="MoostBrandModel.FK__StockTran__Poste__634EBE90" FromRole="Employee" ToRole="StockTransfer" />
-    <NavigationProperty Name="StockTransfers3" Relationship="MoostBrandModel.FK__StockTran__Recei__5E8A0973" FromRole="Employee" ToRole="StockTransfer" />
-    <NavigationProperty Name="StockTransfers4" Relationship="MoostBrandModel.FK__StockTran__Relea__6166761E" FromRole="Employee" ToRole="StockTransfer" />
-    <NavigationProperty Name="StockTransfers5" Relationship="MoostBrandModel.FK__StockTran__Reque__5F7E2DAC" FromRole="Employee" ToRole="StockTransfer" />
-    <NavigationProperty Name="Requisitions" Relationship="MoostBrandModel.FK__Requisiti__Appro__74794A92" FromRole="Employee" ToRole="Requisition" />
-    <NavigationProperty Name="Requisitions1" Relationship="MoostBrandModel.FK__Requisiti__Reque__41B8C09B" FromRole="Employee" ToRole="Requisition" />
-    <NavigationProperty Name="Requisitions2" Relationship="MoostBrandModel.FK__Requisiti__Reser__3EDC53F0" FromRole="Employee" ToRole="Requisition" />
-    <NavigationProperty Name="Requisitions3" Relationship="MoostBrandModel.FK__Requisiti__Valid__3FD07829" FromRole="Employee" ToRole="Requisition" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Barcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CategoryID" Type="Int32" />
+    <Property Name="SubCategoryID" Type="Int32" />
+    <Property Name="BrandID" Type="Int32" />
+    <Property Name="ColorID" Type="Int32" />
+    <Property Name="SizeID" Type="Int32" />
+    <Property Name="UnitOfMeasurementID" Type="Int32" />
+    <Property Name="ReOrderLevel" Type="Int32" />
+    <Property Name="MinimumStock" Type="Int32" />
+    <Property Name="MaximumStock" Type="Int32" />
+    <NavigationProperty Name="Brand" Relationship="Self.FK__Items__BrandID__2F9A1060" FromRole="Items" ToRole="Brands" />
+    <NavigationProperty Name="Category" Relationship="Self.FK__Items__CategoryI__47A6A41B" FromRole="Items" ToRole="Categories" />
+    <NavigationProperty Name="Color" Relationship="Self.FK__Items__ColorID__2A164134" FromRole="Items" ToRole="Colors" />
+    <NavigationProperty Name="Size" Relationship="Self.FK__Items__SizeID__2B0A656D" FromRole="Items" ToRole="Sizes" />
+    <NavigationProperty Name="SubCategory" Relationship="Self.FK__Items__SubCatego__308E3499" FromRole="Items" ToRole="SubCategories" />
+    <NavigationProperty Name="UnitOfMeasurement" Relationship="Self.FK_Items_UnitOfMeasurements" FromRole="Items" ToRole="UnitOfMeasurements" />
+    <NavigationProperty Name="RequisitionDetails" Relationship="Self.FK_RequisitionDetails_Items" FromRole="Items" ToRole="RequisitionDetails" />
   </EntityType>
   <EntityType Name="Location">
     <Key>
@@ -98,13 +137,13 @@
     <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="LocationTypeID" Type="Int32" />
+    <NavigationProperty Name="StockTransfers" Relationship="Self.FK__StockTran__Locat__1209AD79" FromRole="Locations" ToRole="StockTransfers" />
     <NavigationProperty Name="Users" Relationship="Self.FK__Users__LocationI__3587F3E0" FromRole="Locations" ToRole="Users" />
     <NavigationProperty Name="LocationType" Relationship="Self.FK_Locations_LocationType" FromRole="Locations" ToRole="LocationTypes" />
-    <NavigationProperty Name="StockAllocations" Relationship="MoostBrandModel.FK__StockAllo__Locat__16CE6296" FromRole="Location" ToRole="StockAllocation" />
-    <NavigationProperty Name="StockTransfers" Relationship="MoostBrandModel.FK__StockTran__Locat__1209AD79" FromRole="Location" ToRole="StockTransfer" />
-    <NavigationProperty Name="Items" Relationship="MoostBrandModel.FK_Items_Locations" FromRole="Location" ToRole="Item" />
-    <NavigationProperty Name="Requisitions" Relationship="MoostBrandModel.FK__Requisiti__Desti__40C49C62" FromRole="Location" ToRole="Requisition" />
-    <NavigationProperty Name="Requisitions1" Relationship="MoostBrandModel.FK__Requisiti__Locat__0697FACD" FromRole="Location" ToRole="Requisition" />
+    <NavigationProperty Name="Receivings" Relationship="Self.FK_Receivings_Locations" FromRole="Locations" ToRole="Receivings" />
+    <NavigationProperty Name="Requisitions" Relationship="Self.FK_Requisitions_Locations" FromRole="Locations" ToRole="Requisitions" />
+    <NavigationProperty Name="Requisitions1" Relationship="Self.FK_Requisitions_Locations1" FromRole="Locations" ToRole="Requisitions" />
+    <NavigationProperty Name="StockAllocations" Relationship="Self.FK_StockAllocations_Locations" FromRole="Locations" ToRole="StockAllocations" />
   </EntityType>
   <EntityType Name="LocationType">
     <Key>
@@ -114,12 +153,21 @@
     <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Locations" Relationship="Self.FK_Locations_LocationType" FromRole="LocationTypes" ToRole="Locations" />
   </EntityType>
+  <EntityType Name="PaymentStatu">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
   <EntityType Name="ReasonForAdjustment">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Reason" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ReceivingDetails" Relationship="Self.FK_ReceivingDetails_ReasonForAdjustments" FromRole="ReasonForAdjustments" ToRole="ReceivingDetails" />
+    <NavigationProperty Name="StockTransferDetails" Relationship="Self.FK_StockTransferDetails_ReasonForAdjustments" FromRole="ReasonForAdjustments" ToRole="StockTransferDetails" />
   </EntityType>
   <EntityType Name="ReceivingDetail">
     <Key>
@@ -127,14 +175,46 @@
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="ReceivingID" Type="Int32" Nullable="false" />
-    <Property Name="RequisitionDetailID" Type="Int32" Nullable="false" />
-    <Property Name="ItemID" Type="Int32" Nullable="false" />
-    <Property Name="QuantityRequested" Type="Int32" Nullable="false" />
-    <Property Name="QuantityReceived" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="RequisitionDetail" Relationship="Self.FK__Receiving__Requi__55009F39" FromRole="ReceivingDetails" ToRole="RequisitionDetails" />
-    <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK__StockAllo__Stock__69FBBC1F" FromRole="ReceivingDetails" ToRole="StockAllocationDetails" />
-    <NavigationProperty Name="Receiving" Relationship="MoostBrandModel.FK__Receiving__Recei__540C7B00" FromRole="ReceivingDetail" ToRole="Receiving" />
-    <NavigationProperty Name="Item" Relationship="MoostBrandModel.FK__Receiving__ItemI__73852659" FromRole="ReceivingDetail" ToRole="Item" />
+    <Property Name="StockTransferDetailID" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="IsReturn" Type="Boolean" />
+    <NavigationProperty Name="ReasonForAdjustment" Relationship="Self.FK_ReceivingDetails_ReasonForAdjustments" FromRole="ReceivingDetails" ToRole="ReasonForAdjustments" />
+    <NavigationProperty Name="Receiving" Relationship="Self.FK_ReceivingDetails_Receivings" FromRole="ReceivingDetails" ToRole="Receivings" />
+    <NavigationProperty Name="StockTransferDetail" Relationship="Self.FK_ReceivingDetails_StockTransferDetails" FromRole="ReceivingDetails" ToRole="StockTransferDetails" />
+    <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK_StockAllocationDetails_ReceivingDetails" FromRole="ReceivingDetails" ToRole="StockAllocationDetails" />
+  </EntityType>
+  <EntityType Name="Receiving">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LocationID" Type="Int32" Nullable="false" />
+    <Property Name="ReceivingTypeID" Type="Int32" Nullable="false" />
+    <Property Name="ReceivingID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="StockTransferID" Type="Int32" Nullable="false" />
+    <Property Name="ReceivingDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EncodedBy" Type="Int32" />
+    <Property Name="CheckedBy" Type="Int32" />
+    <Property Name="ReceivedBy" Type="Int32" Nullable="false" />
+    <Property Name="PONumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DRNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="VesselNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="VoyageNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="VanNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ApprovalStatus" Type="Int32" />
+    <Property Name="ApprovedBy" Type="Int32" />
+    <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ApprovalStatu" Relationship="Self.FK_Receivings_ApprovalStatus" FromRole="Receivings" ToRole="ApprovalStatus" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK__Receiving__Appro__756D6ECB" FromRole="Receivings" ToRole="Employees" />
+    <NavigationProperty Name="Employee1" Relationship="Self.FK_Receivings_Employees" FromRole="Receivings" ToRole="Employees" />
+    <NavigationProperty Name="Employee2" Relationship="Self.FK_Receivings_Employees1" FromRole="Receivings" ToRole="Employees" />
+    <NavigationProperty Name="Employee3" Relationship="Self.FK_Receivings_Employees2" FromRole="Receivings" ToRole="Employees" />
+    <NavigationProperty Name="Location" Relationship="Self.FK_Receivings_Locations" FromRole="Receivings" ToRole="Locations" />
+    <NavigationProperty Name="ReceivingDetails" Relationship="Self.FK_ReceivingDetails_Receivings" FromRole="Receivings" ToRole="ReceivingDetails" />
+    <NavigationProperty Name="ReceivingType" Relationship="Self.FK__Receiving__Recei__503BEA1C" FromRole="Receivings" ToRole="ReceivingTypes" />
+    <NavigationProperty Name="StockTransfer" Relationship="Self.FK_Receivings_StockTransfers" FromRole="Receivings" ToRole="StockTransfers" />
+    <NavigationProperty Name="StockAllocations" Relationship="Self.FK_StockAllocations_Receivings" FromRole="Receivings" ToRole="StockAllocations" />
   </EntityType>
   <EntityType Name="ReceivingType">
     <Key>
@@ -142,20 +222,68 @@
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Receivings" Relationship="MoostBrandModel.FK__Receiving__Recei__503BEA1C" FromRole="ReceivingType" ToRole="Receiving" />
+    <NavigationProperty Name="Receivings" Relationship="Self.FK__Receiving__Recei__503BEA1C" FromRole="ReceivingTypes" ToRole="Receivings" />
   </EntityType>
   <EntityType Name="RequisitionDetail">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="RequisitionID" Type="Int32" />
-    <Property Name="ItemID" Type="Int32" />
-    <Property Name="Quantity" Type="Int32" />
-    <NavigationProperty Name="ReceivingDetails" Relationship="Self.FK__Receiving__Requi__55009F39" FromRole="RequisitionDetails" ToRole="ReceivingDetails" />
-    <NavigationProperty Name="Item" Relationship="MoostBrandModel.FK__Requisiti__ItemI__3F115E1A" FromRole="RequisitionDetail" ToRole="Item" />
-    <NavigationProperty Name="Item1" Relationship="MoostBrandModel.FK__Requisiti__ItemI__72910220" FromRole="RequisitionDetail" ToRole="Item" />
-    <NavigationProperty Name="Requisition" Relationship="MoostBrandModel.FK__Requisiti__Requi__3E1D39E1" FromRole="RequisitionDetail" ToRole="Requisition" />
+    <Property Name="RequisitionID" Type="Int32" Nullable="false" />
+    <Property Name="ItemID" Type="Int32" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <Property Name="AprovalStatusID" Type="Int32" />
+    <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ApprovalStatu" Relationship="Self.FK_RequisitionDetails_ApprovalStatus" FromRole="RequisitionDetails" ToRole="ApprovalStatus" />
+    <NavigationProperty Name="Item" Relationship="Self.FK_RequisitionDetails_Items" FromRole="RequisitionDetails" ToRole="Items" />
+    <NavigationProperty Name="Requisition" Relationship="Self.FK_RequisitionDetails_Requisitions" FromRole="RequisitionDetails" ToRole="Requisitions" />
+    <NavigationProperty Name="StockTransferDetails" Relationship="Self.FK_StockTransferDetails_RequisitionDetails" FromRole="RequisitionDetails" ToRole="StockTransferDetails" />
+  </EntityType>
+  <EntityType Name="Requisition">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RefNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="RequisitionTypeID" Type="Int32" Nullable="false" />
+    <Property Name="RequestedBy" Type="Int32" Nullable="false" />
+    <Property Name="RequestedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="LocationID" Type="Int32" Nullable="false" />
+    <Property Name="DateRequired" Type="DateTime" Precision="3" />
+    <Property Name="VendorID" Type="Int32" />
+    <Property Name="ShipmentDate" Type="DateTime" Precision="3" />
+    <Property Name="Customer" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ReservationTypeID" Type="Int32" />
+    <Property Name="ShipmentTypeID" Type="Int32" />
+    <Property Name="DropShipID" Type="Int32" />
+    <Property Name="PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ReservedBy" Type="Int32" />
+    <Property Name="AuthorizedPerson" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ValidatedBy" Type="Int32" />
+    <Property Name="Destination" Type="Int32" />
+    <Property Name="TimeDeparted" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="TimeArrived" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Driver" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PlateNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Others" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ApprovalStatus" Type="Int32" />
+    <Property Name="ApprovedBy" Type="Int32" />
+    <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ApprovalStatu" Relationship="Self.FK_Requisitions_ApprovalStatus" FromRole="Requisitions" ToRole="ApprovalStatus" />
+    <NavigationProperty Name="DropShipType" Relationship="Self.FK_Requisitions_DropShipTypes" FromRole="Requisitions" ToRole="DropShipTypes" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK_Requisitions_Employees_ApprovedBy" FromRole="Requisitions" ToRole="Employees" />
+    <NavigationProperty Name="Employee1" Relationship="Self.FK_Requisitions_Employees_RequestedBy" FromRole="Requisitions" ToRole="Employees" />
+    <NavigationProperty Name="Employee2" Relationship="Self.FK_Requisitions_Employees_ReservedBy" FromRole="Requisitions" ToRole="Employees" />
+    <NavigationProperty Name="Employee3" Relationship="Self.FK_Requisitions_Employees_ValidatedBy" FromRole="Requisitions" ToRole="Employees" />
+    <NavigationProperty Name="Location" Relationship="Self.FK_Requisitions_Locations" FromRole="Requisitions" ToRole="Locations" />
+    <NavigationProperty Name="Location1" Relationship="Self.FK_Requisitions_Locations1" FromRole="Requisitions" ToRole="Locations" />
+    <NavigationProperty Name="RequisitionDetails" Relationship="Self.FK_RequisitionDetails_Requisitions" FromRole="Requisitions" ToRole="RequisitionDetails" />
+    <NavigationProperty Name="RequisitionType" Relationship="Self.FK_Requisitions_RequisitionTypes" FromRole="Requisitions" ToRole="RequisitionTypes" />
+    <NavigationProperty Name="ReservationType" Relationship="Self.FK_Requisitions_ReservationTypes" FromRole="Requisitions" ToRole="ReservationTypes" />
+    <NavigationProperty Name="ShipmentType" Relationship="Self.FK_Requisitions_ShipmentTypes" FromRole="Requisitions" ToRole="ShipmentTypes" />
+    <NavigationProperty Name="Vendor" Relationship="Self.FK_Requisitions_Vendors" FromRole="Requisitions" ToRole="Vendors" />
+    <NavigationProperty Name="StockTransfers" Relationship="Self.FK_StockTransfers_Requisitions" FromRole="Requisitions" ToRole="StockTransfers" />
   </EntityType>
   <EntityType Name="RequisitionType">
     <Key>
@@ -163,7 +291,7 @@
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Requisitions" Relationship="MoostBrandModel.FK__Requisiti__Requi__318258D2" FromRole="RequisitionType" ToRole="Requisition" />
+    <NavigationProperty Name="Requisitions" Relationship="Self.FK_Requisitions_RequisitionTypes" FromRole="RequisitionTypes" ToRole="Requisitions" />
   </EntityType>
   <EntityType Name="Reservation">
     <Key>
@@ -187,7 +315,7 @@
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Requisitions" Relationship="MoostBrandModel.FK__Requisiti__Reser__3BFFE745" FromRole="ReservationType" ToRole="Requisition" />
+    <NavigationProperty Name="Requisitions" Relationship="Self.FK_Requisitions_ReservationTypes" FromRole="ReservationTypes" ToRole="Requisitions" />
   </EntityType>
   <EntityType Name="ReturnedItem">
     <Key>
@@ -217,6 +345,16 @@
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Requisitions" Relationship="Self.FK_Requisitions_ShipmentTypes" FromRole="ShipmentTypes" ToRole="Requisitions" />
+  </EntityType>
+  <EntityType Name="Size">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Items" Relationship="Self.FK__Items__SizeID__2B0A656D" FromRole="Sizes" ToRole="Items" />
   </EntityType>
   <EntityType Name="StockAllocationDetail">
     <Key>
@@ -224,16 +362,75 @@
     </Key>
     <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="StockAllocationID" Type="Int32" Nullable="false" />
-    <Property Name="StockReceivingDetailID" Type="Int32" Nullable="false" />
-    <Property Name="ItemID" Type="Int32" Nullable="false" />
-    <Property Name="Quantity" Type="Int32" Nullable="false" />
-    <Property Name="ContainerStorageID" Type="Int32" Nullable="false" />
-    <Property Name="ContainerLocationID" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="ContainerLocation" Relationship="Self.FK__StockAllo__Conta__719CDDE7" FromRole="StockAllocationDetails" ToRole="ContainerLocations" />
-    <NavigationProperty Name="ContainerStorage" Relationship="Self.FK__StockAllo__Conta__70A8B9AE" FromRole="StockAllocationDetails" ToRole="ContainerStorages" />
-    <NavigationProperty Name="ReceivingDetail" Relationship="Self.FK__StockAllo__Stock__69FBBC1F" FromRole="StockAllocationDetails" ToRole="ReceivingDetails" />
-    <NavigationProperty Name="StockAllocation" Relationship="MoostBrandModel.FK__StockAllo__Stock__690797E6" FromRole="StockAllocationDetail" ToRole="StockAllocation" />
-    <NavigationProperty Name="Item" Relationship="MoostBrandModel.FK__StockAllo__ItemI__6AEFE058" FromRole="StockAllocationDetail" ToRole="Item" />
+    <Property Name="ReceivingDetailID" Type="Int32" Nullable="false" />
+    <Property Name="Quantity" Type="Int32" />
+    <Property Name="ContainerStorageID" Type="Int32" />
+    <Property Name="ContainerLocationID" Type="Int32" />
+    <NavigationProperty Name="ContainerLocation" Relationship="Self.FK_StockAllocationDetails_ContainerLocations" FromRole="StockAllocationDetails" ToRole="ContainerLocations" />
+    <NavigationProperty Name="ContainerStorage" Relationship="Self.FK_StockAllocationDetails_ContainerStorages" FromRole="StockAllocationDetails" ToRole="ContainerStorages" />
+    <NavigationProperty Name="ReceivingDetail" Relationship="Self.FK_StockAllocationDetails_ReceivingDetails" FromRole="StockAllocationDetails" ToRole="ReceivingDetails" />
+    <NavigationProperty Name="StockAllocation" Relationship="Self.FK_StockAllocationDetails_StockAllocations" FromRole="StockAllocationDetails" ToRole="StockAllocations" />
+  </EntityType>
+  <EntityType Name="StockAllocation">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LocationID" Type="Int32" Nullable="false" />
+    <Property Name="ReceivingID" Type="Int32" Nullable="false" />
+    <Property Name="SADate" Type="DateTime" Precision="3" />
+    <Property Name="BatchNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Location" Relationship="Self.FK_StockAllocations_Locations" FromRole="StockAllocations" ToRole="Locations" />
+    <NavigationProperty Name="Receiving" Relationship="Self.FK_StockAllocations_Receivings" FromRole="StockAllocations" ToRole="Receivings" />
+    <NavigationProperty Name="StockAllocationDetails" Relationship="Self.FK_StockAllocationDetails_StockAllocations" FromRole="StockAllocations" ToRole="StockAllocationDetails" />
+  </EntityType>
+  <EntityType Name="StockTransferDetail">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StockTransferID" Type="Int32" />
+    <Property Name="RequisitionDetailID" Type="Int32" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="IsReturn" Type="Boolean" />
+    <NavigationProperty Name="ReasonForAdjustment" Relationship="Self.FK_StockTransferDetails_ReasonForAdjustments" FromRole="StockTransferDetails" ToRole="ReasonForAdjustments" />
+    <NavigationProperty Name="ReceivingDetails" Relationship="Self.FK_ReceivingDetails_StockTransferDetails" FromRole="StockTransferDetails" ToRole="ReceivingDetails" />
+    <NavigationProperty Name="RequisitionDetail" Relationship="Self.FK_StockTransferDetails_RequisitionDetails" FromRole="StockTransferDetails" ToRole="RequisitionDetails" />
+  </EntityType>
+  <EntityType Name="StockTransfer">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RequisitionID" Type="Int32" Nullable="false" />
+    <Property Name="LocationID" Type="Int32" Nullable="false" />
+    <Property Name="TransferID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="STDAte" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="StartTime" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="EndTime" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Driver" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Helper" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="TimeReceived" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="ReceivedBy" Type="Int32" Nullable="false" />
+    <Property Name="RequestedBy" Type="Int32" Nullable="false" />
+    <Property Name="ApprovedBy" Type="Int32" />
+    <Property Name="ReleasedBy" Type="Int32" Nullable="false" />
+    <Property Name="Operator" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="CounterCheckedBy" Type="Int32" Nullable="false" />
+    <Property Name="PostedBy" Type="Int32" Nullable="false" />
+    <Property Name="ApprovedStatus" Type="Int32" />
+    <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ApprovalStatu" Relationship="Self.FK_StockTransfers_ApprovalStatus" FromRole="StockTransfers" ToRole="ApprovalStatus" />
+    <NavigationProperty Name="Employee" Relationship="Self.FK__StockTran__Appro__607251E5" FromRole="StockTransfers" ToRole="Employees" />
+    <NavigationProperty Name="Employee1" Relationship="Self.FK__StockTran__Count__625A9A57" FromRole="StockTransfers" ToRole="Employees" />
+    <NavigationProperty Name="Employee2" Relationship="Self.FK__StockTran__Poste__634EBE90" FromRole="StockTransfers" ToRole="Employees" />
+    <NavigationProperty Name="Employee3" Relationship="Self.FK__StockTran__Recei__5E8A0973" FromRole="StockTransfers" ToRole="Employees" />
+    <NavigationProperty Name="Employee4" Relationship="Self.FK__StockTran__Relea__6166761E" FromRole="StockTransfers" ToRole="Employees" />
+    <NavigationProperty Name="Employee5" Relationship="Self.FK__StockTran__Reque__5F7E2DAC" FromRole="StockTransfers" ToRole="Employees" />
+    <NavigationProperty Name="Location" Relationship="Self.FK__StockTran__Locat__1209AD79" FromRole="StockTransfers" ToRole="Locations" />
+    <NavigationProperty Name="Receivings" Relationship="Self.FK_Receivings_StockTransfers" FromRole="StockTransfers" ToRole="Receivings" />
+    <NavigationProperty Name="Requisition" Relationship="Self.FK_StockTransfers_Requisitions" FromRole="StockTransfers" ToRole="Requisitions" />
   </EntityType>
   <EntityType Name="SubCategory">
     <Key>
@@ -245,7 +442,7 @@
     <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Picture" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Category" Relationship="Self.FK_SubCategories_Categories" FromRole="SubCategories" ToRole="Categories" />
-    <NavigationProperty Name="Items" Relationship="MoostBrandModel.FK__Items__SubCatego__308E3499" FromRole="SubCategory" ToRole="Item" />
+    <NavigationProperty Name="Items" Relationship="Self.FK__Items__SubCatego__308E3499" FromRole="SubCategories" ToRole="Items" />
   </EntityType>
   <EntityType Name="UnitOfMeasurement">
     <Key>
@@ -255,7 +452,7 @@
     <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="QuantityOfMeasure" Type="Decimal" Precision="10" Scale="2" />
-    <NavigationProperty Name="Items" Relationship="MoostBrandModel.FK_Items_UnitOfMeasurements" FromRole="UnitOfMeasurement" ToRole="Item" />
+    <NavigationProperty Name="Items" Relationship="Self.FK_Items_UnitOfMeasurements" FromRole="UnitOfMeasurements" ToRole="Items" />
   </EntityType>
   <EntityType Name="User">
     <Key>
@@ -293,8 +490,80 @@
     <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ContactNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Requisitions" Relationship="MoostBrandModel.FK__Requisiti__Vendo__3B0BC30C" FromRole="Vendor" ToRole="Requisition" />
+    <NavigationProperty Name="Requisitions" Relationship="Self.FK_Requisitions_Vendors" FromRole="Vendors" ToRole="Requisitions" />
   </EntityType>
+  <Association Name="FK_Receivings_ApprovalStatus">
+    <End Role="ApprovalStatus" Type="Self.ApprovalStatu" Multiplicity="0..1" />
+    <End Role="Receivings" Type="Self.Receiving" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ApprovalStatus">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="ApprovalStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RequisitionDetails_ApprovalStatus">
+    <End Role="ApprovalStatus" Type="Self.ApprovalStatu" Multiplicity="0..1" />
+    <End Role="RequisitionDetails" Type="Self.RequisitionDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ApprovalStatus">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="RequisitionDetails">
+        <PropertyRef Name="AprovalStatusID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_ApprovalStatus">
+    <End Role="ApprovalStatus" Type="Self.ApprovalStatu" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ApprovalStatus">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ApprovalStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockTransfers_ApprovalStatus">
+    <End Role="ApprovalStatus" Type="Self.ApprovalStatu" Multiplicity="0..1" />
+    <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ApprovalStatus">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransfers">
+        <PropertyRef Name="ApprovedStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Items__BrandID__2F9A1060">
+    <End Role="Brands" Type="Self.Brand" Multiplicity="0..1" />
+    <End Role="Items" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Brands">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="BrandID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Items__CategoryI__47A6A41B">
+    <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
+    <End Role="Items" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_SubCategories_Categories">
     <End Role="Categories" Type="Self.Category" Multiplicity="0..1" />
     <End Role="SubCategories" Type="Self.SubCategory" Multiplicity="*" />
@@ -307,8 +576,20 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__StockAllo__Conta__719CDDE7">
-    <End Role="ContainerLocations" Type="Self.ContainerLocation" Multiplicity="1" />
+  <Association Name="FK__Items__ColorID__2A164134">
+    <End Role="Colors" Type="Self.Color" Multiplicity="0..1" />
+    <End Role="Items" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Colors">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="ColorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockAllocationDetails_ContainerLocations">
+    <End Role="ContainerLocations" Type="Self.ContainerLocation" Multiplicity="0..1" />
     <End Role="StockAllocationDetails" Type="Self.StockAllocationDetail" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="ContainerLocations">
@@ -319,8 +600,8 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__StockAllo__Conta__70A8B9AE">
-    <End Role="ContainerStorages" Type="Self.ContainerStorage" Multiplicity="1" />
+  <Association Name="FK_StockAllocationDetails_ContainerStorages">
+    <End Role="ContainerStorages" Type="Self.ContainerStorage" Multiplicity="0..1" />
     <End Role="StockAllocationDetails" Type="Self.StockAllocationDetail" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="ContainerStorages">
@@ -328,6 +609,186 @@
       </Principal>
       <Dependent Role="StockAllocationDetails">
         <PropertyRef Name="ContainerStorageID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_DropShipTypes">
+    <End Role="DropShipTypes" Type="Self.DropShipType" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DropShipTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="DropShipID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Receiving__Appro__756D6ECB">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Receivings" Type="Self.Receiving" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="ApprovedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StockTran__Appro__607251E5">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransfers">
+        <PropertyRef Name="ApprovedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StockTran__Count__625A9A57">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+    <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransfers">
+        <PropertyRef Name="CounterCheckedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StockTran__Poste__634EBE90">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+    <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransfers">
+        <PropertyRef Name="PostedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StockTran__Recei__5E8A0973">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+    <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransfers">
+        <PropertyRef Name="ReceivedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StockTran__Relea__6166761E">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+    <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransfers">
+        <PropertyRef Name="ReleasedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StockTran__Reque__5F7E2DAC">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+    <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransfers">
+        <PropertyRef Name="RequestedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receivings_Employees">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Receivings" Type="Self.Receiving" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="EncodedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receivings_Employees1">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Receivings" Type="Self.Receiving" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="CheckedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receivings_Employees2">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Receivings" Type="Self.Receiving" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="ReceivedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Employees_ApprovedBy">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ApprovedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Employees_RequestedBy">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="RequestedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Employees_ReservedBy">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ReservedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Employees_ValidatedBy">
+    <End Role="Employees" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ValidatedBy" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -340,6 +801,66 @@
       </Principal>
       <Dependent Role="Users">
         <PropertyRef Name="EmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Items__SizeID__2B0A656D">
+    <End Role="Sizes" Type="Self.Size" Multiplicity="0..1" />
+    <End Role="Items" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sizes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="SizeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Items__SubCatego__308E3499">
+    <End Role="SubCategories" Type="Self.SubCategory" Multiplicity="0..1" />
+    <End Role="Items" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SubCategories">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="SubCategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Items_UnitOfMeasurements">
+    <End Role="UnitOfMeasurements" Type="Self.UnitOfMeasurement" Multiplicity="0..1" />
+    <End Role="Items" Type="Self.Item" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UnitOfMeasurements">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Items">
+        <PropertyRef Name="UnitOfMeasurementID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RequisitionDetails_Items">
+    <End Role="Items" Type="Self.Item" Multiplicity="1" />
+    <End Role="RequisitionDetails" Type="Self.RequisitionDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="RequisitionDetails">
+        <PropertyRef Name="ItemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StockTran__Locat__1209AD79">
+    <End Role="Locations" Type="Self.Location" Multiplicity="1" />
+    <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransfers">
+        <PropertyRef Name="LocationID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -367,27 +888,257 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Receiving__Requi__55009F39">
-    <End Role="RequisitionDetails" Type="Self.RequisitionDetail" Multiplicity="1" />
-    <End Role="ReceivingDetails" Type="Self.ReceivingDetail" Multiplicity="*" />
+  <Association Name="FK_Receivings_Locations">
+    <End Role="Locations" Type="Self.Location" Multiplicity="1" />
+    <End Role="Receivings" Type="Self.Receiving" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="RequisitionDetails">
+      <Principal Role="Locations">
         <PropertyRef Name="ID" />
       </Principal>
-      <Dependent Role="ReceivingDetails">
-        <PropertyRef Name="RequisitionDetailID" />
+      <Dependent Role="Receivings">
+        <PropertyRef Name="LocationID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__StockAllo__Stock__69FBBC1F">
-    <End Role="ReceivingDetails" Type="Self.ReceivingDetail" Multiplicity="1" />
+  <Association Name="FK_Requisitions_Locations">
+    <End Role="Locations" Type="Self.Location" Multiplicity="1" />
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="LocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Locations1">
+    <End Role="Locations" Type="Self.Location" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="Destination" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockAllocations_Locations">
+    <End Role="Locations" Type="Self.Location" Multiplicity="1" />
+    <End Role="StockAllocations" Type="Self.StockAllocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockAllocations">
+        <PropertyRef Name="LocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReceivingDetails_ReasonForAdjustments">
+    <End Role="ReasonForAdjustments" Type="Self.ReasonForAdjustment" Multiplicity="0..1" />
+    <End Role="ReceivingDetails" Type="Self.ReceivingDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReasonForAdjustments">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ReceivingDetails">
+        <PropertyRef Name="Status" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockTransferDetails_ReasonForAdjustments">
+    <End Role="ReasonForAdjustments" Type="Self.ReasonForAdjustment" Multiplicity="0..1" />
+    <End Role="StockTransferDetails" Type="Self.StockTransferDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReasonForAdjustments">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransferDetails">
+        <PropertyRef Name="Status" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReceivingDetails_Receivings">
+    <End Role="Receivings" Type="Self.Receiving" Multiplicity="1" />
+    <End Role="ReceivingDetails" Type="Self.ReceivingDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Receivings">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ReceivingDetails">
+        <PropertyRef Name="ReceivingID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReceivingDetails_StockTransferDetails">
+    <End Role="StockTransferDetails" Type="Self.StockTransferDetail" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ReceivingDetails" Type="Self.ReceivingDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StockTransferDetails">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ReceivingDetails">
+        <PropertyRef Name="StockTransferDetailID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockAllocationDetails_ReceivingDetails">
+    <End Role="ReceivingDetails" Type="Self.ReceivingDetail" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <End Role="StockAllocationDetails" Type="Self.StockAllocationDetail" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="ReceivingDetails">
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="StockAllocationDetails">
-        <PropertyRef Name="StockReceivingDetailID" />
+        <PropertyRef Name="ReceivingDetailID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Receiving__Recei__503BEA1C">
+    <End Role="ReceivingTypes" Type="Self.ReceivingType" Multiplicity="1" />
+    <End Role="Receivings" Type="Self.Receiving" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReceivingTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="ReceivingTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receivings_StockTransfers">
+    <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Receivings" Type="Self.Receiving" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StockTransfers">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="StockTransferID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockAllocations_Receivings">
+    <End Role="Receivings" Type="Self.Receiving" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="StockAllocations" Type="Self.StockAllocation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Receivings">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockAllocations">
+        <PropertyRef Name="ReceivingID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RequisitionDetails_Requisitions">
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="RequisitionDetails" Type="Self.RequisitionDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Requisitions">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="RequisitionDetails">
+        <PropertyRef Name="RequisitionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockTransferDetails_RequisitionDetails">
+    <End Role="RequisitionDetails" Type="Self.RequisitionDetail" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="StockTransferDetails" Type="Self.StockTransferDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RequisitionDetails">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransferDetails">
+        <PropertyRef Name="RequisitionDetailID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_RequisitionTypes">
+    <End Role="RequisitionTypes" Type="Self.RequisitionType" Multiplicity="1" />
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RequisitionTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="RequisitionTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_ReservationTypes">
+    <End Role="ReservationTypes" Type="Self.ReservationType" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReservationTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ReservationTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_ShipmentTypes">
+    <End Role="ShipmentTypes" Type="Self.ShipmentType" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ShipmentTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ShipmentTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Vendors">
+    <End Role="Vendors" Type="Self.Vendor" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vendors">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="VendorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockTransfers_Requisitions">
+    <End Role="Requisitions" Type="Self.Requisition" Multiplicity="1" />
+    <End Role="StockTransfers" Type="Self.StockTransfer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Requisitions">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransfers">
+        <PropertyRef Name="RequisitionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockAllocationDetails_StockAllocations">
+    <End Role="StockAllocations" Type="Self.StockAllocation" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="StockAllocationDetails" Type="Self.StockAllocationDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StockAllocations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockAllocationDetails">
+        <PropertyRef Name="StockAllocationID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -408,44 +1159,161 @@
     <EntitySet Name="Brands" EntityType="Self.Brand" />
     <EntitySet Name="Categories" EntityType="Self.Category" />
     <EntitySet Name="Clients" EntityType="Self.Client" />
+    <EntitySet Name="Colors" EntityType="Self.Color" />
     <EntitySet Name="ContainerLocations" EntityType="Self.ContainerLocation" />
     <EntitySet Name="ContainerStorages" EntityType="Self.ContainerStorage" />
     <EntitySet Name="Downpayments" EntityType="Self.Downpayment" />
     <EntitySet Name="DropShipTypes" EntityType="Self.DropShipType" />
     <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Items" EntityType="Self.Item" />
     <EntitySet Name="Locations" EntityType="Self.Location" />
     <EntitySet Name="LocationTypes" EntityType="Self.LocationType" />
+    <EntitySet Name="PaymentStatus" EntityType="Self.PaymentStatu" />
     <EntitySet Name="ReasonForAdjustments" EntityType="Self.ReasonForAdjustment" />
     <EntitySet Name="ReceivingDetails" EntityType="Self.ReceivingDetail" />
+    <EntitySet Name="Receivings" EntityType="Self.Receiving" />
     <EntitySet Name="ReceivingTypes" EntityType="Self.ReceivingType" />
     <EntitySet Name="RequisitionDetails" EntityType="Self.RequisitionDetail" />
+    <EntitySet Name="Requisitions" EntityType="Self.Requisition" />
     <EntitySet Name="RequisitionTypes" EntityType="Self.RequisitionType" />
     <EntitySet Name="Reservations" EntityType="Self.Reservation" />
     <EntitySet Name="ReservationTypes" EntityType="Self.ReservationType" />
     <EntitySet Name="ReturnedItems" EntityType="Self.ReturnedItem" />
     <EntitySet Name="ReturnTypes" EntityType="Self.ReturnType" />
     <EntitySet Name="ShipmentTypes" EntityType="Self.ShipmentType" />
+    <EntitySet Name="Sizes" EntityType="Self.Size" />
     <EntitySet Name="StockAllocationDetails" EntityType="Self.StockAllocationDetail" />
+    <EntitySet Name="StockAllocations" EntityType="Self.StockAllocation" />
+    <EntitySet Name="StockTransferDetails" EntityType="Self.StockTransferDetail" />
+    <EntitySet Name="StockTransfers" EntityType="Self.StockTransfer" />
     <EntitySet Name="SubCategories" EntityType="Self.SubCategory" />
     <EntitySet Name="UnitOfMeasurements" EntityType="Self.UnitOfMeasurement" />
     <EntitySet Name="Users" EntityType="Self.User" />
     <EntitySet Name="UserTypes" EntityType="Self.UserType" />
     <EntitySet Name="Vendors" EntityType="Self.Vendor" />
+    <AssociationSet Name="FK_Receivings_ApprovalStatus" Association="Self.FK_Receivings_ApprovalStatus">
+      <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RequisitionDetails_ApprovalStatus" Association="Self.FK_RequisitionDetails_ApprovalStatus">
+      <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_ApprovalStatus" Association="Self.FK_Requisitions_ApprovalStatus">
+      <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockTransfers_ApprovalStatus" Association="Self.FK_StockTransfers_ApprovalStatus">
+      <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Items__BrandID__2F9A1060" Association="Self.FK__Items__BrandID__2F9A1060">
+      <End Role="Brands" EntitySet="Brands" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Items__CategoryI__47A6A41B" Association="Self.FK__Items__CategoryI__47A6A41B">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
     <AssociationSet Name="FK_SubCategories_Categories" Association="Self.FK_SubCategories_Categories">
       <End Role="Categories" EntitySet="Categories" />
       <End Role="SubCategories" EntitySet="SubCategories" />
     </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__Conta__719CDDE7" Association="Self.FK__StockAllo__Conta__719CDDE7">
+    <AssociationSet Name="FK__Items__ColorID__2A164134" Association="Self.FK__Items__ColorID__2A164134">
+      <End Role="Colors" EntitySet="Colors" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockAllocationDetails_ContainerLocations" Association="Self.FK_StockAllocationDetails_ContainerLocations">
       <End Role="ContainerLocations" EntitySet="ContainerLocations" />
       <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
     </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__Conta__70A8B9AE" Association="Self.FK__StockAllo__Conta__70A8B9AE">
+    <AssociationSet Name="FK_StockAllocationDetails_ContainerStorages" Association="Self.FK_StockAllocationDetails_ContainerStorages">
       <End Role="ContainerStorages" EntitySet="ContainerStorages" />
       <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_DropShipTypes" Association="Self.FK_Requisitions_DropShipTypes">
+      <End Role="DropShipTypes" EntitySet="DropShipTypes" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Receiving__Appro__756D6ECB" Association="Self.FK__Receiving__Appro__756D6ECB">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StockTran__Appro__607251E5" Association="Self.FK__StockTran__Appro__607251E5">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StockTran__Count__625A9A57" Association="Self.FK__StockTran__Count__625A9A57">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StockTran__Poste__634EBE90" Association="Self.FK__StockTran__Poste__634EBE90">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StockTran__Recei__5E8A0973" Association="Self.FK__StockTran__Recei__5E8A0973">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StockTran__Relea__6166761E" Association="Self.FK__StockTran__Relea__6166761E">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StockTran__Reque__5F7E2DAC" Association="Self.FK__StockTran__Reque__5F7E2DAC">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receivings_Employees" Association="Self.FK_Receivings_Employees">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receivings_Employees1" Association="Self.FK_Receivings_Employees1">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receivings_Employees2" Association="Self.FK_Receivings_Employees2">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Employees_ApprovedBy" Association="Self.FK_Requisitions_Employees_ApprovedBy">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Employees_RequestedBy" Association="Self.FK_Requisitions_Employees_RequestedBy">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Employees_ReservedBy" Association="Self.FK_Requisitions_Employees_ReservedBy">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Employees_ValidatedBy" Association="Self.FK_Requisitions_Employees_ValidatedBy">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
     </AssociationSet>
     <AssociationSet Name="FK_Users_Employees" Association="Self.FK_Users_Employees">
       <End Role="Employees" EntitySet="Employees" />
       <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Items__SizeID__2B0A656D" Association="Self.FK__Items__SizeID__2B0A656D">
+      <End Role="Sizes" EntitySet="Sizes" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Items__SubCatego__308E3499" Association="Self.FK__Items__SubCatego__308E3499">
+      <End Role="SubCategories" EntitySet="SubCategories" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Items_UnitOfMeasurements" Association="Self.FK_Items_UnitOfMeasurements">
+      <End Role="UnitOfMeasurements" EntitySet="UnitOfMeasurements" />
+      <End Role="Items" EntitySet="Items" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RequisitionDetails_Items" Association="Self.FK_RequisitionDetails_Items">
+      <End Role="Items" EntitySet="Items" />
+      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StockTran__Locat__1209AD79" Association="Self.FK__StockTran__Locat__1209AD79">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
     </AssociationSet>
     <AssociationSet Name="FK__Users__LocationI__3587F3E0" Association="Self.FK__Users__LocationI__3587F3E0">
       <End Role="Locations" EntitySet="Locations" />
@@ -455,804 +1323,89 @@
       <End Role="LocationTypes" EntitySet="LocationTypes" />
       <End Role="Locations" EntitySet="Locations" />
     </AssociationSet>
-    <AssociationSet Name="FK__Receiving__Requi__55009F39" Association="Self.FK__Receiving__Requi__55009F39">
-      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+    <AssociationSet Name="FK_Receivings_Locations" Association="Self.FK_Receivings_Locations">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Locations" Association="Self.FK_Requisitions_Locations">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Locations1" Association="Self.FK_Requisitions_Locations1">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockAllocations_Locations" Association="Self.FK_StockAllocations_Locations">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="StockAllocations" EntitySet="StockAllocations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReceivingDetails_ReasonForAdjustments" Association="Self.FK_ReceivingDetails_ReasonForAdjustments">
+      <End Role="ReasonForAdjustments" EntitySet="ReasonForAdjustments" />
       <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
     </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__Stock__69FBBC1F" Association="Self.FK__StockAllo__Stock__69FBBC1F">
+    <AssociationSet Name="FK_StockTransferDetails_ReasonForAdjustments" Association="Self.FK_StockTransferDetails_ReasonForAdjustments">
+      <End Role="ReasonForAdjustments" EntitySet="ReasonForAdjustments" />
+      <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReceivingDetails_Receivings" Association="Self.FK_ReceivingDetails_Receivings">
+      <End Role="Receivings" EntitySet="Receivings" />
       <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReceivingDetails_StockTransferDetails" Association="Self.FK_ReceivingDetails_StockTransferDetails">
+      <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
+      <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockAllocationDetails_ReceivingDetails" Association="Self.FK_StockAllocationDetails_ReceivingDetails">
+      <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
+      <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Receiving__Recei__503BEA1C" Association="Self.FK__Receiving__Recei__503BEA1C">
+      <End Role="ReceivingTypes" EntitySet="ReceivingTypes" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receivings_StockTransfers" Association="Self.FK_Receivings_StockTransfers">
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockAllocations_Receivings" Association="Self.FK_StockAllocations_Receivings">
+      <End Role="Receivings" EntitySet="Receivings" />
+      <End Role="StockAllocations" EntitySet="StockAllocations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RequisitionDetails_Requisitions" Association="Self.FK_RequisitionDetails_Requisitions">
+      <End Role="Requisitions" EntitySet="Requisitions" />
+      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockTransferDetails_RequisitionDetails" Association="Self.FK_StockTransferDetails_RequisitionDetails">
+      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+      <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_RequisitionTypes" Association="Self.FK_Requisitions_RequisitionTypes">
+      <End Role="RequisitionTypes" EntitySet="RequisitionTypes" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_ReservationTypes" Association="Self.FK_Requisitions_ReservationTypes">
+      <End Role="ReservationTypes" EntitySet="ReservationTypes" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_ShipmentTypes" Association="Self.FK_Requisitions_ShipmentTypes">
+      <End Role="ShipmentTypes" EntitySet="ShipmentTypes" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Vendors" Association="Self.FK_Requisitions_Vendors">
+      <End Role="Vendors" EntitySet="Vendors" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockTransfers_Requisitions" Association="Self.FK_StockTransfers_Requisitions">
+      <End Role="Requisitions" EntitySet="Requisitions" />
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockAllocationDetails_StockAllocations" Association="Self.FK_StockAllocationDetails_StockAllocations">
+      <End Role="StockAllocations" EntitySet="StockAllocations" />
       <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
     </AssociationSet>
     <AssociationSet Name="FK_Users_UserType" Association="Self.FK_Users_UserType">
       <End Role="UserType" EntitySet="UserTypes" />
       <End Role="Users" EntitySet="Users" />
     </AssociationSet>
-    <EntitySet Name="Receivings" EntityType="MoostBrandModel.Receiving" />
-    <EntitySet Name="StockAllocations" EntityType="MoostBrandModel.StockAllocation" />
-    <EntitySet Name="StockTransfers" EntityType="MoostBrandModel.StockTransfer" />
-    <AssociationSet Name="FK__Receiving__Appro__756D6ECB" Association="MoostBrandModel.FK__Receiving__Appro__756D6ECB">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="Receiving" EntitySet="Receivings" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockTran__Appro__607251E5" Association="MoostBrandModel.FK__StockTran__Appro__607251E5">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="StockTransfer" EntitySet="StockTransfers" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockTran__Count__625A9A57" Association="MoostBrandModel.FK__StockTran__Count__625A9A57">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="StockTransfer" EntitySet="StockTransfers" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockTran__Poste__634EBE90" Association="MoostBrandModel.FK__StockTran__Poste__634EBE90">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="StockTransfer" EntitySet="StockTransfers" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockTran__Recei__5E8A0973" Association="MoostBrandModel.FK__StockTran__Recei__5E8A0973">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="StockTransfer" EntitySet="StockTransfers" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockTran__Relea__6166761E" Association="MoostBrandModel.FK__StockTran__Relea__6166761E">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="StockTransfer" EntitySet="StockTransfers" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockTran__Reque__5F7E2DAC" Association="MoostBrandModel.FK__StockTran__Reque__5F7E2DAC">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="StockTransfer" EntitySet="StockTransfers" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__Locat__16CE6296" Association="MoostBrandModel.FK__StockAllo__Locat__16CE6296">
-      <End Role="Location" EntitySet="Locations" />
-      <End Role="StockAllocation" EntitySet="StockAllocations" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockTran__Locat__1209AD79" Association="MoostBrandModel.FK__StockTran__Locat__1209AD79">
-      <End Role="Location" EntitySet="Locations" />
-      <End Role="StockTransfer" EntitySet="StockTransfers" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Receiving__Recei__540C7B00" Association="MoostBrandModel.FK__Receiving__Recei__540C7B00">
-      <End Role="Receiving" EntitySet="Receivings" />
-      <End Role="ReceivingDetail" EntitySet="ReceivingDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Receiving__Recei__503BEA1C" Association="MoostBrandModel.FK__Receiving__Recei__503BEA1C">
-      <End Role="ReceivingType" EntitySet="ReceivingTypes" />
-      <End Role="Receiving" EntitySet="Receivings" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockTran__Recei__5D95E53A" Association="MoostBrandModel.FK__StockTran__Recei__5D95E53A">
-      <End Role="Receiving" EntitySet="Receivings" />
-      <End Role="StockTransfer" EntitySet="StockTransfers" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__Stock__690797E6" Association="MoostBrandModel.FK__StockAllo__Stock__690797E6">
-      <End Role="StockAllocation" EntitySet="StockAllocations" />
-      <End Role="StockAllocationDetail" EntitySet="StockAllocationDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__Stock__662B2B3B" Association="MoostBrandModel.FK__StockAllo__Stock__662B2B3B">
-      <End Role="StockTransfer" EntitySet="StockTransfers" />
-      <End Role="StockAllocation" EntitySet="StockAllocations" />
-    </AssociationSet>
-    <EntitySet Name="Colors" EntityType="MoostBrandModel.Color" />
-    <EntitySet Name="Sizes" EntityType="MoostBrandModel.Size" />
-    <EntitySet Name="Items" EntityType="MoostBrandModel.Item" />
-    <AssociationSet Name="FK__Items__BrandID__2F9A1060" Association="MoostBrandModel.FK__Items__BrandID__2F9A1060">
-      <End Role="Brand" EntitySet="Brands" />
-      <End Role="Item" EntitySet="Items" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Items_Brands" Association="MoostBrandModel.FK_Items_Brands">
-      <End Role="Brand" EntitySet="Brands" />
-      <End Role="Item" EntitySet="Items" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Items__CategoryI__47A6A41B" Association="MoostBrandModel.FK__Items__CategoryI__47A6A41B">
-      <End Role="Category" EntitySet="Categories" />
-      <End Role="Item" EntitySet="Items" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Items__ColorID__2A164134" Association="MoostBrandModel.FK__Items__ColorID__2A164134">
-      <End Role="Color" EntitySet="Colors" />
-      <End Role="Item" EntitySet="Items" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Items__SizeID__2B0A656D" Association="MoostBrandModel.FK__Items__SizeID__2B0A656D">
-      <End Role="Size" EntitySet="Sizes" />
-      <End Role="Item" EntitySet="Items" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Items__SubCatego__308E3499" Association="MoostBrandModel.FK__Items__SubCatego__308E3499">
-      <End Role="SubCategory" EntitySet="SubCategories" />
-      <End Role="Item" EntitySet="Items" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Receiving__ItemI__73852659" Association="MoostBrandModel.FK__Receiving__ItemI__73852659">
-      <End Role="Item" EntitySet="Items" />
-      <End Role="ReceivingDetail" EntitySet="ReceivingDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__ItemI__3F115E1A" Association="MoostBrandModel.FK__Requisiti__ItemI__3F115E1A">
-      <End Role="Item" EntitySet="Items" />
-      <End Role="RequisitionDetail" EntitySet="RequisitionDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__ItemI__72910220" Association="MoostBrandModel.FK__Requisiti__ItemI__72910220">
-      <End Role="Item" EntitySet="Items" />
-      <End Role="RequisitionDetail" EntitySet="RequisitionDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__ItemI__6AEFE058" Association="MoostBrandModel.FK__StockAllo__ItemI__6AEFE058">
-      <End Role="Item" EntitySet="Items" />
-      <End Role="StockAllocationDetail" EntitySet="StockAllocationDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Items_Locations" Association="MoostBrandModel.FK_Items_Locations">
-      <End Role="Location" EntitySet="Locations" />
-      <End Role="Item" EntitySet="Items" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Items_UnitOfMeasurements" Association="MoostBrandModel.FK_Items_UnitOfMeasurements">
-      <End Role="UnitOfMeasurement" EntitySet="UnitOfMeasurements" />
-      <End Role="Item" EntitySet="Items" />
-    </AssociationSet>
-    <EntitySet Name="Requisitions" EntityType="MoostBrandModel.Requisition" />
-    <AssociationSet Name="FK__Requisiti__Appro__3A179ED3" Association="MoostBrandModel.FK__Requisiti__Appro__3A179ED3">
-      <End Role="ApprovalStatu" EntitySet="ApprovalStatus" />
-      <End Role="Requisition" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__DropS__3CF40B7E" Association="MoostBrandModel.FK__Requisiti__DropS__3CF40B7E">
-      <End Role="DropShipType" EntitySet="DropShipTypes" />
-      <End Role="Requisition" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Appro__74794A92" Association="MoostBrandModel.FK__Requisiti__Appro__74794A92">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="Requisition" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Reque__41B8C09B" Association="MoostBrandModel.FK__Requisiti__Reque__41B8C09B">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="Requisition" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Reser__3EDC53F0" Association="MoostBrandModel.FK__Requisiti__Reser__3EDC53F0">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="Requisition" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Valid__3FD07829" Association="MoostBrandModel.FK__Requisiti__Valid__3FD07829">
-      <End Role="Employee" EntitySet="Employees" />
-      <End Role="Requisition" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Desti__40C49C62" Association="MoostBrandModel.FK__Requisiti__Desti__40C49C62">
-      <End Role="Location" EntitySet="Locations" />
-      <End Role="Requisition" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Locat__0697FACD" Association="MoostBrandModel.FK__Requisiti__Locat__0697FACD">
-      <End Role="Location" EntitySet="Locations" />
-      <End Role="Requisition" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Receiving__Requi__51300E55" Association="MoostBrandModel.FK__Receiving__Requi__51300E55">
-      <End Role="Requisition" EntitySet="Requisitions" />
-      <End Role="Receiving" EntitySet="Receivings" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Requi__3E1D39E1" Association="MoostBrandModel.FK__Requisiti__Requi__3E1D39E1">
-      <End Role="Requisition" EntitySet="Requisitions" />
-      <End Role="RequisitionDetail" EntitySet="RequisitionDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Requi__318258D2" Association="MoostBrandModel.FK__Requisiti__Requi__318258D2">
-      <End Role="RequisitionType" EntitySet="RequisitionTypes" />
-      <End Role="Requisition" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Reser__3BFFE745" Association="MoostBrandModel.FK__Requisiti__Reser__3BFFE745">
-      <End Role="ReservationType" EntitySet="ReservationTypes" />
-      <End Role="Requisition" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Vendo__3B0BC30C" Association="MoostBrandModel.FK__Requisiti__Vendo__3B0BC30C">
-      <End Role="Vendor" EntitySet="Vendors" />
-      <End Role="Requisition" EntitySet="Requisitions" />
-    </AssociationSet>
   </EntityContainer>
-  <EntityType Name="Receiving">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="LocationID" Type="Int32" Nullable="false" />
-    <Property Name="ReceivingTypeID" Type="Int32" Nullable="false" />
-    <Property Name="ReceivingID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="RequisitionID" Type="Int32" Nullable="false" />
-    <Property Name="ReceivingDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="EncodedBy" Type="Int32" />
-    <Property Name="CheckedBy" Type="Int32" />
-    <Property Name="ReceivedBy" Type="Int32" Nullable="false" />
-    <Property Name="PONumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="DRNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="VesselNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="VoyageNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="VanNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ApprovalStatus" Type="Int32" />
-    <Property Name="ApprovedBy" Type="Int32" />
-    <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Employee" Relationship="MoostBrandModel.FK__Receiving__Appro__756D6ECB" FromRole="Receiving" ToRole="Employee" />
-    <NavigationProperty Name="ReceivingDetails" Relationship="MoostBrandModel.FK__Receiving__Recei__540C7B00" FromRole="Receiving" ToRole="ReceivingDetail" />
-    <NavigationProperty Name="ReceivingType" Relationship="MoostBrandModel.FK__Receiving__Recei__503BEA1C" FromRole="Receiving" ToRole="ReceivingType" />
-    <NavigationProperty Name="StockTransfers" Relationship="MoostBrandModel.FK__StockTran__Recei__5D95E53A" FromRole="Receiving" ToRole="StockTransfer" />
-    <NavigationProperty Name="Requisition" Relationship="MoostBrandModel.FK__Receiving__Requi__51300E55" FromRole="Receiving" ToRole="Requisition" />
-  </EntityType>
-  <EntityType Name="StockAllocation">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="LocationID" Type="Int32" Nullable="false" />
-    <Property Name="StockTransferID" Type="Int32" Nullable="false" />
-    <Property Name="SADate" Type="DateTime" Precision="3" />
-    <Property Name="BatchNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Location" Relationship="MoostBrandModel.FK__StockAllo__Locat__16CE6296" FromRole="StockAllocation" ToRole="Location" />
-    <NavigationProperty Name="StockAllocationDetails" Relationship="MoostBrandModel.FK__StockAllo__Stock__690797E6" FromRole="StockAllocation" ToRole="StockAllocationDetail" />
-    <NavigationProperty Name="StockTransfer" Relationship="MoostBrandModel.FK__StockAllo__Stock__662B2B3B" FromRole="StockAllocation" ToRole="StockTransfer" />
-  </EntityType>
-  <EntityType Name="StockTransfer">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="LocationID" Type="Int32" Nullable="false" />
-    <Property Name="ReceivingID" Type="Int32" Nullable="false" />
-    <Property Name="TransferID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="STDAte" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="Driver" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-    <Property Name="Helper" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-    <Property Name="ReceivedBy" Type="Int32" Nullable="false" />
-    <Property Name="RequestedBy" Type="Int32" Nullable="false" />
-    <Property Name="ApprovedBy" Type="Int32" />
-    <Property Name="ReleasedBy" Type="Int32" Nullable="false" />
-    <Property Name="CounterCheckedBy" Type="Int32" Nullable="false" />
-    <Property Name="PostedBy" Type="Int32" Nullable="false" />
-    <Property Name="ApprovedStatus" Type="Int32" />
-    <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Employee" Relationship="MoostBrandModel.FK__StockTran__Appro__607251E5" FromRole="StockTransfer" ToRole="Employee" />
-    <NavigationProperty Name="Employee1" Relationship="MoostBrandModel.FK__StockTran__Count__625A9A57" FromRole="StockTransfer" ToRole="Employee" />
-    <NavigationProperty Name="Employee2" Relationship="MoostBrandModel.FK__StockTran__Poste__634EBE90" FromRole="StockTransfer" ToRole="Employee" />
-    <NavigationProperty Name="Employee3" Relationship="MoostBrandModel.FK__StockTran__Recei__5E8A0973" FromRole="StockTransfer" ToRole="Employee" />
-    <NavigationProperty Name="Employee4" Relationship="MoostBrandModel.FK__StockTran__Relea__6166761E" FromRole="StockTransfer" ToRole="Employee" />
-    <NavigationProperty Name="Employee5" Relationship="MoostBrandModel.FK__StockTran__Reque__5F7E2DAC" FromRole="StockTransfer" ToRole="Employee" />
-    <NavigationProperty Name="Location" Relationship="MoostBrandModel.FK__StockTran__Locat__1209AD79" FromRole="StockTransfer" ToRole="Location" />
-    <NavigationProperty Name="Receiving" Relationship="MoostBrandModel.FK__StockTran__Recei__5D95E53A" FromRole="StockTransfer" ToRole="Receiving" />
-    <NavigationProperty Name="StockAllocations" Relationship="MoostBrandModel.FK__StockAllo__Stock__662B2B3B" FromRole="StockTransfer" ToRole="StockAllocation" />
-  </EntityType>
-  <Association Name="FK__Receiving__Appro__756D6ECB">
-    <End Type="MoostBrandModel.Employee" Role="Employee" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Receiving" Role="Receiving" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Receiving">
-        <PropertyRef Name="ApprovedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockTran__Appro__607251E5">
-    <End Type="MoostBrandModel.Employee" Role="Employee" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.StockTransfer" Role="StockTransfer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockTransfer">
-        <PropertyRef Name="ApprovedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockTran__Count__625A9A57">
-    <End Type="MoostBrandModel.Employee" Role="Employee" Multiplicity="1" />
-    <End Type="MoostBrandModel.StockTransfer" Role="StockTransfer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockTransfer">
-        <PropertyRef Name="CounterCheckedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockTran__Poste__634EBE90">
-    <End Type="MoostBrandModel.Employee" Role="Employee" Multiplicity="1" />
-    <End Type="MoostBrandModel.StockTransfer" Role="StockTransfer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockTransfer">
-        <PropertyRef Name="PostedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockTran__Recei__5E8A0973">
-    <End Type="MoostBrandModel.Employee" Role="Employee" Multiplicity="1" />
-    <End Type="MoostBrandModel.StockTransfer" Role="StockTransfer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockTransfer">
-        <PropertyRef Name="ReceivedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockTran__Relea__6166761E">
-    <End Type="MoostBrandModel.Employee" Role="Employee" Multiplicity="1" />
-    <End Type="MoostBrandModel.StockTransfer" Role="StockTransfer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockTransfer">
-        <PropertyRef Name="ReleasedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockTran__Reque__5F7E2DAC">
-    <End Type="MoostBrandModel.Employee" Role="Employee" Multiplicity="1" />
-    <End Type="MoostBrandModel.StockTransfer" Role="StockTransfer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockTransfer">
-        <PropertyRef Name="RequestedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockAllo__Locat__16CE6296">
-    <End Type="MoostBrandModel.Location" Role="Location" Multiplicity="1" />
-    <End Type="MoostBrandModel.StockAllocation" Role="StockAllocation" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Location">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockAllocation">
-        <PropertyRef Name="LocationID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockTran__Locat__1209AD79">
-    <End Type="MoostBrandModel.Location" Role="Location" Multiplicity="1" />
-    <End Type="MoostBrandModel.StockTransfer" Role="StockTransfer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Location">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockTransfer">
-        <PropertyRef Name="LocationID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Receiving__Recei__540C7B00">
-    <End Type="MoostBrandModel.Receiving" Role="Receiving" Multiplicity="1" />
-    <End Type="MoostBrandModel.ReceivingDetail" Role="ReceivingDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Receiving">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="ReceivingDetail">
-        <PropertyRef Name="ReceivingID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Receiving__Recei__503BEA1C">
-    <End Type="MoostBrandModel.ReceivingType" Role="ReceivingType" Multiplicity="1" />
-    <End Type="MoostBrandModel.Receiving" Role="Receiving" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ReceivingType">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Receiving">
-        <PropertyRef Name="ReceivingTypeID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockTran__Recei__5D95E53A">
-    <End Type="MoostBrandModel.Receiving" Role="Receiving" Multiplicity="1" />
-    <End Type="MoostBrandModel.StockTransfer" Role="StockTransfer" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Receiving">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockTransfer">
-        <PropertyRef Name="ReceivingID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockAllo__Stock__690797E6">
-    <End Type="MoostBrandModel.StockAllocation" Role="StockAllocation" Multiplicity="1" />
-    <End Type="MoostBrandModel.StockAllocationDetail" Role="StockAllocationDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="StockAllocation">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockAllocationDetail">
-        <PropertyRef Name="StockAllocationID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockAllo__Stock__662B2B3B">
-    <End Type="MoostBrandModel.StockTransfer" Role="StockTransfer" Multiplicity="1" />
-    <End Type="MoostBrandModel.StockAllocation" Role="StockAllocation" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="StockTransfer">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockAllocation">
-        <PropertyRef Name="StockTransferID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="Color">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Items" Relationship="MoostBrandModel.FK__Items__ColorID__2A164134" FromRole="Color" ToRole="Item" />
-  </EntityType>
-  <EntityType Name="Size">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Items" Relationship="MoostBrandModel.FK__Items__SizeID__2B0A656D" FromRole="Size" ToRole="Item" />
-  </EntityType>
-  <EntityType Name="Item">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Barcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="CategoryID" Type="Int32" />
-    <Property Name="SubCategoryID" Type="Int32" />
-    <Property Name="BrandID" Type="Int32" />
-    <Property Name="ColorID" Type="Int32" />
-    <Property Name="SizeID" Type="Int32" />
-    <Property Name="UnitOfMeasurementID" Type="Int32" />
-    <Property Name="ReOrderLevel" Type="Int32" />
-    <Property Name="MinimumStock" Type="Int32" />
-    <Property Name="MaximumStock" Type="Int32" />
-    <NavigationProperty Name="Brand" Relationship="MoostBrandModel.FK__Items__BrandID__2F9A1060" FromRole="Item" ToRole="Brand" />
-    <NavigationProperty Name="Brand1" Relationship="MoostBrandModel.FK_Items_Brands" FromRole="Item" ToRole="Brand" />
-    <NavigationProperty Name="Category" Relationship="MoostBrandModel.FK__Items__CategoryI__47A6A41B" FromRole="Item" ToRole="Category" />
-    <NavigationProperty Name="Color" Relationship="MoostBrandModel.FK__Items__ColorID__2A164134" FromRole="Item" ToRole="Color" />
-    <NavigationProperty Name="Size" Relationship="MoostBrandModel.FK__Items__SizeID__2B0A656D" FromRole="Item" ToRole="Size" />
-    <NavigationProperty Name="SubCategory" Relationship="MoostBrandModel.FK__Items__SubCatego__308E3499" FromRole="Item" ToRole="SubCategory" />
-    <NavigationProperty Name="ReceivingDetails" Relationship="MoostBrandModel.FK__Receiving__ItemI__73852659" FromRole="Item" ToRole="ReceivingDetail" />
-    <NavigationProperty Name="RequisitionDetails" Relationship="MoostBrandModel.FK__Requisiti__ItemI__3F115E1A" FromRole="Item" ToRole="RequisitionDetail" />
-    <NavigationProperty Name="RequisitionDetails1" Relationship="MoostBrandModel.FK__Requisiti__ItemI__72910220" FromRole="Item" ToRole="RequisitionDetail" />
-    <NavigationProperty Name="StockAllocationDetails" Relationship="MoostBrandModel.FK__StockAllo__ItemI__6AEFE058" FromRole="Item" ToRole="StockAllocationDetail" />
-    <NavigationProperty Name="Location" Relationship="MoostBrandModel.FK_Items_Locations" FromRole="Item" ToRole="Location" />
-    <NavigationProperty Name="UnitOfMeasurement" Relationship="MoostBrandModel.FK_Items_UnitOfMeasurements" FromRole="Item" ToRole="UnitOfMeasurement" />
-  </EntityType>
-  <Association Name="FK__Items__BrandID__2F9A1060">
-    <End Type="MoostBrandModel.Brand" Role="Brand" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Brand">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Item">
-        <PropertyRef Name="BrandID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Items_Brands">
-    <End Type="MoostBrandModel.Brand" Role="Brand" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Brand">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Item">
-        <PropertyRef Name="ColorID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Items__CategoryI__47A6A41B">
-    <End Type="MoostBrandModel.Category" Role="Category" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Category">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Item">
-        <PropertyRef Name="CategoryID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Items__ColorID__2A164134">
-    <End Type="MoostBrandModel.Color" Role="Color" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Color">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Item">
-        <PropertyRef Name="ColorID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Items__SizeID__2B0A656D">
-    <End Type="MoostBrandModel.Size" Role="Size" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Size">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Item">
-        <PropertyRef Name="SizeID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Items__SubCatego__308E3499">
-    <End Type="MoostBrandModel.SubCategory" Role="SubCategory" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="SubCategory">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Item">
-        <PropertyRef Name="SubCategoryID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Receiving__ItemI__73852659">
-    <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="1" />
-    <End Type="MoostBrandModel.ReceivingDetail" Role="ReceivingDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Item">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="ReceivingDetail">
-        <PropertyRef Name="ItemID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__ItemI__3F115E1A">
-    <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.RequisitionDetail" Role="RequisitionDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Item">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="RequisitionDetail">
-        <PropertyRef Name="ItemID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__ItemI__72910220">
-    <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.RequisitionDetail" Role="RequisitionDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Item">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="RequisitionDetail">
-        <PropertyRef Name="ItemID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockAllo__ItemI__6AEFE058">
-    <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="1" />
-    <End Type="MoostBrandModel.StockAllocationDetail" Role="StockAllocationDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Item">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockAllocationDetail">
-        <PropertyRef Name="ItemID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Items_Locations">
-    <End Type="MoostBrandModel.Location" Role="Location" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Location">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Item">
-        <PropertyRef Name="MinimumStock" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Items_UnitOfMeasurements">
-    <End Type="MoostBrandModel.UnitOfMeasurement" Role="UnitOfMeasurement" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="UnitOfMeasurement">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Item">
-        <PropertyRef Name="UnitOfMeasurementID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="Requisition">
-    <Key>
-      <PropertyRef Name="ID" />
-    </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="RefNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="RequisitionTypeID" Type="Int32" Nullable="false" />
-    <Property Name="RequestedBy" Type="Int32" Nullable="false" />
-    <Property Name="RequestedDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="LocationID" Type="Int32" Nullable="false" />
-    <Property Name="DateRequired" Type="DateTime" Precision="3" />
-    <Property Name="VendorID" Type="Int32" />
-    <Property Name="ShipmentDate" Type="DateTime" Precision="3" />
-    <Property Name="Customer" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-    <Property Name="ReservationTypeID" Type="Int32" />
-    <Property Name="ShipmentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="DropShipID" Type="Int32" />
-    <Property Name="PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="InvoiceNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-    <Property Name="ReservedBy" Type="Int32" />
-    <Property Name="ValidatedBy" Type="Int32" />
-    <Property Name="Destination" Type="Int32" />
-    <Property Name="ApprovalStatus" Type="Int32" Nullable="false" />
-    <Property Name="ApprovedBy" Type="Int32" />
-    <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="ApprovalStatu" Relationship="MoostBrandModel.FK__Requisiti__Appro__3A179ED3" FromRole="Requisition" ToRole="ApprovalStatu" />
-    <NavigationProperty Name="DropShipType" Relationship="MoostBrandModel.FK__Requisiti__DropS__3CF40B7E" FromRole="Requisition" ToRole="DropShipType" />
-    <NavigationProperty Name="Employee" Relationship="MoostBrandModel.FK__Requisiti__Appro__74794A92" FromRole="Requisition" ToRole="Employee" />
-    <NavigationProperty Name="Employee1" Relationship="MoostBrandModel.FK__Requisiti__Reque__41B8C09B" FromRole="Requisition" ToRole="Employee" />
-    <NavigationProperty Name="Employee2" Relationship="MoostBrandModel.FK__Requisiti__Reser__3EDC53F0" FromRole="Requisition" ToRole="Employee" />
-    <NavigationProperty Name="Employee3" Relationship="MoostBrandModel.FK__Requisiti__Valid__3FD07829" FromRole="Requisition" ToRole="Employee" />
-    <NavigationProperty Name="Location" Relationship="MoostBrandModel.FK__Requisiti__Desti__40C49C62" FromRole="Requisition" ToRole="Location" />
-    <NavigationProperty Name="Location1" Relationship="MoostBrandModel.FK__Requisiti__Locat__0697FACD" FromRole="Requisition" ToRole="Location" />
-    <NavigationProperty Name="Receivings" Relationship="MoostBrandModel.FK__Receiving__Requi__51300E55" FromRole="Requisition" ToRole="Receiving" />
-    <NavigationProperty Name="RequisitionDetails" Relationship="MoostBrandModel.FK__Requisiti__Requi__3E1D39E1" FromRole="Requisition" ToRole="RequisitionDetail" />
-    <NavigationProperty Name="RequisitionType" Relationship="MoostBrandModel.FK__Requisiti__Requi__318258D2" FromRole="Requisition" ToRole="RequisitionType" />
-    <NavigationProperty Name="ReservationType" Relationship="MoostBrandModel.FK__Requisiti__Reser__3BFFE745" FromRole="Requisition" ToRole="ReservationType" />
-    <NavigationProperty Name="Vendor" Relationship="MoostBrandModel.FK__Requisiti__Vendo__3B0BC30C" FromRole="Requisition" ToRole="Vendor" />
-  </EntityType>
-  <Association Name="FK__Requisiti__Appro__3A179ED3">
-    <End Type="MoostBrandModel.ApprovalStatu" Role="ApprovalStatu" Multiplicity="1" />
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ApprovalStatu">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisition">
-        <PropertyRef Name="ApprovalStatus" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__DropS__3CF40B7E">
-    <End Type="MoostBrandModel.DropShipType" Role="DropShipType" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="DropShipType">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisition">
-        <PropertyRef Name="DropShipID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Appro__74794A92">
-    <End Type="MoostBrandModel.Employee" Role="Employee" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisition">
-        <PropertyRef Name="ApprovedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Reque__41B8C09B">
-    <End Type="MoostBrandModel.Employee" Role="Employee" Multiplicity="1" />
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisition">
-        <PropertyRef Name="RequestedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Reser__3EDC53F0">
-    <End Type="MoostBrandModel.Employee" Role="Employee" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisition">
-        <PropertyRef Name="ReservedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Valid__3FD07829">
-    <End Type="MoostBrandModel.Employee" Role="Employee" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employee">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisition">
-        <PropertyRef Name="ValidatedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Desti__40C49C62">
-    <End Type="MoostBrandModel.Location" Role="Location" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Location">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisition">
-        <PropertyRef Name="Destination" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Locat__0697FACD">
-    <End Type="MoostBrandModel.Location" Role="Location" Multiplicity="1" />
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Location">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisition">
-        <PropertyRef Name="LocationID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Receiving__Requi__51300E55">
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="1" />
-    <End Type="MoostBrandModel.Receiving" Role="Receiving" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Requisition">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Receiving">
-        <PropertyRef Name="RequisitionID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Requi__3E1D39E1">
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.RequisitionDetail" Role="RequisitionDetail" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Requisition">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="RequisitionDetail">
-        <PropertyRef Name="RequisitionID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Requi__318258D2">
-    <End Type="MoostBrandModel.RequisitionType" Role="RequisitionType" Multiplicity="1" />
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="RequisitionType">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisition">
-        <PropertyRef Name="RequisitionTypeID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Reser__3BFFE745">
-    <End Type="MoostBrandModel.ReservationType" Role="ReservationType" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ReservationType">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisition">
-        <PropertyRef Name="ReservationTypeID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Vendo__3B0BC30C">
-    <End Type="MoostBrandModel.Vendor" Role="Vendor" Multiplicity="0..1" />
-    <End Type="MoostBrandModel.Requisition" Role="Requisition" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Vendor">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisition">
-        <PropertyRef Name="VendorID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
 </Schema>

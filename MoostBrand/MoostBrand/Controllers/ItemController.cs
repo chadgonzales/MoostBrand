@@ -131,7 +131,7 @@ namespace MoostBrand.Controllers
                         entity.Items.Add(item);
                         entity.SaveChanges();
                     }
-                    catch(Exception err) { }
+                    catch { }
                 }
 
                 return RedirectToAction("Index");

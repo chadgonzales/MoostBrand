@@ -7,6 +7,17 @@
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Status" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <!--Errors Found During Generation:
+warning 6013: The table/view 'MoostBrand.dbo.Booking' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Booking">
+          <Property Name="ID" Type="int" />
+          <Property Name="DateRequest" Type="datetime" />
+          <Property Name="ItemID" Type="int" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="LocationID" Type="int" />
+          <Property Name="RequestedBy" Type="int" />
+        </EntityType>-->
   <EntityType Name="Brands">
     <Key>
       <PropertyRef Name="ID" />
@@ -112,6 +123,13 @@
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="50" />
   </EntityType>
+  <EntityType Name="PaymentStatus">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Status" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityType Name="ReasonForAdjustments">
     <Key>
       <PropertyRef Name="ID" />
@@ -125,10 +143,9 @@
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ReceivingID" Type="int" Nullable="false" />
-    <Property Name="RequisitionDetailID" Type="int" Nullable="false" />
-    <Property Name="ItemID" Type="int" Nullable="false" />
-    <Property Name="QuantityRequested" Type="int" Nullable="false" />
-    <Property Name="QuantityReceived" Type="int" Nullable="false" />
+    <Property Name="StockTransferDetailID" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="IsReturn" Type="bit" />
   </EntityType>
   <EntityType Name="Receivings">
     <Key>
@@ -138,13 +155,14 @@
     <Property Name="LocationID" Type="int" Nullable="false" />
     <Property Name="ReceivingTypeID" Type="int" Nullable="false" />
     <Property Name="ReceivingID" Type="nvarchar" MaxLength="50" Nullable="false" />
-    <Property Name="RequisitionID" Type="int" Nullable="false" />
+    <Property Name="StockTransferID" Type="int" Nullable="false" />
     <Property Name="ReceivingDate" Type="datetime" Nullable="false" />
     <Property Name="EncodedBy" Type="int" />
     <Property Name="CheckedBy" Type="int" />
     <Property Name="ReceivedBy" Type="int" Nullable="false" />
     <Property Name="PONumber" Type="nvarchar" MaxLength="50" />
     <Property Name="DRNumber" Type="nvarchar" MaxLength="50" />
+    <Property Name="InvoiceNumber" Type="nvarchar" MaxLength="50" />
     <Property Name="VesselNumber" Type="nvarchar" MaxLength="50" />
     <Property Name="VoyageNumber" Type="nvarchar" MaxLength="50" />
     <Property Name="VanNumber" Type="nvarchar" MaxLength="50" />
@@ -164,9 +182,11 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="RequisitionID" Type="int" />
-    <Property Name="ItemID" Type="int" />
-    <Property Name="Quantity" Type="int" />
+    <Property Name="RequisitionID" Type="int" Nullable="false" />
+    <Property Name="ItemID" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="AprovalStatusID" Type="int" />
+    <Property Name="Remarks" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="Requisitions">
     <Key>
@@ -183,14 +203,20 @@
     <Property Name="ShipmentDate" Type="datetime" />
     <Property Name="Customer" Type="nvarchar" MaxLength="150" />
     <Property Name="ReservationTypeID" Type="int" />
-    <Property Name="ShipmentType" Type="nvarchar" MaxLength="50" />
+    <Property Name="ShipmentTypeID" Type="int" />
     <Property Name="DropShipID" Type="int" />
     <Property Name="PaymentStatus" Type="nvarchar" MaxLength="50" />
     <Property Name="InvoiceNumber" Type="nvarchar" MaxLength="50" />
     <Property Name="ReservedBy" Type="int" />
+    <Property Name="AuthorizedPerson" Type="nvarchar" MaxLength="150" />
     <Property Name="ValidatedBy" Type="int" />
     <Property Name="Destination" Type="int" />
-    <Property Name="ApprovalStatus" Type="int" Nullable="false" />
+    <Property Name="TimeDeparted" Type="nvarchar" MaxLength="20" />
+    <Property Name="TimeArrived" Type="nvarchar" MaxLength="20" />
+    <Property Name="Driver" Type="nvarchar" MaxLength="50" />
+    <Property Name="PlateNumber" Type="nvarchar" MaxLength="20" />
+    <Property Name="Others" Type="nvarchar" MaxLength="50" />
+    <Property Name="ApprovalStatus" Type="int" />
     <Property Name="ApprovedBy" Type="int" />
     <Property Name="Remarks" Type="nvarchar(max)" />
   </EntityType>
@@ -267,11 +293,10 @@
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="StockAllocationID" Type="int" Nullable="false" />
-    <Property Name="StockReceivingDetailID" Type="int" Nullable="false" />
-    <Property Name="ItemID" Type="int" Nullable="false" />
-    <Property Name="Quantity" Type="int" Nullable="false" />
-    <Property Name="ContainerStorageID" Type="int" Nullable="false" />
-    <Property Name="ContainerLocationID" Type="int" Nullable="false" />
+    <Property Name="ReceivingDetailID" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" />
+    <Property Name="ContainerStorageID" Type="int" />
+    <Property Name="ContainerLocationID" Type="int" />
   </EntityType>
   <EntityType Name="StockAllocations">
     <Key>
@@ -279,25 +304,40 @@
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="LocationID" Type="int" Nullable="false" />
-    <Property Name="StockTransferID" Type="int" Nullable="false" />
+    <Property Name="ReceivingID" Type="int" Nullable="false" />
     <Property Name="SADate" Type="datetime" />
     <Property Name="BatchNumber" Type="nvarchar" MaxLength="50" />
+    <Property Name="Remarks" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="StockTransferDetails">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StockTransferID" Type="int" />
+    <Property Name="RequisitionDetailID" Type="int" />
+    <Property Name="Status" Type="int" />
+    <Property Name="IsReturn" Type="bit" />
   </EntityType>
   <EntityType Name="StockTransfers">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RequisitionID" Type="int" Nullable="false" />
     <Property Name="LocationID" Type="int" Nullable="false" />
-    <Property Name="ReceivingID" Type="int" Nullable="false" />
     <Property Name="TransferID" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="STDAte" Type="datetime" Nullable="false" />
+    <Property Name="StartTime" Type="nvarchar" MaxLength="20" />
+    <Property Name="EndTime" Type="nvarchar" MaxLength="20" />
     <Property Name="Driver" Type="nvarchar" MaxLength="150" />
     <Property Name="Helper" Type="nvarchar" MaxLength="150" />
+    <Property Name="TimeReceived" Type="nvarchar" MaxLength="20" />
     <Property Name="ReceivedBy" Type="int" Nullable="false" />
     <Property Name="RequestedBy" Type="int" Nullable="false" />
     <Property Name="ApprovedBy" Type="int" />
     <Property Name="ReleasedBy" Type="int" Nullable="false" />
+    <Property Name="Operator" Type="nvarchar" MaxLength="150" />
     <Property Name="CounterCheckedBy" Type="int" Nullable="false" />
     <Property Name="PostedBy" Type="int" Nullable="false" />
     <Property Name="ApprovedStatus" Type="int" />
@@ -427,18 +467,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__Receiving__ItemI__73852659">
-    <End Role="Items" Type="Self.Items" Multiplicity="1" />
-    <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Items">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="ReceivingDetails">
-        <PropertyRef Name="ItemID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK__Receiving__Recei__503BEA1C">
     <End Role="ReceivingTypes" Type="Self.ReceivingTypes" Multiplicity="1" />
     <End Role="Receivings" Type="Self.Receivings" Multiplicity="*" />
@@ -448,294 +476,6 @@
       </Principal>
       <Dependent Role="Receivings">
         <PropertyRef Name="ReceivingTypeID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Receiving__Recei__540C7B00">
-    <End Role="Receivings" Type="Self.Receivings" Multiplicity="1" />
-    <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Receivings">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="ReceivingDetails">
-        <PropertyRef Name="ReceivingID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Receiving__Requi__51300E55">
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="1" />
-    <End Role="Receivings" Type="Self.Receivings" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Requisitions">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Receivings">
-        <PropertyRef Name="RequisitionID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Receiving__Requi__55009F39">
-    <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="1" />
-    <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="RequisitionDetails">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="ReceivingDetails">
-        <PropertyRef Name="RequisitionDetailID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Appro__3A179ED3">
-    <End Role="ApprovalStatus" Type="Self.ApprovalStatus" Multiplicity="1" />
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ApprovalStatus">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisitions">
-        <PropertyRef Name="ApprovalStatus" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Appro__74794A92">
-    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employees">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisitions">
-        <PropertyRef Name="ApprovedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Desti__40C49C62">
-    <End Role="Locations" Type="Self.Locations" Multiplicity="0..1" />
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Locations">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisitions">
-        <PropertyRef Name="Destination" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__DropS__3CF40B7E">
-    <End Role="DropShipTypes" Type="Self.DropShipTypes" Multiplicity="0..1" />
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="DropShipTypes">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisitions">
-        <PropertyRef Name="DropShipID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__ItemI__3F115E1A">
-    <End Role="Items" Type="Self.Items" Multiplicity="0..1" />
-    <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Items">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="RequisitionDetails">
-        <PropertyRef Name="ItemID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__ItemI__72910220">
-    <End Role="Items" Type="Self.Items" Multiplicity="0..1" />
-    <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Items">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="RequisitionDetails">
-        <PropertyRef Name="ItemID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Locat__0697FACD">
-    <End Role="Locations" Type="Self.Locations" Multiplicity="1" />
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Locations">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisitions">
-        <PropertyRef Name="LocationID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Reque__41B8C09B">
-    <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employees">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisitions">
-        <PropertyRef Name="RequestedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Requi__318258D2">
-    <End Role="RequisitionTypes" Type="Self.RequisitionTypes" Multiplicity="1" />
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="RequisitionTypes">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisitions">
-        <PropertyRef Name="RequisitionTypeID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Requi__3E1D39E1">
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="0..1" />
-    <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Requisitions">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="RequisitionDetails">
-        <PropertyRef Name="RequisitionID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Reser__3BFFE745">
-    <End Role="ReservationTypes" Type="Self.ReservationTypes" Multiplicity="0..1" />
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ReservationTypes">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisitions">
-        <PropertyRef Name="ReservationTypeID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Reser__3EDC53F0">
-    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employees">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisitions">
-        <PropertyRef Name="ReservedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Valid__3FD07829">
-    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Employees">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisitions">
-        <PropertyRef Name="ValidatedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__Requisiti__Vendo__3B0BC30C">
-    <End Role="Vendors" Type="Self.Vendors" Multiplicity="0..1" />
-    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Vendors">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="Requisitions">
-        <PropertyRef Name="VendorID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockAllo__Conta__70A8B9AE">
-    <End Role="ContainerStorages" Type="Self.ContainerStorages" Multiplicity="1" />
-    <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ContainerStorages">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockAllocationDetails">
-        <PropertyRef Name="ContainerStorageID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockAllo__Conta__719CDDE7">
-    <End Role="ContainerLocations" Type="Self.ContainerLocations" Multiplicity="1" />
-    <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ContainerLocations">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockAllocationDetails">
-        <PropertyRef Name="ContainerLocationID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockAllo__ItemI__6AEFE058">
-    <End Role="Items" Type="Self.Items" Multiplicity="1" />
-    <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Items">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockAllocationDetails">
-        <PropertyRef Name="ItemID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockAllo__Locat__16CE6296">
-    <End Role="Locations" Type="Self.Locations" Multiplicity="1" />
-    <End Role="StockAllocations" Type="Self.StockAllocations" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Locations">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockAllocations">
-        <PropertyRef Name="LocationID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockAllo__Stock__662B2B3B">
-    <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="1" />
-    <End Role="StockAllocations" Type="Self.StockAllocations" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="StockTransfers">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockAllocations">
-        <PropertyRef Name="StockTransferID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockAllo__Stock__690797E6">
-    <End Role="StockAllocations" Type="Self.StockAllocations" Multiplicity="1" />
-    <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="StockAllocations">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockAllocationDetails">
-        <PropertyRef Name="StockAllocationID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockAllo__Stock__69FBBC1F">
-    <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="1" />
-    <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ReceivingDetails">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockAllocationDetails">
-        <PropertyRef Name="StockReceivingDetailID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -784,18 +524,6 @@
       </Principal>
       <Dependent Role="StockTransfers">
         <PropertyRef Name="PostedBy" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK__StockTran__Recei__5D95E53A">
-    <End Role="Receivings" Type="Self.Receivings" Multiplicity="1" />
-    <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Receivings">
-        <PropertyRef Name="ID" />
-      </Principal>
-      <Dependent Role="StockTransfers">
-        <PropertyRef Name="ReceivingID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -871,6 +599,428 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_ReceivingDetails_ReasonForAdjustments">
+    <End Role="ReasonForAdjustments" Type="Self.ReasonForAdjustments" Multiplicity="0..1" />
+    <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReasonForAdjustments">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ReceivingDetails">
+        <PropertyRef Name="Status" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReceivingDetails_Receivings">
+    <End Role="Receivings" Type="Self.Receivings" Multiplicity="1" />
+    <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Receivings">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ReceivingDetails">
+        <PropertyRef Name="ReceivingID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ReceivingDetails_StockTransferDetails">
+    <End Role="StockTransferDetails" Type="Self.StockTransferDetails" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StockTransferDetails">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ReceivingDetails">
+        <PropertyRef Name="StockTransferDetailID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receivings_ApprovalStatus">
+    <End Role="ApprovalStatus" Type="Self.ApprovalStatus" Multiplicity="0..1" />
+    <End Role="Receivings" Type="Self.Receivings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ApprovalStatus">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="ApprovalStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receivings_Employees">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+    <End Role="Receivings" Type="Self.Receivings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="EncodedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receivings_Employees1">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+    <End Role="Receivings" Type="Self.Receivings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="CheckedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receivings_Employees2">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+    <End Role="Receivings" Type="Self.Receivings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="ReceivedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receivings_Locations">
+    <End Role="Locations" Type="Self.Locations" Multiplicity="1" />
+    <End Role="Receivings" Type="Self.Receivings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="LocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Receivings_StockTransfers">
+    <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Receivings" Type="Self.Receivings" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StockTransfers">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Receivings">
+        <PropertyRef Name="StockTransferID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RequisitionDetails_ApprovalStatus">
+    <End Role="ApprovalStatus" Type="Self.ApprovalStatus" Multiplicity="0..1" />
+    <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ApprovalStatus">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="RequisitionDetails">
+        <PropertyRef Name="AprovalStatusID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RequisitionDetails_Items">
+    <End Role="Items" Type="Self.Items" Multiplicity="1" />
+    <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Items">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="RequisitionDetails">
+        <PropertyRef Name="ItemID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RequisitionDetails_Requisitions">
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Requisitions">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="RequisitionDetails">
+        <PropertyRef Name="RequisitionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_ApprovalStatus">
+    <End Role="ApprovalStatus" Type="Self.ApprovalStatus" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ApprovalStatus">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ApprovalStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_DropShipTypes">
+    <End Role="DropShipTypes" Type="Self.DropShipTypes" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DropShipTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="DropShipID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Employees_ApprovedBy">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ApprovedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Employees_RequestedBy">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="RequestedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Employees_ReservedBy">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ReservedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Employees_ValidatedBy">
+    <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employees">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ValidatedBy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Locations">
+    <End Role="Locations" Type="Self.Locations" Multiplicity="1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="LocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Locations1">
+    <End Role="Locations" Type="Self.Locations" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="Destination" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_RequisitionTypes">
+    <End Role="RequisitionTypes" Type="Self.RequisitionTypes" Multiplicity="1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RequisitionTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="RequisitionTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_ReservationTypes">
+    <End Role="ReservationTypes" Type="Self.ReservationTypes" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReservationTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ReservationTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_ShipmentTypes">
+    <End Role="ShipmentTypes" Type="Self.ShipmentTypes" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ShipmentTypes">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="ShipmentTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Requisitions_Vendors">
+    <End Role="Vendors" Type="Self.Vendors" Multiplicity="0..1" />
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vendors">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Requisitions">
+        <PropertyRef Name="VendorID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockAllocationDetails_ContainerLocations">
+    <End Role="ContainerLocations" Type="Self.ContainerLocations" Multiplicity="0..1" />
+    <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContainerLocations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockAllocationDetails">
+        <PropertyRef Name="ContainerLocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockAllocationDetails_ContainerStorages">
+    <End Role="ContainerStorages" Type="Self.ContainerStorages" Multiplicity="0..1" />
+    <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ContainerStorages">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockAllocationDetails">
+        <PropertyRef Name="ContainerStorageID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockAllocationDetails_ReceivingDetails">
+    <End Role="ReceivingDetails" Type="Self.ReceivingDetails" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReceivingDetails">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockAllocationDetails">
+        <PropertyRef Name="ReceivingDetailID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockAllocationDetails_StockAllocations">
+    <End Role="StockAllocations" Type="Self.StockAllocations" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="StockAllocationDetails" Type="Self.StockAllocationDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="StockAllocations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockAllocationDetails">
+        <PropertyRef Name="StockAllocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockAllocations_Locations">
+    <End Role="Locations" Type="Self.Locations" Multiplicity="1" />
+    <End Role="StockAllocations" Type="Self.StockAllocations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Locations">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockAllocations">
+        <PropertyRef Name="LocationID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockAllocations_Receivings">
+    <End Role="Receivings" Type="Self.Receivings" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="StockAllocations" Type="Self.StockAllocations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Receivings">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockAllocations">
+        <PropertyRef Name="ReceivingID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockTransferDetails_ReasonForAdjustments">
+    <End Role="ReasonForAdjustments" Type="Self.ReasonForAdjustments" Multiplicity="0..1" />
+    <End Role="StockTransferDetails" Type="Self.StockTransferDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ReasonForAdjustments">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransferDetails">
+        <PropertyRef Name="Status" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockTransferDetails_RequisitionDetails">
+    <End Role="RequisitionDetails" Type="Self.RequisitionDetails" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="StockTransferDetails" Type="Self.StockTransferDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RequisitionDetails">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransferDetails">
+        <PropertyRef Name="RequisitionDetailID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockTransfers_ApprovalStatus">
+    <End Role="ApprovalStatus" Type="Self.ApprovalStatus" Multiplicity="0..1" />
+    <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ApprovalStatus">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransfers">
+        <PropertyRef Name="ApprovedStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_StockTransfers_Requisitions">
+    <End Role="Requisitions" Type="Self.Requisitions" Multiplicity="1" />
+    <End Role="StockTransfers" Type="Self.StockTransfers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Requisitions">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="StockTransfers">
+        <PropertyRef Name="RequisitionID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_SubCategories_Categories">
     <End Role="Categories" Type="Self.Categories" Multiplicity="0..1" />
     <End Role="SubCategories" Type="Self.SubCategories" Multiplicity="*" />
@@ -921,6 +1071,7 @@
     <EntitySet Name="Items" EntityType="Self.Items" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Locations" EntityType="Self.Locations" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="LocationTypes" EntityType="Self.LocationTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PaymentStatus" EntityType="Self.PaymentStatus" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ReasonForAdjustments" EntityType="Self.ReasonForAdjustments" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ReceivingDetails" EntityType="Self.ReceivingDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Receivings" EntityType="Self.Receivings" Schema="dbo" store:Type="Tables" />
@@ -936,6 +1087,7 @@
     <EntitySet Name="Sizes" EntityType="Self.Sizes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StockAllocationDetails" EntityType="Self.StockAllocationDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StockAllocations" EntityType="Self.StockAllocations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StockTransferDetails" EntityType="Self.StockTransferDetails" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="StockTransfers" EntityType="Self.StockTransfers" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SubCategories" EntityType="Self.SubCategories" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UnitOfMeasurements" EntityType="Self.UnitOfMeasurements" Schema="dbo" store:Type="Tables" />
@@ -966,109 +1118,9 @@
       <End Role="Employees" EntitySet="Employees" />
       <End Role="Receivings" EntitySet="Receivings" />
     </AssociationSet>
-    <AssociationSet Name="FK__Receiving__ItemI__73852659" Association="Self.FK__Receiving__ItemI__73852659">
-      <End Role="Items" EntitySet="Items" />
-      <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
-    </AssociationSet>
     <AssociationSet Name="FK__Receiving__Recei__503BEA1C" Association="Self.FK__Receiving__Recei__503BEA1C">
       <End Role="ReceivingTypes" EntitySet="ReceivingTypes" />
       <End Role="Receivings" EntitySet="Receivings" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Receiving__Recei__540C7B00" Association="Self.FK__Receiving__Recei__540C7B00">
-      <End Role="Receivings" EntitySet="Receivings" />
-      <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Receiving__Requi__51300E55" Association="Self.FK__Receiving__Requi__51300E55">
-      <End Role="Requisitions" EntitySet="Requisitions" />
-      <End Role="Receivings" EntitySet="Receivings" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Receiving__Requi__55009F39" Association="Self.FK__Receiving__Requi__55009F39">
-      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
-      <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Appro__3A179ED3" Association="Self.FK__Requisiti__Appro__3A179ED3">
-      <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
-      <End Role="Requisitions" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Appro__74794A92" Association="Self.FK__Requisiti__Appro__74794A92">
-      <End Role="Employees" EntitySet="Employees" />
-      <End Role="Requisitions" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Desti__40C49C62" Association="Self.FK__Requisiti__Desti__40C49C62">
-      <End Role="Locations" EntitySet="Locations" />
-      <End Role="Requisitions" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__DropS__3CF40B7E" Association="Self.FK__Requisiti__DropS__3CF40B7E">
-      <End Role="DropShipTypes" EntitySet="DropShipTypes" />
-      <End Role="Requisitions" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__ItemI__3F115E1A" Association="Self.FK__Requisiti__ItemI__3F115E1A">
-      <End Role="Items" EntitySet="Items" />
-      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__ItemI__72910220" Association="Self.FK__Requisiti__ItemI__72910220">
-      <End Role="Items" EntitySet="Items" />
-      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Locat__0697FACD" Association="Self.FK__Requisiti__Locat__0697FACD">
-      <End Role="Locations" EntitySet="Locations" />
-      <End Role="Requisitions" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Reque__41B8C09B" Association="Self.FK__Requisiti__Reque__41B8C09B">
-      <End Role="Employees" EntitySet="Employees" />
-      <End Role="Requisitions" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Requi__318258D2" Association="Self.FK__Requisiti__Requi__318258D2">
-      <End Role="RequisitionTypes" EntitySet="RequisitionTypes" />
-      <End Role="Requisitions" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Requi__3E1D39E1" Association="Self.FK__Requisiti__Requi__3E1D39E1">
-      <End Role="Requisitions" EntitySet="Requisitions" />
-      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Reser__3BFFE745" Association="Self.FK__Requisiti__Reser__3BFFE745">
-      <End Role="ReservationTypes" EntitySet="ReservationTypes" />
-      <End Role="Requisitions" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Reser__3EDC53F0" Association="Self.FK__Requisiti__Reser__3EDC53F0">
-      <End Role="Employees" EntitySet="Employees" />
-      <End Role="Requisitions" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Valid__3FD07829" Association="Self.FK__Requisiti__Valid__3FD07829">
-      <End Role="Employees" EntitySet="Employees" />
-      <End Role="Requisitions" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__Requisiti__Vendo__3B0BC30C" Association="Self.FK__Requisiti__Vendo__3B0BC30C">
-      <End Role="Vendors" EntitySet="Vendors" />
-      <End Role="Requisitions" EntitySet="Requisitions" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__Conta__70A8B9AE" Association="Self.FK__StockAllo__Conta__70A8B9AE">
-      <End Role="ContainerStorages" EntitySet="ContainerStorages" />
-      <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__Conta__719CDDE7" Association="Self.FK__StockAllo__Conta__719CDDE7">
-      <End Role="ContainerLocations" EntitySet="ContainerLocations" />
-      <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__ItemI__6AEFE058" Association="Self.FK__StockAllo__ItemI__6AEFE058">
-      <End Role="Items" EntitySet="Items" />
-      <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__Locat__16CE6296" Association="Self.FK__StockAllo__Locat__16CE6296">
-      <End Role="Locations" EntitySet="Locations" />
-      <End Role="StockAllocations" EntitySet="StockAllocations" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__Stock__662B2B3B" Association="Self.FK__StockAllo__Stock__662B2B3B">
-      <End Role="StockTransfers" EntitySet="StockTransfers" />
-      <End Role="StockAllocations" EntitySet="StockAllocations" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__Stock__690797E6" Association="Self.FK__StockAllo__Stock__690797E6">
-      <End Role="StockAllocations" EntitySet="StockAllocations" />
-      <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockAllo__Stock__69FBBC1F" Association="Self.FK__StockAllo__Stock__69FBBC1F">
-      <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
-      <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
     </AssociationSet>
     <AssociationSet Name="FK__StockTran__Appro__607251E5" Association="Self.FK__StockTran__Appro__607251E5">
       <End Role="Employees" EntitySet="Employees" />
@@ -1084,10 +1136,6 @@
     </AssociationSet>
     <AssociationSet Name="FK__StockTran__Poste__634EBE90" Association="Self.FK__StockTran__Poste__634EBE90">
       <End Role="Employees" EntitySet="Employees" />
-      <End Role="StockTransfers" EntitySet="StockTransfers" />
-    </AssociationSet>
-    <AssociationSet Name="FK__StockTran__Recei__5D95E53A" Association="Self.FK__StockTran__Recei__5D95E53A">
-      <End Role="Receivings" EntitySet="Receivings" />
       <End Role="StockTransfers" EntitySet="StockTransfers" />
     </AssociationSet>
     <AssociationSet Name="FK__StockTran__Recei__5E8A0973" Association="Self.FK__StockTran__Recei__5E8A0973">
@@ -1113,6 +1161,142 @@
     <AssociationSet Name="FK_Locations_LocationType" Association="Self.FK_Locations_LocationType">
       <End Role="LocationTypes" EntitySet="LocationTypes" />
       <End Role="Locations" EntitySet="Locations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReceivingDetails_ReasonForAdjustments" Association="Self.FK_ReceivingDetails_ReasonForAdjustments">
+      <End Role="ReasonForAdjustments" EntitySet="ReasonForAdjustments" />
+      <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReceivingDetails_Receivings" Association="Self.FK_ReceivingDetails_Receivings">
+      <End Role="Receivings" EntitySet="Receivings" />
+      <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ReceivingDetails_StockTransferDetails" Association="Self.FK_ReceivingDetails_StockTransferDetails">
+      <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
+      <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receivings_ApprovalStatus" Association="Self.FK_Receivings_ApprovalStatus">
+      <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receivings_Employees" Association="Self.FK_Receivings_Employees">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receivings_Employees1" Association="Self.FK_Receivings_Employees1">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receivings_Employees2" Association="Self.FK_Receivings_Employees2">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receivings_Locations" Association="Self.FK_Receivings_Locations">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Receivings_StockTransfers" Association="Self.FK_Receivings_StockTransfers">
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
+      <End Role="Receivings" EntitySet="Receivings" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RequisitionDetails_ApprovalStatus" Association="Self.FK_RequisitionDetails_ApprovalStatus">
+      <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RequisitionDetails_Items" Association="Self.FK_RequisitionDetails_Items">
+      <End Role="Items" EntitySet="Items" />
+      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RequisitionDetails_Requisitions" Association="Self.FK_RequisitionDetails_Requisitions">
+      <End Role="Requisitions" EntitySet="Requisitions" />
+      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_ApprovalStatus" Association="Self.FK_Requisitions_ApprovalStatus">
+      <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_DropShipTypes" Association="Self.FK_Requisitions_DropShipTypes">
+      <End Role="DropShipTypes" EntitySet="DropShipTypes" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Employees_ApprovedBy" Association="Self.FK_Requisitions_Employees_ApprovedBy">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Employees_RequestedBy" Association="Self.FK_Requisitions_Employees_RequestedBy">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Employees_ReservedBy" Association="Self.FK_Requisitions_Employees_ReservedBy">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Employees_ValidatedBy" Association="Self.FK_Requisitions_Employees_ValidatedBy">
+      <End Role="Employees" EntitySet="Employees" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Locations" Association="Self.FK_Requisitions_Locations">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Locations1" Association="Self.FK_Requisitions_Locations1">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_RequisitionTypes" Association="Self.FK_Requisitions_RequisitionTypes">
+      <End Role="RequisitionTypes" EntitySet="RequisitionTypes" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_ReservationTypes" Association="Self.FK_Requisitions_ReservationTypes">
+      <End Role="ReservationTypes" EntitySet="ReservationTypes" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_ShipmentTypes" Association="Self.FK_Requisitions_ShipmentTypes">
+      <End Role="ShipmentTypes" EntitySet="ShipmentTypes" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Requisitions_Vendors" Association="Self.FK_Requisitions_Vendors">
+      <End Role="Vendors" EntitySet="Vendors" />
+      <End Role="Requisitions" EntitySet="Requisitions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockAllocationDetails_ContainerLocations" Association="Self.FK_StockAllocationDetails_ContainerLocations">
+      <End Role="ContainerLocations" EntitySet="ContainerLocations" />
+      <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockAllocationDetails_ContainerStorages" Association="Self.FK_StockAllocationDetails_ContainerStorages">
+      <End Role="ContainerStorages" EntitySet="ContainerStorages" />
+      <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockAllocationDetails_ReceivingDetails" Association="Self.FK_StockAllocationDetails_ReceivingDetails">
+      <End Role="ReceivingDetails" EntitySet="ReceivingDetails" />
+      <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockAllocationDetails_StockAllocations" Association="Self.FK_StockAllocationDetails_StockAllocations">
+      <End Role="StockAllocations" EntitySet="StockAllocations" />
+      <End Role="StockAllocationDetails" EntitySet="StockAllocationDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockAllocations_Locations" Association="Self.FK_StockAllocations_Locations">
+      <End Role="Locations" EntitySet="Locations" />
+      <End Role="StockAllocations" EntitySet="StockAllocations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockAllocations_Receivings" Association="Self.FK_StockAllocations_Receivings">
+      <End Role="Receivings" EntitySet="Receivings" />
+      <End Role="StockAllocations" EntitySet="StockAllocations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockTransferDetails_ReasonForAdjustments" Association="Self.FK_StockTransferDetails_ReasonForAdjustments">
+      <End Role="ReasonForAdjustments" EntitySet="ReasonForAdjustments" />
+      <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockTransferDetails_RequisitionDetails" Association="Self.FK_StockTransferDetails_RequisitionDetails">
+      <End Role="RequisitionDetails" EntitySet="RequisitionDetails" />
+      <End Role="StockTransferDetails" EntitySet="StockTransferDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockTransfers_ApprovalStatus" Association="Self.FK_StockTransfers_ApprovalStatus">
+      <End Role="ApprovalStatus" EntitySet="ApprovalStatus" />
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_StockTransfers_Requisitions" Association="Self.FK_StockTransfers_Requisitions">
+      <End Role="Requisitions" EntitySet="Requisitions" />
+      <End Role="StockTransfers" EntitySet="StockTransfers" />
     </AssociationSet>
     <AssociationSet Name="FK_SubCategories_Categories" Association="Self.FK_SubCategories_Categories">
       <End Role="Categories" EntitySet="Categories" />
