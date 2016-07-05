@@ -6,37 +6,48 @@
     ViewBag.Title = "Denied Items";
 }
 
-<h2>Denied Items</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            Item Name
-        </th>
-        <th>
-            Quantity
-        </th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
+<div class="panel-heading">
+    <h4 class="panel-title">Denied Items</h4>
+
+    <hr />
+
+</div>
+<div class="panel-body">
+
+    <table class="table table-striped table-bordered table-hover table-full-width dataTable no-footer">
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
+            <th>
+                Item Name
+            </th>
+            <th>
+                Quantity
+            </th>
         </tr>
-    }
 
-</table>
-<br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+            </tr>
+        }
 
-@Html.PagedListPager(Model, page => Url.Action("DeniedItems",
+    </table>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("DeniedItems",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
-<p>
-    @Html.ActionLink("Back to PR Details", "Details", new { id = ViewBag.PRid })
-</p>
+    <br /><br />
+    <a href='@Url.Action("Details", new { id = ViewBag.PRid })' class="btn btn-light-orange">
+        Back to List
+    </a>
+
+
+</div>

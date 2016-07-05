@@ -4,198 +4,222 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>Requisition</h4>
+<div class="panel-heading">
+    <h4 class="panel-title">Requisition Details</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            Ref #
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RefNumber)
-        </dd>
-
-        <dt>
-            Type
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RequisitionType.Type)
-        </dd>
-
-        <dt>
-            Requested Date
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RequestedDate)
-        </dd>
-
-        <dt>
-            Requested By
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Employee1.LastName),
-            @Html.DisplayFor(model => model.Employee1.FirstName)
-        </dd>
-
-        <dt>
-            Location
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Location1.Description)
-        </dd>
-        <dt>
-            Date Required
-        </dt>
-        
-        <dd>
-            @Html.DisplayFor(model => model.DateRequired)
-        </dd>
-
-        <dt>
-            Vendor
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Vendor.Name)
-        </dd>
-
-        <dt>
-            Vendor Code
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Vendor.Code)
-        </dd>
-
-        <dt>
-            Attention
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Vendor.Attn)
-        </dd>
-
-        <dt>
-            Shipment Date
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ShipmentDate)
-        </dd>
-
-        <dt>
-            Project/Customer
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Customer)
-        </dd>
-
-        <dt>
-            Reservation Type
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ReservationType.Type)
-        </dd>
-
-        <dt>
-            Shipment Type
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ShipmentType)
-        </dd>
-
-        <dt>
-            Drop Ship Type
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DropShipType.Type)
-        </dd>
-
-        <dt>
-            Payment Status
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PaymentStatus)
-        </dd>
-
-        <dt>
-            Invoice #
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.InvoiceNumber)
-        </dd>
-
-        <dt>
-            Reserved By
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Employee2.LastName), 
-            @Html.DisplayFor(model => model.Employee2.FirstName)
-        </dd>
-
-        <dt>
-            Validated By
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Employee3.LastName), 
-            @Html.DisplayFor(model => model.Employee3.FirstName)
-        </dd>
-
-        <dt>
-            Destination
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Location.Description)
-        </dd>
-
-        <dt>
-            Approval Status
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ApprovalStatu.Status)
-        </dd>
-
-        <dt>
-            Approved By
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Employee.LastName), 
-            @Html.DisplayFor(model => model.Employee.FirstName)
-        </dd>
-
-        <dt>
-            Remarks
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Remarks)
-        </dd>
-    </dl>
 </div>
 
-<p>
-    @Html.ActionLink("Pending Items", "PendingItems", new { id = Model.ID }) |
-    @Html.ActionLink("Approved Items", "ApprovedItems", new { id = Model.ID }) |
-    @Html.ActionLink("Denied Items", "DeniedItems", new { id = Model.ID })
-    <br/>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index") |
-</p>
+<div class="panel-body">
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Reference #</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                   @Html.DisplayFor(model => model.RefNumber)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Type</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                   @Html.DisplayFor(model => model.RequisitionType.Type)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Requested Date</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.RequestedDate)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Requested By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee1.LastName),
+                    @Html.DisplayFor(model => model.Employee1.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Location</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Location1.Description)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Date Required</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.DateRequired)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Vendor</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Vendor.Name)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Vendor Code</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Vendor.Code)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Attention</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Vendor.Attn)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Shipment Date</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ShipmentDate)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Project/Customer</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Customer)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Reservation Type</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ReservationType.Type)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Shipment Type</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ShipmentType)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Drop Ship Type</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.DropShipType.Type)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Payment Status</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.PaymentStatus)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Invoice #</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.InvoiceNumber)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Reserved By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee2.LastName),
+                    @Html.DisplayFor(model => model.Employee2.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Validated By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee3.LastName),
+                    @Html.DisplayFor(model => model.Employee3.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Destination</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Location.Description)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Approval Status</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ApprovalStatu.Status)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Approved By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee.LastName),
+                    @Html.DisplayFor(model => model.Employee.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Remarks</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Remarks)
+                </label>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                <a href='@Url.Action("PendingItems", new { id = Model.ID })' class="btn btn-dark-yellow">
+                    Pending Items
+                </a>
+                <a href='@Url.Action("ApprovedItems", new { id = Model.ID })' class="btn btn-dark-green">
+                    Approved Items
+                </a>
+                <a href='@Url.Action("DeniedItems", new { id = Model.ID })' class="btn btn-dark-red">
+                    Denied Items
+                </a>
+
+                <br /><br />
+
+                <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
+                    Edit
+                </a>
+                <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                    Back to List
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
