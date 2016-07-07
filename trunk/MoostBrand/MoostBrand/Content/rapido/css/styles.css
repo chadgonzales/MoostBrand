@@ -2368,7 +2368,8 @@ a.text-light:hover {
 /* line 4, ../sass/partials/_form-elements.scss */
 textarea, select, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
   background-color: #FFFFFF;
-  border: 1px solid #E6E8E8;
+  /*border: 1px solid #E6E8E8;*/
+  border: 1px solid #D5D5D5;
   border-radius: 0 0 0 0 !important;
   color: #8B91A0;
   font-family: inherit;
@@ -8142,5 +8143,16 @@ font-weight:bold;
     margin: 16px 0;
     overflow: auto;
     background-color:white;
+}
+
+.validation-summary-errors.alert ul{
+padding:0px;
+margin:0px;
+}
+
+.validation-summary-errors.alert ul li{
+padding:0px;
+margin:0px;
+list-style:none;
 }
 /*end additional*/
