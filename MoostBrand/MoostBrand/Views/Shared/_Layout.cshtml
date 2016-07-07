@@ -65,7 +65,11 @@
     <link rel="stylesheet" href="../../Content/rapido/css/themes/theme-style8.css" type="text/css" id="skin_color">
     <link rel="stylesheet" href="../../Content/rapido/css/print.css" type="text/css" media="print" />
     <!-- end: CORE CSS -->
-    <link rel="shortcut icon" href="favicon.ico" />
+
+
+    <link rel="stylesheet" href="../../Content/rapido/plugins/datepicker/css/datepicker.css">
+
+    <link rel="shortcut icon" href="../../Content/rapido/images/favicon.ico" />
 
     <script src="../../Content/rapido/plugins/jQuery/jquery-2.1.1.min.js"></script>
     <!--<![endif]-->
@@ -117,34 +121,34 @@
                     <div class="blog-photo-stream margin-bottom-30">
                         <ul class="list-unstyled">
                             <li>
-                                <a href="#"><img alt="" src="assets/images/image01_th.jpg"></a>
+                                <a href="#"><img alt="" src="../../Content/rapido/images/image01_th.jpg"></a>
                             </li>
                             <li>
-                                <a href="#"><img alt="" src="assets/images/image02_th.jpg"></a>
+                                <a href="#"><img alt="" src="../../Content/rapido/images/image02_th.jpg"></a>
                             </li>
                             <li>
-                                <a href="#"><img alt="" src="assets/images/image03_th.jpg"></a>
+                                <a href="#"><img alt="" src="../../Content/rapido/images/image03_th.jpg"></a>
                             </li>
                             <li>
-                                <a href="#"><img alt="" src="assets/images/image04_th.jpg"></a>
+                                <a href="#"><img alt="" src="../../Content/rapido/images/image04_th.jpg"></a>
                             </li>
                             <li>
-                                <a href="#"><img alt="" src="assets/images/image05_th.jpg"></a>
+                                <a href="#"><img alt="" src="../../Content/rapido/images/image05_th.jpg"></a>
                             </li>
                             <li>
-                                <a href="#"><img alt="" src="assets/images/image06_th.jpg"></a>
+                                <a href="#"><img alt="" src="../../Content/rapido/images/image06_th.jpg"></a>
                             </li>
                             <li>
-                                <a href="#"><img alt="" src="assets/images/image07_th.jpg"></a>
+                                <a href="#"><img alt="" src="../../Content/rapido/images/image07_th.jpg"></a>
                             </li>
                             <li>
-                                <a href="#"><img alt="" src="assets/images/image08_th.jpg"></a>
+                                <a href="#"><img alt="" src="../../Content/rapido/images/image08_th.jpg"></a>
                             </li>
                             <li>
-                                <a href="#"><img alt="" src="assets/images/image09_th.jpg"></a>
+                                <a href="#"><img alt="" src="../../Content/rapido/images/image09_th.jpg"></a>
                             </li>
                             <li>
-                                <a href="#"><img alt="" src="assets/images/image10_th.jpg"></a>
+                                <a href="#"><img alt="" src="../../Content/rapido/images/image10_th.jpg"></a>
                             </li>
                         </ul>
                     </div>
@@ -191,8 +195,8 @@
                         <i class="fa fa-bars"></i>
                     </a>
                     <!-- start: LOGO -->
-                    <a class="navbar-brand" href="index.html">
-                        <img src="assets/images/logo.png" alt="Rapido" />
+                    <a class="navbar-brand" href="#">
+                        <img src="../../Content/rapido/images/logo.png" alt="Moostbrand" />
                     </a>
                     <!-- end: LOGO -->
                 </div>
@@ -202,7 +206,7 @@
                         <!-- start: USER DROPDOWN -->
                         <li class="dropdown current-user">
                             <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
-                                <img src="assets/images/avatar-1-small.jpg" class="img-circle" alt=""> <span class="username hidden-xs">Peter Clark</span> <i class="fa fa-caret-down "></i>
+                                <img src="../../Content/rapido/images/avatar-1-small.jpg" class="img-circle" alt=""> <span class="username hidden-xs">Peter Clark</span> <i class="fa fa-caret-down "></i>
                             </a>
                             <ul class="dropdown-menu dropdown-dark">
                                 <li>
@@ -233,11 +237,11 @@
                             </ul>
                         </li>
                         <!-- end: USER DROPDOWN -->
-                        <li class="right-menu-toggle">
+                        @*<li class="right-menu-toggle">
                             <a href="#" class="sb-toggle-right">
                                 <i class="fa fa-globe toggle-icon"></i> <i class="fa fa-caret-right"></i> <span class="notifications-count badge badge-default hide"> 3</span>
                             </a>
-                        </li>
+                        </li>*@
                     </ul>
                     <!-- end: TOP NAVIGATION MENU -->
                 </div>
@@ -259,15 +263,108 @@
 
                     <!-- start: MAIN NAVIGATION MENU -->
                     <ul class="main-navigation-menu">
-                        <li class="active open">
-                            <a href="index.html"><i class="fa fa-home"></i> <span class="title"> Dashboard </span><span class="label label-default pull-right ">LABEL</span> </a>
-                        </li>
-
                         <li>
-                            <a href="maps.html"><i class="fa fa-map-marker"></i> <span class="title">Maps</span> </a>
+                            <a href='@Url.Action("Index", "Brand")'>
+                                <i class="fa fa-tag"></i>
+                                <span class="title">Brand</span>
+                                @*<span class="label label-default pull-right ">LABEL</span>*@
+                            </a>
                         </li>
                         <li>
-                            <a href="charts.html"><i class="fa fa-bar-chart-o"></i> <span class="title">Charts</span> </a>
+                            <a href='@Url.Action("Index", "Category")'>
+                                <i class="fa fa-sitemap"></i>
+                                <span class="title">Category</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "Color")'>
+                                <i class="fa fa-tint"></i>
+                                <span class="title">Color</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "ContainerLocation")'>
+                                <i class="fa fa-crosshairs"></i>
+                                <span class="title">Container Location</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "ContainerStorage")'>
+                                <i class="fa fa-hdd-o"></i>
+                                <span class="title">Container Storage</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "Employee")'>
+                                <i class="fa fa-users"></i>
+                                <span class="title">Employee</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "Item")'>
+                                <i class="fa fa-shopping-cart"></i>
+                                <span class="title">Item</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "Location")'>
+                                <i class="fa fa-flag"></i>
+                                <span class="title">Location</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "PR")'>
+                                <i class="fa fa-home"></i>
+                                <span class="title">PR</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "Receiving")'>
+                                <i class="fa fa-inbox"></i>
+                                <span class="title">Receiving</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "Size")'>
+                                <i class="fa fa-arrows-alt"></i>
+                                <span class="title">Size</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "StockAllocation")'>
+                                <i class="fa fa-hand-o-up"></i>
+                                <span class="title">Stock Allocation</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "StockTransfer")'>
+                                <i class="fa fa-exchange"></i>
+                                <span class="title">Stock Transfer</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "SubCategory")'>
+                                <i class="fa fa-sitemap"></i>
+                                <span class="title">Sub Category</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "UnitOfMeasure")'>
+                                <i class="fa fa-bar-chart-o"></i>
+                                <span class="title">Unit Of Measure</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "User")'>
+                                <i class="fa fa-user"></i>
+                                <span class="title">User</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href='@Url.Action("Index", "Vendor")'>
+                                <i class="fa fa-user-md"></i>
+                                <span class="title">Vendor</span>
+                            </a>
                         </li>
                     </ul>
                     <!-- end: MAIN NAVIGATION MENU -->
@@ -276,9 +373,9 @@
             </div>
             <div class="slide-tools">
                 <div class="col-xs-6 text-left no-padding">
-                    <a class="btn btn-sm status" href="#">
-                        Status <i class="fa fa-dot-circle-o text-green"></i> <span>Online</span>
-                    </a>
+                    @*<a class="btn btn-sm status" href="#">
+                            Status <i class="fa fa-dot-circle-o text-green"></i> <span>Online</span>
+                        </a>*@
                 </div>
                 <div class="col-xs-6 text-right no-padding">
                     <a class="btn btn-sm log-out text-right" href="login_login.html">
@@ -310,7 +407,7 @@
                                 <li class="media">
                                     <a href="#">
                                         <i class="fa fa-circle status-online"></i>
-                                        <img alt="..." src="assets/images/avatar-2.jpg" class="media-object">
+                                        <img alt="..." src="../../Content/rapido/images/avatar-2.jpg" class="media-object">
                                         <div class="media-body">
                                             <h4 class="media-heading">Nicole Bell</h4>
                                             <span> Content Designer </span>
@@ -323,7 +420,7 @@
                                             <span class="label label-default">3</span>
                                         </div>
                                         <i class="fa fa-circle status-online"></i>
-                                        <img alt="..." src="assets/images/avatar-3.jpg" class="media-object">
+                                        <img alt="..." src="../../Content/rapido/images/avatar-3.jpg" class="media-object">
                                         <div class="media-body">
                                             <h4 class="media-heading">Steven Thompson</h4>
                                             <span> Visual Designer </span>
@@ -333,7 +430,7 @@
                                 <li class="media">
                                     <a href="#">
                                         <i class="fa fa-circle status-online"></i>
-                                        <img alt="..." src="assets/images/avatar-4.jpg" class="media-object">
+                                        <img alt="..." src="../../Content/rapido/images/avatar-4.jpg" class="media-object">
                                         <div class="media-body">
                                             <h4 class="media-heading">Ella Patterson</h4>
                                             <span> Web Editor </span>
@@ -343,7 +440,7 @@
                                 <li class="media">
                                     <a href="#">
                                         <i class="fa fa-circle status-online"></i>
-                                        <img alt="..." src="assets/images/avatar-5.jpg" class="media-object">
+                                        <img alt="..." src="../../Content/rapido/images/avatar-5.jpg" class="media-object">
                                         <div class="media-body">
                                             <h4 class="media-heading">Kenneth Ross</h4>
                                             <span> Senior Designer </span>
@@ -355,7 +452,7 @@
                             <ul class="media-list">
                                 <li class="media">
                                     <a href="#">
-                                        <img alt="..." src="assets/images/avatar-6.jpg" class="media-object">
+                                        <img alt="..." src="../../Content/rapido/images/avatar-6.jpg" class="media-object">
                                         <div class="media-body">
                                             <h4 class="media-heading">Nicole Bell</h4>
                                             <span> Content Designer </span>
@@ -367,7 +464,7 @@
                                         <div class="user-label">
                                             <span class="label label-default">3</span>
                                         </div>
-                                        <img alt="..." src="assets/images/avatar-7.jpg" class="media-object">
+                                        <img alt="..." src="../../Content/rapido/images/avatar-7.jpg" class="media-object">
                                         <div class="media-body">
                                             <h4 class="media-heading">Steven Thompson</h4>
                                             <span> Visual Designer </span>
@@ -376,7 +473,7 @@
                                 </li>
                                 <li class="media">
                                     <a href="#">
-                                        <img alt="..." src="assets/images/avatar-8.jpg" class="media-object">
+                                        <img alt="..." src="../../Content/rapido/images/avatar-8.jpg" class="media-object">
                                         <div class="media-body">
                                             <h4 class="media-heading">Ella Patterson</h4>
                                             <span> Web Editor </span>
@@ -385,7 +482,7 @@
                                 </li>
                                 <li class="media">
                                     <a href="#">
-                                        <img alt="..." src="assets/images/avatar-9.jpg" class="media-object">
+                                        <img alt="..." src="../../Content/rapido/images/avatar-9.jpg" class="media-object">
                                         <div class="media-body">
                                             <h4 class="media-heading">Kenneth Ross</h4>
                                             <span> Senior Designer </span>
@@ -394,7 +491,7 @@
                                 </li>
                                 <li class="media">
                                     <a href="#">
-                                        <img alt="..." src="assets/images/avatar-10.jpg" class="media-object">
+                                        <img alt="..." src="../../Content/rapido/images/avatar-10.jpg" class="media-object">
                                         <div class="media-body">
                                             <h4 class="media-heading">Ella Patterson</h4>
                                             <span> Web Editor </span>
@@ -403,7 +500,7 @@
                                 </li>
                                 <li class="media">
                                     <a href="#">
-                                        <img alt="..." src="assets/images/avatar-5.jpg" class="media-object">
+                                        <img alt="..." src="../../Content/rapido/images/avatar-5.jpg" class="media-object">
                                         <div class="media-body">
                                             <h4 class="media-heading">Kenneth Ross</h4>
                                             <span> Senior Designer </span>
@@ -429,7 +526,7 @@
                             <ol class="discussion sidebar-content">
                                 <li class="other">
                                     <div class="avatar">
-                                        <img src="assets/images/avatar-4.jpg" alt="">
+                                        <img src="../../Content/rapido/images/avatar-4.jpg" alt="">
                                     </div>
                                     <div class="messages">
                                         <p>
@@ -440,7 +537,7 @@
                                 </li>
                                 <li class="self">
                                     <div class="avatar">
-                                        <img src="assets/images/avatar-1.jpg" alt="">
+                                        <img src="../../Content/rapido/images/avatar-1.jpg" alt="">
                                     </div>
                                     <div class="messages">
                                         <p>
@@ -451,7 +548,7 @@
                                 </li>
                                 <li class="other">
                                     <div class="avatar">
-                                        <img src="assets/images/avatar-4.jpg" alt="">
+                                        <img src="../../Content/rapido/images/avatar-4.jpg" alt="">
                                     </div>
                                     <div class="messages">
                                         <p>
@@ -615,26 +712,26 @@
                             10 Predefined Color Schemes
                         </div>
                         <div class="images icons-color">
-                            <a href="#" id="default"><img src="assets/images/color-1.png" alt="" class="active"></a>
-                            <a href="#" id="style2"><img src="assets/images/color-2.png" alt=""></a>
-                            <a href="#" id="style3"><img src="assets/images/color-3.png" alt=""></a>
-                            <a href="#" id="style4"><img src="assets/images/color-4.png" alt=""></a>
-                            <a href="#" id="style5"><img src="assets/images/color-5.png" alt=""></a>
-                            <a href="#" id="style6"><img src="assets/images/color-6.png" alt=""></a>
-                            <a href="#" id="style7"><img src="assets/images/color-7.png" alt=""></a>
-                            <a href="#" id="style8"><img src="assets/images/color-8.png" alt=""></a>
-                            <a href="#" id="style9"><img src="assets/images/color-9.png" alt=""></a>
-                            <a href="#" id="style10"><img src="assets/images/color-10.png" alt=""></a>
+                            <a href="#" id="default"><img src="../../Content/rapido/images/color-1.png" alt="" class="active"></a>
+                            <a href="#" id="style2"><img src="../../Content/rapido/images/color-2.png" alt=""></a>
+                            <a href="#" id="style3"><img src="../../Content/rapido/images/color-3.png" alt=""></a>
+                            <a href="#" id="style4"><img src="../../Content/rapido/images/color-4.png" alt=""></a>
+                            <a href="#" id="style5"><img src="../../Content/rapido/images/color-5.png" alt=""></a>
+                            <a href="#" id="style6"><img src="../../Content/rapido/images/color-6.png" alt=""></a>
+                            <a href="#" id="style7"><img src="../../Content/rapido/images/color-7.png" alt=""></a>
+                            <a href="#" id="style8"><img src="../../Content/rapido/images/color-8.png" alt=""></a>
+                            <a href="#" id="style9"><img src="../../Content/rapido/images/color-9.png" alt=""></a>
+                            <a href="#" id="style10"><img src="../../Content/rapido/images/color-10.png" alt=""></a>
                         </div>
                         <div class="box-title">
                             Backgrounds for Boxed Version
                         </div>
                         <div class="images boxed-patterns">
-                            <a href="#" id="bg_style_1"><img src="assets/images/bg.png" alt=""></a>
-                            <a href="#" id="bg_style_2"><img src="assets/images/bg_2.png" alt=""></a>
-                            <a href="#" id="bg_style_3"><img src="assets/images/bg_3.png" alt=""></a>
-                            <a href="#" id="bg_style_4"><img src="assets/images/bg_4.png" alt=""></a>
-                            <a href="#" id="bg_style_5"><img src="assets/images/bg_5.png" alt=""></a>
+                            <a href="#" id="bg_style_1"><img src="../../Content/rapido/images/bg.png" alt=""></a>
+                            <a href="#" id="bg_style_2"><img src="../../Content/rapido/images/bg_2.png" alt=""></a>
+                            <a href="#" id="bg_style_3"><img src="../../Content/rapido/images/bg_3.png" alt=""></a>
+                            <a href="#" id="bg_style_4"><img src="../../Content/rapido/images/bg_4.png" alt=""></a>
+                            <a href="#" id="bg_style_5"><img src="../../Content/rapido/images/bg_5.png" alt=""></a>
                         </div>
                         <div class="style-options">
                             <a href="#" class="clear_style">
@@ -692,7 +789,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6 col-xs-12">
-                            
+
                         </div>
                     </div>
                     <!-- end: TOOLBAR -->
@@ -702,13 +799,13 @@
                         <div class="col-md-12">
                             <ol class="breadcrumb">
                                 <li>
-                                    <a href="#">
+                                    <a href='@Url.Action("Index", "Brand")'>
                                         Dashboard
                                     </a>
                                 </li>
                                 @*<li class="active">
-                                    Dashboard
-                                </li>*@
+                                        Dashboard
+                                    </li>*@
                             </ol>
                         </div>
                     </div>
@@ -717,9 +814,9 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <!-- start: TEXT FIELDS PANEL -->
-                            <div class="panel panel-white">                               
-                                    
-                                    @RenderBody()
+                            <div class="panel panel-white">
+
+                                @RenderBody()
 
                             </div>
                             <!-- end: TEXT FIELDS PANEL -->
@@ -739,7 +836,7 @@
         <footer class="inner">
             <div class="footer-inner">
                 <div class="pull-left">
-                    2014 &copy; Rapido by cliptheme.
+                    2014 &copy; Moostbrand by SDS.
                 </div>
                 <div class="pull-right">
                     <span class="go-top"><i class="fa fa-chevron-up"></i></span>
@@ -790,7 +887,7 @@
     <script type="text/javascript" src="../../Content/rapido/plugins/jQuery/jquery-1.11.1.min.js"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
-    
+
     <script src="../../Content/rapido/plugins/blockUI/jquery.blockUI.js"></script>
     <script src="../../Content/rapido/plugins/iCheck/jquery.icheck.js"></script>
     <script src="../../Content/rapido/plugins/moment/min/moment.min.js"></script>
@@ -835,6 +932,11 @@
     <script src="../../Content/rapido/plugins/easy-pie-chart/dist/jquery.easypiechart.js"></script>
     <script src="../../Content/rapido/js/index.js"></script>
     <!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
+
+
+    <script src="../../Content/rapido/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script src="../../Content/rapido/js/form-elements.js"></script>
+
     <!-- start: CORE JAVASCRIPTS  -->
     <script src="../../Content/rapido/js/main.js"></script>
     <!-- end: CORE JAVASCRIPTS  -->
@@ -843,9 +945,10 @@
             Main.init();
             SVExamples.init();
             Index.init();
+            FormElements.init();
         });
     </script>
 </body>
 
-    <!-- end: BODY -->
+<!-- end: BODY -->
 </html>

@@ -4,69 +4,86 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>User</h4>
+<div class="panel-heading">
+    <h4 class="panel-title">
+        Delete User
+        <br /><small>Are you sure you want to delete this?</small>
+    </h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Username)
-        </dt>
+</div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Username)
-        </dd>
+<div class="panel-body">
+    <div class="form-horizontal">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Password)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Department)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Department)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Employee.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Employee.LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Location.Code)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Location.Code)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.UserType.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserType.Description)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Username)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Username)
+                </label>
+            </div>
         </div>
-    }
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Password)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Password)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Department)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Department)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Employee.LastName)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee.LastName)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Location.Code)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Location.Code)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.UserType.Description)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.UserType.Description)
+                </label>
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Delete" class="btn btn-red" />
+                    <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                        Back to List
+                    </a>
+
+                </div>
+            </div>
+        }
+
+
+    </div>
 </div>
