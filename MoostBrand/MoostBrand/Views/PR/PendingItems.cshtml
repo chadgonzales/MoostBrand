@@ -25,6 +25,9 @@
                 <th>
                     Quantity
                 </th>
+                <th>
+                    Action
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -39,8 +42,16 @@
                         @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
                     <td>
-                        <a href="#" id="ShowPopopEdit" onclick="ShowEdit(@item.ID)">Edit</a> |
-                        <a href="#" id="ShowPopopDelete" onclick="ShowDelete(@item.ID)">Delete</a>
+                        <div class="custom-tools">
+                            <a href="#" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit" id="ShowPopopEdit" onclick="ShowEdit(@item.ID)"><i class="fa fa-edit"></i></a>
+                            <a href="#" class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete" id="ShowPopopDelete" onclick="ShowDelete(@item.ID)"><i class="fa fa-times fa fa-white"></i></a>
+                            <a href="#" id="approve_button" onclick="Approve(@ViewBag.PRid, @item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
+                                <i class="fa fa-thumbs-up"></i>
+                            </a>
+                            <a href="#" id="deny_button" onclick="Deny(@ViewBag.PRid, @item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
+                                <i class="fa fa-thumbs-down"></i>
+                            </a>
+                        </div>
                     </td>
                 </tr>
             }
@@ -56,8 +67,11 @@
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
     <br /><br />
-
-    <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
+    @if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
+    {
+        <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
+    }
+    
     <a href='@Url.Action("Details", new { id = ViewBag.PRid })' class="btn btn-light-orange">
         Back to List
     </a>
@@ -92,9 +106,6 @@
 
 
     <script>
-
-        
-
         $('#ShowPopop').click(function () {
 
             var url = $('#AddItemWindow').data('url');
@@ -136,5 +147,17 @@
                 $("textarea").addClass("form-control");
                 $("select").addClass("form-control");
             });
+        }
+        function ReloadFunction() {
+            location.reload();
+        }
+        function Approve(id, itemID){
+            var url = '@Url.Action("ApproveItem", "PR")/' + id;
+            $.post(url, {id: id, itemID : itemID }, ReloadFunction);
+        }
+
+        function Deny(id, itemID){
+            var url = '@Url.Action("ApproveItem", "PR")/' + id;
+            $.post(url, {id: id, itemID : itemID }, ReloadFunction);
         }
     </script>
