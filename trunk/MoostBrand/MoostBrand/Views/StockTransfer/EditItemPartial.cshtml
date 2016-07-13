@@ -1,0 +1,58 @@
+﻿@model MoostBrand.DAL.StockTransferDetail
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Edit Item</h4>
+    </div>
+    @using (Html.BeginForm())
+            {
+        <div class="modal-body">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.StockTransferID)
+            @Html.HiddenFor(model => model.RequisitionDetailID)
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.RequisitionDetail.Item, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.DisplayFor(model => model.RequisitionDetail.Item.Description)
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.DropDownList("Status", String.Empty)
+                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input type="submit" value="Edit Item" class="btn btn-green" />
+        </div>
+    }
+</div><!-- /.modal-content -->
