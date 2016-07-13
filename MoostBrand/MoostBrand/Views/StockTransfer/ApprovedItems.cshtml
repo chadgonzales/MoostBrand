@@ -1,11 +1,10 @@
-﻿@model PagedList.IPagedList<MoostBrand.DAL.RequisitionDetail>
+﻿@model PagedList.IPagedList<MoostBrand.DAL.StockTransferDetail>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Approved Items";
 }
-
 <div class="panel-heading">
     <h4 class="panel-title">Approved Items</h4>
     <hr />
@@ -24,7 +23,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Item.Description)
+                    @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.Description)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantity)
@@ -37,17 +36,15 @@
 
     </table>
 
-   
+
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     @Html.PagedListPager(Model, page => Url.Action("ApprovedItems",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
     <br /><br />
-    <a href='@Url.Action("Details", new { id = ViewBag.PRid })' class="btn btn-light-orange">
+    <a href='@Url.Action("Details", new { id = ViewBag.STid })' class="btn btn-light-orange">
         Back to List
     </a>
-        
-    
 
     <div id="EditItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
         <div id="ShowDialogEdit" class="modal-dialog" role="document">
@@ -58,7 +55,7 @@
 
 <script>
     function ShowEdit(id) {
-        var url = '@Url.Action("EditItemPartial", "PR")/' + id;
+        var url = '@Url.Action("EditItemPartial", "StockTransfer")/' + id;
         $.get(url, function (data) {
             $('#ShowDialogEdit').html(data);
 

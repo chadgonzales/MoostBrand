@@ -40,6 +40,16 @@
                         @Html.ActionLink("Transfer ID", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
+                        Type
+                    </th>
+                    <th>
+                        Location
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Action
                     </th>
                 </tr>
             </thead>
@@ -51,28 +61,41 @@
                             @Html.DisplayFor(modelItem => item.TransferID)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.Requisition.RequisitionType.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Location.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ApprovalStatu.Status)
+                        </td>
+                        <td>
                             <div class="custom-tools">
-                                <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
-                                    <i class="fa fa-edit"></i>
-                                </a>
                                 <a href='@Url.Action("Details", new { id = item.ID })' class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Details">
                                     <i class="fa fa-file"></i>
                                 </a>
-                                <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
-                                    <i class="fa fa-times fa fa-white"></i>
-                                </a>
-
-                                <a href='@Url.Action("Items", new { id = item.ID })' class="btn btn-xs btn-orange tooltips" data-placement="top" data-original-title="Items">
-                                    <i class="fa fa-times fa fa-files-o"></i>
-                                </a>
-                                <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
-                                    <i class="fa fa-times fa fa-thumbs-up"></i>
-                                </a>
-                                <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
-                                    <i class="fa fa-times fa fa-thumbs-down"></i>
-                                </a>
+                                @if (item.ApprovedStatus == 1)
+                                {
+                                    if (Convert.ToInt32(Session["sessionuid"]) == item.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                    {
+                                        <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                            <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                                                <i class="fa fa-times fa fa-white"></i>
+                                            </a>
+                                    }
+                                    if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                    {
+                                        <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
+                                            <i class="fa fa-thumbs-up"></i>
+                                        </a>
+                                        <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
+                                            <i class="fa fa-thumbs-down"></i>
+                                        </a>
+                                    }
+                                }
                             </div>
-
                         </td>
                     </tr>
                 }
