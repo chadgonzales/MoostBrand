@@ -186,25 +186,30 @@ namespace MoostBrand.Controllers
                 return HttpNotFound();
             }
 
-            #region DROPDOWNS
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
-            var empList = from s in entity.Employees
-                          select new
-                          {
-                              ID = s.ID,
-                              FullName = s.FirstName + " " + s.LastName
-                          };
+            if(stocktransfer.ApprovedStatus == 1)
+            {
+                #region DROPDOWNS
+                ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
+                var empList = from s in entity.Employees
+                              select new
+                              {
+                                  ID = s.ID,
+                                  FullName = s.FirstName + " " + s.LastName
+                              };
 
-            ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ReceivedBy);
-            ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stocktransfer.RequestedBy); ;
-            ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ApprovedBy); ;
-            ViewBag.ReleasedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ReleasedBy); ;
-            ViewBag.CounterCheckedBy = new SelectList(empList, "ID", "FullName", stocktransfer.CounterCheckedBy); ;
-            ViewBag.PostedBy = new SelectList(empList, "ID", "FullName", stocktransfer.PostedBy); ;
-            ViewBag.ApprovedStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", stocktransfer.ApprovedStatus);
-            #endregion
+                ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ReceivedBy);
+                ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stocktransfer.RequestedBy); ;
+                ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ApprovedBy); ;
+                ViewBag.ReleasedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ReleasedBy); ;
+                ViewBag.CounterCheckedBy = new SelectList(empList, "ID", "FullName", stocktransfer.CounterCheckedBy); ;
+                ViewBag.PostedBy = new SelectList(empList, "ID", "FullName", stocktransfer.PostedBy); ;
+                ViewBag.ApprovedStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", stocktransfer.ApprovedStatus);
+                #endregion
 
-            return View(stocktransfer);
+                return View(stocktransfer);
+            }
+
+            return RedirectToAction("Details", new { id = id });
         }
 
         // GET: StockTransfer/Edit/5
@@ -285,17 +290,160 @@ namespace MoostBrand.Controllers
             return View(stocktransfer);
         }
 
-        // GET: StockTransfer/Items/5
-        public ActionResult Items(int id, int? page)
+        // GET: StockTransfer/ApprovedItems/5
+        public ActionResult ApprovedItems(int id, int? page)
         {
-            int reqID = entity.StockTransfers.Find(id).RequisitionID;
-            var items = entity.RequisitionDetails
+            var items = entity.StockTransferDetails
                         .ToList()
-                        .FindAll(rd => rd.RequisitionID == reqID && rd.AprovalStatusID == 2);
+                        .FindAll(rd => rd.StockTransferID == id && rd.AprovalStatusID == 2);
+
+            ViewBag.STid = id;
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
             return View(items.ToPagedList(pageNumber, pageSize));
         }
+
+        // GET: StockTransfer/PendingItems/5
+        public ActionResult PendingItems(int id, int? page)
+        {
+            int UserID = Convert.ToInt32(Session["sessionuid"]);
+            int UserType = Convert.ToInt32(Session["usertype"]);
+
+            var RequestedBy = entity.StockTransfers.FirstOrDefault(r => r.ID == id).RequestedBy;
+            if (RequestedBy != UserID && UserType != 1 && UserType != 4)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var items = entity.StockTransferDetails
+                        .ToList()
+                        .FindAll(rd => rd.StockTransferID == id && rd.AprovalStatusID == 1 && (rd.StockTransfer.RequestedBy == UserID || UserType == 1 || UserType == 4));
+            //var items = entity.RequisitionDetails
+            //            .ToList()
+            //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
+
+            ViewBag.STid = id;
+            ViewBag.RequestedBy =
+            ViewBag.UserID = UserID;
+            ViewBag.AcctType = UserType;
+
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = (page ?? 1);
+            return View(items.ToPagedList(pageNumber, pageSize));
+        }
+
+
+
+
+        #region PARTIAL
+
+        // GET: StockTransfer/AddItemPartial/5
+        public ActionResult AddItemPartial(int id)
+        {
+            int reqID = entity.StockTransfers.Find(id).RequisitionID;
+            var items = entity.RequisitionDetails
+                        .ToList()
+                        .FindAll(rd => rd.RequisitionID == reqID && rd.AprovalStatusID == 2)
+                        .Select(ed => new
+                        {
+                            ID = ed.RequisitionID,
+                            Description = ed.Item.Description
+                        });
+
+            ViewBag.STid = id;
+            ViewBag.RequisitionDetailID = new SelectList(items, "ID", "Description");
+
+            return PartialView();
+        }
+
+        // POST: StockTransfer/AddItemPartial/5
+        [HttpPost]
+        public ActionResult AddItemPartial(int id, StockTransferDetail stocktransfer)
+        {
+            try
+            {
+                stocktransfer.StockTransferID = id;
+                stocktransfer.AprovalStatusID = 1; //submitted
+
+                var st = entity.StockTransferDetails.Where(s => s.StockTransferID == stocktransfer.StockTransferID && s.RequisitionDetailID == stocktransfer.RequisitionDetailID).ToList();
+
+                if (st.Count() > 0)
+                {
+                    TempData["PartialError"] = "Item is already in the list.";
+                }
+                else
+                {
+                    entity.StockTransferDetails.Add(stocktransfer);
+                    entity.SaveChanges();
+                }
+            }
+            catch
+            {
+                TempData["PartialError"] = "There's an error.";
+            }
+
+            //ViewBag.PRid = id;
+            //ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description", rd.ItemID);
+            //ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
+
+            return RedirectToAction("PendingItems", new { id = id });
+        }
+
+        // GET: StockTransfer/EditItemPartial/5
+        public ActionResult EditItemPartial(int id)
+        {
+            var st = entity.StockTransferDetails.Find(id);
+
+            ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", st.AprovalStatusID);
+
+            return PartialView(st);
+        }
+
+        // POST: StockTransfer/EditItemPartial/5
+        [HttpPost]
+        public ActionResult EditItemPartial(int id, StockTransferDetail stocktransfer)
+        {
+            try
+            {
+                entity.Entry(stocktransfer).State = EntityState.Modified;
+                entity.SaveChanges();
+            }
+            catch
+            {
+                TempData["PartialError"] = "There's an error.";
+            }
+
+            return RedirectToAction("PendingItems", new { id = stocktransfer.StockTransferID });
+        }
+
+        // GET: StockTransfer/DeleteItemPartial/5
+        public ActionResult DeleteItemPartial(int id)
+        {
+            var st = entity.StockTransferDetails.Find(id);
+
+            return PartialView(st);
+        }
+
+        // POST: StockTransfer/DeleteItemPartial/5
+        [HttpPost, ActionName("DeleteItemPartial")]
+        public ActionResult DeleteItemPartialConfirm(int id)
+        {
+            var st = entity.StockTransferDetails.Find(id);
+
+            int? reqID = st.StockTransferID;
+            try
+            {
+                entity.StockTransferDetails.Remove(st);
+                entity.SaveChanges();
+            }
+            catch
+            {
+                TempData["PartialError"] = "There's an error.";
+            }
+
+            return RedirectToAction("PendingItems", new { id = reqID });
+        }
+        #endregion
     }
 }

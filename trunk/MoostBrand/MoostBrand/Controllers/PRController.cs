@@ -130,8 +130,7 @@ namespace MoostBrand.Controllers
             }
 
             ViewBag.CurrentFilter = searchString;
-
-
+            
             var prs = from o in entity.Requisitions
                       select o;
 
@@ -520,107 +519,7 @@ namespace MoostBrand.Controllers
             int pageNumber = (page ?? 1);
             return View(items.ToPagedList(pageNumber, pageSize));
         }
-
-
-        // GET: PR/AddItemPartial/5
-        public ActionResult AddItemPartial(int id)
-        {
-            ViewBag.PRid = id;
-            ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description");
-
-            return PartialView();
-        }
-
-        // POST: PR/AddItemPartial/5
-        [HttpPost]
-        public ActionResult AddItemPartial(int id, RequisitionDetail rd)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-                rd.RequisitionID = id;
-                rd.AprovalStatusID = 1; //submitted
-
-                var rd1 = entity.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
-
-                if (rd1.Count() > 0)
-                {
-                    TempData["PartialError"] = "Item is already in the list.";
-                }
-                else
-                {
-                    entity.RequisitionDetails.Add(rd);
-                    entity.SaveChanges();
-                }
-            }
-            catch
-            {
-                TempData["PartialError"] = "There's an error.";
-            }
-
-            //ViewBag.PRid = id;
-            //ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description", rd.ItemID);
-            //ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
-
-            return RedirectToAction("PendingItems", new { id = id });
-        }
-
-
-        // GET: PR/EditItemPartial/5
-        public ActionResult EditItemPartial(int id)
-        {
-            var rd = entity.RequisitionDetails.Find(id);
-
-            ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
-
-            return PartialView(rd);
-        }
-
-        // POST: PR/EditItem/5
-        [HttpPost]
-        public ActionResult EditItemPartial(int id, RequisitionDetail rd)
-        {
-            try
-            {
-                entity.Entry(rd).State = EntityState.Modified;
-                entity.SaveChanges();
-            }
-            catch
-            {
-                TempData["PartialError"] = "There's an error.";
-            }
-
-            return RedirectToAction("PendingItems", new { id = rd.RequisitionID });
-        }
-
-        // GET: PR/DeleteItemPartial/5
-        public ActionResult DeleteItemPartial(int id)
-        {
-            var rd = entity.RequisitionDetails.Find(id);
-            
-            return PartialView(rd);
-        }
-
-        // POST: PR/DeleteItemPartial/5
-        [HttpPost, ActionName("DeleteItemPartial")]
-        public ActionResult DeleteItemPartialConfirm(int id)
-        {
-            var rd = entity.RequisitionDetails.Find(id);
-
-            int? reqID = rd.RequisitionID;
-            try
-            {
-                entity.RequisitionDetails.Remove(rd);
-                entity.SaveChanges();
-            }
-            catch
-            {
-                TempData["PartialError"] = "There's an error.";
-            }
-
-            return RedirectToAction("PendingItems", new { id = reqID });
-        }
-
+        
         // GET: PR/PendingItems/5
         public ActionResult PendingItems(int id, int? page)
         {
@@ -703,5 +602,105 @@ namespace MoostBrand.Controllers
             }
             return RedirectToAction("PendingItems", "PR", new { id = id });
         }
+
+        #region PARTIAL
+        // GET: PR/AddItemPartial/5
+        public ActionResult AddItemPartial(int id)
+        {
+            ViewBag.PRid = id;
+            ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description");
+
+            return PartialView();
+        }
+
+        // POST: PR/AddItemPartial/5
+        [HttpPost]
+        public ActionResult AddItemPartial(int id, RequisitionDetail rd)
+        {
+            try
+            {
+                // TODO: Add insert logic here
+                rd.RequisitionID = id;
+                rd.AprovalStatusID = 1; //submitted
+
+                var rd1 = entity.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
+
+                if (rd1.Count() > 0)
+                {
+                    TempData["PartialError"] = "Item is already in the list.";
+                }
+                else
+                {
+                    entity.RequisitionDetails.Add(rd);
+                    entity.SaveChanges();
+                }
+            }
+            catch
+            {
+                TempData["PartialError"] = "There's an error.";
+            }
+
+            //ViewBag.PRid = id;
+            //ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description", rd.ItemID);
+            //ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
+
+            return RedirectToAction("PendingItems", new { id = id });
+        }
+
+        // GET: PR/EditItemPartial/5
+        public ActionResult EditItemPartial(int id)
+        {
+            var rd = entity.RequisitionDetails.Find(id);
+
+            ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
+
+            return PartialView(rd);
+        }
+
+        // POST: PR/EditItemPartial/5
+        [HttpPost]
+        public ActionResult EditItemPartial(int id, RequisitionDetail rd)
+        {
+            try
+            {
+                entity.Entry(rd).State = EntityState.Modified;
+                entity.SaveChanges();
+            }
+            catch
+            {
+                TempData["PartialError"] = "There's an error.";
+            }
+
+            return RedirectToAction("PendingItems", new { id = rd.RequisitionID });
+        }
+
+        // GET: PR/DeleteItemPartial/5
+        public ActionResult DeleteItemPartial(int id)
+        {
+            var rd = entity.RequisitionDetails.Find(id);
+
+            return PartialView(rd);
+        }
+
+        // POST: PR/DeleteItemPartial/5
+        [HttpPost, ActionName("DeleteItemPartial")]
+        public ActionResult DeleteItemPartialConfirm(int id)
+        {
+            var rd = entity.RequisitionDetails.Find(id);
+
+            int? reqID = rd.RequisitionID;
+            try
+            {
+                entity.RequisitionDetails.Remove(rd);
+                entity.SaveChanges();
+            }
+            catch
+            {
+                TempData["PartialError"] = "There's an error.";
+            }
+
+            return RedirectToAction("PendingItems", new { id = reqID });
+        }
+        #endregion
     }
 }
