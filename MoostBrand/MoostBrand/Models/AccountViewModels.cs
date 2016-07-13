@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace MoostBrand.Models
 {
@@ -77,7 +80,7 @@ namespace MoostBrand.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -96,7 +99,7 @@ namespace MoostBrand.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -109,4 +112,28 @@ namespace MoostBrand.Models
         [Display(Name = "Email")]
         public string Email { get; set; }
     }
+
+    #region Login Checker
+    public class LoginChecker : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (filterContext != null)
+            {
+                HttpSessionStateBase Session = filterContext.HttpContext.Session;
+                if (Session["sessionuid"] == null)
+                {
+                    filterContext.Result = new RedirectToRouteResult(
+                        new RouteValueDictionary
+                        {
+                            { "controller", "Account" },
+                            { "action", "Login" }
+                        });
+                }
+
+            }
+
+        }
+    }
+    #endregion
 }
