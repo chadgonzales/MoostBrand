@@ -441,8 +441,7 @@ namespace MoostBrand.Controllers
 
             return View(pr);
         }
-
-
+        
         // POST: PR/Approve/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -486,12 +485,7 @@ namespace MoostBrand.Controllers
                 return View();
             }
         }
-
-
-
-
-
-
+        
         // GET: PR/Items/5
         public ActionResult Items(int id, int? page)
         {
