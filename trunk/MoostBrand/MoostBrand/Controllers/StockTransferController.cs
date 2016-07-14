@@ -5,9 +5,11 @@ using PagedList;
 using System.Web.Mvc;
 using System.Configuration;
 using System.Data.Entity;
+using MoostBrand.Models;
 
 namespace MoostBrand.Controllers
 {
+    [LoginChecker]
     public class StockTransferController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
@@ -290,6 +292,50 @@ namespace MoostBrand.Controllers
             return View(stocktransfer);
         }
 
+        // POST: StockTransfer/Approve/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Approve(int id)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                //var pr = entity.StockTransfers.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
+                var st = entity.StockTransfers.Find(id);
+                st.ApprovedStatus = 2;
+
+                entity.Entry(st).State = EntityState.Modified;
+                entity.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // POST: StockTransfer/Denied/5
+        [HttpPost]
+        public ActionResult Denied(int id)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                var pr = entity.StockTransfers.Find(id);
+                pr.ApprovedStatus = 3;
+
+                entity.Entry(pr).State = EntityState.Modified;
+                entity.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
         // GET: StockTransfer/ApprovedItems/5
         public ActionResult ApprovedItems(int id, int? page)
         {
@@ -333,8 +379,59 @@ namespace MoostBrand.Controllers
             return View(items.ToPagedList(pageNumber, pageSize));
         }
 
+        // GET: StockTransfer/DeniedItems/5
+        public ActionResult DeniedItems(int id, int? page)
+        {
+            var items = entity.StockTransferDetails
+                        .ToList()
+                        .FindAll(rd => rd.StockTransferID == id && rd.AprovalStatusID == 3);
 
+            ViewBag.STid = id;
 
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = (page ?? 1);
+            return View(items.ToPagedList(pageNumber, pageSize));
+        }
+
+        // POST: StockTransfer/ApproveItem/5
+        public ActionResult ApproveItem(int id, int itemID)
+        {
+            try
+            {
+                var item = entity.StockTransferDetails.Find(itemID);
+                if (item != null)
+                {
+                    item.AprovalStatusID = 2;
+                    entity.Entry(item).State = EntityState.Modified;
+                    entity.SaveChanges();
+                }
+            }
+            catch
+            {
+
+            }
+            return RedirectToAction("PendingItems", "StockTransfer", new { id = id });
+        }
+
+        // POST: StockTransfer/DenyItem/5
+        public ActionResult DenyItem(int id, int itemID)
+        {
+            try
+            {
+                var item = entity.StockTransferDetails.Find(itemID);
+                if (item != null)
+                {
+                    item.AprovalStatusID = 3;
+                    entity.Entry(item).State = EntityState.Modified;
+                    entity.SaveChanges();
+                }
+            }
+            catch
+            {
+
+            }
+            return RedirectToAction("PendingItems", "StockTransfer", new { id = id });
+        }
 
         #region PARTIAL
 

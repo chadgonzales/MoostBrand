@@ -6,9 +6,11 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Configuration;
 using PagedList;
+using MoostBrand.Models;
 
 namespace MoostBrand.Controllers
 {
+    [LoginChecker]
     public class ReceivingController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
@@ -163,6 +165,18 @@ namespace MoostBrand.Controllers
             return View(rrs.ToPagedList(pageNumber, pageSize));
         }
 
+        // GET: Receiving/Details/5
+        public ActionResult Details(int id = 0)
+        {
+            //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
+            var r = entity.Receivings.Find(id);
+            if (r == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(r);
+        }
 
         // GET: Receiving/GetStockTransfers/5
         public ActionResult GetStockTransfers(int id) //returns Json
@@ -295,28 +309,114 @@ namespace MoostBrand.Controllers
                 return HttpNotFound();
             }
 
-            #region DROPDOWNS
-            
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
-            var empList = from s in entity.Employees
-                          select new
-                          {
-                              ID = s.ID,
-                              FullName = s.FirstName + " " + s.LastName
-                          };
-            //new SelectList((), "ID", "FullName");
-            ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", receiving.EncodedBy);
-            ViewBag.CheckedBy = new SelectList(empList, "ID", "FullName", receiving.CheckedBy);
-            ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", receiving.ReceivedBy);
-            ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", receiving.ApprovalStatus);
-            ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", receiving.ApprovedBy);
-            #endregion
+            if(receiving.ApprovalStatus == 1)
+            {
+                #region DROPDOWNS
+
+                ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
+                var empList = from s in entity.Employees
+                              select new
+                              {
+                                  ID = s.ID,
+                                  FullName = s.FirstName + " " + s.LastName
+                              };
+                //new SelectList((), "ID", "FullName");
+                ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", receiving.EncodedBy);
+                ViewBag.CheckedBy = new SelectList(empList, "ID", "FullName", receiving.CheckedBy);
+                ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", receiving.ReceivedBy);
+                ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", receiving.ApprovalStatus);
+                ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", receiving.ApprovedBy);
+                #endregion
+
+                return View(receiving);
+            }
+
+            return RedirectToAction("Details", new { id = id });
+        }
+
+        // GET: Receiving/Delete/5
+        public ActionResult Delete(int id)
+        {
+            //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
+            var receiving = entity.Receivings.FirstOrDefault(r => r.ID == id);
+            if (receiving == null)
+            {
+                return HttpNotFound();
+            }
+            else
+            {
+                if (receiving.ApprovalStatus == 1)
+                {
+                    return View(receiving);
+                }
+            }
+
+            return RedirectToAction("Details", new { id = receiving.ID });
+        }
+
+        // POST: Receiving/Delete/5
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirm(int id)
+        {
+            var receiving = entity.Receivings.Find(id);
+
+            try
+            {
+                entity.Receivings.Remove(receiving);
+                entity.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+            }
 
             return View(receiving);
         }
-        
 
+        // POST: Receiving/Approve/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Approve(int id)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
+                var receving = entity.Receivings.Find(id);
+                receving.ApprovalStatus = 2;
 
+                entity.Entry(receving).State = EntityState.Modified;
+                entity.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // POST: Receiving/Denied/5
+        [HttpPost]
+        public ActionResult Denied(int id)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                var receiving = entity.Receivings.Find(id);
+                receiving.ApprovalStatus = 3;
+
+                entity.Entry(receiving).State = EntityState.Modified;
+                entity.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
         // GET: Receiving/Items/5
         public ActionResult Items(int id, int? page)
@@ -324,6 +424,20 @@ namespace MoostBrand.Controllers
             var items = entity.ReceivingDetails
                         .ToList()
                         .FindAll(rd => rd.ReceivingID == id);
+
+            ViewBag.Rid = id;
+
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = (page ?? 1);
+            return View(items.ToPagedList(pageNumber, pageSize));
+        }
+
+        // GET: Receiving/ApprovedItems/5
+        public ActionResult ApprovedItems(int id, int? page)
+        {
+            var items = entity.ReceivingDetails
+                        .ToList()
+                        .FindAll(rd => rd.ReceivingID == id && rd.AprovalStatusID == 2);
 
             ViewBag.Rid = id;
 
@@ -346,5 +460,198 @@ namespace MoostBrand.Controllers
 
             return Json(rd, JsonRequestBehavior.AllowGet);
         }
+
+        // GET: Receiving/PendingItems/5
+        public ActionResult PendingItems(int id, int? page)
+        {
+            int UserID = Convert.ToInt32(Session["sessionuid"]);
+            int UserType = Convert.ToInt32(Session["usertype"]);
+
+            var ReceivedBy = entity.Receivings.FirstOrDefault(r => r.ID == id).ReceivedBy;
+            if (ReceivedBy != UserID && UserType != 1 && UserType != 4)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var items = entity.ReceivingDetails
+                        .ToList()
+                        .FindAll(rd => rd.ReceivingID == id && rd.AprovalStatusID == 1 && (rd.Receiving.ReceivedBy == UserID || UserType == 1 || UserType == 4));
+            //var items = entity.RequisitionDetails
+            //            .ToList()
+            //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
+
+            ViewBag.Rid = id;
+            ViewBag.ReceivedBy =
+            ViewBag.UserID = UserID;
+            ViewBag.AcctType = UserType;
+
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = (page ?? 1);
+            return View(items.ToPagedList(pageNumber, pageSize));
+        }
+
+        // GET: Receiving/DeniedItems/5
+        public ActionResult DeniedItems(int id, int? page)
+        {
+            var items = entity.ReceivingDetails
+                        .ToList()
+                        .FindAll(rd => rd.ReceivingID == id && rd.AprovalStatusID == 3);
+
+            ViewBag.Rid = id;
+
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = (page ?? 1);
+            return View(items.ToPagedList(pageNumber, pageSize));
+        }
+
+        // POST: Receiving/ApproveItem/5
+        public ActionResult ApproveItem(int id, int itemID)
+        {
+            try
+            {
+                var item = entity.ReceivingDetails.Find(itemID);
+                if (item != null)
+                {
+                    item.AprovalStatusID = 2;
+                    entity.Entry(item).State = EntityState.Modified;
+                    entity.SaveChanges();
+                }
+            }
+            catch
+            {
+
+            }
+            return RedirectToAction("PendingItems", "Receiving", new { id = id });
+        }
+
+        // POST: Receiving/DenyItem/5
+        public ActionResult DenyItem(int id, int itemID)
+        {
+            try
+            {
+                var item = entity.ReceivingDetails.Find(itemID);
+                if (item != null)
+                {
+                    item.AprovalStatusID = 3;
+                    entity.Entry(item).State = EntityState.Modified;
+                    entity.SaveChanges();
+                }
+            }
+            catch
+            {
+
+            }
+            return RedirectToAction("PendingItems", "Receiving", new { id = id });
+        }
+
+        #region PARTIAL
+        // GET: Receiving/AddItemPartial/5
+        public ActionResult AddItemPartial(int id)
+        {
+            int transferID = entity.Receivings.Find(id).StockTransferID;
+            var items = entity.StockTransferDetails
+                        .ToList()
+                        .FindAll(rd => rd.StockTransferID == transferID && rd.AprovalStatusID == 2)
+                        .Select(ed => new
+                        {
+                            ID = ed.StockTransferID,
+                            Description = ed.RequisitionDetail.Item.Description
+                        });
+
+            ViewBag.Rid = id;
+            ViewBag.StockTransferDetailID = new SelectList(items, "ID", "Description");
+
+            return PartialView();
+        }
+
+        // POST: Receiving/AddItemPartial/5
+        [HttpPost]
+        public ActionResult AddItemPartial(int id, ReceivingDetail rd)
+        {
+            try
+            {
+                // TODO: Add insert logic here
+                rd.ReceivingID = id;
+                rd.AprovalStatusID = 1; //submitted
+
+                var rd1 = entity.ReceivingDetails.Where(r => r.ReceivingID == rd.ReceivingID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
+
+                if (rd1.Count() > 0)
+                {
+                    TempData["PartialError"] = "Item is already in the list.";
+                }
+                else
+                {
+                    entity.ReceivingDetails.Add(rd);
+                    entity.SaveChanges();
+                }
+            }
+            catch
+            {
+                TempData["PartialError"] = "There's an error.";
+            }
+
+            //ViewBag.PRid = id;
+            //ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description", rd.ItemID);
+            //ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
+
+            return RedirectToAction("PendingItems", new { id = id });
+        }
+
+        // GET: Receiving/EditItemPartial/5
+        public ActionResult EditItemPartial(int id)
+        {
+            var rd = entity.ReceivingDetails.Find(id);
+
+            ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
+
+            return PartialView(rd);
+        }
+
+        // POST: Receiving/EditItemPartial/5
+        [HttpPost]
+        public ActionResult EditItemPartial(int id, ReceivingDetail rd)
+        {
+            try
+            {
+                entity.Entry(rd).State = EntityState.Modified;
+                entity.SaveChanges();
+            }
+            catch
+            {
+                TempData["PartialError"] = "There's an error.";
+            }
+
+            return RedirectToAction("PendingItems", new { id = rd.ReceivingID });
+        }
+
+        // GET: Receiving/DeleteItemPartial/5
+        public ActionResult DeleteItemPartial(int id)
+        {
+            var rd = entity.ReceivingDetails.Find(id);
+
+            return PartialView(rd);
+        }
+
+        // POST: Receiving/DeleteItemPartial/5
+        [HttpPost, ActionName("DeleteItemPartial")]
+        public ActionResult DeleteItemPartialConfirm(int id)
+        {
+            var rd = entity.ReceivingDetails.Find(id);
+
+            int? reqID = rd.ReceivingID;
+            try
+            {
+                entity.ReceivingDetails.Remove(rd);
+                entity.SaveChanges();
+            }
+            catch
+            {
+                TempData["PartialError"] = "There's an error.";
+            }
+
+            return RedirectToAction("PendingItems", new { id = reqID });
+        }
+        #endregion
     }
 }
