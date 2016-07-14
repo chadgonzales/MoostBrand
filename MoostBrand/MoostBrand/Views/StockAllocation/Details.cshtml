@@ -1,0 +1,67 @@
+﻿@model MoostBrand.DAL.StockAllocation
+@{
+    ViewBag.Title = "Details";
+}
+<div class="panel-heading">
+    <h4 class="panel-title">Requisition Details</h4>
+    <hr />
+</div>
+<div class="panel-body">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2">Receiving ID</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Receiving.ReceivingID)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Batch #</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.BatchNumber)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Date</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.SADate)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Time</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Time)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Remarks</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Remarks)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                @if (Convert.ToInt32(Session["sessionuid"]) == Model.Receiving.ReceivedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                {
+                    <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
+                        Edit
+                    </a>
+                }
+                <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                    Back to List
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>

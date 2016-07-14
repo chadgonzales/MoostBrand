@@ -1,12 +1,12 @@
 ﻿@model MoostBrand.DAL.StockAllocation
-<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-@{
-    ViewBag.Title = "Create Stock Allocation";
-}
 
+@{
+    ViewBag.Title = "Edit";
+}
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ID)
 
     <div class="panel-heading">
         <h4 class="panel-title">Create Stock Allocation</h4>
@@ -59,7 +59,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
-                    <input type="submit" value="Create" class="btn btn-green" />
+                    <input type="submit" value="Save" class="btn btn-green" />
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
                     </a>

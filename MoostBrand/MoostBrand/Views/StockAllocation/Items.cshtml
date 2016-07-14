@@ -1,0 +1,125 @@
+﻿@model PagedList.IPagedList<MoostBrand.DAL.StockAllocationDetail>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Items";
+}
+<div class="panel-heading">
+    <h4 class="panel-title">Approved Items</h4>
+    <hr />
+</div>
+<div class="panel-body">
+    <table class="table table-striped table-bordered table-hover table-full-width dataTable no-footer">
+        <tr>
+            <th>
+                Item Name
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+                Storage
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReceivingDetail.StockTransferDetail.RequisitionDetail.Item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContainerLocation.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContainerStorage.Description)
+                </td>
+                <td>
+                    <a href="#" id="ShowPopopEdit" onclick="ShowEdit(@item.ID)">Edit</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("ApprovedItems",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+    <br /><br />
+    @if (ViewBag.ReceivedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
+    {
+        <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
+    }
+
+    <a href='@Url.Action("Details", new { id = ViewBag.STAid })' class="btn btn-light-orange">
+        Back to List
+    </a>
+
+    <div id="AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.STAid })">
+        <div id="ShowDialogAdd" class="modal-dialog" role="document">
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id="EditItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <div id="ShowDialogEdit" class="modal-dialog" role="document">
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id="DeleteItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <div id="ShowDialogDelete" class="modal-dialog" role="document">
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
+<script>
+    $('#ShowPopop').click(function () {
+
+        var url = $('#AddItemWindow').data('url');
+        $.get(url, function (data) {
+            $('#ShowDialogAdd').html(data);
+
+            $('#AddItemWindow').modal('show');
+
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+        });
+    });
+
+    function ShowEdit(id) {
+        var url = '@Url.Action("EditItemPartial", "StockAllocation")/' + id;
+        $.get(url, function (data) {
+            $('#ShowDialogEdit').html(data);
+
+            $('#EditItemWindow').modal('show');
+
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+        });
+    }
+
+    function ShowDelete(id) {
+        var url = '@Url.Action("DeleteItemPartial", "StockAllocation")/' + id;
+        $.get(url, function (data) {
+            $('#ShowDialogDelete').html(data);
+
+            $('#DeleteItemWindow').modal('show');
+
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+        });
+    }
+</script>

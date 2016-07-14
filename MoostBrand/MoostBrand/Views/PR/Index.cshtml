@@ -115,6 +115,10 @@
 </div>
 
 <script type="text/javascript">
+    function ReloadFunction() {
+        location.reload();
+    }
+
     function Approve() {
         var prID = arguments[0];
 
@@ -123,10 +127,6 @@
         var frm = $("#action_form").serialize();
 
         $.post(url, frm, ReloadFunction);
-
-        function ReloadFunction() {
-            location.reload();
-        }
     }
 
     function Deny() {
@@ -137,9 +137,5 @@
         var frm = $("#action_form").serialize();
 
         $.post(url, frm, ReloadFunction);
-
-        function ReloadFunction() {
-            location.reload();
-        }
     }
 </script>
