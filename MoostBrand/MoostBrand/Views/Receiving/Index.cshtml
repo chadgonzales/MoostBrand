@@ -38,7 +38,7 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.ActionLink("Ref #", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                        @Html.ActionLink("Receiving ID", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
                         @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
@@ -64,27 +64,32 @@
                         </td>
                         <td>
                             <div class="custom-tools">
-                                <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
-                                    <i class="fa fa-edit"></i>
-                                </a>
                                 <a href='@Url.Action("Details", new { id = item.ID })' class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Details">
                                     <i class="fa fa-file"></i>
                                 </a>
-                                <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
-                                    <i class="fa fa-times fa fa-white"></i>
-                                </a>
-                                <a href='@Url.Action("Items", new { id = item.ID })' class="btn btn-xs btn-orange tooltips" data-placement="top" data-original-title="Items">
-                                    <i class="fa fa-times fa fa-files-o"></i>
-                                </a>
-                                <a href="#" id="approve_button" onclick="Approve(@item.ID)"  class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
-                                    <i class="fa fa-times fa fa-thumbs-up"></i>
-                                </a>
-                                <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
-                                    <i class="fa fa-times fa fa-thumbs-down"></i>
-                                </a>
-
+                                @if (item.ApprovalStatus == 1)
+                                {
+                                    if (Convert.ToInt32(Session["sessionuid"]) == item.EncodedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                    {
+                                        <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+                                            <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                                                <i class="fa fa-times fa fa-white"></i>
+                                            </a>
+                                    }
+                                    if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                    {
+                                        <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
+                                            <i class="fa fa-thumbs-up"></i>
+                                        </a>
+                                            <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
+                                                <i class="fa fa-thumbs-down"></i>
+                                            </a>
+                                    }
+                                }
                             </div>
-                           
+
                         </td>
                     </tr>
                 }
@@ -92,14 +97,33 @@
         </table>
     </form>
 
-   
-
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
     @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
 </div>
+<script type="text/javascript">
+    function ReloadFunction() {
+        location.reload();
+    }
 
+    function Approve() {
+        var prID = arguments[0];
 
-    
+        var url = '@Url.Action("Approve", "Receiving")/' + prID;
 
+        var frm = $("#action_form").serialize();
+
+        $.post(url, frm, ReloadFunction);
+    }
+
+    function Deny() {
+        var prID = arguments[0];
+
+        var url = '@Url.Action("Denied", "Receiving")/' + prID;
+
+        var frm = $("#action_form").serialize();
+
+        $.post(url, frm, ReloadFunction);
+    }
+</script>
