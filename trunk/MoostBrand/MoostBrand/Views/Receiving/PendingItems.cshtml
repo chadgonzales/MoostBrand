@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<MoostBrand.DAL.RequisitionDetail>
+﻿@model PagedList.IPagedList<MoostBrand.DAL.ReceivingDetail>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
@@ -30,7 +30,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Item.Description)
+                        @Html.DisplayFor(modelItem => item.StockTransferDetail.RequisitionDetail.Item.Description)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Quantity)
@@ -39,10 +39,10 @@
                         <div class="custom-tools">
                             <a href="#" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit" id="ShowPopopEdit" onclick="ShowEdit(@item.ID)"><i class="fa fa-edit"></i></a>
                             <a href="#" class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete" id="ShowPopopDelete" onclick="ShowDelete(@item.ID)"><i class="fa fa-times fa fa-white"></i></a>
-                            <a href="#" id="approve_button" onclick="Approve(@ViewBag.PRid, @item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
+                            <a href="#" id="approve_button" onclick="Approve(@ViewBag.Rid, @item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
                                 <i class="fa fa-thumbs-up"></i>
                             </a>
-                            <a href="#" id="deny_button" onclick="Deny(@ViewBag.PRid, @item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
+                            <a href="#" id="deny_button" onclick="Deny(@ViewBag.Rid, @item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
                                 <i class="fa fa-thumbs-down"></i>
                             </a>
                         </div>
@@ -65,12 +65,12 @@
     {
         <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
     }
-    
-    <a href='@Url.Action("Details", new { id = ViewBag.PRid })' class="btn btn-light-orange">
+
+    <a href='@Url.Action("Details", new { id = ViewBag.Rid })' class="btn btn-light-orange">
         Back to List
     </a>
 
-    <div id="AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.PRid })">
+    <div id="AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.Rid })">
         <div id="ShowDialogAdd" class="modal-dialog" role="document">
 
         </div><!-- /.modal-dialog -->
@@ -105,7 +105,7 @@
     });
 
     function ShowEdit(id) {
-        var url = '@Url.Action("EditItemPartial", "PR")/' + id;
+        var url = '@Url.Action("EditItemPartial", "Receiving")/' + id;
         $.get(url, function (data) {
             $('#ShowDialogEdit').html(data);
 
@@ -119,7 +119,7 @@
     }
 
     function ShowDelete(id) {
-        var url = '@Url.Action("DeleteItemPartial", "PR")/' + id;
+        var url = '@Url.Action("DeleteItemPartial", "Receiving")/' + id;
         $.get(url, function (data) {
             $('#ShowDialogDelete').html(data);
 
@@ -135,12 +135,12 @@
         location.reload();
     }
     function Approve(id, itemID){
-        var url = '@Url.Action("ApproveItem", "PR")/' + id;
+        var url = '@Url.Action("ApproveItem", "Receiving")/' + id;
         $.post(url, {id: id, itemID : itemID }, ReloadFunction);
     }
 
     function Deny(id, itemID){
-        var url = '@Url.Action("ApproveItem", "PR")/' + id;
+        var url = '@Url.Action("ApproveItem", "Receiving")/' + id;
         $.post(url, {id: id, itemID : itemID }, ReloadFunction);
     }
 </script>

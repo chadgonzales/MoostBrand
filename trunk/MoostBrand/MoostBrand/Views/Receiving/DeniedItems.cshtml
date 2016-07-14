@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<MoostBrand.DAL.RequisitionDetail>
+﻿@model PagedList.IPagedList<MoostBrand.DAL.ReceivingDetail>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
@@ -23,7 +23,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Item.Description)
+                    @Html.DisplayFor(modelItem => item.StockTransferDetail.RequisitionDetail.Item.Description)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantity)
@@ -38,7 +38,7 @@
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
     <br /><br />
-    <a href='@Url.Action("Details", new { id = ViewBag.PRid })' class="btn btn-light-orange">
+    <a href='@Url.Action("Details", new { id = ViewBag.Rid })' class="btn btn-light-orange">
         Back to List
     </a>
 </div>

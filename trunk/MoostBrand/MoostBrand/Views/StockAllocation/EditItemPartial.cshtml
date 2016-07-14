@@ -1,4 +1,4 @@
-﻿@model MoostBrand.DAL.StockTransferDetail
+﻿@model MoostBrand.DAL.StockAllocationDetail
 <div class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -11,14 +11,14 @@
         <div class="modal-body">
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.StockTransferID)
-            @Html.HiddenFor(model => model.RequisitionDetailID)
+            @Html.HiddenFor(model => model.StockAllocationID)
+            @Html.HiddenFor(model => model.ReceivingDetailID)
 
             <div class="form-horizontal">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.RequisitionDetail.Item, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.ReceivingDetail.StockTransferDetail.RequisitionDetail.Item, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.DisplayFor(model => model.RequisitionDetail.Item.Description)
+                        @Html.DisplayFor(model => model.ReceivingDetail.StockTransferDetail.RequisitionDetail.Item.Description)
                     </div>
                 </div>
             </div>
@@ -33,10 +33,19 @@
             </div>
             <div class="form-horizontal">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.AprovalStatusID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.ContainerLocationID, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.DropDownList("AprovalStatusID", String.Empty)
-                        @Html.ValidationMessageFor(model => model.AprovalStatusID, "", new { @class = "text-danger" })
+                        @Html.DropDownList("ContainerLocationID", String.Empty)
+                        @Html.ValidationMessageFor(model => model.ContainerLocationID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContainerStorageID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.DropDownList("ContainerStorageID", String.Empty)
+                        @Html.ValidationMessageFor(model => model.ContainerStorageID, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
