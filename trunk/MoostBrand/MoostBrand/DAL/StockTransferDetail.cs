@@ -20,15 +20,19 @@ namespace MoostBrand.DAL
 
         public int? RequisitionDetailID { get; set; }
 
-        public int? Status { get; set; }
+        public int? Quantity { get; set; }
 
-        public bool? IsReturn { get; set; }
+        public int? AprovalStatusID { get; set; }
 
-        public virtual ReasonForAdjustment ReasonForAdjustment { get; set; }
+        public string Remarks { get; set; }
+
+        public virtual ApprovalStatu ApprovalStatu { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceivingDetail> ReceivingDetails { get; set; }
 
         public virtual RequisitionDetail RequisitionDetail { get; set; }
+
+        public virtual StockTransfer StockTransfer { get; set; }
     }
 }

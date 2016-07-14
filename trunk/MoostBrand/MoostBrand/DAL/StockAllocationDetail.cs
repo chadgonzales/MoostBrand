@@ -20,6 +20,8 @@ namespace MoostBrand.DAL
 
         public int? ContainerLocationID { get; set; }
 
+        public string Remarks { get; set; }
+
         public virtual ContainerLocation ContainerLocation { get; set; }
 
         public virtual ContainerStorage ContainerStorage { get; set; }

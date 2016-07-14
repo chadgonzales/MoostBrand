@@ -5,9 +5,7 @@ namespace MoostBrand.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
-    using System.Web;
-    using System.Web.Mvc;
-    using System.Web.Routing;
+
     public partial class User
     {
         public int ID { get; set; }
