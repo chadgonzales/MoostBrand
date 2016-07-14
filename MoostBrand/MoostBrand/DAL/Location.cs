@@ -16,7 +16,6 @@ namespace MoostBrand.DAL
             Receivings = new HashSet<Receiving>();
             Requisitions = new HashSet<Requisition>();
             Requisitions1 = new HashSet<Requisition>();
-            StockAllocations = new HashSet<StockAllocation>();
         }
 
         public int ID { get; set; }
@@ -45,8 +44,5 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Requisition> Requisitions1 { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StockAllocation> StockAllocations { get; set; }
     }
 }

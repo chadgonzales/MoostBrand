@@ -29,6 +29,9 @@ namespace MoostBrand.DAL
 
         public DateTime ReceivingDate { get; set; }
 
+        [StringLength(50)]
+        public string ReceivingTime { get; set; }
+
         public int? EncodedBy { get; set; }
 
         public int? CheckedBy { get; set; }

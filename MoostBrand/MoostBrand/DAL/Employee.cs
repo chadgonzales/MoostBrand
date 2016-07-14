@@ -11,13 +11,13 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Employee()
         {
-            Receivings = new HashSet<Receiving>();
             StockTransfers = new HashSet<StockTransfer>();
             StockTransfers1 = new HashSet<StockTransfer>();
             StockTransfers2 = new HashSet<StockTransfer>();
             StockTransfers3 = new HashSet<StockTransfer>();
             StockTransfers4 = new HashSet<StockTransfer>();
             StockTransfers5 = new HashSet<StockTransfer>();
+            Receivings = new HashSet<Receiving>();
             Receivings1 = new HashSet<Receiving>();
             Receivings2 = new HashSet<Receiving>();
             Receivings3 = new HashSet<Receiving>();
@@ -25,6 +25,7 @@ namespace MoostBrand.DAL
             Requisitions1 = new HashSet<Requisition>();
             Requisitions2 = new HashSet<Requisition>();
             Requisitions3 = new HashSet<Requisition>();
+            Returns = new HashSet<Return>();
             Users = new HashSet<User>();
         }
 
@@ -38,9 +39,6 @@ namespace MoostBrand.DAL
 
         [StringLength(50)]
         public string Position { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Receiving> Receivings { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransfer> StockTransfers { get; set; }
@@ -59,6 +57,9 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransfer> StockTransfers5 { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Receiving> Receivings { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Receiving> Receivings1 { get; set; }
@@ -80,6 +81,9 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Requisition> Requisitions3 { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Return> Returns { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }

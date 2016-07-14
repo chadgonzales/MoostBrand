@@ -20,11 +20,13 @@ namespace MoostBrand.DAL
 
         public int? StockTransferDetailID { get; set; }
 
-        public int? Status { get; set; }
+        public int? Quantity { get; set; }
 
-        public bool? IsReturn { get; set; }
+        public int? AprovalStatusID { get; set; }
 
-        public virtual ReasonForAdjustment ReasonForAdjustment { get; set; }
+        public string Remarks { get; set; }
+
+        public virtual ApprovalStatu ApprovalStatu { get; set; }
 
         public virtual Receiving Receiving { get; set; }
 

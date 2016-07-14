@@ -35,7 +35,8 @@ namespace MoostBrand.DAL
         public virtual DbSet<RequisitionType> RequisitionTypes { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<ReservationType> ReservationTypes { get; set; }
-        public virtual DbSet<ReturnedItem> ReturnedItems { get; set; }
+        public virtual DbSet<Return> Returns { get; set; }
+        public virtual DbSet<ReturnDetail> ReturnDetails { get; set; }
         public virtual DbSet<ReturnType> ReturnTypes { get; set; }
         public virtual DbSet<ShipmentType> ShipmentTypes { get; set; }
         public virtual DbSet<Size> Sizes { get; set; }
@@ -44,6 +45,7 @@ namespace MoostBrand.DAL
         public virtual DbSet<StockTransferDetail> StockTransferDetails { get; set; }
         public virtual DbSet<StockTransfer> StockTransfers { get; set; }
         public virtual DbSet<SubCategory> SubCategories { get; set; }
+        public virtual DbSet<TransactionType> TransactionTypes { get; set; }
         public virtual DbSet<UnitOfMeasurement> UnitOfMeasurements { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
@@ -51,6 +53,11 @@ namespace MoostBrand.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ApprovalStatu>()
+                .HasMany(e => e.ReceivingDetails)
+                .WithOptional(e => e.ApprovalStatu)
+                .HasForeignKey(e => e.AprovalStatusID);
+
             modelBuilder.Entity<ApprovalStatu>()
                 .HasMany(e => e.Receivings)
                 .WithOptional(e => e.ApprovalStatu)
@@ -67,6 +74,16 @@ namespace MoostBrand.DAL
                 .HasForeignKey(e => e.ApprovalStatus);
 
             modelBuilder.Entity<ApprovalStatu>()
+                .HasMany(e => e.Returns)
+                .WithOptional(e => e.ApprovalStatu)
+                .HasForeignKey(e => e.ApprovalStatus);
+
+            modelBuilder.Entity<ApprovalStatu>()
+                .HasMany(e => e.StockTransferDetails)
+                .WithOptional(e => e.ApprovalStatu)
+                .HasForeignKey(e => e.AprovalStatusID);
+
+            modelBuilder.Entity<ApprovalStatu>()
                 .HasMany(e => e.StockTransfers)
                 .WithOptional(e => e.ApprovalStatu)
                 .HasForeignKey(e => e.ApprovedStatus);
@@ -79,11 +96,6 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.Requisitions)
                 .WithOptional(e => e.DropShipType)
                 .HasForeignKey(e => e.DropShipID);
-
-            modelBuilder.Entity<Employee>()
-                .HasMany(e => e.Receivings)
-                .WithOptional(e => e.Employee)
-                .HasForeignKey(e => e.ApprovedBy);
 
             modelBuilder.Entity<Employee>()
                 .HasMany(e => e.StockTransfers)
@@ -121,20 +133,25 @@ namespace MoostBrand.DAL
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Employee>()
-                .HasMany(e => e.Receivings1)
-                .WithOptional(e => e.Employee1)
+                .HasMany(e => e.Receivings)
+                .WithOptional(e => e.Employee)
                 .HasForeignKey(e => e.EncodedBy);
 
             modelBuilder.Entity<Employee>()
-                .HasMany(e => e.Receivings2)
-                .WithOptional(e => e.Employee2)
+                .HasMany(e => e.Receivings1)
+                .WithOptional(e => e.Employee1)
                 .HasForeignKey(e => e.CheckedBy);
 
             modelBuilder.Entity<Employee>()
-                .HasMany(e => e.Receivings3)
-                .WithRequired(e => e.Employee3)
+                .HasMany(e => e.Receivings2)
+                .WithRequired(e => e.Employee2)
                 .HasForeignKey(e => e.ReceivedBy)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.Receivings3)
+                .WithOptional(e => e.Employee3)
+                .HasForeignKey(e => e.ApprovedBy);
 
             modelBuilder.Entity<Employee>()
                 .HasMany(e => e.Requisitions)
@@ -156,6 +173,11 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.Requisitions3)
                 .WithOptional(e => e.Employee3)
                 .HasForeignKey(e => e.ValidatedBy);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.Returns)
+                .WithOptional(e => e.Employee)
+                .HasForeignKey(e => e.ApprovedBy);
 
             modelBuilder.Entity<Employee>()
                 .HasMany(e => e.Users)
@@ -188,24 +210,14 @@ namespace MoostBrand.DAL
                 .WithOptional(e => e.Location1)
                 .HasForeignKey(e => e.Destination);
 
-            modelBuilder.Entity<Location>()
-                .HasMany(e => e.StockAllocations)
-                .WithRequired(e => e.Location)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<ReasonForAdjustment>()
-                .HasMany(e => e.ReceivingDetails)
-                .WithOptional(e => e.ReasonForAdjustment)
-                .HasForeignKey(e => e.Status);
-
-            modelBuilder.Entity<ReasonForAdjustment>()
-                .HasMany(e => e.StockTransferDetails)
-                .WithOptional(e => e.ReasonForAdjustment)
-                .HasForeignKey(e => e.Status);
-
             modelBuilder.Entity<Receiving>()
                 .HasMany(e => e.ReceivingDetails)
                 .WithRequired(e => e.Receiving)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Return>()
+                .HasMany(e => e.ReturnDetails)
+                .WithRequired(e => e.Return)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ReceivingType>()
