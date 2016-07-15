@@ -1,12 +1,11 @@
-﻿@model PagedList.IPagedList<MoostBrand.DAL.StockTransferDetail>
+﻿@model PagedList.IPagedList<MoostBrand.DAL.ReturnedItem>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
-    ViewBag.Title = "Pending Items";
+    ViewBag.Title = "Items";
 }
-
 <div class="panel-heading">
-    <h4 class="panel-title">Pending Items</h4>
+    <h4 class="panel-title">Return Items</h4>
     <hr />
 </div>
 <div class="panel-body">
@@ -16,6 +15,9 @@
             <tr>
                 <th>
                     Item Name
+                </th>
+                <th>
+                    Reference #
                 </th>
                 <th>
                     Quantity
@@ -29,9 +31,24 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.Description)
-                    </td>
+                    @if (item.StockTransferDetailID != null)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StockTransferDetail.RequisitionDetail.Item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StockTransferDetail.StockTransfer.TransferID)
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReceivingDetail.StockTransferDetail.RequisitionDetail.Item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReceivingDetail.Receiving.ReceivingID)
+                        </td>
+                    }
                     <td>
                         @Html.DisplayFor(modelItem => item.Quantity)
                     </td>
@@ -39,12 +56,7 @@
                         <div class="custom-tools">
                             <a href="#" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit" id="ShowPopopEdit" onclick="ShowEdit(@item.ID)"><i class="fa fa-edit"></i></a>
                             <a href="#" class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete" id="ShowPopopDelete" onclick="ShowDelete(@item.ID)"><i class="fa fa-times fa fa-white"></i></a>
-                            <a href="#" id="approve_button" onclick="Approve(@ViewBag.STid, @item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
-                                <i class="fa fa-thumbs-up"></i>
-                            </a>
-                            <a href="#" id="deny_button" onclick="Deny(@ViewBag.STid, @item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
-                                <i class="fa fa-thumbs-down"></i>
-                            </a>
+                            
                         </div>
                     </td>
                 </tr>
@@ -60,16 +72,13 @@
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
     <br /><br />
-    @if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
-    {
-        <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
-    }
+    <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
 
-    <a href='@Url.Action("Details", new { id = ViewBag.STid })' class="btn btn-light-orange">
+    <a href='@Url.Action("Details", new { id = ViewBag.RTid })' class="btn btn-light-orange">
         Back to List
     </a>
 
-    <div id="AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.STid })">
+    <div id="AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.RTid })">
         <div id="ShowDialogAdd" class="modal-dialog" role="document">
 
         </div><!-- /.modal-dialog -->
@@ -87,7 +96,6 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
-
 <script>
     $('#ShowPopop').click(function () {
 
@@ -119,7 +127,7 @@
     }
 
     function ShowDelete(id) {
-        var url = '@Url.Action("DeleteItemPartial", "StockTransfer")/' + id;
+        var url = '@Url.Action("DeleteItemPartial", "Return")/' + id;
         $.get(url, function (data) {
             $('#ShowDialogDelete').html(data);
 
@@ -135,13 +143,12 @@
         location.reload();
     }
     function Approve(id, itemID) {
-        var url = '@Url.Action("ApproveItem", "StockTransfer")/' + id;
+        var url = '@Url.Action("ApproveItem", "Return")/' + id;
         $.post(url, { id: id, itemID: itemID }, ReloadFunction);
     }
 
     function Deny(id, itemID) {
-        var url = '@Url.Action("ApproveItem", "StockTransfer")/' + id;
+        var url = '@Url.Action("ApproveItem", "Return")/' + id;
         $.post(url, { id: id, itemID: itemID }, ReloadFunction);
     }
 </script>
-

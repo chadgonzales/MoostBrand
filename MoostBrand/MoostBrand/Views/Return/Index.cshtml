@@ -65,6 +65,9 @@
                                 <a href='@Url.Action("Details", new { id = item.ID })' class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Details">
                                     <i class="fa fa-file"></i>
                                 </a>
+                                <a href='@Url.Action("Items", new { id = item.ID })' class="btn btn-xs btn-orange tooltips" data-placement="top" data-original-title="Items">
+                                    <i class="fa fa-times fa fa-files-o"></i>
+                                </a>
                                 @if (item.ApprovalStatus == 1)
                                 {
                                     if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
