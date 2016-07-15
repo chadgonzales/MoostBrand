@@ -12,6 +12,7 @@ namespace MoostBrand.DAL
         public StockTransferDetail()
         {
             ReceivingDetails = new HashSet<ReceivingDetail>();
+            ReturnedItems = new HashSet<ReturnedItem>();
         }
 
         public int ID { get; set; }
@@ -32,6 +33,9 @@ namespace MoostBrand.DAL
         public virtual ICollection<ReceivingDetail> ReceivingDetails { get; set; }
 
         public virtual RequisitionDetail RequisitionDetail { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReturnedItem> ReturnedItems { get; set; }
 
         public virtual StockTransfer StockTransfer { get; set; }
     }
