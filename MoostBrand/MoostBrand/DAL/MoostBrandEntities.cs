@@ -35,8 +35,8 @@ namespace MoostBrand.DAL
         public virtual DbSet<RequisitionType> RequisitionTypes { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<ReservationType> ReservationTypes { get; set; }
+        public virtual DbSet<ReturnedItem> ReturnedItems { get; set; }
         public virtual DbSet<Return> Returns { get; set; }
-        public virtual DbSet<ReturnDetail> ReturnDetails { get; set; }
         public virtual DbSet<ReturnType> ReturnTypes { get; set; }
         public virtual DbSet<ShipmentType> ShipmentTypes { get; set; }
         public virtual DbSet<Size> Sizes { get; set; }
@@ -215,11 +215,6 @@ namespace MoostBrand.DAL
                 .WithRequired(e => e.Receiving)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Return>()
-                .HasMany(e => e.ReturnDetails)
-                .WithRequired(e => e.Return)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<ReceivingType>()
                 .HasMany(e => e.Receivings)
                 .WithRequired(e => e.ReceivingType)
@@ -240,8 +235,18 @@ namespace MoostBrand.DAL
                 .WithRequired(e => e.RequisitionType)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Return>()
+                .HasMany(e => e.ReturnedItems)
+                .WithOptional(e => e.Return)
+                .WillCascadeOnDelete();
+
             modelBuilder.Entity<StockTransferDetail>()
                 .HasMany(e => e.ReceivingDetails)
+                .WithOptional(e => e.StockTransferDetail)
+                .WillCascadeOnDelete();
+
+            modelBuilder.Entity<StockTransferDetail>()
+                .HasMany(e => e.ReturnedItems)
                 .WithOptional(e => e.StockTransferDetail)
                 .WillCascadeOnDelete();
 

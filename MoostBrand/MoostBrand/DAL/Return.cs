@@ -8,6 +8,12 @@ namespace MoostBrand.DAL
 
     public partial class Return
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Return()
+        {
+            ReturnedItems = new HashSet<ReturnedItem>();
+        }
+
         public int ID { get; set; }
 
         public int? ReturnTypeID { get; set; }
@@ -32,11 +38,11 @@ namespace MoostBrand.DAL
 
         public virtual Employee Employee { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReturnedItem> ReturnedItems { get; set; }
+
         public virtual ReturnType ReturnType { get; set; }
 
         public virtual TransactionType TransactionType { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReturnDetail> ReturnDetails { get; set; }
     }
 }
