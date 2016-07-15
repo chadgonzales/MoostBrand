@@ -318,18 +318,40 @@ namespace MoostBrand.Controllers
             }
         }
 
-        // GET: Return/Items/5
-        //public ActionResult Items(int id, int? page)
-        //{
-        //    var items = entity.ReturnDetails
-        //                .ToList()
-        //                .FindAll(rd => rd.ReceivingID == id);
+        //GET: Return/Items/5
+        public ActionResult Items(int id, int? page)
+        {
+            int UserID = Convert.ToInt32(Session["sessionuid"]);
+            int UserType = Convert.ToInt32(Session["usertype"]);
 
-        //    ViewBag.Rid = id;
+            var items = entity.ReturnedItems
+                        .ToList()
+                        .FindAll(rd => rd.ReturnID == id);
 
-        //    int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
-        //    int pageNumber = (page ?? 1);
-        //    return View(items.ToPagedList(pageNumber, pageSize));
-        //}
+            ViewBag.RTid = id;
+
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = (page ?? 1);
+            return View(items.ToPagedList(pageNumber, pageSize));
+        }
+
+        // GET: Return/AddItemPartial/5
+        public ActionResult AddItemPartial(int id)
+        {
+            var ret = entity.Returns.Find(id);
+
+            var items = new object();
+
+            if(ret.TransactionTypeID == 1)
+            {
+                items = entity.StockTransferDetails.ToList();
+            }
+            else
+            {
+                items = entity.ReceivingDetails.ToList();
+            }
+            
+            return PartialView();
+        }
     }
 }
