@@ -225,9 +225,9 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PRController.cs" />
     <Compile Include="Controllers\ReceivingController.cs" />
+    <Compile Include="Controllers\ReturnController.cs" />
     <Compile Include="Controllers\SizeController.cs" />
     <Compile Include="Controllers\StockAllocationController.cs" />
     <Compile Include="Controllers\StockTransferController.cs" />
@@ -235,129 +235,45 @@
     <Compile Include="Controllers\UnitOfMeasureController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
-    <Compile Include="DAL\ApprovalStatu.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Brand.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Category.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Client.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Color.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\ContainerLocation.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\ContainerStorage.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Downpayment.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\DropShipType.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Employee.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Item.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Location.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\LocationType.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\MoostBrandEntity.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MoostBrandEntity.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\MoostBrandEntity.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\MoostBrandEntity.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MoostBrandEntity.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\PaymentStatu.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\ReasonForAdjustment.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Receiving.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\ReceivingDetail.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\ReceivingType.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Requisition.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\RequisitionDetail.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\RequisitionType.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Reservation.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\ReservationType.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\ReturnedItem.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\ReturnType.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\ShipmentType.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Size.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\StockAllocation.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\StockAllocationDetail.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\StockTransfer.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\StockTransferDetail.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\SubCategory.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\UnitOfMeasurement.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\User.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\UserType.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
-    <Compile Include="DAL\Vendor.cs">
-      <DependentUpon>MoostBrandEntity.tt</DependentUpon>
-    </Compile>
+    <Compile Include="DAL\ApprovalStatu.cs" />
+    <Compile Include="DAL\Brand.cs" />
+    <Compile Include="DAL\Category.cs" />
+    <Compile Include="DAL\Client.cs" />
+    <Compile Include="DAL\Color.cs" />
+    <Compile Include="DAL\ContainerLocation.cs" />
+    <Compile Include="DAL\ContainerStorage.cs" />
+    <Compile Include="DAL\Downpayment.cs" />
+    <Compile Include="DAL\DropShipType.cs" />
+    <Compile Include="DAL\Employee.cs" />
+    <Compile Include="DAL\Item.cs" />
+    <Compile Include="DAL\Location.cs" />
+    <Compile Include="DAL\LocationType.cs" />
+    <Compile Include="DAL\MoostBrandEntities.cs" />
+    <Compile Include="DAL\PaymentStatu.cs" />
+    <Compile Include="DAL\ReasonForAdjustment.cs" />
+    <Compile Include="DAL\Receiving.cs" />
+    <Compile Include="DAL\ReceivingDetail.cs" />
+    <Compile Include="DAL\ReceivingType.cs" />
+    <Compile Include="DAL\Requisition.cs" />
+    <Compile Include="DAL\RequisitionDetail.cs" />
+    <Compile Include="DAL\RequisitionType.cs" />
+    <Compile Include="DAL\Reservation.cs" />
+    <Compile Include="DAL\ReservationType.cs" />
+    <Compile Include="DAL\Return.cs" />
+    <Compile Include="DAL\ReturnedItem.cs" />
+    <Compile Include="DAL\ReturnType.cs" />
+    <Compile Include="DAL\ShipmentType.cs" />
+    <Compile Include="DAL\Size.cs" />
+    <Compile Include="DAL\StockAllocation.cs" />
+    <Compile Include="DAL\StockAllocationDetail.cs" />
+    <Compile Include="DAL\StockTransfer.cs" />
+    <Compile Include="DAL\StockTransferDetail.cs" />
+    <Compile Include="DAL\SubCategory.cs" />
+    <Compile Include="DAL\TransactionType.cs" />
+    <Compile Include="DAL\UnitOfMeasurement.cs" />
+    <Compile Include="DAL\User.cs" />
+    <Compile Include="DAL\UserType.cs" />
+    <Compile Include="DAL\Vendor.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -372,16 +288,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\PagedList.css" />
-    <Content Include="DAL\MoostBrandEntity.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MoostBrandEntity.edmx</DependentUpon>
-      <LastGenOutput>MoostBrandEntity.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="DAL\MoostBrandEntity.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MoostBrandEntity.edmx</DependentUpon>
-      <LastGenOutput>MoostBrandEntity.cs</LastGenOutput>
-    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -392,13 +298,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EntityDeploy Include="DAL\MoostBrandEntity.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MoostBrandEntity.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="DAL\MoostBrandEntity.edmx.diagram">
-      <DependentUpon>MoostBrandEntity.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -438,12 +337,6 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
-    <Content Include="Views\Manage\ChangePassword.cshtml" />
-    <Content Include="Views\Manage\Index.cshtml" />
-    <Content Include="Views\Manage\ManageLogins.cshtml" />
-    <Content Include="Views\Manage\SetPassword.cshtml" />
-    <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
@@ -523,7 +416,6 @@
     <Content Include="Views\Receiving\Create.cshtml" />
     <Content Include="Views\StockTransfer\Index.cshtml" />
     <Content Include="Views\StockTransfer\Create.cshtml" />
-    <Content Include="Views\StockTransfer\Items.cshtml" />
     <Content Include="Views\Receiving\Items.cshtml" />
     <Content Include="Views\Receiving\AddItem.cshtml" />
     <Content Include="Views\StockAllocation\Index.cshtml" />
@@ -538,6 +430,33 @@
     <Content Include="Views\StockTransfer\Details.cshtml" />
     <Content Include="Views\StockTransfer\Delete.cshtml" />
     <Content Include="Views\Receiving\Edit.cshtml" />
+    <Content Include="Views\StockTransfer\PendingItems.cshtml" />
+    <Content Include="Views\StockTransfer\AddItemPartial.cshtml" />
+    <Content Include="Views\StockTransfer\ApprovedItems.cshtml" />
+    <Content Include="Views\StockTransfer\EditItemPartial.cshtml" />
+    <Content Include="Views\StockTransfer\DeleteItemPartial.cshtml" />
+    <Content Include="Views\StockTransfer\DeniedItems.cshtml" />
+    <Content Include="Views\Receiving\Details.cshtml" />
+    <Content Include="Views\Receiving\Delete.cshtml" />
+    <Content Include="Views\Receiving\ApprovedItems.cshtml" />
+    <Content Include="Views\Receiving\PendingItems.cshtml" />
+    <Content Include="Views\Receiving\DeniedItems.cshtml" />
+    <Content Include="Views\Receiving\AddItemPartial.cshtml" />
+    <Content Include="Views\Receiving\EditItemPartial.cshtml" />
+    <Content Include="Views\Receiving\DeleteItemPartial.cshtml" />
+    <Content Include="Views\StockAllocation\Details.cshtml" />
+    <Content Include="Views\StockAllocation\Edit.cshtml" />
+    <Content Include="Views\StockAllocation\Delete.cshtml" />
+    <Content Include="Views\StockAllocation\Items.cshtml" />
+    <Content Include="Views\StockAllocation\AddItemPartial.cshtml" />
+    <Content Include="Views\StockAllocation\EditItemPartial.cshtml" />
+    <Content Include="Views\StockAllocation\DeleteItemPartial.cshtml" />
+    <Content Include="Views\Return\Index.cshtml" />
+    <Content Include="Views\Return\Details.cshtml" />
+    <Content Include="Views\Return\Create.cshtml" />
+    <Content Include="Views\Return\Edit.cshtml" />
+    <Content Include="Views\Return\Delete.cshtml" />
+    <Content Include="Views\Return\Items.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
