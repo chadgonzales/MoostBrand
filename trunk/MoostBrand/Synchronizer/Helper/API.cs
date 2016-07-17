@@ -11,14 +11,14 @@ namespace Synchronizer.Helper
     class API
     {
         public string URL { get; set; }
-        public async Task<HttpResponseMessage> MakeRequest()
+        public async Task<HttpResponseMessage> MakeRequest(string urlParam)
         {
 
             using (HttpClient client = new HttpClient())
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync(URL);
+                    HttpResponseMessage response = await client.GetAsync(URL + urlParam);
 
                     if (response.IsSuccessStatusCode)
                     {
