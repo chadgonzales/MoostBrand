@@ -13,7 +13,6 @@ namespace Synchronizer.Helper
         public string URL { get; set; }
         public async Task<HttpResponseMessage> MakeRequest(string urlParam)
         {
-
             using (HttpClient client = new HttpClient())
             {
                 try
