@@ -6,31 +6,29 @@ namespace MoostBrand.DAL
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Return
+    public partial class StockAdjustment
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Return()
+        public StockAdjustment()
         {
-            ReturnedItems = new HashSet<ReturnedItem>();
+            StockAdjustmentDetails = new HashSet<StockAdjustmentDetail>();
         }
 
         public int ID { get; set; }
+
+        public int? TransactionTypeID { get; set; }
 
         public int? ReturnTypeID { get; set; }
 
         public DateTime? Date { get; set; }
 
-        public int? TransactionTypeID { get; set; }
+        public int? PreparedBy { get; set; }
+
+        public int? AdjustedBy { get; set; }
 
         public int? ApprovalStatus { get; set; }
 
         public int? ApprovedBy { get; set; }
-
-        [StringLength(50)]
-        public string ApprovalNumber { get; set; }
-
-        [StringLength(150)]
-        public string InspectedBy { get; set; }
 
         public string Remarks { get; set; }
 
@@ -40,10 +38,14 @@ namespace MoostBrand.DAL
 
         public virtual Employee Employee { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReturnedItem> ReturnedItems { get; set; }
+        public virtual Employee Employee1 { get; set; }
+
+        public virtual Employee Employee2 { get; set; }
 
         public virtual ReturnType ReturnType { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockAdjustmentDetail> StockAdjustmentDetails { get; set; }
 
         public virtual TransactionType TransactionType { get; set; }
     }

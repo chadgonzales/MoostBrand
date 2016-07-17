@@ -1,91 +1,22 @@
 ﻿using MoostBrand.DAL;
+using MoostBrand.Models;
+using PagedList;
 using System;
-using System.Data;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
-using System.Configuration;
-using PagedList;
-using MoostBrand.Models;
 
 namespace MoostBrand.Controllers
 {
     [LoginChecker]
-    public class ReturnController : Controller
+    public class StockAdjustmentController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
 
-        #region PRIVATE METHODS
-
-        private string Generator(string prefix)
-        {
-            //Initiate objects & vars
-            startR: Random random = new Random();
-            string randomString = "";
-            int randNumber = 0;
-
-            //Loop ‘length’ times to generate a random number or character
-            for (int i = 0; i < 6; i++)
-            {
-                if (i == 0)
-                {
-                    start: randNumber = random.Next(0, 9); //int {0-9}
-                    if (randNumber == 0)
-                        goto start;
-                }
-                else
-                {
-                    randNumber = random.Next(0, 9);
-                }
-                //append random char or digit to random string
-                randomString = randomString + randNumber.ToString();
-            }
-
-            randomString = prefix + "-" + randomString;
-            var r = entity.Returns.ToList().FindAll(p => p.ApprovalNumber == randomString);
-            if (r.Count() > 0)
-            {
-                goto startR;
-            }
-
-            //return the random string
-            return randomString;
-        }
-
-        #endregion
-
-        // GET: Return/GetRefNumber/5
-        public ActionResult GetRefNumber(int id)
-        {
-            if(id == 1)
-            {
-                var rd = entity.StockTransfers
-                    .Where(r => r.ApprovedStatus == 2)
-                    .Select(r => new
-                    {
-                        ID = r.ID,
-                        RefNum = r.TransferID
-                    })
-                    .FirstOrDefault();
-
-                return Json(rd, JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                var rd = entity.Receivings
-                    .Where(r => r.ApprovalStatus == 2)
-                    .Select(r => new
-                    {
-                        ID = r.ID,
-                        RefNum = r.ReceivingID
-                    })
-                    .FirstOrDefault();
-
-                return Json(rd, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        // GET: Return
+        // GET: StockAdjustment
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -103,7 +34,7 @@ namespace MoostBrand.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var rrs = from o in entity.Returns
+            var rrs = from o in entity.StockAdjustments
                       select o;
 
             if (!String.IsNullOrEmpty(searchString))
@@ -130,11 +61,11 @@ namespace MoostBrand.Controllers
             return View(rrs.ToPagedList(pageNumber, pageSize));
         }
 
-        // GET: Return/Details/5
+        // GET: StockAdjustment/Details/5
         public ActionResult Details(int id = 0)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
-            var r = entity.Returns.Find(id);
+            var r = entity.StockAdjustments.Find(id);
             if (r == null)
             {
                 return HttpNotFound();
@@ -143,32 +74,40 @@ namespace MoostBrand.Controllers
             return View(r);
         }
 
-        // GET: Return/Create/
+        // GET: StockAdjustment/Create/
         public ActionResult Create()
         {
-            var retrn = new Return();
-            retrn.Date = DateTime.Now;
+            var adjust = new StockAdjustment();
+            adjust.Date = DateTime.Now;
 
             #region DROPDOWNS
+            var employees = from s in entity.Employees
+                            select new
+                            {
+                                ID = s.ID,
+                                FullName = s.FirstName + " " + s.LastName
+                            };
+            ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName");
+            ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type");
             ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type");
             #endregion
 
-            return View(retrn);
+            return View(adjust);
         }
 
-        // POST: Return/Create/
+        // POST: StockAdjustment/Create/
         [HttpPost]
-        public ActionResult Create(Return retrn)
+        public ActionResult Create(StockAdjustment adjust)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    retrn.ApprovalStatus = 1;
-                    retrn.IsSync = false;
+                    adjust.ApprovalStatus = 1;
+                    adjust.IsSync = false;
 
-                    entity.Returns.Add(retrn);
+                    entity.StockAdjustments.Add(adjust);
                     entity.SaveChanges();
 
                     return RedirectToAction("Index");
@@ -179,47 +118,63 @@ namespace MoostBrand.Controllers
                 }
             }
             #region DROPDOWNS
-            ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", retrn.TransactionTypeID);
-            ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type", retrn.ReturnTypeID);
+            var employees = from s in entity.Employees
+                            select new
+                            {
+                                ID = s.ID,
+                                FullName = s.FirstName + " " + s.LastName
+                            };
+            ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName", adjust.PreparedBy);
+            ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName", adjust.AdjustedBy);
+            ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", adjust.TransactionTypeID);
+            ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type", adjust.ReturnTypeID);
             #endregion
 
-            return View(retrn);
+            return View(adjust);
         }
 
-        // GET: Return/Edit/5
+        // GET: StockAdjustment/Edit/5
         public ActionResult Edit(int id = 0)
         {
-            var retrn = entity.Returns.Find(id);
+            var adjust = entity.StockAdjustments.Find(id);
 
-            if (retrn != null)
+            if (adjust != null)
             {
                 return HttpNotFound();
             }
 
-            if(retrn.ApprovalStatus == 1)
+            if (adjust.ApprovalStatus == 1)
             {
                 #region DROPDOWNS
-                ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type");
-                ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type");
+                var employees = from s in entity.Employees
+                                select new
+                                {
+                                    ID = s.ID,
+                                    FullName = s.FirstName + " " + s.LastName
+                                };
+                ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName", adjust.PreparedBy);
+                ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName", adjust.AdjustedBy);
+                ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", adjust.TransactionTypeID);
+                ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type", adjust.ReturnTypeID);
                 #endregion
 
-                return View(retrn);
+                return View(adjust);
             }
 
             return RedirectToAction("Details", new { id = id });
         }
 
-        // POST: Return/Edit/5
+        // POST: StockAdjustment/Edit/5
         [HttpPost]
-        public ActionResult Edit(Return retrn)
+        public ActionResult Edit(StockAdjustment adjust)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    retrn.IsSync = false;
+                    adjust.IsSync = false;
 
-                    entity.Entry(retrn).State = EntityState.Modified;
+                    entity.Entry(adjust).State = EntityState.Modified;
                     entity.SaveChanges();
 
                     return RedirectToAction("Index");
@@ -230,42 +185,50 @@ namespace MoostBrand.Controllers
                 }
             }
             #region DROPDOWNS
-            ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", retrn.TransactionTypeID);
-            ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type", retrn.ReturnTypeID);
+            var employees = from s in entity.Employees
+                            select new
+                            {
+                                ID = s.ID,
+                                FullName = s.FirstName + " " + s.LastName
+                            };
+            ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName", adjust.PreparedBy);
+            ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName", adjust.AdjustedBy);
+            ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", adjust.TransactionTypeID);
+            ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type", adjust.ReturnTypeID);
             #endregion
 
-            return View(retrn);
+            return View(adjust);
         }
 
-        // GET: Return/Delete/5
+        // GET: StockAdjustment/Delete/5
         public ActionResult Delete(int id)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
-            var retrn = entity.Returns.FirstOrDefault(r => r.ID == id);
-            if (retrn == null)
+            var adjust = entity.StockAdjustments.FirstOrDefault(r => r.ID == id);
+            if (adjust == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                if (retrn.ApprovalStatus == 1)
+                if (adjust.ApprovalStatus == 1)
                 {
-                    return View(retrn);
+                    return View(adjust);
                 }
             }
 
-            return RedirectToAction("Details", new { id = retrn.ID });
+            return RedirectToAction("Details", new { id = adjust.ID });
         }
 
-        // POST: Return/Delete/5
+        // POST: StockAdjustment/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirm(int id)
         {
-            var retrn = entity.Returns.Find(id);
+            var adjust = entity.StockAdjustments.Find(id);
 
             try
             {
-                entity.Returns.Remove(retrn);
+                entity.StockAdjustments.Remove(adjust);
                 entity.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -274,10 +237,10 @@ namespace MoostBrand.Controllers
             {
             }
 
-            return View(retrn);
+            return View(adjust);
         }
 
-        // POST: Return/Approve/5
+        // POST: StockAdjustment/Approve/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Approve(int id)
@@ -286,11 +249,11 @@ namespace MoostBrand.Controllers
             {
                 // TODO: Add delete logic here
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
-                var retrn = entity.Returns.Find(id);
-                retrn.ApprovalStatus = 2;
-                retrn.IsSync = false;
+                var adjust = entity.StockAdjustments.Find(id);
+                adjust.ApprovalStatus = 2;
+                adjust.IsSync = false;
 
-                entity.Entry(retrn).State = EntityState.Modified;
+                entity.Entry(adjust).State = EntityState.Modified;
                 entity.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -301,18 +264,18 @@ namespace MoostBrand.Controllers
             }
         }
 
-        // POST: Return/Denied/5
+        // POST: StockAdjustment/Denied/5
         [HttpPost]
         public ActionResult Denied(int id)
         {
             try
             {
                 // TODO: Add delete logic here
-                var retrn = entity.Returns.Find(id);
-                retrn.ApprovalStatus = 3;
-                retrn.IsSync = false;
+                var adjust = entity.StockAdjustments.Find(id);
+                adjust.ApprovalStatus = 3;
+                adjust.IsSync = false;
 
-                entity.Entry(retrn).State = EntityState.Modified;
+                entity.Entry(adjust).State = EntityState.Modified;
                 entity.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -323,17 +286,17 @@ namespace MoostBrand.Controllers
             }
         }
 
-        //GET: Return/Items/5
+        //GET: StockAdjustment/Items/5
         public ActionResult Items(int id, int? page)
         {
             int UserID = Convert.ToInt32(Session["sessionuid"]);
             int UserType = Convert.ToInt32(Session["usertype"]);
 
-            var items = entity.ReturnedItems
+            var items = entity.StockAdjustmentDetails
                         .ToList()
-                        .FindAll(rd => rd.ReturnID == id);
+                        .FindAll(rd => rd.StockAdjustmentID == id);
 
-            ViewBag.RTid = id;
+            ViewBag.STTAid = id;
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
@@ -342,11 +305,11 @@ namespace MoostBrand.Controllers
 
         #region PARTIAL
 
-        // GET: Return/AddItemPartial/5
+        // GET: StockAdjustment/AddItemPartial/5
         public ActionResult AddItemPartial(int id)
         {
-            var ret = entity.Returns.Find(id);
-            
+            var ret = entity.StockAdjustments.Find(id);
+
             if (ret.TransactionTypeID == 1)
             {
                 var items = entity.StockTransferDetails
@@ -372,28 +335,29 @@ namespace MoostBrand.Controllers
                 ViewBag.ReceivingDetailID = new SelectList(items, "ID", "Description");
             }
 
-            ViewBag.RTid = id;
+            ViewBag.STTAid = id;
 
+            ViewBag.ReasonForAdjustmentID = new SelectList(entity.ReasonForAdjustments, "ID", "Reason");
             ViewBag.TransType = ret.TransactionTypeID;
 
             return PartialView();
         }
 
-        // POST: Return/AddItemPartial/5
+        // POST: StockAdjustment/AddItemPartial/5
         [HttpPost]
-        public ActionResult AddItemPartial(int id, ReturnedItem rd)
+        public ActionResult AddItemPartial(int id, StockAdjustmentDetail rd)
         {
             try
             {
                 var found = false;
 
-                var ret = entity.Returns.Find(id);
+                var adj = entity.StockAdjustments.Find(id);
 
-                rd.ReturnID = id;
+                rd.StockAdjustmentID = id;
 
-                if (ret.TransactionTypeID == 1)
+                if (adj.TransactionTypeID == 1)
                 {
-                    var rd1 = entity.ReturnedItems.Where(r => r.ReturnID == rd.ReturnID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
+                    var rd1 = entity.ReturnedItems.Where(r => r.ReturnID == rd.StockAdjustmentID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
 
                     if (rd1.Count() > 0)
                     {
@@ -403,7 +367,7 @@ namespace MoostBrand.Controllers
                 }
                 else
                 {
-                    var rd1 = entity.ReturnedItems.Where(r => r.ReturnID == rd.ReturnID && r.ReceivingDetailID == rd.ReceivingDetailID).ToList();
+                    var rd1 = entity.ReturnedItems.Where(r => r.ReturnID == rd.StockAdjustmentID && r.ReceivingDetailID == rd.ReceivingDetailID).ToList();
 
                     if (rd1.Count() > 0)
                     {
@@ -411,12 +375,12 @@ namespace MoostBrand.Controllers
                         found = true;
                     }
                 }
-                
+
                 if (!found)
                 {
                     rd.IsSync = false;
 
-                    entity.ReturnedItems.Add(rd);
+                    entity.StockAdjustmentDetails.Add(rd);
                     entity.SaveChanges();
                 }
             }
@@ -432,17 +396,18 @@ namespace MoostBrand.Controllers
             return RedirectToAction("Items", new { id = id });
         }
 
-        // GET: Return/EditItemPartial/5
+        // GET: StockAdjustment/EditItemPartial/5
         public ActionResult EditItemPartial(int id)
         {
-            var rd = entity.ReturnedItems.Find(id);
-            
-            return PartialView(rd);
+            var sa = entity.StockAdjustmentDetails.Find(id);
+
+            ViewBag.ReasonForAdjustmentID = new SelectList(entity.ReasonForAdjustments, "ID", "Reason", sa.ReasonForAdjustmentID);
+            return PartialView(sa);
         }
 
-        // POST: Return/EditItemPartial/5
+        // POST: StockAdjustment/EditItemPartial/5
         [HttpPost]
-        public ActionResult EditItemPartial(int id, ReturnedItem rd)
+        public ActionResult EditItemPartial(int id, StockAdjustmentDetail rd)
         {
             try
             {
@@ -456,27 +421,27 @@ namespace MoostBrand.Controllers
                 TempData["PartialError"] = "There's an error.";
             }
 
-            return RedirectToAction("Items", new { id = rd.ReturnID });
+            return RedirectToAction("Items", new { id = rd.StockAdjustmentID });
         }
 
-        // GET: Return/DeleteItemPartial/5
+        // GET: StockAdjustment/DeleteItemPartial/5
         public ActionResult DeleteItemPartial(int id)
         {
-            var rd = entity.ReturnedItems.Find(id);
+            var sa = entity.StockAdjustmentDetails.Find(id);
 
-            return PartialView(rd);
+            return PartialView(sa);
         }
 
-        // POST: Return/DeleteItemPartial/5
+        // POST: StockAdjustment/DeleteItemPartial/5
         [HttpPost, ActionName("DeleteItemPartial")]
         public ActionResult DeleteItemPartialConfirm(int id)
         {
-            var rd = entity.ReturnedItems.Find(id);
+            var sa = entity.StockAdjustmentDetails.Find(id);
 
-            int? reqID = rd.ReturnID;
+            int? reqID = sa.StockAdjustmentID;
             try
             {
-                entity.ReturnedItems.Remove(rd);
+                entity.StockAdjustmentDetails.Remove(sa);
                 entity.SaveChanges();
             }
             catch
@@ -486,6 +451,7 @@ namespace MoostBrand.Controllers
 
             return RedirectToAction("Items", new { id = reqID });
         }
+
         #endregion
     }
 }

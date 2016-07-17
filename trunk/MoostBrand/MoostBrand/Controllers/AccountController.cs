@@ -36,7 +36,7 @@ namespace MoostBrand.Controllers
                     var user = entity.Users.FirstOrDefault(u => u.Username == login.Email && u.Password == login.Password);
                     if (user != null)
                     {
-                        Session["sessionuid"] = user.ID;
+                        Session["sessionuid"] = user.EmployeeID;
                         Session["usertype"] = user.UserTypeID;
 
                         return RedirectToAction("Index", "PR");

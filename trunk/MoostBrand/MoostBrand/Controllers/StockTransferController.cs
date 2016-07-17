@@ -146,6 +146,10 @@ namespace MoostBrand.Controllers
                 }
                 else
                 {
+                    stocktransfer.ApprovedStatus = 1;
+                    stocktransfer.ApprovedBy = Convert.ToInt32(Session["sessionuid"]);
+                    stocktransfer.IsSync = false;
+
                     entity.StockTransfers.Add(stocktransfer);
                     entity.SaveChanges();
 
@@ -222,6 +226,8 @@ namespace MoostBrand.Controllers
             {
                 try
                 {
+                    stocktransfer.IsSync = false;
+
                     entity.Entry(stocktransfer).State = EntityState.Modified;
                     entity.SaveChanges();
 
@@ -303,6 +309,7 @@ namespace MoostBrand.Controllers
                 //var pr = entity.StockTransfers.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var st = entity.StockTransfers.Find(id);
                 st.ApprovedStatus = 2;
+                st.IsSync = false;
 
                 entity.Entry(st).State = EntityState.Modified;
                 entity.SaveChanges();
@@ -322,10 +329,11 @@ namespace MoostBrand.Controllers
             try
             {
                 // TODO: Add delete logic here
-                var pr = entity.StockTransfers.Find(id);
-                pr.ApprovedStatus = 3;
+                var st = entity.StockTransfers.Find(id);
+                st.ApprovedStatus = 3;
+                st.IsSync = false;
 
-                entity.Entry(pr).State = EntityState.Modified;
+                entity.Entry(st).State = EntityState.Modified;
                 entity.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -402,6 +410,8 @@ namespace MoostBrand.Controllers
                 if (item != null)
                 {
                     item.AprovalStatusID = 2;
+                    item.IsSync = false;
+
                     entity.Entry(item).State = EntityState.Modified;
                     entity.SaveChanges();
                 }
@@ -422,6 +432,8 @@ namespace MoostBrand.Controllers
                 if (item != null)
                 {
                     item.AprovalStatusID = 3;
+                    item.IsSync = false;
+
                     entity.Entry(item).State = EntityState.Modified;
                     entity.SaveChanges();
                 }
@@ -444,7 +456,7 @@ namespace MoostBrand.Controllers
                         .FindAll(rd => rd.RequisitionID == reqID && rd.AprovalStatusID == 2)
                         .Select(ed => new
                         {
-                            ID = ed.RequisitionID,
+                            ID = ed.ID,
                             Description = ed.Item.Description
                         });
 
@@ -471,6 +483,8 @@ namespace MoostBrand.Controllers
                 }
                 else
                 {
+                    stocktransfer.IsSync = false;
+
                     entity.StockTransferDetails.Add(stocktransfer);
                     entity.SaveChanges();
                 }
@@ -503,6 +517,8 @@ namespace MoostBrand.Controllers
         {
             try
             {
+                stocktransfer.IsSync = false;
+
                 entity.Entry(stocktransfer).State = EntityState.Modified;
                 entity.SaveChanges();
             }

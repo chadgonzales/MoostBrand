@@ -109,14 +109,6 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.DropDownList("ApprovedBy", String.Empty)
-                    @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
                 @Html.LabelFor(model => model.ReleasedBy, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
                     @Html.DropDownList("ReleasedBy", String.Empty)
@@ -145,14 +137,6 @@
                 <div class="col-md-6">
                     @Html.DropDownList("PostedBy", String.Empty)
                     @Html.ValidationMessageFor(model => model.PostedBy, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ApprovedStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.DropDownList("ApprovedStatus", String.Empty)
-                    @Html.ValidationMessageFor(model => model.ApprovedStatus, "", new { @class = "text-danger" })
                 </div>
             </div>
 

@@ -28,6 +28,8 @@ namespace MoostBrand.DAL
 
         public string Remarks { get; set; }
 
+        public bool? IsSync { get; set; }
+
         public virtual Receiving Receiving { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

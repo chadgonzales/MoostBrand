@@ -1,11 +1,11 @@
-﻿@model PagedList.IPagedList<MoostBrand.DAL.ReturnedItem>
+﻿@model PagedList.IPagedList<MoostBrand.DAL.StockAdjustmentDetail>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Items";
 }
 <div class="panel-heading">
-    <h4 class="panel-title">Return Items</h4>
+    <h4 class="panel-title">Stock Adjustment Items</h4>
     <hr />
 </div>
 <div class="panel-body">
@@ -20,7 +20,13 @@
                     Reference #
                 </th>
                 <th>
-                    Quantity
+                    Reason
+                </th>
+                <th>
+                    Quantity Ordered
+                </th>
+                <th>
+                    Quantity Received
                 </th>
                 <th>
                     Action
@@ -50,13 +56,19 @@
                         </td>
                     }
                     <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
+                        @Html.DisplayFor(modelItem => item.ReasonForAdjustment.Reason)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuantityOrdered)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuantityReceived)
                     </td>
                     <td>
                         <div class="custom-tools">
                             <a href="#" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit" id="ShowPopopEdit" onclick="ShowEdit(@item.ID)"><i class="fa fa-edit"></i></a>
                             <a href="#" class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete" id="ShowPopopDelete" onclick="ShowDelete(@item.ID)"><i class="fa fa-times fa fa-white"></i></a>
-                            
+
                         </div>
                     </td>
                 </tr>
@@ -74,11 +86,11 @@
     <br /><br />
     <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
 
-    <a href='@Url.Action("Details", new { id = ViewBag.RTid })' class="btn btn-light-orange">
+    <a href='@Url.Action("Details", new { id = ViewBag.STTAid })' class="btn btn-light-orange">
         Back to List
     </a>
 
-    <div id="AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.RTid })">
+    <div id="AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.STTAid })">
         <div id="ShowDialogAdd" class="modal-dialog" role="document">
 
         </div><!-- /.modal-dialog -->
@@ -113,7 +125,7 @@
     });
 
     function ShowEdit(id) {
-        var url = '@Url.Action("EditItemPartial", "Return")/' + id;
+        var url = '@Url.Action("EditItemPartial", "StockAdjustment")/' + id;
         $.get(url, function (data) {
             $('#ShowDialogEdit').html(data);
 
@@ -127,7 +139,7 @@
     }
 
     function ShowDelete(id) {
-        var url = '@Url.Action("DeleteItemPartial", "Return")/' + id;
+        var url = '@Url.Action("DeleteItemPartial", "StockAdjustment")/' + id;
         $.get(url, function (data) {
             $('#ShowDialogDelete').html(data);
 
@@ -143,12 +155,12 @@
         location.reload();
     }
     function Approve(id, itemID) {
-        var url = '@Url.Action("ApproveItem", "Return")/' + id;
+        var url = '@Url.Action("ApproveItem", "StockAdjustment")/' + id;
         $.post(url, { id: id, itemID: itemID }, ReloadFunction);
     }
 
     function Deny(id, itemID) {
-        var url = '@Url.Action("ApproveItem", "Return")/' + id;
+        var url = '@Url.Action("ApproveItem", "StockAdjustment")/' + id;
         $.post(url, { id: id, itemID: itemID }, ReloadFunction);
     }
 </script>

@@ -1,6 +1,6 @@
-﻿@model MoostBrand.DAL.Return
+﻿@model MoostBrand.DAL.StockAdjustment
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Delete";
 }
 <div class="panel-heading">
     <h4 class="panel-title">Return Details</h4>
@@ -33,6 +33,24 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label col-md-2">Prepared By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee.LastName),
+                    @Html.DisplayFor(model => model.Employee.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Adjusted By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee1.LastName),
+                    @Html.DisplayFor(model => model.Employee1.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label col-md-2">Approved Status</label>
             <div class="col-md-6">
                 <label class="custom-label">
@@ -44,12 +62,11 @@
             <label class="control-label col-md-2">Approved By</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.Employee.LastName), 
-                    @Html.DisplayFor(model => model.Employee.FirstName)
+                    @Html.DisplayFor(model => model.Employee2.LastName),
+                    @Html.DisplayFor(model => model.Employee2.FirstName)
                 </label>
             </div>
         </div>
-
         <div class="form-group">
             <label class="control-label col-md-2">Remarks</label>
             <div class="col-md-6">

@@ -1,4 +1,4 @@
-﻿@model MoostBrand.DAL.Return
+﻿@model MoostBrand.DAL.StockAdjustment
 @{
     ViewBag.Title = "Details";
 }
@@ -33,6 +33,24 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label col-md-2">Prepared By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee.LastName),
+                    @Html.DisplayFor(model => model.Employee.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Adjusted By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee1.LastName),
+                    @Html.DisplayFor(model => model.Employee1.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label col-md-2">Approved Status</label>
             <div class="col-md-6">
                 <label class="custom-label">
@@ -44,12 +62,11 @@
             <label class="control-label col-md-2">Approved By</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.Employee.LastName), 
-                    @Html.DisplayFor(model => model.Employee.FirstName)
+                    @Html.DisplayFor(model => model.Employee2.LastName),
+                    @Html.DisplayFor(model => model.Employee2.FirstName)
                 </label>
             </div>
         </div>
-
         <div class="form-group">
             <label class="control-label col-md-2">Remarks</label>
             <div class="col-md-6">
@@ -59,26 +76,14 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-6">
-                @if (Convert.ToInt32(Session["sessionuid"]) == Model.ApprovedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
-                {
-                    <a href='@Url.Action("Items", new { id = Model.ID })' class="btn btn-dark-yellow">
-                        Items
-                    </a>
-
-                    <br /><br />
-
-                    <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
-                        Edit
-                    </a>
-                }
-
-                <a href='@Url.Action("Index")' class="btn btn-light-orange">
-                    Back to List
-                </a>
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Delete" class="btn btn-dark-red" />
+                </div>
             </div>
-        </div>
+        }
 
     </div>
 </div>
