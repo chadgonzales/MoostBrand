@@ -22,6 +22,8 @@ namespace MoostBrand.DAL
 
         public string Remarks { get; set; }
 
+        public bool? IsSync { get; set; }
+
         public virtual ContainerLocation ContainerLocation { get; set; }
 
         public virtual ContainerStorage ContainerStorage { get; set; }

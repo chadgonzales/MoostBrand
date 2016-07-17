@@ -200,22 +200,9 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.ApprovalStatu, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.DropDownList("ApprovalStatus", String.Empty)
-                    @Html.ValidationMessageFor(model => model.ApprovalStatus, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.DropDownList("ApprovedBy", String.Empty)
-                    @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
+            @Html.HiddenFor(model => model.ApprovalStatus)
+            @Html.HiddenFor(model => model.ApprovedBy)
+            
             <div class="form-group">
                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">

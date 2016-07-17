@@ -93,6 +93,8 @@ namespace MoostBrand.Controllers
                     var checkSA = entity.StockAllocations.FirstOrDefault(s => s.BatchNumber == sa.BatchNumber);
                     if (checkSA == null)
                     {
+                        sa.IsSync = false;
+
                         entity.StockAllocations.Add(sa);
                         entity.SaveChanges();
 
@@ -137,6 +139,8 @@ namespace MoostBrand.Controllers
             {
                 try
                 {
+                    sa.IsSync = false;
+
                     entity.Entry(sa).State = EntityState.Modified;
                     entity.SaveChanges();
 
@@ -221,7 +225,7 @@ namespace MoostBrand.Controllers
                         .FindAll(rd => rd.ReceivingID == recID && rd.AprovalStatusID == 2)
                         .Select(ed => new
                         {
-                            ID = ed.ReceivingID,
+                            ID = ed.ID,
                             Description = ed.StockTransferDetail.RequisitionDetail.Item.Description
                         });
 
@@ -241,6 +245,7 @@ namespace MoostBrand.Controllers
             {
                 // TODO: Add insert logic here
                 sad.StockAllocationID = id;
+                sad.IsSync = false;
 
                 entity.StockAllocationDetails.Add(sad);
                 entity.SaveChanges();
@@ -250,7 +255,7 @@ namespace MoostBrand.Controllers
                 TempData["PartialError"] = "There's an error.";
             }
             
-            return RedirectToAction("PendingItems", new { id = id });
+            return RedirectToAction("Items", new { id = id });
         }
 
         // GET: StockAllocation/EditItemPartial/5
@@ -270,6 +275,8 @@ namespace MoostBrand.Controllers
         {
             try
             {
+                rd.IsSync = false;
+
                 entity.Entry(rd).State = EntityState.Modified;
                 entity.SaveChanges();
             }

@@ -16,6 +16,7 @@ namespace MoostBrand.DAL
             RequisitionDetails = new HashSet<RequisitionDetail>();
             Requisitions = new HashSet<Requisition>();
             Returns = new HashSet<Return>();
+            StockAdjustments = new HashSet<StockAdjustment>();
             StockTransferDetails = new HashSet<StockTransferDetail>();
             StockTransfers = new HashSet<StockTransfer>();
         }
@@ -39,6 +40,9 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Return> Returns { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockAdjustment> StockAdjustments { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransferDetail> StockTransferDetails { get; set; }

@@ -1,0 +1,83 @@
+﻿@model MoostBrand.DAL.StockAdjustmentDetail
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Add Item</h4>
+    </div>
+    @using (Html.BeginForm())
+            {
+        <div class="modal-body">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.StockTransferDetailID)
+            @Html.HiddenFor(model => model.ReceivingDetailID)
+
+            @if (Model.StockTransferDetailID != null)
+            {
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Item Name</label>
+                        <div class="col-md-8">
+                            @Html.DisplayFor(model => model.StockTransferDetail.RequisitionDetail.Item.Description)
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Item Name</label>
+                        <div class="col-md-8">
+                            @Html.DisplayFor(model => model.ReceivingDetail.StockTransferDetail.RequisitionDetail.Item.Description)
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-md-2">Reason</label>
+                    <div class="col-md-8">
+                        @Html.DropDownList("ReasonForAdjustmentID", String.Empty)
+                        @Html.ValidationMessageFor(model => model.ReasonForAdjustmentID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.QuantityOrdered, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.QuantityOrdered, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.QuantityOrdered, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.QuantityReceived, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.QuantityReceived, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.QuantityReceived, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input type="submit" value="Save" class="btn btn-green" />
+        </div>
+    }
+</div><!-- /.modal-content -->

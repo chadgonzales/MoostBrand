@@ -262,6 +262,10 @@ namespace MoostBrand.Controllers
 
                         if(newR != null)
                         {
+                            newR.ApprovalStatus = 1;
+                            newR.ApprovedBy = Convert.ToInt32(Session["sessionuid"]);
+                            newR.IsSync = false;
+
                             entity.Receivings.Add(newR);
                             entity.SaveChanges();
 
@@ -334,6 +338,56 @@ namespace MoostBrand.Controllers
             return RedirectToAction("Details", new { id = id });
         }
 
+        // POST: Receiving/Edit/5
+        [HttpPost]
+        public ActionResult Edit(Receiving receiving)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    //var r = entity.Requisitions.FirstOrDefault(r1 => r1.ID == pr.ID && (r1.RequestedBy == UserID || AcctType == 1 || AcctType == 4)).ApprovalStatus;
+                    var r = entity.Receivings.FirstOrDefault(r1 => r1.ID == receiving.ID).ApprovalStatus;
+                    if (r == 1)
+                    {
+                        receiving.IsSync = false;
+
+                        entity.Entry(SetNull(receiving)).State = EntityState.Modified;
+                        entity.SaveChanges();
+
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Details", new { id = receiving.ID });
+                    }
+                }
+                catch
+                {
+                    ModelState.AddModelError("", "There's an error.");
+                }
+            }
+
+            #region DROPDOWNS
+
+            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
+            var empList = from s in entity.Employees
+                          select new
+                          {
+                              ID = s.ID,
+                              FullName = s.FirstName + " " + s.LastName
+                          };
+            //new SelectList((), "ID", "FullName");
+            ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", receiving.EncodedBy);
+            ViewBag.CheckedBy = new SelectList(empList, "ID", "FullName", receiving.CheckedBy);
+            ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", receiving.ReceivedBy);
+            ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", receiving.ApprovalStatus);
+            ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", receiving.ApprovedBy);
+            #endregion
+
+            return View(receiving);
+        }
+
         // GET: Receiving/Delete/5
         public ActionResult Delete(int id)
         {
@@ -385,6 +439,7 @@ namespace MoostBrand.Controllers
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var receving = entity.Receivings.Find(id);
                 receving.ApprovalStatus = 2;
+                receving.IsSync = false;
 
                 entity.Entry(receving).State = EntityState.Modified;
                 entity.SaveChanges();
@@ -406,6 +461,7 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 var receiving = entity.Receivings.Find(id);
                 receiving.ApprovalStatus = 3;
+                receiving.IsSync = false;
 
                 entity.Entry(receiving).State = EntityState.Modified;
                 entity.SaveChanges();
@@ -513,6 +569,8 @@ namespace MoostBrand.Controllers
                 if (item != null)
                 {
                     item.AprovalStatusID = 2;
+                    item.IsSync = false;
+
                     entity.Entry(item).State = EntityState.Modified;
                     entity.SaveChanges();
                 }
@@ -533,6 +591,8 @@ namespace MoostBrand.Controllers
                 if (item != null)
                 {
                     item.AprovalStatusID = 3;
+                    item.IsSync = false;
+
                     entity.Entry(item).State = EntityState.Modified;
                     entity.SaveChanges();
                 }
@@ -554,7 +614,7 @@ namespace MoostBrand.Controllers
                         .FindAll(rd => rd.StockTransferID == transferID && rd.AprovalStatusID == 2)
                         .Select(ed => new
                         {
-                            ID = ed.StockTransferID,
+                            ID = ed.ID,
                             Description = ed.RequisitionDetail.Item.Description
                         });
 
@@ -582,12 +642,15 @@ namespace MoostBrand.Controllers
                 }
                 else
                 {
+                    rd.IsSync = false;
+
                     entity.ReceivingDetails.Add(rd);
                     entity.SaveChanges();
                 }
             }
             catch
             {
+                throw;
                 TempData["PartialError"] = "There's an error.";
             }
 
@@ -614,6 +677,8 @@ namespace MoostBrand.Controllers
         {
             try
             {
+                rd.IsSync = false;
+
                 entity.Entry(rd).State = EntityState.Modified;
                 entity.SaveChanges();
             }

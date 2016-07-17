@@ -26,6 +26,8 @@ namespace MoostBrand.DAL
 
         public string Remarks { get; set; }
 
+        public bool? IsSync { get; set; }
+
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
         public virtual Item Item { get; set; }

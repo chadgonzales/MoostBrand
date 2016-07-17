@@ -178,38 +178,24 @@ namespace MoostBrand.Controllers
             pr.RequestedDate = DateTime.Now;
 
             #region DROPDOWNS
+            var employees = from s in entity.Employees
+                            select new
+                            {
+                                ID = s.ID,
+                                FullName = s.FirstName + " " + s.LastName
+                            };
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type");
-            ViewBag.RequestedBy = new SelectList((from s in entity.Employees
-                                                  select new
-                                                  {
-                                                      ID = s.ID,
-                                                      FullName = s.FirstName + " " + s.LastName
-                                                  }), "ID", "FullName");
+            ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
             ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name");
             ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type");
             ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type");
             ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type");
-            ViewBag.ReservedBy = new SelectList((from s in entity.Employees
-                                                 select new
-                                                 {
-                                                     ID = s.ID,
-                                                     FullName = s.FirstName + " " + s.LastName
-                                                 }), "ID", "FullName");
-            ViewBag.ValidatedBy = new SelectList((from s in entity.Employees
-                                                  select new
-                                                  {
-                                                      ID = s.ID,
-                                                      FullName = s.FirstName + " " + s.LastName
-                                                  }), "ID", "FullName");
+            ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName");
+            ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description");
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status");
-            ViewBag.ApprovedBy = new SelectList((from s in entity.Employees
-                                                 select new
-                                                 {
-                                                     ID = s.ID,
-                                                     FullName = s.FirstName + " " + s.LastName
-                                                 }), "ID", "FullName");
+            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
             #endregion
 
             return View(pr);
@@ -237,6 +223,8 @@ namespace MoostBrand.Controllers
 
                         if (newPR != null)
                         {
+                            pr.IsSync = false;
+
                             entity.Requisitions.Add(newPR);
                             entity.SaveChanges();
 
@@ -251,38 +239,24 @@ namespace MoostBrand.Controllers
             }
 
             #region DROPDOWNS
+            var employees = from s in entity.Employees
+                            select new
+                            {
+                                ID = s.ID,
+                                FullName = s.FirstName + " " + s.LastName
+                            };
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
-            ViewBag.RequestedBy = new SelectList((from s in entity.Employees
-                                                  select new
-                                                  {
-                                                      ID = s.ID,
-                                                      FullName = s.FirstName + " " + s.LastName
-                                                  }), "ID", "FullName", pr.RequestedBy);
+            ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
             ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name", pr.VendorID);
             ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
             ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type", pr.ShipmentTypeID);
             ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", pr.DropShipID);
-            ViewBag.ReservedBy = new SelectList((from s in entity.Employees
-                                                 select new
-                                                 {
-                                                     ID = s.ID,
-                                                     FullName = s.FirstName + " " + s.LastName
-                                                 }), "ID", "FullName", pr.ReservedBy);
-            ViewBag.ValidatedBy = new SelectList((from s in entity.Employees
-                                                  select new
-                                                  {
-                                                      ID = s.ID,
-                                                      FullName = s.FirstName + " " + s.LastName
-                                                  }), "ID", "FullName", pr.ValidatedBy);
+            ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName", pr.ReservedBy);
+            ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", pr.ValidatedBy);
             ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description", pr.Destination);
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
-            ViewBag.ApprovedBy = new SelectList((from s in entity.Employees
-                                                 select new
-                                                 {
-                                                     ID = s.ID,
-                                                     FullName = s.FirstName + " " + s.LastName
-                                                 }), "ID", "FullName", pr.ApprovedBy);
+            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
             #endregion
 
             return View(pr);
@@ -296,38 +270,24 @@ namespace MoostBrand.Controllers
             if (pr.ApprovalStatus == 1)
             {
                 #region DROPDOWNS
+                var employees = from s in entity.Employees
+                                select new
+                                {
+                                    ID = s.ID,
+                                    FullName = s.FirstName + " " + s.LastName
+                                };
                 ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
-                ViewBag.RequestedBy = new SelectList((from s in entity.Employees
-                                                      select new
-                                                      {
-                                                          ID = s.ID,
-                                                          FullName = s.FirstName + " " + s.LastName
-                                                      }), "ID", "FullName", pr.RequestedBy);
+                ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
                 ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
                 ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name", pr.VendorID);
                 ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
                 ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type", pr.ShipmentTypeID);
                 ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", pr.DropShipID);
-                ViewBag.ReservedBy = new SelectList((from s in entity.Employees
-                                                     select new
-                                                     {
-                                                         ID = s.ID,
-                                                         FullName = s.FirstName + " " + s.LastName
-                                                     }), "ID", "FullName", pr.ReservedBy);
-                ViewBag.ValidatedBy = new SelectList((from s in entity.Employees
-                                                      select new
-                                                      {
-                                                          ID = s.ID,
-                                                          FullName = s.FirstName + " " + s.LastName
-                                                      }), "ID", "FullName", pr.ValidatedBy);
+                ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName", pr.ReservedBy);
+                ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", pr.ValidatedBy);
                 ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description", pr.Destination);
                 ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
-                ViewBag.ApprovedBy = new SelectList((from s in entity.Employees
-                                                     select new
-                                                     {
-                                                         ID = s.ID,
-                                                         FullName = s.FirstName + " " + s.LastName
-                                                     }), "ID", "FullName", pr.ApprovedBy);
+                ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
                 #endregion
 
                 return View(pr);
@@ -348,6 +308,8 @@ namespace MoostBrand.Controllers
                     var r = entity.Requisitions.FirstOrDefault(r1 => r1.ID == pr.ID).ApprovalStatus;
                     if(r == 1)
                     {
+                        pr.IsSync = false;
+
                         entity.Entry(SetNull(pr)).State = EntityState.Modified;
                         entity.SaveChanges();
 
@@ -363,40 +325,26 @@ namespace MoostBrand.Controllers
                     ModelState.AddModelError("", "There's an error.");
                 }
             }
-            
+
             #region DROPDOWNS
+            var employees = from s in entity.Employees
+                            select new
+                            {
+                                ID = s.ID,
+                                FullName = s.FirstName + " " + s.LastName
+                            };
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
-            ViewBag.RequestedBy = new SelectList((from s in entity.Employees
-                                                  select new
-                                                  {
-                                                      ID = s.ID,
-                                                      FullName = s.FirstName + " " + s.LastName
-                                                  }), "ID", "FullName", pr.RequestedBy);
+            ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
             ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name", pr.VendorID);
             ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
             ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type", pr.ShipmentTypeID);
             ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", pr.DropShipID);
-            ViewBag.ReservedBy = new SelectList((from s in entity.Employees
-                                                 select new
-                                                 {
-                                                     ID = s.ID,
-                                                     FullName = s.FirstName + " " + s.LastName
-                                                 }), "ID", "FullName", pr.ReservedBy);
-            ViewBag.ValidatedBy = new SelectList((from s in entity.Employees
-                                                  select new
-                                                  {
-                                                      ID = s.ID,
-                                                      FullName = s.FirstName + " " + s.LastName
-                                                  }), "ID", "FullName", pr.ValidatedBy);
+            ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName", pr.ReservedBy);
+            ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", pr.ValidatedBy);
             ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description", pr.Destination);
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
-            ViewBag.ApprovedBy = new SelectList((from s in entity.Employees
-                                                 select new
-                                                 {
-                                                     ID = s.ID,
-                                                     FullName = s.FirstName + " " + s.LastName
-                                                 }), "ID", "FullName", pr.ApprovedBy);
+            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
             #endregion
 
             return View(pr);
@@ -453,6 +401,7 @@ namespace MoostBrand.Controllers
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var pr = entity.Requisitions.Find(id);
                 pr.ApprovalStatus = 2;
+                pr.IsSync = false;
 
                 entity.Entry(pr).State = EntityState.Modified;
                 entity.SaveChanges();
@@ -474,6 +423,7 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 var pr = entity.Requisitions.Find(id);
                 pr.ApprovalStatus = 3;
+                pr.IsSync = false;
 
                 entity.Entry(pr).State = EntityState.Modified;
                 entity.SaveChanges();
@@ -566,6 +516,8 @@ namespace MoostBrand.Controllers
                 if(item != null)
                 {
                     item.AprovalStatusID = 2;
+                    item.IsSync = false;
+
                     entity.Entry(item).State = EntityState.Modified;
                     entity.SaveChanges();
                 }
@@ -586,6 +538,8 @@ namespace MoostBrand.Controllers
                 if (item != null)
                 {
                     item.AprovalStatusID = 3;
+                    item.IsSync = false;
+
                     entity.Entry(item).State = EntityState.Modified;
                     entity.SaveChanges();
                 }
@@ -625,6 +579,7 @@ namespace MoostBrand.Controllers
                 }
                 else
                 {
+                    rd.IsSync = false;
                     entity.RequisitionDetails.Add(rd);
                     entity.SaveChanges();
                 }
@@ -657,6 +612,8 @@ namespace MoostBrand.Controllers
         {
             try
             {
+                rd.IsSync = false;
+
                 entity.Entry(rd).State = EntityState.Modified;
                 entity.SaveChanges();
             }

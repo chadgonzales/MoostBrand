@@ -8,9 +8,18 @@ namespace MoostBrand.DAL
 
     public partial class ReasonForAdjustment
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ReasonForAdjustment()
+        {
+            StockAdjustmentDetails = new HashSet<StockAdjustmentDetail>();
+        }
+
         public int ID { get; set; }
 
         [StringLength(50)]
         public string Reason { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockAdjustmentDetail> StockAdjustmentDetails { get; set; }
     }
 }
