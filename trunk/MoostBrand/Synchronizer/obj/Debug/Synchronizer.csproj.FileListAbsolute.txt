@@ -1,0 +1,6 @@
+C:\Users\Carl\Desktop\Moost\trunk\MoostBrand\Synchronizer\bin\Debug\Synchronizer.exe.config
+C:\Users\Carl\Desktop\Moost\trunk\MoostBrand\Synchronizer\bin\Debug\Synchronizer.exe
+C:\Users\Carl\Desktop\Moost\trunk\MoostBrand\Synchronizer\bin\Debug\Synchronizer.pdb
+C:\Users\Carl\Desktop\Moost\trunk\MoostBrand\Synchronizer\obj\Debug\Synchronizer.csprojResolveAssemblyReference.cache
+C:\Users\Carl\Desktop\Moost\trunk\MoostBrand\Synchronizer\obj\Debug\Synchronizer.exe
+C:\Users\Carl\Desktop\Moost\trunk\MoostBrand\Synchronizer\obj\Debug\Synchronizer.pdb
