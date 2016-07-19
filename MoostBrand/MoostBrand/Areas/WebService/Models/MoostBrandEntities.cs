@@ -4,7 +4,8 @@ namespace MoostBrand.Areas.WebService.Models
     using System.Data.Entity;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
-
+    using System.Data.Entity.Core.Objects;
+    using System.Data.Entity.Infrastructure;
     public partial class MoostBrandEntities : DbContext
     {
         public MoostBrandEntities()
@@ -27,6 +28,8 @@ namespace MoostBrand.Areas.WebService.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Requisition>().MapToStoredProcedures();
         }
+        
     }
 }

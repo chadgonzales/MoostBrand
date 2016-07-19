@@ -8,6 +8,7 @@ namespace MoostBrand.Areas.WebService.Models
 
     public partial class Requisition
     {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
 
         [Required]
