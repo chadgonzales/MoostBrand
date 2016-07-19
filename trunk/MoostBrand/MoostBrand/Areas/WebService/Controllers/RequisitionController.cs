@@ -24,17 +24,9 @@ namespace MoostBrand.Areas.WebService.Controllers
         {
             try
             {
-                var pr = db.Requisitions.Find(requisition.ID);
+                requisition.IsSync = true;
 
-                if (pr != null)
-                {
-                    db.Entry(requisition).State = System.Data.Entity.EntityState.Modified;
-                }
-                else
-                {
-                    db.Requisitions.Add(requisition);
-                }
-
+                db.Requisitions.Add(requisition);
                 db.SaveChanges();
 
                 return new HttpResponseMessage()
@@ -48,6 +40,7 @@ namespace MoostBrand.Areas.WebService.Controllers
             }
             catch
             {
+                throw;
             }
 
             return new HttpResponseMessage()
@@ -58,6 +51,12 @@ namespace MoostBrand.Areas.WebService.Controllers
                     "text/html"
                 )
             };
+        }
+
+        // PUT: api/Requisition/5
+        public void Put(int id, Requisition requisition)
+        {
+
         }
     }
 }
