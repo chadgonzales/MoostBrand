@@ -192,7 +192,7 @@
                     </a>
                     <!-- start: LOGO -->
                     <a class="navbar-brand" href="index.html">
-                        <img src="assets/images/logo.png" alt="Rapido" />
+                        <img src="../../Content/rapido/images/logo.png" alt="Rapido" />
                     </a>
                     <!-- end: LOGO -->
                 </div>
@@ -202,7 +202,7 @@
                         <!-- start: USER DROPDOWN -->
                         <li class="dropdown current-user">
                             <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
-                                <img src="assets/images/avatar-1-small.jpg" class="img-circle" alt=""> <span class="username hidden-xs">Peter Clark</span> <i class="fa fa-caret-down "></i>
+                                <img src="assets/images/avatar-1-small.jpg" class="img-circle" alt=""> <span class="username hidden-xs">Username</span> <i class="fa fa-caret-down "></i>
                             </a>
                             <ul class="dropdown-menu dropdown-dark">
                                 <li>
@@ -226,18 +226,18 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="login_login.html">
+                                    <a href="#">
                                         Log Out
                                     </a>
                                 </li>
                             </ul>
                         </li>
                         <!-- end: USER DROPDOWN -->
-                        <li class="right-menu-toggle">
+                        <!--<li class="right-menu-toggle">
                             <a href="#" class="sb-toggle-right">
                                 <i class="fa fa-globe toggle-icon"></i> <i class="fa fa-caret-right"></i> <span class="notifications-count badge badge-default hide"> 3</span>
                             </a>
-                        </li>
+                        </li>-->
                     </ul>
                     <!-- end: TOP NAVIGATION MENU -->
                 </div>
@@ -259,21 +259,21 @@
 
                     <!-- start: MAIN NAVIGATION MENU -->
                     <ul class="main-navigation-menu">
-                        <li @*class="active open"*@>
-                            <a href="@Url.Action("Index", "PR")"><i class="fa fa-home"></i> <span class="title"> Purchase Request </span><span class="label label-default pull-right ">LABEL</span> </a>
+                        <li>
+                            <a href="@Url.Action("Index", "PR")"><i class="fa fa-shopping-cart"></i> <span class="title"> Purchase Request </span> </a>
                         </li>
 
                         <li>
-                            <a href="@Url.Action("Index", "StockTransfer")"><i class="fa fa-map-marker"></i> <span class="title">Stock Transfer</span> </a>
+                            <a href="@Url.Action("Index", "StockTransfer")"><i class="fa fa-exchange"></i> <span class="title">Stock Transfer</span> </a>
                         </li>
                         <li>
-                            <a href="@Url.Action("Index", "Receiving")"><i class="fa fa-bar-chart-o"></i> <span class="title">Receiving</span> </a>
+                            <a href="@Url.Action("Index", "Receiving")"><i class="fa fa-inbox"></i> <span class="title">Receiving</span> </a>
                         </li>
                         <li>
-                            <a href="@Url.Action("Index", "StockAllocation")"><i class="fa fa-bar-chart-o"></i> <span class="title">Stock Allocation</span> </a>
+                            <a href="@Url.Action("Index", "StockAllocation")"><i class="fa fa-hand-o-up"></i> <span class="title">Stock Allocation</span> </a>
                         </li>
                         <li>
-                            <a href="@Url.Action("Index", "Return")"><i class="fa fa-bar-chart-o"></i> <span class="title">Return</span> </a>
+                            <a href="@Url.Action("Index", "Return")"><i class="fa fa-retweet"></i> <span class="title">Return</span> </a>
                         </li>
                         <li>
                             <a href="@Url.Action("Index", "StockAdjustment")"><i class="fa fa-bar-chart-o"></i> <span class="title">Stock Adjustment</span> </a>
@@ -285,12 +285,12 @@
             </div>
             <div class="slide-tools">
                 <div class="col-xs-6 text-left no-padding">
-                    <a class="btn btn-sm status" href="#">
+                    @*<a class="btn btn-sm status" href="#">
                         Status <i class="fa fa-dot-circle-o text-green"></i> <span>Online</span>
-                    </a>
+                    </a>*@
                 </div>
                 <div class="col-xs-6 text-right no-padding">
-                    <a class="btn btn-sm log-out text-right" href="login_login.html">
+                    <a class="btn btn-sm log-out text-right" href="#">
                         <i class="fa fa-power-off"></i> Log Out
                     </a>
                 </div>
@@ -298,7 +298,7 @@
         </nav>
         <!-- end: PAGESLIDE LEFT -->
         <!-- start: PAGESLIDE RIGHT -->
-        <div id="pageslide-right" class="pageslide slide-fixed inner">
+        <!--<div id="pageslide-right" class="pageslide slide-fixed inner">
             <div class="right-wrapper">
                 <ul class="nav nav-tabs nav-justified" id="sidebar-tab">
                     <li class="active">
@@ -657,7 +657,7 @@
                     <div class="style-toggle open"></div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <!-- end: PAGESLIDE RIGHT -->
         <!-- start: MAIN CONTAINER -->
         <div class="main-container inner">
@@ -748,7 +748,7 @@
         <footer class="inner">
             <div class="footer-inner">
                 <div class="pull-left">
-                    2014 &copy; Rapido by cliptheme.
+                    2016 &copy; Moostbrand by SDS.
                 </div>
                 <div class="pull-right">
                     <span class="go-top"><i class="fa fa-chevron-up"></i></span>
