@@ -33,7 +33,7 @@ namespace MoostBrand.Controllers
             {
                 try
                 {
-                    var user = entity.Users.FirstOrDefault(u => u.Username == login.Email && u.Password == login.Password);
+                    var user = entity.Users.FirstOrDefault(u => u.Username == login.Username && u.Password == login.Password);
                     if (user != null)
                     {
                         Session["sessionuid"] = user.EmployeeID;

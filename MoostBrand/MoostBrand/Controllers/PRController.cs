@@ -223,7 +223,7 @@ namespace MoostBrand.Controllers
 
                         if (newPR != null)
                         {
-                            pr.IsSync = false;
+                            newPR.IsSync = false;
 
                             entity.Requisitions.Add(newPR);
                             entity.SaveChanges();

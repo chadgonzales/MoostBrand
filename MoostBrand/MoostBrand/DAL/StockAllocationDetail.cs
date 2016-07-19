@@ -10,9 +10,9 @@ namespace MoostBrand.DAL
     {
         public int ID { get; set; }
 
-        public int StockAllocationID { get; set; }
+        public int? StockAllocationID { get; set; }
 
-        public int ReceivingDetailID { get; set; }
+        public int? ReceivingDetailID { get; set; }
 
         public int? Quantity { get; set; }
 

@@ -232,13 +232,8 @@ namespace MoostBrand.DAL
                 .WithOptional(e => e.Location1)
                 .HasForeignKey(e => e.Destination);
 
-            modelBuilder.Entity<ReceivingDetail>()
-                .HasMany(e => e.StockAdjustmentDetails)
-                .WithOptional(e => e.ReceivingDetail)
-                .WillCascadeOnDelete();
-
             modelBuilder.Entity<Receiving>()
-                .HasMany(e => e.ReceivingDetails)
+                .HasMany(e => e.StockAllocations)
                 .WithRequired(e => e.Receiving)
                 .WillCascadeOnDelete(false);
 
@@ -246,11 +241,6 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.Receivings)
                 .WithRequired(e => e.ReceivingType)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<RequisitionDetail>()
-                .HasMany(e => e.StockTransferDetails)
-                .WithOptional(e => e.RequisitionDetail)
-                .WillCascadeOnDelete();
 
             modelBuilder.Entity<Requisition>()
                 .HasMany(e => e.StockTransfers)
@@ -272,14 +262,19 @@ namespace MoostBrand.DAL
                 .WithOptional(e => e.StockAdjustment)
                 .WillCascadeOnDelete();
 
-            modelBuilder.Entity<StockTransferDetail>()
-                .HasMany(e => e.ReceivingDetails)
-                .WithOptional(e => e.StockTransferDetail)
+            modelBuilder.Entity<StockAllocation>()
+                .HasMany(e => e.StockAllocationDetails)
+                .WithOptional(e => e.StockAllocation)
                 .WillCascadeOnDelete();
 
-            modelBuilder.Entity<StockTransferDetail>()
-                .HasMany(e => e.ReturnedItems)
-                .WithOptional(e => e.StockTransferDetail)
+            modelBuilder.Entity<StockTransfer>()
+                .HasMany(e => e.Receivings)
+                .WithRequired(e => e.StockTransfer)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<StockTransfer>()
+                .HasMany(e => e.StockTransferDetails)
+                .WithOptional(e => e.StockTransfer)
                 .WillCascadeOnDelete();
 
             modelBuilder.Entity<UnitOfMeasurement>()
