@@ -4,3 +4,13 @@ C:\Users\Carl\Desktop\Moost\trunk\MoostBrand\Synchronizer\bin\Debug\Synchronizer
 C:\Users\Carl\Desktop\Moost\trunk\MoostBrand\Synchronizer\obj\Debug\Synchronizer.csprojResolveAssemblyReference.cache
 C:\Users\Carl\Desktop\Moost\trunk\MoostBrand\Synchronizer\obj\Debug\Synchronizer.exe
 C:\Users\Carl\Desktop\Moost\trunk\MoostBrand\Synchronizer\obj\Debug\Synchronizer.pdb
+G:\SDSProjects\MoostBrand\trunk\MoostBrand\Synchronizer\bin\Debug\Synchronizer.exe.config
+G:\SDSProjects\MoostBrand\trunk\MoostBrand\Synchronizer\bin\Debug\Synchronizer.exe
+G:\SDSProjects\MoostBrand\trunk\MoostBrand\Synchronizer\bin\Debug\Synchronizer.pdb
+G:\SDSProjects\MoostBrand\trunk\MoostBrand\Synchronizer\obj\Debug\Synchronizer.csprojResolveAssemblyReference.cache
+G:\SDSProjects\MoostBrand\trunk\MoostBrand\Synchronizer\obj\Debug\Synchronizer.exe
+G:\SDSProjects\MoostBrand\trunk\MoostBrand\Synchronizer\obj\Debug\Synchronizer.pdb
+G:\SDSProjects\MoostBrand\trunk\MoostBrand\Synchronizer\bin\Debug\System.Net.Http.Formatting.dll
+G:\SDSProjects\MoostBrand\trunk\MoostBrand\Synchronizer\bin\Debug\System.Net.Http.Formatting.xml
+G:\SDSProjects\MoostBrand\trunk\MoostBrand\Synchronizer\bin\Debug\Newtonsoft.Json.dll
+G:\SDSProjects\MoostBrand\trunk\MoostBrand\Synchronizer\bin\Debug\Newtonsoft.Json.xml
