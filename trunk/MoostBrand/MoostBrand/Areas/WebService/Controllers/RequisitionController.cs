@@ -1,6 +1,7 @@
 ﻿using MoostBrand.Areas.WebService.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -32,7 +33,7 @@ namespace MoostBrand.Areas.WebService.Controllers
                 return new HttpResponseMessage()
                 {
                     Content = new StringContent(
-                    "<strong>ok</strong>",
+                    "ok",
                     Encoding.UTF8,
                     "text/html"
                 )
@@ -40,23 +41,16 @@ namespace MoostBrand.Areas.WebService.Controllers
             }
             catch
             {
-                throw;
             }
 
             return new HttpResponseMessage()
             {
                 Content = new StringContent(
-                    "<strong>failed</strong>",
+                    "failed",
                     Encoding.UTF8,
                     "text/html"
                 )
             };
-        }
-
-        // PUT: api/Requisition/5
-        public void Put(int id, Requisition requisition)
-        {
-
         }
     }
 }

@@ -24,23 +24,15 @@ namespace MoostBrand.Areas.WebService.Controllers
         {
             try
             {
-                var st = db.StockTransferDetails.Find(stocktransfer.ID);
+                stocktransfer.IsSync = true;
 
-                if (st != null)
-                {
-                    db.Entry(stocktransfer).State = System.Data.Entity.EntityState.Modified;
-                }
-                else
-                {
-                    db.StockTransferDetails.Add(stocktransfer);
-                }
-
+                db.StockTransferDetails.Add(stocktransfer);
                 db.SaveChanges();
 
                 return new HttpResponseMessage()
                 {
                     Content = new StringContent(
-                    "<strong>ok</strong>",
+                    "ok",
                     Encoding.UTF8,
                     "text/html"
                 )
@@ -53,7 +45,7 @@ namespace MoostBrand.Areas.WebService.Controllers
             return new HttpResponseMessage()
             {
                 Content = new StringContent(
-                    "<strong>failed</strong>",
+                    "failed",
                     Encoding.UTF8,
                     "text/html"
                 )
