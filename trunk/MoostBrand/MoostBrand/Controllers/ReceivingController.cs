@@ -93,7 +93,7 @@ namespace MoostBrand.Controllers
                 r.EncodedBy = null;
                 r.CheckedBy = null;
             }
-            else if (r.ReceivingTypeID == 2 || r.ReceivingTypeID == 3 || r.ReceivingTypeID == 3) //BR or WR or OR
+            else if (r.ReceivingTypeID == 2 || r.ReceivingTypeID == 3 || r.ReceivingTypeID == 5) //BR or WR or OR
             {
                 r.VesselNumber = null;
                 r.VoyageNumber = null;
@@ -438,18 +438,21 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var receving = entity.Receivings.Find(id);
-                receving.ApprovalStatus = 2;
-                receving.IsSync = false;
+                if(receving.ReceivingDetails.Count() > 0)
+                {
+                    receving.ApprovalStatus = 2;
+                    receving.IsSync = false;
 
-                entity.Entry(receving).State = EntityState.Modified;
-                entity.SaveChanges();
+                    entity.Entry(receving).State = EntityState.Modified;
+                    entity.SaveChanges();
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
             }
             catch
             {
-                return View();
             }
+            return View();
         }
 
         // POST: Receiving/Denied/5
@@ -687,7 +690,11 @@ namespace MoostBrand.Controllers
                 TempData["PartialError"] = "There's an error.";
             }
 
-            return RedirectToAction("PendingItems", new { id = rd.ReceivingID });
+            if (rd.AprovalStatusID == 1)
+            {
+                return RedirectToAction("PendingItems", new { id = rd.ReceivingID });
+            }
+            return RedirectToAction("ApprovedItems", new { id = rd.ReceivingID });
         }
 
         // GET: Receiving/DeleteItemPartial/5

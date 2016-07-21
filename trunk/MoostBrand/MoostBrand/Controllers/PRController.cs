@@ -74,7 +74,7 @@ namespace MoostBrand.Controllers
                 pr.DropShipID = null;
                 pr.Driver = null;
             }
-            else if (pr.RequisitionTypeID == 2 || pr.RequisitionTypeID == 3 || pr.RequisitionTypeID == 3) //BR or WR or OR
+            else if (pr.RequisitionTypeID == 2 || pr.RequisitionTypeID == 3 || pr.RequisitionTypeID == 5) //BR or WR or OR
             {
                 pr.VendorID = null;
                 pr.Customer = null;
@@ -305,12 +305,13 @@ namespace MoostBrand.Controllers
                 try
                 {
                     //var r = entity.Requisitions.FirstOrDefault(r1 => r1.ID == pr.ID && (r1.RequestedBy == UserID || AcctType == 1 || AcctType == 4)).ApprovalStatus;
-                    var r = entity.Requisitions.FirstOrDefault(r1 => r1.ID == pr.ID).ApprovalStatus;
-                    if(r == 1)
+                    var r = entity.Requisitions.FirstOrDefault(r1 => r1.ID == pr.ID);
+                    if(r.ApprovalStatus == 1)
                     {
                         pr.IsSync = false;
-
-                        entity.Entry(SetNull(pr)).State = EntityState.Modified;
+                        var newPR = SetNull(pr);
+                        newPR.ApprovalStatus = r.ApprovalStatus;
+                        entity.Entry(r).CurrentValues.SetValues(newPR);
                         entity.SaveChanges();
 
                         return RedirectToAction("Index");
@@ -323,6 +324,7 @@ namespace MoostBrand.Controllers
                 catch
                 {
                     ModelState.AddModelError("", "There's an error.");
+                    throw;
                 }
             }
 
@@ -400,18 +402,26 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var pr = entity.Requisitions.Find(id);
-                pr.ApprovalStatus = 2;
-                pr.IsSync = false;
 
-                entity.Entry(pr).State = EntityState.Modified;
-                entity.SaveChanges();
+                if(pr.RequisitionDetails.Count() > 0)
+                {
+                    pr.ApprovalStatus = 2;
+                    pr.IsSync = false;
 
-                return RedirectToAction("Index");
+                    entity.Entry(pr).State = EntityState.Modified;
+                    entity.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "There's no item");
+                }
             }
             catch
             {
-                return View();
             }
+            return View();
         }
 
         // POST: PR/Denied/5
@@ -470,8 +480,8 @@ namespace MoostBrand.Controllers
             int UserID = Convert.ToInt32(Session["sessionuid"]);
             int UserType = Convert.ToInt32(Session["usertype"]);
 
-            var RequestedBy = entity.Requisitions.FirstOrDefault(r => r.ID == id).RequestedBy;
-            if(RequestedBy != UserID && UserType != 1 && UserType != 4)
+            var requisition = entity.Requisitions.FirstOrDefault(r => r.ID == id);
+            if(requisition.RequestedBy != UserID && UserType != 1 && UserType != 4)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -487,6 +497,7 @@ namespace MoostBrand.Controllers
             ViewBag.RequestedBy = 
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;
+            ViewBag.IsApproved = requisition.ApprovalStatus;
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
@@ -622,7 +633,11 @@ namespace MoostBrand.Controllers
                 TempData["PartialError"] = "There's an error.";
             }
 
-            return RedirectToAction("PendingItems", new { id = rd.RequisitionID });
+            if(rd.AprovalStatusID == 1)
+            {
+                return RedirectToAction("PendingItems", new { id = rd.RequisitionID });
+            }
+            return RedirectToAction("ApprovedItems", new { id = rd.RequisitionID });
         }
 
         // GET: PR/DeleteItemPartial/5

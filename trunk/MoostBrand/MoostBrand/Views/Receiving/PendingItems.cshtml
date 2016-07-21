@@ -140,7 +140,7 @@
     }
 
     function Deny(id, itemID){
-        var url = '@Url.Action("ApproveItem", "Receiving")/' + id;
+        var url = '@Url.Action("DenyItem", "Receiving")/' + id;
         $.post(url, {id: id, itemID : itemID }, ReloadFunction);
     }
 </script>

@@ -38,6 +38,7 @@ namespace MoostBrand.Controllers
                     {
                         Session["sessionuid"] = user.EmployeeID;
                         Session["usertype"] = user.UserTypeID;
+                        Session["username"] = user.Username;
 
                         return RedirectToAction("Index", "PR");
                     }
