@@ -74,47 +74,23 @@ namespace MoostBrand.Controllers
 
         // POST: Brand/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Brand brand)
         {
-            try
+            if (ModelState.IsValid)
             {
-                var brand = new Brand();
-
-                if (collection.Count > 0)
+                try
                 {
-                    brand.Code = collection["Code"];
-                    brand.Description = collection["Description"];
+                    entity.Brands.Add(brand);
+                    entity.SaveChanges();
 
-                    if(brand.Code.Trim() == string.Empty || brand.Description.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    var brnd = entity.Brands.ToList().FindAll(b => b.Code == brand.Code);
-
-                    if(brnd.Count() > 0)
-                    {
-                        ModelState.AddModelError("", "The code already exists.");
-                        return View();
-                    }
-                    else
-                    {
-                        try
-                        {
-                            entity.Brands.Add(brand);
-                            entity.SaveChanges();
-                        }
-                        catch { }
-                    }
+                    return RedirectToAction("Index");
                 }
+                catch
+                {
+                }
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View(brand);
         }
 
         // GET: Brand/Edit/5
@@ -126,39 +102,23 @@ namespace MoostBrand.Controllers
 
         // POST: Brand/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Brand brand)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
-                var brand = entity.Brands.Find(id);
-
-                if (collection.Count > 0)
+                try
                 {
-                    brand.Code = collection["Code"];
-                    brand.Description = collection["Description"];
+                    entity.Entry(brand).State = EntityState.Modified;
+                    entity.SaveChanges();
 
-                    if (brand.Code.Trim() == string.Empty || brand.Description.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    try
-                    {
-                        entity.Entry(brand).State = EntityState.Modified;
-                        entity.SaveChanges();
-
-                        return RedirectToAction("Index");
-                    }
-                    catch { }
+                    return RedirectToAction("Index");
+                }
+                catch
+                {
                 }
             }
-            catch
-            {
-            }
-            return View();
+
+            return View(brand);
         }
 
         // GET: Brand/Delete/5

@@ -308,18 +308,21 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 //var pr = entity.StockTransfers.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var st = entity.StockTransfers.Find(id);
-                st.ApprovedStatus = 2;
-                st.IsSync = false;
+                if(st.StockTransferDetails.Count > 0)
+                {
+                    st.ApprovedStatus = 2;
+                    st.IsSync = false;
 
-                entity.Entry(st).State = EntityState.Modified;
-                entity.SaveChanges();
+                    entity.Entry(st).State = EntityState.Modified;
+                    entity.SaveChanges();
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
             }
             catch
             {
-                return View();
             }
+            return View();
         }
 
         // POST: StockTransfer/Denied/5
@@ -527,7 +530,11 @@ namespace MoostBrand.Controllers
                 TempData["PartialError"] = "There's an error.";
             }
 
-            return RedirectToAction("PendingItems", new { id = stocktransfer.StockTransferID });
+            if(stocktransfer.AprovalStatusID == 1)
+            {
+                return RedirectToAction("PendingItems", new { id = stocktransfer.StockTransferID });
+            }
+            return RedirectToAction("ApprovedItems", new { id = stocktransfer.StockTransferID });
         }
 
         // GET: StockTransfer/DeleteItemPartial/5
