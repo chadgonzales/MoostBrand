@@ -24,23 +24,15 @@ namespace MoostBrand.Areas.WebService.Controllers
         {
             try
             {
-                var r = db.ReceivingDetails.Find(receiving.ID);
+                receiving.IsSync = true;
 
-                if (r != null)
-                {
-                    db.Entry(receiving).State = System.Data.Entity.EntityState.Modified;
-                }
-                else
-                {
-                    db.ReceivingDetails.Add(receiving);
-                }
-
+                db.ReceivingDetails.Add(receiving);
                 db.SaveChanges();
 
                 return new HttpResponseMessage()
                 {
                     Content = new StringContent(
-                    "<strong>ok</strong>",
+                    "ok",
                     Encoding.UTF8,
                     "text/html"
                 )
@@ -53,7 +45,7 @@ namespace MoostBrand.Areas.WebService.Controllers
             return new HttpResponseMessage()
             {
                 Content = new StringContent(
-                    "<strong>failed</strong>",
+                    "failed",
                     Encoding.UTF8,
                     "text/html"
                 )

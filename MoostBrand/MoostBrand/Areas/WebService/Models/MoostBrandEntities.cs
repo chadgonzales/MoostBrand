@@ -28,8 +28,47 @@ namespace MoostBrand.Areas.WebService.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Requisition>().MapToStoredProcedures();
+            modelBuilder
+                .Entity<Requisition>()
+                .MapToStoredProcedures();
+            modelBuilder
+                .Entity<RequisitionDetail>()
+                .MapToStoredProcedures();
+
+            modelBuilder
+                .Entity<StockTransfer>()
+                .MapToStoredProcedures();
+            modelBuilder
+                .Entity<StockTransferDetail>()
+                .MapToStoredProcedures();
+
+            modelBuilder
+                .Entity<Receiving>()
+                .MapToStoredProcedures();
+            modelBuilder
+                .Entity<ReceivingDetail>()
+                .MapToStoredProcedures();
+
+            modelBuilder
+                .Entity<StockAllocation>()
+                .MapToStoredProcedures();
+            modelBuilder
+                .Entity<StockAllocationDetail>()
+                .MapToStoredProcedures();
+
+            modelBuilder
+                .Entity<Return>()
+                .MapToStoredProcedures();
+            modelBuilder
+                .Entity<ReturnedItem>()
+                .MapToStoredProcedures();
+
+            modelBuilder
+                .Entity<StockAdjustment>()
+                .MapToStoredProcedures();
+            modelBuilder
+                .Entity<StockAdjustmentDetail>()
+                .MapToStoredProcedures();
         }
-        
     }
 }

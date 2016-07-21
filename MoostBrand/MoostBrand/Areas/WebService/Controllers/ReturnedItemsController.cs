@@ -24,23 +24,15 @@ namespace MoostBrand.Areas.WebService.Controllers
         {
             try
             {
-                var r = db.ReturnedItems.Find(retrn.ID);
+                retrn.IsSync = true;
 
-                if (r != null)
-                {
-                    db.Entry(retrn).State = System.Data.Entity.EntityState.Modified;
-                }
-                else
-                {
-                    db.ReturnedItems.Add(retrn);
-                }
-
+                db.ReturnedItems.Add(retrn);
                 db.SaveChanges();
 
                 return new HttpResponseMessage()
                 {
                     Content = new StringContent(
-                    "<strong>ok</strong>",
+                    "ok",
                     Encoding.UTF8,
                     "text/html"
                 )
@@ -53,7 +45,7 @@ namespace MoostBrand.Areas.WebService.Controllers
             return new HttpResponseMessage()
             {
                 Content = new StringContent(
-                    "<strong>failed</strong>",
+                    "failed",
                     Encoding.UTF8,
                     "text/html"
                 )
