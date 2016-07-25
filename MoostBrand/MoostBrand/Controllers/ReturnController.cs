@@ -287,18 +287,22 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var retrn = entity.Returns.Find(id);
-                retrn.ApprovalStatus = 2;
-                retrn.IsSync = false;
+                if(retrn.ReturnedItems.Count > 0)
+                {
+                    retrn.ApprovalStatus = 2;
+                    retrn.IsSync = false;
 
-                entity.Entry(retrn).State = EntityState.Modified;
-                entity.SaveChanges();
+                    entity.Entry(retrn).State = EntityState.Modified;
+                    entity.SaveChanges();
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
             }
             catch
             {
-                return View();
             }
+
+            return View();
         }
 
         // POST: Return/Denied/5
