@@ -250,18 +250,22 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var adjust = entity.StockAdjustments.Find(id);
-                adjust.ApprovalStatus = 2;
-                adjust.IsSync = false;
+                if(adjust.StockAdjustmentDetails.Count > 0)
+                {
+                    adjust.ApprovalStatus = 2;
+                    adjust.IsSync = false;
 
-                entity.Entry(adjust).State = EntityState.Modified;
-                entity.SaveChanges();
+                    entity.Entry(adjust).State = EntityState.Modified;
+                    entity.SaveChanges();
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
             }
             catch
             {
-                return View();
             }
+
+            return View();
         }
 
         // POST: StockAdjustment/Denied/5
