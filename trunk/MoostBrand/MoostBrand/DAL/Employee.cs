@@ -104,11 +104,13 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<User> Users { get; set; }
 
-        internal void CreateUserAccess(int count = 8)
+        internal void CreateUserAccess(List<Module> modules)
         {
-            for (int i = 1; i <= count; i++)
+            UserAccesses.Clear();
+
+            foreach (Module module in modules)
             {
-                UserAccesses.Add(new UserAccess());
+                UserAccesses.Add(new UserAccess(module.ID, module.Name));
             }
         }
     }
