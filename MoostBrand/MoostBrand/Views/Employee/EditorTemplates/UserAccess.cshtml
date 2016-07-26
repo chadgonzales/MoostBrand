@@ -3,10 +3,10 @@
 
 @Html.HiddenFor(x => x.ID)
 @Html.HiddenFor(x => x.EmployeeID)
-
+@Html.HiddenFor(x => x.ModuleID)
 <tr>
     <td>
-        @Html.DisplayFor(Model => Model.Module.Name)
+        @Html.DisplayFor(Model => Model.ModuleName) @Html.DisplayFor(Model => Model.Module.Name)
     </td>
     <td>
         @Html.CheckBoxFor(Model => Model.CanView)
