@@ -1,0 +1,26 @@
+﻿@model MoostBrand.DAL.UserAccess
+@using MoostBrand.DAL
+
+@Html.HiddenFor(x => x.ID)
+@Html.HiddenFor(x => x.EmployeeID)
+
+<tr>
+    <td>
+        @Html.DisplayFor(Model => Model.Module.Name)
+    </td>
+    <td>
+        @Html.CheckBoxFor(Model => Model.CanView)
+    </td>
+    <td>
+        @Html.CheckBoxFor(Model => Model.CanEdit)
+    </td>
+    <td>
+        @Html.CheckBoxFor(Model => Model.CanDelete)
+    </td>
+    <td>
+        @Html.CheckBoxFor(Model => Model.CanRequest)
+    </td>
+    <td>
+        @Html.CheckBoxFor(Model => Model.CanDecide)
+    </td>
+</tr>
