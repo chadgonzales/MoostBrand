@@ -25,6 +25,7 @@ namespace MoostBrand.DAL
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<LocationType> LocationTypes { get; set; }
+        public virtual DbSet<Module> Modules { get; set; }
         public virtual DbSet<PaymentStatu> PaymentStatus { get; set; }
         public virtual DbSet<ReasonForAdjustment> ReasonForAdjustments { get; set; }
         public virtual DbSet<ReceivingDetail> ReceivingDetails { get; set; }
@@ -49,6 +50,7 @@ namespace MoostBrand.DAL
         public virtual DbSet<SubCategory> SubCategories { get; set; }
         public virtual DbSet<TransactionType> TransactionTypes { get; set; }
         public virtual DbSet<UnitOfMeasurement> UnitOfMeasurements { get; set; }
+        public virtual DbSet<UserAccess> UserAccesses { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<Vendor> Vendors { get; set; }
@@ -231,6 +233,11 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.Requisitions1)
                 .WithOptional(e => e.Location1)
                 .HasForeignKey(e => e.Destination);
+
+            modelBuilder.Entity<Module>()
+                .HasMany(e => e.UserAccesses)
+                .WithOptional(e => e.Module)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<Receiving>()
                 .HasMany(e => e.StockAllocations)

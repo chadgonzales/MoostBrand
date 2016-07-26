@@ -67,44 +67,46 @@ namespace MoostBrand.Controllers
         // GET: Employee/Create
         public ActionResult Create()
         {
-            return View();
+            var employee = new Employee();
+            employee.CreateUserAccess();
+            return View(employee);
         }
 
         // POST: Employee/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Employee employee)
         {
             try
             {
-                Employee employee = new Employee();
                 // TODO: Add insert logic here
-
-                if(collection.Count > 0)
+                if (employee.LastName.Trim() == string.Empty || employee.FirstName.Trim() == string.Empty || employee.Position.Trim() == string.Empty)
                 {
-                    employee.LastName = collection["LastName"];
-                    employee.FirstName = collection["FirstName"];
-                    employee.Position = collection["Position"];
-
-                    if (employee.LastName.Trim() == string.Empty || employee.FirstName.Trim() == string.Empty || employee.Position.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    try
-                    {
-                        entity.Employees.Add(employee);
-                        entity.SaveChanges();
-                    }
-                    catch { }
+                    ModelState.AddModelError("", "Fill all fields");
+                    return View(employee);
                 }
 
-                return RedirectToAction("Index");
+                int i = 1;
+                foreach(UserAccess ua in employee.UserAccesses)
+                {
+                    ua.ModuleID = i;
+                    i++;
+                }
+
+                try
+                {
+                    entity.Employees.Add(employee);
+                    entity.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+                catch { }
             }
             catch
             {
-                return View();
+                
             }
+
+            return View(employee);
         }
 
         // GET: Employee/Edit/5
