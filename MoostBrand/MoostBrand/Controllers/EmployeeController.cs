@@ -7,6 +7,7 @@ using MoostBrand.DAL;
 using System.Data.Entity;
 using PagedList;
 using System.Configuration;
+using MoostBrand.Models;
 
 namespace MoostBrand.Controllers
 {
@@ -60,15 +61,18 @@ namespace MoostBrand.Controllers
         // GET: Employee/Details/5
         public ActionResult Details(int id)
         {
-            var employee = entity.Employees.Find(id);
-            return View(employee);
+            UserAccessVM uVM = new UserAccessVM();
+            uVM.Employee = entity.Employees.Find(id);
+            uVM.UserAccess = entity.UserAccesses.ToList().FindAll(u => u.EmployeeID == id);
+            return View(uVM);
         }
 
         // GET: Employee/Create
         public ActionResult Create()
         {
+            var modules = entity.Modules.ToList();
             var employee = new Employee();
-            employee.CreateUserAccess();
+            employee.CreateUserAccess(modules);
             return View(employee);
         }
 
@@ -79,32 +83,24 @@ namespace MoostBrand.Controllers
             try
             {
                 // TODO: Add insert logic here
-                if (employee.LastName.Trim() == string.Empty || employee.FirstName.Trim() == string.Empty || employee.Position.Trim() == string.Empty)
-                {
-                    ModelState.AddModelError("", "Fill all fields");
-                    return View(employee);
-                }
-
-                int i = 1;
-                foreach(UserAccess ua in employee.UserAccesses)
-                {
-                    ua.ModuleID = i;
-                    i++;
-                }
-
-                try
+                if (employee.LastName != null && employee.FirstName != null && employee.Position != null)
                 {
                     entity.Employees.Add(employee);
                     entity.SaveChanges();
 
                     return RedirectToAction("Index");
                 }
-                catch { }
+                else
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
             }
             catch
             {
-                
             }
+
+            var modules = entity.Modules.ToList();
+            employee.CreateUserAccess(modules);
 
             return View(employee);
         }
@@ -119,39 +115,25 @@ namespace MoostBrand.Controllers
 
         // POST: Employee/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Employee employee)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
-                var employee = entity.Employees.Find(id);
-
-                if(collection.Count > 0)
+                try
                 {
-                    employee.LastName = collection["LastName"];
-                    employee.FirstName = collection["FirstName"];
-                    employee.Position = collection["Position"];
-
-                    if (employee.LastName.Trim() == string.Empty || employee.FirstName.Trim() == string.Empty || employee.Position.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    try
+                    if (employee.LastName != null && employee.FirstName != null && employee.Position != null)
                     {
                         entity.Entry(employee).State = EntityState.Modified;
                         entity.SaveChanges();
-                    }
-                    catch { }
-                }
 
-                return RedirectToAction("Index");
+                        return RedirectToAction("Index");
+                    }
+                    
+                }
+                catch { }
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(employee);
         }
 
         // GET: Employee/Delete/5

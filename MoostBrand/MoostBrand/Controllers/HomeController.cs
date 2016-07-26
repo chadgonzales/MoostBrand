@@ -13,91 +13,91 @@ namespace MoostBrand.Controllers
         private MoostBrandEntities entity = new MoostBrandEntities();
         public ActionResult Index()
         {
-            var pr = new R();
-            pr.RequestedDate = DateTime.Now;
+            //var pr = new R();
+            //pr.RequestedDate = DateTime.Now;
 
-            #region DROPDOWNS
-            var employees = from s in entity.Employees
-                            select new
-                            {
-                                ID = s.ID,
-                                FullName = s.FirstName + " " + s.LastName
-                            };
-            ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type");
-            ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName");
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
-            ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name");
-            ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type");
-            ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type");
-            ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type");
-            ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName");
-            ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName");
-            ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description");
-            ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status");
-            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
-            #endregion
+            //#region DROPDOWNS
+            //var employees = from s in entity.Employees
+            //                select new
+            //                {
+            //                    ID = s.ID,
+            //                    FullName = s.FirstName + " " + s.LastName
+            //                };
+            //ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type");
+            //ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName");
+            //ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
+            //ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name");
+            //ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type");
+            //ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type");
+            //ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type");
+            //ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName");
+            //ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName");
+            //ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description");
+            //ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status");
+            //ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
+            //#endregion
 
-            return View(pr);
+            return View();
         }
 
-        [HttpPost]
-        public async System.Threading.Tasks.Task<ActionResult> Index(R pr)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    pr.ApprovalStatus = 1; //submitted
+        //[HttpPost]
+        //public async System.Threading.Tasks.Task<ActionResult> Index(R pr)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            pr.ApprovalStatus = 1; //submitted
 
-                    var checkPR = entity.Requisitions.Where(r => r.RefNumber == pr.RefNumber);
+        //            var checkPR = entity.Requisitions.Where(r => r.RefNumber == pr.RefNumber);
 
-                    if (checkPR.Count() > 0)
-                    {
-                        ModelState.AddModelError("", "The ref number already exists.");
-                    }
-                    else
-                    {
-                        if (pr != null)
-                        {
-                            pr.IsSync = false;
-                            pr.ID = 6;
+        //            if (checkPR.Count() > 0)
+        //            {
+        //                ModelState.AddModelError("", "The ref number already exists.");
+        //            }
+        //            else
+        //            {
+        //                if (pr != null)
+        //                {
+        //                    pr.IsSync = false;
+        //                    pr.ID = 6;
 
-                            Repo _r = new Repo();
-                            string _result = await _r.PostLive(pr);
+        //                    Repo _r = new Repo();
+        //                    string _result = await _r.PostLive(pr);
 
-                            return RedirectToAction("Index");
-                        }
-                    }
-                }
-                catch
-                {
-                    ModelState.AddModelError("", "There's an error.");
-                }
-            }
+        //                    return RedirectToAction("Index");
+        //                }
+        //            }
+        //        }
+        //        catch
+        //        {
+        //            ModelState.AddModelError("", "There's an error.");
+        //        }
+        //    }
 
-            #region DROPDOWNS
-            var employees = from s in entity.Employees
-                            select new
-                            {
-                                ID = s.ID,
-                                FullName = s.FirstName + " " + s.LastName
-                            };
-            ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
-            ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
-            ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name", pr.VendorID);
-            ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
-            ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type", pr.ShipmentTypeID);
-            ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", pr.DropShipID);
-            ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName", pr.ReservedBy);
-            ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", pr.ValidatedBy);
-            ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description", pr.Destination);
-            ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
-            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
-            #endregion
+        //    #region DROPDOWNS
+        //    var employees = from s in entity.Employees
+        //                    select new
+        //                    {
+        //                        ID = s.ID,
+        //                        FullName = s.FirstName + " " + s.LastName
+        //                    };
+        //    ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
+        //    ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
+        //    ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
+        //    ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name", pr.VendorID);
+        //    ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
+        //    ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type", pr.ShipmentTypeID);
+        //    ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", pr.DropShipID);
+        //    ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName", pr.ReservedBy);
+        //    ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", pr.ValidatedBy);
+        //    ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description", pr.Destination);
+        //    ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
+        //    ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
+        //    #endregion
 
-            return View(pr);
-        }
+        //    return View(pr);
+        //}
 
         public ActionResult About()
         {
