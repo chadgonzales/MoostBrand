@@ -112,5 +112,12 @@ namespace MoostBrand.Controllers
 
             return View();
         }
+
+        public ActionResult Denied()
+        {
+            ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
     }
 }

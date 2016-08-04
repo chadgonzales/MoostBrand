@@ -12,6 +12,8 @@ namespace MoostBrand.Controllers
     {
         MoostBrandEntities entity = new MoostBrandEntities();
 
+        public int UserID = 0;
+
         // GET: Account
         public ActionResult Index()
         {
@@ -39,6 +41,8 @@ namespace MoostBrand.Controllers
                         Session["sessionuid"] = user.EmployeeID;
                         Session["usertype"] = user.UserTypeID;
                         Session["username"] = user.Username;
+
+                        UserID = user.EmployeeID;
 
                         return RedirectToAction("Index", "PR");
                     }

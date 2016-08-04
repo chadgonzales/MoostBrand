@@ -6,6 +6,7 @@ using PagedList;
 using System.Data.Entity;
 using System.Configuration;
 using MoostBrand.Models;
+using System.Web.Routing;
 
 namespace MoostBrand.Controllers
 {
@@ -16,7 +17,8 @@ namespace MoostBrand.Controllers
 
         int UserID = 0;
         int UserType = 0;
-
+        int ModuleID = 3;
+        
         #region PRIVATE METHODS
         private string Generator(string prefix)
         {
@@ -106,6 +108,49 @@ namespace MoostBrand.Controllers
             }
             return pr;
         }
+
+        private void AccessChecker(int action)
+        {
+            int UserID = Convert.ToInt32(Session["sessionuid"]);
+
+            var access = entity.UserAccesses.FirstOrDefault(u => u.EmployeeID == UserID && u.ModuleID == ModuleID);
+
+            if(action == 1) //CanView
+            {
+                if (!access.CanView)
+                {
+                    RedirectToAction("Index", "Home");
+                }
+            }
+            else if(action == 2)//CanEdit
+            {
+                if (!access.CanEdit)
+                {
+                    RedirectToAction("Index", "Home");
+                }
+            }
+            else if (action == 3)//CanDelete
+            {
+                if (!access.CanDelete)
+                {
+                    RedirectToAction("Index", "Home");
+                }
+            }
+            else if (action == 4)//CanRequest
+            {
+                if (!access.CanRequest)
+                {
+                    RedirectToAction("Index", "Home");
+                }
+            }
+            else if (action == 5)//Can Approve/Deny
+            {
+                if (!access.CanDecide)
+                {
+                    RedirectToAction("Index", "Home");
+                }
+            }
+        }
         #endregion
 
         public ActionResult GenerateRefNumber(string id)
@@ -114,6 +159,7 @@ namespace MoostBrand.Controllers
         }
         
         // GET: PR
+        [AccessChecker(Action = 1, ModuleID = 3)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -391,8 +437,9 @@ namespace MoostBrand.Controllers
 
             return View(pr);
         }
-        
+
         // POST: PR/Approve/5
+        [AccessChecker(Action = 5, ModuleID = 3)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Approve(int id)

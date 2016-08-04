@@ -1,4 +1,4 @@
-﻿@model MoostBrand.Models.UserAccessVM
+﻿@model MoostBrand.DAL.Employee
 @{
     ViewBag.Title = "Details";
 }
@@ -49,61 +49,3 @@
 
     </div>
 </div>
-@using (Html.BeginForm())
-{
-    <table class="table table-striped table-bordered table-hover table-full-width dataTable no-footer">
-        <thead>
-            <tr>
-                <th>
-                    Module Name
-                </th>
-                <th>
-                    View
-                </th>
-                <th>
-                    Add/Edit
-                </th>
-                <th>
-                    Delete
-                </th>
-                <th>
-                    Request
-                </th>
-                <th>
-                    Approve/Deny
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.UserAccess)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Module.Name)
-                    </td>
-                    <td>
-                        @Html.CheckBoxFor(modelItem => item.CanView)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CanEdit)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CanDelete)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CanRequest)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CanDecide)
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-6">
-            <input type="submit" value="Save" />
-        </div>
-    </div>
-}
