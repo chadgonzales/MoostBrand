@@ -61,10 +61,9 @@ namespace MoostBrand.Controllers
         // GET: Employee/Details/5
         public ActionResult Details(int id)
         {
-            UserAccessVM uVM = new UserAccessVM();
-            uVM.Employee = entity.Employees.Find(id);
-            uVM.UserAccess = entity.UserAccesses.ToList().FindAll(u => u.EmployeeID == id);
-            return View(uVM);
+            //UserAccessVM uVM = new UserAccessVM();
+            var employee = entity.Employees.Find(id);
+            return View(employee);
         }
 
         // GET: Employee/Create
@@ -123,6 +122,11 @@ namespace MoostBrand.Controllers
                 {
                     if (employee.LastName != null && employee.FirstName != null && employee.Position != null)
                     {
+                        foreach(UserAccess ua in employee.UserAccesses)
+                        {
+                            entity.Entry(ua).State = EntityState.Modified;
+                        }
+
                         entity.Entry(employee).State = EntityState.Modified;
                         entity.SaveChanges();
 
