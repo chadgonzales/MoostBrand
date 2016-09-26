@@ -141,7 +141,6 @@
         var url = '@Url.Action("ApproveItem", "PR")/' + id;
         $.post(url, {id: id, itemID : itemID }, ReloadFunction);
     }
-
     function Deny(id, itemID){
         var url = '@Url.Action("DenyItem", "PR")/' + id;
         $.post(url, {id: id, itemID : itemID }, ReloadFunction);
