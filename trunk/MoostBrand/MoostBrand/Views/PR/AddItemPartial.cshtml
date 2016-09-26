@@ -13,7 +13,6 @@
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-
             <div class="form-horizontal">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Item, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -41,16 +40,10 @@
                     </div>
                 </div>
             </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <input type="submit" value="Add Item" class="btn btn-green" />
-            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input type="submit" value="Add Item" class="btn btn-green" />
+        </div>
     }
 </div><!-- /.modal-content -->
-
-<script language="javascript">
-    
-
-</script>
