@@ -1,0 +1,176 @@
+﻿@model MoostBrand.DAL.StockTransfer
+
+@{
+    ViewBag.Title = "Delete Stock Transfer";
+}
+
+
+<div class="panel-heading">
+    <h4 class="panel-title">
+        Delete Stock Transfer
+        <br /><small>Are you sure you want to delete this?</small>
+    </h4>
+    <hr />
+</div>
+
+<div class="panel-body">
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Stock Transfer #</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.TransferID)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Requisition #</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Requisition.RefNumber)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Date</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.STDAte)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Time Started</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.StartTime)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Time End</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.EndTime)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Driver</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Driver)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Helper</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Helper)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Received By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee3.FirstName),
+                    @Html.DisplayFor(model => model.Employee3.LastName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Requested By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee5.FirstName),
+                    @Html.DisplayFor(model => model.Employee5.LastName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Released By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee4.FirstName),
+                    @Html.DisplayFor(model => model.Employee4.LastName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Operator</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Operator)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Checked By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee1.FirstName),
+                    @Html.DisplayFor(model => model.Employee1.LastName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Posted By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee2.FirstName),
+                    @Html.DisplayFor(model => model.Employee2.LastName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Approval Status</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ApprovalStatu.Status)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Approved By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee.FirstName),
+                    @Html.DisplayFor(model => model.Employee.LastName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Remarks</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Remarks)
+                </label>
+            </div>
+        </div>
+
+
+        @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Delete" class="btn btn-red" />
+                    <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
+                        Edit
+                    </a>
+                    <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+
+        }
+
+    </div>
+</div>
+
+

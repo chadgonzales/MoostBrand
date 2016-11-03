@@ -1,0 +1,100 @@
+﻿@model MoostBrand.DAL.Vendor
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="panel-heading">
+    <h4 class="panel-title">
+        Delete Vendor
+        <br /><small>Are you sure you want to delete this?</small>
+    </h4>
+    <hr />
+</div>
+
+<div class="panel-body">
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Code)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Code)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Name)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Name)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.GeneralName)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.GeneralName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Attn)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Attn)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Address)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Address)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.City)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.City)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.ContactNo)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ContactNo)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Email)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Email)
+                </label>
+            </div>
+        </div>
+
+
+        @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Delete" class="btn btn-red" />
+                    <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                        Back to List
+                    </a>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

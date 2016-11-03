@@ -80,6 +80,8 @@ namespace MoostBrand.DAL
 
         public bool? IsSync { get; set; }
 
+        public byte? Status { get; set; }
+
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
         public virtual DropShipType DropShipType { get; set; }
@@ -109,5 +111,9 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransfer> StockTransfers { get; set; }
+
+        public int? ReqTypeID { get; set; }
+
+        public virtual ReqType ReqType { get; set; }
     }
 }
