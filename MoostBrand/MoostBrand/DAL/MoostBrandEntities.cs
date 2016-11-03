@@ -55,6 +55,8 @@ namespace MoostBrand.DAL
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<Vendor> Vendors { get; set; }
 
+        public virtual DbSet<ReqType> ReqTypes { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ApprovalStatu>()

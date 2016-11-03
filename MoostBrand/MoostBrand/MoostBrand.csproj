@@ -282,6 +282,7 @@
     <Compile Include="DAL\Receiving.cs" />
     <Compile Include="DAL\ReceivingDetail.cs" />
     <Compile Include="DAL\ReceivingType.cs" />
+    <Compile Include="DAL\ReqType.cs" />
     <Compile Include="DAL\Requisition.cs" />
     <Compile Include="DAL\RequisitionDetail.cs" />
     <Compile Include="DAL\RequisitionType.cs" />

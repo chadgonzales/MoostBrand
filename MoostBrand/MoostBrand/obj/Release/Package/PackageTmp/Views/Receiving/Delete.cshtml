@@ -1,0 +1,271 @@
+﻿@model MoostBrand.DAL.Receiving
+@{
+    ViewBag.Title = "Delete";
+}
+<div class="panel-heading">
+    <h4 class="panel-title">Delete Receiving</h4>
+    <hr />
+</div>
+<div class="panel-body">
+    <div class="form-horizontal">
+        @Html.HiddenFor(model => model.ReceivingTypeID)
+        <div class="form-group">
+            <label class="control-label col-md-2">Reference #</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ReceivingID)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Type</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.StockTransfer.Requisition.RequisitionType.Type)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Transfer ID</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.StockTransfer.TransferID)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Requisition #</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.StockTransfer.Requisition.RefNumber)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Requested By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.StockTransfer.Requisition.Employee1.LastName),
+                    @Html.DisplayFor(model => model.StockTransfer.Requisition.Employee1.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Receiving Date</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ReceivingDate)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Time Received</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ReceivingTime)
+                </label>
+            </div>
+        </div>
+
+        <div id="br">
+            <div class="form-group">
+                <label class="control-label col-md-2">Receving Location</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.StockTransfer.Requisition.Location1.Description)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Source Location</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.StockTransfer.Requisition.Location.Description)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Encoded By</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.Employee.LastName),
+                        @Html.DisplayFor(model => model.Employee.FirstName)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Checked By</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.Employee1.LastName),
+                        @Html.DisplayFor(model => model.Employee1.FirstName)
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Received By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee2.LastName),
+                    @Html.DisplayFor(model => model.Employee2.FirstName)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">DR Number</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.DRNumber)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Invoice Number</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.InvoiceNumber)
+                </label>
+            </div>
+        </div>
+
+        <div id="pr">
+            <div class="form-group">
+                <label class="control-label col-md-2">Shipper Name</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.StockTransfer.Requisition.Vendor.GeneralName)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Shipper Code</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.StockTransfer.Requisition.Vendor.Code)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Shipper Attn</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.StockTransfer.Requisition.Vendor.Attn)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Vessel Number</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.VesselNumber)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Voyage Number</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.VoyageNumber)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Van Number</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.VanNumber)
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div id="cr">
+            <div class="form-group">
+                <label class="control-label col-md-2">Customer Name</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.StockTransfer.Requisition.Customer)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Shipment Type</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.StockTransfer.Requisition.ShipmentType.Type)
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Approval Status</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ApprovalStatu.Status)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Approved By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee3.LastName),
+                    @Html.DisplayFor(model => model.Employee3.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Remarks</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Remarks)
+                </label>
+            </div>
+        </div>
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Delete" class="btn btn-dark-red" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script language="javascript">
+    $(function () {
+        var val = $("#ReceivingTypeID").val();
+        if (val == 1) { //PR
+            $("#br").hide();
+            $("#pr").show();
+            $("#cr").hide();
+        } else if (val == 2) { //BR
+            $("#br").show();
+            $("#pr").hide();
+            $("#cr").hide();
+        } else if (val == 3) { //WR
+            $("#br").show();
+            $("#pr").hide();
+            $("#cr").hide();
+            $("#brcr").show();
+        } else if (val == 5) { //OR
+            $("#br").show();
+            $("#pr").hide();
+            $("#cr").hide();
+        } else if (val == 4) { //CR
+            $("#br").hide();
+            $("#pr").hide();
+            $("#cr").show();
+        } else {
+            $("#br").hide();
+            $("#pr").hide();
+            $("#cr").hide();
+        }
+    });
+</script>

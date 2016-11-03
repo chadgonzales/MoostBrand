@@ -179,6 +179,6 @@ G:\SDSProjects\MoostBrand\trunk\MoostBrand\MoostBrand\bin\Microsoft.Owin.Securit
 G:\SDSProjects\MoostBrand\trunk\MoostBrand\MoostBrand\bin\Microsoft.Owin.Security.Google.xml
 G:\SDSProjects\MoostBrand\trunk\MoostBrand\MoostBrand\bin\Microsoft.Owin.Security.Twitter.xml
 G:\SDSProjects\MoostBrand\trunk\MoostBrand\MoostBrand\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-G:\SDSProjects\MoostBrand\trunk\MoostBrand\MoostBrand\obj\Debug\MoostBrand.csprojResolveAssemblyReference.cache
 G:\SDSProjects\MoostBrand\trunk\MoostBrand\MoostBrand\obj\Debug\MoostBrand.dll
 G:\SDSProjects\MoostBrand\trunk\MoostBrand\MoostBrand\obj\Debug\MoostBrand.pdb
+G:\SDSProjects\MoostBrand\trunk\MoostBrand\MoostBrand\obj\Debug\MoostBrand.csprojResolveAssemblyReference.cache

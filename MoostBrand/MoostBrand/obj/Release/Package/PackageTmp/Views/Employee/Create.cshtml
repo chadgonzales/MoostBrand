@@ -1,0 +1,42 @@
+﻿@model MoostBrand.DAL.Employee
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel-heading">
+        <h4 class="panel-title">Create Employee</h4>
+        <hr />
+    </div>
+    <div class="panel-body">
+
+        <div class="form-horizontal">
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger alert alert-danger" })
+                
+                @Html.EditorForModel()
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-6">
+                        <input type="submit" value="Create" class="btn btn-green" />
+                        <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

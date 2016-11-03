@@ -4,6 +4,77 @@
 @{
     ViewBag.Title = "Pending Items";
 }
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+    $(document).ajaxSuccess(function () {
+        $("#catsearch").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetCategories")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Name,
+                                value: item.Name
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#CategoryID").val(ui.item.id);
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#catsearch").autocomplete("option", "appendTo", "#modalCat");
+        $("#itemsearch").autocomplete({
+            source: function (request, response) {
+                var catID = $("#CategoryID").val();
+                $.ajax({
+                    url: '@Url.Action("GetItems")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { catID: catID, name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Name,
+                                value: item.Name,
+                                uom: item.UOM
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#ItemID").val(ui.item.id);
+                $("#uom").html(ui.item.uom);
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#itemsearch").autocomplete("option", "appendTo", "#modalItem");
+        $("#itemsearch").keyup(function () {
+            if (!this.value) {
+                $('#ItemID').removeAttr('value');
+                $("#uom").html('');
+            }
+        });
+    })
+</script>
 <div class="panel-heading">
     <h4 class="panel-title">Pending Items</h4>
     <hr />

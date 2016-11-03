@@ -1,0 +1,279 @@
+﻿@model MoostBrand.DAL.Requisition
+
+@{
+    ViewBag.Title = "Delete";
+}
+<div class="panel-heading">
+    <h4 class="panel-title">Delete Requisition</h4>
+    <hr />
+</div>
+
+<div class="panel-body">
+    <div class="form-horizontal">
+        @Html.HiddenFor(model => model.RequisitionTypeID)
+        <div class="form-group">
+            <label class="control-label col-md-2">Reference #</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.RefNumber)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Type</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.RequisitionType.Type)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Requested Date</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.RequestedDate)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Requested By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee1.LastName),
+                    @Html.DisplayFor(model => model.Employee1.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Location</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Location.Description)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Date Required</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.DateRequired)
+                </label>
+            </div>
+        </div>
+        <div id="pr">
+            <div class="form-group">
+                <label class="control-label col-md-2">Vendor</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.Vendor.Name)
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div id="cr">
+            <div class="form-group">
+                <label class="control-label col-md-2">Project/Customer</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.Customer)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Reservation Type</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.ReservationType.Type)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Reserved By</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.Employee2.LastName),
+                        @Html.DisplayFor(model => model.Employee2.FirstName)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Payment Status</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.PaymentStatus)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Invoice #</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.InvoiceNumber)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Authorized Person</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.AuthorizedPerson)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Validated By</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.Employee3.LastName),
+                        @Html.DisplayFor(model => model.Employee3.FirstName)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Shipment Type</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.ShipmentType)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Drop Ship Type</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.DropShipType.Type)
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div id="br">
+            <div class="form-group">
+                <label class="control-label col-md-2">Destination</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.Location.Description)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Plate Number</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.PlateNumber)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Other</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.Others)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Time Departed</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.TimeDeparted)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Time Arrive</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.TimeArrived)
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div id="brcr">
+            <div class="form-group">
+                <label class="control-label col-md-2">Driver</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.Driver)
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Approval Status</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ApprovalStatu.Status)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Approved By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee.LastName),
+                    @Html.DisplayFor(model => model.Employee.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Remarks</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Remarks)
+                </label>
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Delete" class="btn btn-dark-red"/>
+                </div>
+            </div>
+        }
+        
+
+    </div>
+</div>
+
+<script language="javascript">
+    $(function () {
+        var val = $("#RequisitionTypeID").val();
+        if (val == 1) { //PR
+            $("#br").hide();
+            $("#pr").show();
+            $("#cr").hide();
+            $("#brcr").hide();
+        } else if (val == 2) { //BR
+            $("#br").show();
+            $("#brcr").show();
+            $("#pr").hide();
+            $("#cr").hide();
+        } else if (val == 3) { //WR
+            $("#br").show();
+            $("#pr").hide();
+            $("#cr").hide();
+            $("#brcr").show();
+        } else if (val == 5) { //OR
+            $("#br").show();
+            $("#pr").hide();
+            $("#cr").hide();
+            $("#brcr").show();
+        } else if (val == 4) { //CR
+            $("#br").hide();
+            $("#pr").hide();
+            $("#cr").show();
+            $("#brcr").show();
+        } else {
+            $("#br").hide();
+            $("#pr").hide();
+            $("#cr").hide();
+            $("#brcr").hide();
+        }
+    });
+</script>

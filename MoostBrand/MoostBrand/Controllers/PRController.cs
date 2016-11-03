@@ -200,9 +200,8 @@ namespace MoostBrand.Controllers
             }
 
             ViewBag.CurrentFilter = searchString;
-            
-            var prs = from o in entity.Requisitions
-                      select o;
+
+            var prs = entity.Requisitions.Where(x => x.Status == 0);
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -454,11 +453,11 @@ namespace MoostBrand.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirm(int id)
         {
-            var pr = entity.Requisitions.Find(id);
-
             try
             {
-                entity.Requisitions.Remove(pr);
+                var pr = entity.Requisitions.Find(id);
+                pr.Status = 1;
+                entity.Entry(pr).State = EntityState.Modified;
                 entity.SaveChanges();
 
                 return RedirectToAction("Index");
@@ -467,7 +466,7 @@ namespace MoostBrand.Controllers
             {
             }
 
-            return View(pr);
+            return RedirectToAction("Delete", new { id });
         }
 
         // POST: PR/Approve/5
@@ -661,7 +660,8 @@ namespace MoostBrand.Controllers
                             .Select(x => new
                             {
                                 ID = x.ID,
-                                Name = x.Description
+                                Name = x.Description,
+                                UOM = x.UnitOfMeasurement.Description
                             });
             return Json(items, JsonRequestBehavior.AllowGet);
         }
