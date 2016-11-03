@@ -157,7 +157,31 @@ namespace MoostBrand.Controllers
         {
             return Json(Generator(id), JsonRequestBehavior.AllowGet);
         }
-        
+
+        [HttpPost]
+        public ActionResult GetRequisitionType(int id)
+        {
+            var reqtype = entity.RequisitionTypes.Where(x => x.ReqTypeID == id)
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Type = x.Type
+                            });
+            return Json(reqtype, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetVendors(string name)
+        {
+            var vendors = entity.Vendors.Where(x => x.Name.Contains(name) || x.GeneralName.Contains(name))
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Name = x.Name
+                            });
+            return Json(vendors, JsonRequestBehavior.AllowGet);
+        }
+
         // GET: PR
         [AccessChecker(Action = 1, ModuleID = 3)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -230,6 +254,7 @@ namespace MoostBrand.Controllers
                                 ID = s.ID,
                                 FullName = s.FirstName + " " + s.LastName
                             };
+            ViewBag.ReqTypeID = new SelectList(entity.ReqTypes, "ID", "Type");
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
@@ -291,10 +316,11 @@ namespace MoostBrand.Controllers
                                 ID = s.ID,
                                 FullName = s.FirstName + " " + s.LastName
                             };
+            ViewBag.ReqTypeID = new SelectList(entity.ReqTypes, "ID", "Type", pr.ReqTypeID);
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
-            ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name", pr.VendorID);
+            //ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name", pr.VendorID);
             ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
             ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type", pr.ShipmentTypeID);
             ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", pr.DropShipID);
@@ -303,6 +329,12 @@ namespace MoostBrand.Controllers
             ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description", pr.Destination);
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
+
+            if(pr.VendorID != null)
+            {
+                ViewBag.VendorName = entity.Vendors.FirstOrDefault(x => x.ID == pr.VendorID).Name;
+            }
+
             #endregion
 
             return View(pr);
@@ -610,6 +642,30 @@ namespace MoostBrand.Controllers
         }
 
         #region PARTIAL
+        [HttpPost]
+        public JsonResult GetCategories(string name)
+        {
+            var categories = entity.Categories.Where(x => x.Description.Contains(name))
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Name = x.Description
+                            });
+            return Json(categories, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetItems(int catID, string name)
+        {
+            var items = entity.Items.Where(x => x.CategoryID == catID && x.Description.Contains(name))
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Name = x.Description
+                            });
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
         // GET: PR/AddItemPartial/5
         public ActionResult AddItemPartial(int id)
         {
