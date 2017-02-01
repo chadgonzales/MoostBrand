@@ -74,48 +74,31 @@ namespace MoostBrand.Controllers
 
         // POST: UnitOfMeasure/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(UnitOfMeasurement unitofmeasurement)
         {
-            try
+            if(ModelState.IsValid)
             {
-                var uom = new UnitOfMeasurement();
-
-                if (collection.Count > 0)
+                try
                 {
-                    uom.Code = collection["Code"];
-                    uom.Description = collection["Description"];
-                    uom.QuantityOfMeasure = Convert.ToInt32(collection["QuantityOfMeasure"]);
-
-                    if (uom.Code.Trim() == string.Empty ||
-                        uom.Description.Trim() == string.Empty ||
-                        uom.QuantityOfMeasure == 0)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    var uomm = entity.Colors.ToList().FindAll(b => b.Code == uom.Code);
+                    var uomm = entity.UnitOfMeasurements.ToList().FindAll(b => b.Code == unitofmeasurement.Code);
 
                     if (uomm.Count() > 0)
                     {
                         ModelState.AddModelError("", "The code already exists.");
-                        return View();
                     }
-
-                    try
+                    else
                     {
-                        entity.UnitOfMeasurements.Add(uom);
+                        entity.UnitOfMeasurements.Add(unitofmeasurement);
                         entity.SaveChanges();
+                        return RedirectToAction("Index");
                     }
-                    catch { }
                 }
-
-                return RedirectToAction("Index");
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(unitofmeasurement);            
         }
 
         // GET: UnitOfMeasure/Edit/5
@@ -127,54 +110,34 @@ namespace MoostBrand.Controllers
 
         // POST: UnitOfMeasure/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(UnitOfMeasurement uom)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
-                var uom = entity.UnitOfMeasurements.Find(id);
-
-                if (collection.Count > 0)
+                try
                 {
-                    uom.Code = collection["Code"];
-                    uom.Description = collection["Description"];
-                    uom.QuantityOfMeasure = Convert.ToInt32(collection["QuantityOfMeasure"]);
-
-                    if (uom.Code.Trim() == string.Empty ||
-                        uom.Description.Trim() == string.Empty ||
-                        uom.QuantityOfMeasure == 0)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    try
-                    {
-                        entity.Entry(uom).State = EntityState.Modified;
-                        entity.SaveChanges();
-                    }
-                    catch { }
+                    entity.Entry(uom).State = EntityState.Modified;
+                    entity.SaveChanges();
+                    return RedirectToAction("Index");
                 }
-
-                return RedirectToAction("Index");
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(uom);
         }
 
         // GET: UnitOfMeasure/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             var uom = entity.UnitOfMeasurements.Find(id);
             return View(uom);
         }
 
         // POST: UnitOfMeasure/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id = 0)
         {
             try
             {

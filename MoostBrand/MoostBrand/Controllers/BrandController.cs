@@ -80,10 +80,19 @@ namespace MoostBrand.Controllers
             {
                 try
                 {
-                    entity.Brands.Add(brand);
-                    entity.SaveChanges();
+                    var brnd = entity.Brands.ToList().FindAll(b => b.Code == brand.Code);
 
-                    return RedirectToAction("Index");
+                    if (brnd.Count() > 0)
+                    {
+                        ModelState.AddModelError("", "The code already exists.");
+                    }
+                    else
+                    {
+                        entity.Brands.Add(brand);
+                        entity.SaveChanges();
+
+                        return RedirectToAction("Index");
+                    }                   
                 }
                 catch
                 {
@@ -122,15 +131,15 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Brand/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             var brand = entity.Brands.Find(id);
             return View(brand);
         }
 
         // POST: Brand/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id = 0)
         {
             try
             {

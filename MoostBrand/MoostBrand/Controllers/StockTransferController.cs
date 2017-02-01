@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Configuration;
 using System.Data.Entity;
 using MoostBrand.Models;
+using System.Collections.Generic;
 
 namespace MoostBrand.Controllers
 {
@@ -52,6 +53,7 @@ namespace MoostBrand.Controllers
         #endregion
 
         // GET: StockTransfer
+        [AccessChecker(Action = 1, ModuleID = 4)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -94,6 +96,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockTransfer/Details/5
+        [AccessChecker(Action = 1, ModuleID = 4)]
         public ActionResult Details(int id = 0)
         {
             var stocktransfer = entity.StockTransfers.Find(id);
@@ -106,15 +109,27 @@ namespace MoostBrand.Controllers
             return View(stocktransfer);
         }
 
+        // -Pearl
+        public ActionResult GenerateSTRNumber(string id)
+        {
+            return Json(Generator(id), JsonRequestBehavior.AllowGet);
+        }
+
         // GET: StockTransfer/Create/
+        [AccessChecker(Action = 2, ModuleID = 4)]
         public ActionResult Create()
         {
             var stocktransfer = new StockTransfer();
-            stocktransfer.TransferID = Generator("STR");
             stocktransfer.STDAte = DateTime.Now;
-
+            
             #region DROPDOWNS
-            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
+            var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2)
+                                .Select(r => new
+                                {
+                                    ID = r.ID,
+                                    RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
+                                });
+            ViewBag.RequisitionID = new SelectList(_requisitions, "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
             var empList = new SelectList((from s in entity.Employees
                                           select new
@@ -122,6 +137,7 @@ namespace MoostBrand.Controllers
                                               ID = s.ID,
                                               FullName = s.FirstName + " " + s.LastName
                                           }), "ID", "FullName");
+            ViewBag.EncodedBy = empList;
             ViewBag.ReceivedBy = empList;
             ViewBag.RequestedBy = empList;
             ViewBag.ApprovedBy = empList;
@@ -133,32 +149,54 @@ namespace MoostBrand.Controllers
             return View(stocktransfer);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 4)]
         [HttpPost]
         public ActionResult Create(StockTransfer stocktransfer)
         {
-            try
-            {
-                var st = entity.StockTransfers.Where(s => s.TransferID == stocktransfer.TransferID).ToList();
+            //if (ModelState.IsValid)
+            //{
+                var stransfer = entity.StockTransfers.Where(s => s.TransferID == stocktransfer.TransferID).ToList();
 
-                if (st.Count() > 0)
+                if (stransfer.Count() > 0)
                 {
                     ModelState.AddModelError("", "Stock Transfer ID already exists");
                 }
                 else
                 {
+                    #region Helper
+                    foreach (Helper h in stocktransfer.Helpers.ToList())
+                    {
+                        try
+                        {
+                            if (h.DeletedHelper == 1)
+                            {
+                            stocktransfer.Helpers.Remove(h);
+                            }
+                            
+                        }
+                        catch
+                        {
+                            ModelState.AddModelError(string.Empty, "There's an error");
+                        }
+                    }
+                    #endregion
+                    #region Operator
+                    foreach (Operator o in stocktransfer.Operators.ToList())
+                    {
+                        if (o.DeletedOperator == 1)
+                        {
+                        stocktransfer.Operators.Remove(o);
+                        }
+                    }
+                    #endregion
+
                     stocktransfer.ApprovedStatus = 1;
                     stocktransfer.ApprovedBy = Convert.ToInt32(Session["sessionuid"]);
                     stocktransfer.IsSync = false;
 
                     entity.StockTransfers.Add(stocktransfer);
                     entity.SaveChanges();
-
                     return RedirectToAction("Index");
-                }
-            }
-            catch
-            {
-                ModelState.AddModelError("", "There's an error.");
             }
 
             #region DROPDOWNS
@@ -170,7 +208,8 @@ namespace MoostBrand.Controllers
                               ID = s.ID,
                               FullName = s.FirstName + " " + s.LastName
                           };
-
+            
+            ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", stocktransfer.EncodedBy);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ReceivedBy);
             ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stocktransfer.RequestedBy); ;
             ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ApprovedBy); ;
@@ -183,6 +222,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockTransfer/Edit/5
+        [AccessChecker(Action = 2, ModuleID = 4)]
         public ActionResult Edit(int id = 0)
         {
             var stocktransfer = entity.StockTransfers.Find(id);
@@ -195,6 +235,7 @@ namespace MoostBrand.Controllers
             if(stocktransfer.ApprovedStatus == 1)
             {
                 #region DROPDOWNS
+                ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
                 ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
                 var empList = from s in entity.Employees
                               select new
@@ -203,6 +244,7 @@ namespace MoostBrand.Controllers
                                   FullName = s.FirstName + " " + s.LastName
                               };
 
+                ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", stocktransfer.EncodedBy);
                 ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ReceivedBy);
                 ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stocktransfer.RequestedBy); ;
                 ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ApprovedBy); ;
@@ -219,6 +261,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockTransfer/Edit/5
+        [AccessChecker(Action = 2, ModuleID = 4)]
         [HttpPost]
         public ActionResult Edit(StockTransfer stocktransfer)
         {
@@ -227,6 +270,73 @@ namespace MoostBrand.Controllers
                 try
                 {
                     stocktransfer.IsSync = false;
+
+                    #region Helper
+                    foreach (Helper helper in stocktransfer.Helpers.ToList())
+                    {
+                        try
+                        {
+                            if (helper.DeletedHelper == 1 && helper.HelperID != 0)
+                            {
+                                entity.Entry(helper).State = EntityState.Deleted;
+                                entity.SaveChanges();
+                            }
+                            else if (helper.StockTransferID != stocktransfer.ID)
+                            {
+                                helper.StockTransferID = stocktransfer.ID;
+
+                                if (helper.Name != null && helper.Name.Trim() != string.Empty)
+                                {
+                                    entity.Entry(helper).State = EntityState.Added;
+                                    entity.SaveChanges();
+                                }
+                            }
+                            else if (helper.HelperID != 0)
+                            {
+                                if (helper.Name != null && helper.Name.Trim() != string.Empty)
+                                {
+                                    entity.Entry(helper).State = EntityState.Modified;
+                                    entity.SaveChanges();
+                                }
+                            }
+                        }
+                        catch { }
+                        stocktransfer.Helpers.Remove(helper);
+                    }
+                    #endregion
+                    #region Operator
+                    foreach (Operator operators in stocktransfer.Operators.ToList())
+                    {
+                        try
+                        {
+                            if (operators.DeletedOperator == 1 && operators.OperatorID != 0)
+                            {
+                                entity.Entry(operators).State = EntityState.Deleted;
+                                entity.SaveChanges();
+                            }
+                            else if (operators.StockTransferID != stocktransfer.ID)
+                            {
+                                operators.StockTransferID = stocktransfer.ID;
+
+                                if (operators.Name != null && operators.Name.Trim() != string.Empty)
+                                {
+                                    entity.Entry(operators).State = EntityState.Added;
+                                    entity.SaveChanges();
+                                }
+                            }
+                            else if (operators.OperatorID != 0)
+                            {
+                                if (operators.Name != null && operators.Name.Trim() != string.Empty)
+                                {
+                                    entity.Entry(operators).State = EntityState.Modified;
+                                    entity.SaveChanges();
+                                }
+                            }
+                        }
+                        catch { }
+                        stocktransfer.Operators.Remove(operators);
+                    }
+                    #endregion
 
                     entity.Entry(stocktransfer).State = EntityState.Modified;
                     entity.SaveChanges();
@@ -240,6 +350,8 @@ namespace MoostBrand.Controllers
             }
 
             #region DROPDOWNS
+
+            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees
                           select new
@@ -248,6 +360,7 @@ namespace MoostBrand.Controllers
                               FullName = s.FirstName + " " + s.LastName
                           };
 
+            ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", stocktransfer.EncodedBy);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ReceivedBy);
             ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stocktransfer.RequestedBy); ;
             ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ApprovedBy); ;
@@ -261,6 +374,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockTransfer/Delete/5
+        [AccessChecker(Action = 3, ModuleID = 4)]
         public ActionResult Delete(int id = 0)
         {
             var stocktransfer = entity.StockTransfers.Find(id);
@@ -274,6 +388,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockTransfer/Delete/5
+        [AccessChecker(Action = 3, ModuleID = 4)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id = 0)
         {
@@ -299,6 +414,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockTransfer/Approve/5
+        [AccessChecker(Action = 5, ModuleID = 4)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Approve(int id)
@@ -326,6 +442,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockTransfer/Denied/5
+        [AccessChecker(Action = 5, ModuleID = 4)]
         [HttpPost]
         public ActionResult Denied(int id)
         {
@@ -348,6 +465,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockTransfer/ApprovedItems/5
+        [AccessChecker(Action = 1, ModuleID = 4)]
         public ActionResult ApprovedItems(int id, int? page)
         {
             var items = entity.StockTransferDetails
@@ -362,6 +480,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockTransfer/PendingItems/5
+        [AccessChecker(Action = 1, ModuleID = 4)]
         public ActionResult PendingItems(int id, int? page)
         {
             int UserID = Convert.ToInt32(Session["sessionuid"]);
@@ -391,6 +510,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockTransfer/DeniedItems/5
+        [AccessChecker(Action = 1, ModuleID = 4)]
         public ActionResult DeniedItems(int id, int? page)
         {
             var items = entity.StockTransferDetails
@@ -405,6 +525,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockTransfer/ApproveItem/5
+        [AccessChecker(Action = 1, ModuleID = 4)]
         public ActionResult ApproveItem(int id, int itemID)
         {
             try
@@ -417,6 +538,31 @@ namespace MoostBrand.Controllers
 
                     entity.Entry(item).State = EntityState.Modified;
                     entity.SaveChanges();
+
+                    #region WAC                    
+                    var itm = entity.Items.Where(i => i.ID == item.RequisitionDetail.ItemID).FirstOrDefault();
+                    if (item.Quantity <= itm.Quantity)
+                    {
+                        var itmDetail = from s in entity.ItemDetail
+                                        where s.ItemID == itm.ID
+                                        select s;
+
+                        itm.Quantity -= item.Quantity;
+
+                        //decimal qtyCost = 0;
+
+                        //foreach (var detail in itmDetail)
+                        //    qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
+
+                        //itm.Price = Convert.ToDecimal((qtyCost) / itm.Quantity);
+
+                        //WAC
+
+                        entity.Entry(itm).State = EntityState.Modified;
+                        entity.SaveChanges();
+                    }
+                    #endregion
+
                 }
             }
             catch
@@ -427,6 +573,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockTransfer/DenyItem/5
+        [AccessChecker(Action = 1, ModuleID = 4)]
         public ActionResult DenyItem(int id, int itemID)
         {
             try
@@ -451,6 +598,7 @@ namespace MoostBrand.Controllers
         #region PARTIAL
 
         // GET: StockTransfer/AddItemPartial/5
+        [AccessChecker(Action = 2, ModuleID = 4)]
         public ActionResult AddItemPartial(int id)
         {
             int reqID = entity.StockTransfers.Find(id).RequisitionID;
@@ -470,6 +618,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockTransfer/AddItemPartial/5
+        [AccessChecker(Action = 2, ModuleID = 4)]
         [HttpPost]
         public ActionResult AddItemPartial(int id, StockTransferDetail stocktransfer)
         {
@@ -505,6 +654,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockTransfer/EditItemPartial/5
+        [AccessChecker(Action = 2, ModuleID = 4)]
         public ActionResult EditItemPartial(int id)
         {
             var st = entity.StockTransferDetails.Find(id);
@@ -515,29 +665,93 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockTransfer/EditItemPartial/5
+        [AccessChecker(Action = 2, ModuleID = 4)]
         [HttpPost]
         public ActionResult EditItemPartial(int id, StockTransferDetail stocktransfer)
         {
             try
             {
-                stocktransfer.IsSync = false;
+                var sdetails = entity.StockTransferDetails.Find(stocktransfer.ID);
 
-                entity.Entry(stocktransfer).State = EntityState.Modified;
+                int presentQty = Convert.ToInt32(stocktransfer.Quantity);
+                int previousQty = Convert.ToInt32(sdetails.Quantity);
+
+                if ((presentQty != previousQty) && stocktransfer.AprovalStatusID == 2)
+                {
+                    int itemID = Convert.ToInt32(entity.RequisitionDetails.Find(stocktransfer.RequisitionDetailID).ItemID);
+                    var itm = entity.Items.Where(i => i.ID == itemID).FirstOrDefault();
+                    #region WAC    
+
+                    if (presentQty <= itm.Quantity)
+                    {
+                        var itmDetail = entity.ItemDetail.Where(i => i.ItemID == itm.ID).ToList();
+                        var itemDetail = entity.ItemDetail.Find(itm.ID);
+
+                        int prevSTItemQty = Convert.ToInt32(itm.Quantity + previousQty);
+
+                        decimal qtyCost = 0;
+
+                        foreach (var detail in itmDetail)
+                            qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
+
+                        itm.Quantity = prevSTItemQty - presentQty;
+                        //double Price = Convert.ToDouble((qtyCost) / itm.Quantity);
+                        //itm.Price = Convert.ToDecimal(Price);
+
+                        //if (itmDetail.Count() > 1)
+                        //{
+                        //    //WAC             
+                        //    int prevQty = Convert.ToInt32(itm.Quantity - itmDetails.Quantity);
+                        //    itm.WeightedAverageCost = Convert.ToDecimal((itmDetails.Quantity * itmDetails.Cost) / prevQty);
+                        //}
+                        //else
+                        //    itm.WeightedAverageCost = 0;
+                    }
+                    #endregion                    
+                }
+
+                sdetails.IsSync = false;
+                entity.Entry(sdetails).CurrentValues.SetValues(stocktransfer);
                 entity.SaveChanges();
             }
-            catch
+            catch (Exception ex)
             {
                 TempData["PartialError"] = "There's an error.";
             }
 
-            if(stocktransfer.AprovalStatusID == 1)
+            if (stocktransfer.AprovalStatusID == 1)
             {
+                #region WAC    
+                var st = entity.StockTransferDetails.Where(s => s.ID == stocktransfer.ID).FirstOrDefault();
+                var req = entity.RequisitionDetails.Where(r => r.ID == stocktransfer.RequisitionDetailID).FirstOrDefault();
+                var itm = entity.Items.Where(i => i.ID == req.ItemID).FirstOrDefault();
+                if (st.Quantity <= itm.Quantity)
+                {
+                    var itmDetail = from s in entity.ItemDetail
+                                    where s.ItemID == itm.ID
+                                    select s;
+
+                    itm.Quantity += st.Quantity;
+
+                    decimal qtyCost = 0;
+
+                    foreach (var detail in itmDetail)
+                        qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
+
+                    double WeightedAverageCost = Convert.ToDouble((qtyCost) / itm.Quantity);
+                    itm.WeightedAverageCost = Convert.ToDecimal(WeightedAverageCost);
+
+                    entity.Entry(itm).State = EntityState.Modified;
+                    entity.SaveChanges();
+                }
+                #endregion
                 return RedirectToAction("PendingItems", new { id = stocktransfer.StockTransferID });
             }
             return RedirectToAction("ApprovedItems", new { id = stocktransfer.StockTransferID });
         }
 
         // GET: StockTransfer/DeleteItemPartial/5
+        [AccessChecker(Action = 3, ModuleID = 4)]
         public ActionResult DeleteItemPartial(int id)
         {
             var st = entity.StockTransferDetails.Find(id);
@@ -546,6 +760,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockTransfer/DeleteItemPartial/5
+        [AccessChecker(Action = 3, ModuleID = 4)]
         [HttpPost, ActionName("DeleteItemPartial")]
         public ActionResult DeleteItemPartialConfirm(int id)
         {
@@ -565,5 +780,15 @@ namespace MoostBrand.Controllers
             return RedirectToAction("PendingItems", new { id = reqID });
         }
         #endregion
+        // -Pearl
+        [HttpPost]
+        public ActionResult GetLocationCode(int locID)
+        {
+            var code = entity.Locations
+                .Where(s => s.ID == locID)
+                .Select(s => new { s.Code });
+
+            return Json(code, JsonRequestBehavior.AllowGet);
+        }
     }
 }

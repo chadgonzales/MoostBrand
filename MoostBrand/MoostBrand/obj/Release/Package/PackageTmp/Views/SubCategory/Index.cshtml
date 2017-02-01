@@ -74,6 +74,9 @@
                             <a href='@Url.Action("Details", new { id = item.ID })' class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Details">
                                 <i class="fa fa-file"></i>
                             </a>
+
+                            @Html.ActionLink("Sub Categories Type", "Index", "SubCategoryTypes", new { SearchString = item.Description }, new { @class = "btn btn-xs btn-orange tooltips subcat" })
+
                             <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
                                 <i class="fa fa-times fa fa-white"></i>
                             </a>
@@ -90,6 +93,14 @@
 
 
 </div>
+
+<script language="javascript">
+    $(function () {
+        $(".subcat").text("").append('<i class="fa fa-times fa fa-files-o"></i>').attr("data-placement", "top").attr("data-original-title", "Sub Categories Type");
+
+    });
+
+</script>
 
 
 

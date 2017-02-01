@@ -17,6 +17,7 @@ namespace MoostBrand.Controllers
         MoostBrandEntities entity = new MoostBrandEntities();
 
         // GET: StockAdjustment
+        [AccessChecker(Action = 1, ModuleID = 8)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -62,6 +63,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockAdjustment/Details/5
+        [AccessChecker(Action = 1, ModuleID = 8)]
         public ActionResult Details(int id = 0)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -75,6 +77,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockAdjustment/Create/
+        [AccessChecker(Action = 2, ModuleID = 8)]
         public ActionResult Create()
         {
             var adjust = new StockAdjustment();
@@ -91,12 +94,15 @@ namespace MoostBrand.Controllers
             ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type");
             ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type");
+            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
+            ViewBag.PostedBy = new SelectList(employees, "ID", "FullName");
             #endregion
 
             return View(adjust);
         }
 
         // POST: StockAdjustment/Create/
+        [AccessChecker(Action = 2, ModuleID = 8)]
         [HttpPost]
         public ActionResult Create(StockAdjustment adjust)
         {
@@ -128,17 +134,20 @@ namespace MoostBrand.Controllers
             ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName", adjust.AdjustedBy);
             ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", adjust.TransactionTypeID);
             ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type", adjust.ReturnTypeID);
+            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", adjust.ApprovedBy);
+            ViewBag.PostedBy = new SelectList(employees, "ID", "FullName", adjust.PostedBy); 
             #endregion
 
             return View(adjust);
         }
 
         // GET: StockAdjustment/Edit/5
+        [AccessChecker(Action = 2, ModuleID = 8)]
         public ActionResult Edit(int id = 0)
         {
             var adjust = entity.StockAdjustments.Find(id);
 
-            if (adjust != null)
+            if (adjust == null)
             {
                 return HttpNotFound();
             }
@@ -156,6 +165,8 @@ namespace MoostBrand.Controllers
                 ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName", adjust.AdjustedBy);
                 ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", adjust.TransactionTypeID);
                 ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type", adjust.ReturnTypeID);
+                ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", adjust.ApprovedBy);
+                ViewBag.PostedBy = new SelectList(employees, "ID", "FullName", adjust.PostedBy); 
                 #endregion
 
                 return View(adjust);
@@ -165,6 +176,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockAdjustment/Edit/5
+        [AccessChecker(Action = 2, ModuleID = 8)]
         [HttpPost]
         public ActionResult Edit(StockAdjustment adjust)
         {
@@ -195,12 +207,15 @@ namespace MoostBrand.Controllers
             ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName", adjust.AdjustedBy);
             ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", adjust.TransactionTypeID);
             ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type", adjust.ReturnTypeID);
+            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", adjust.ApprovedBy);
+            ViewBag.PostedBy = new SelectList(employees, "ID", "FullName", adjust.PostedBy);
             #endregion
 
             return View(adjust);
         }
 
         // GET: StockAdjustment/Delete/5
+        [AccessChecker(Action = 3, ModuleID = 8)]
         public ActionResult Delete(int id)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -221,6 +236,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockAdjustment/Delete/5
+        [AccessChecker(Action = 3, ModuleID = 8)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirm(int id)
         {
@@ -241,6 +257,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockAdjustment/Approve/5
+        [AccessChecker(Action = 5, ModuleID = 8)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Approve(int id)
@@ -269,6 +286,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockAdjustment/Denied/5
+        [AccessChecker(Action = 5, ModuleID = 8)]
         [HttpPost]
         public ActionResult Denied(int id)
         {
@@ -291,6 +309,7 @@ namespace MoostBrand.Controllers
         }
 
         //GET: StockAdjustment/Items/5
+        [AccessChecker(Action = 1, ModuleID = 8)]
         public ActionResult Items(int id, int? page)
         {
             int UserID = Convert.ToInt32(Session["sessionuid"]);
@@ -310,6 +329,7 @@ namespace MoostBrand.Controllers
         #region PARTIAL
 
         // GET: StockAdjustment/AddItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 8)]
         public ActionResult AddItemPartial(int id)
         {
             var ret = entity.StockAdjustments.Find(id);
@@ -348,6 +368,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockAdjustment/AddItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 8)]
         [HttpPost]
         public ActionResult AddItemPartial(int id, StockAdjustmentDetail rd)
         {
@@ -401,6 +422,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockAdjustment/EditItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 8)]
         public ActionResult EditItemPartial(int id)
         {
             var sa = entity.StockAdjustmentDetails.Find(id);
@@ -410,6 +432,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockAdjustment/EditItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 8)]
         [HttpPost]
         public ActionResult EditItemPartial(int id, StockAdjustmentDetail rd)
         {
@@ -429,6 +452,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockAdjustment/DeleteItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 8)]
         public ActionResult DeleteItemPartial(int id)
         {
             var sa = entity.StockAdjustmentDetails.Find(id);
@@ -437,6 +461,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockAdjustment/DeleteItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 8)]
         [HttpPost, ActionName("DeleteItemPartial")]
         public ActionResult DeleteItemPartialConfirm(int id)
         {

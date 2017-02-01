@@ -5,12 +5,21 @@
 }
 
 <div class="panel-heading">
-    <h4 class="panel-title">Color Details</h4>
+    <h4 class="panel-title">Item Details</h4>
     <hr />
 </div>
 
 <div class="panel-body">
     <div class="form-horizontal">
+
+        <div class="form-group">
+            <label class="control-label col-md-2">ItemID</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ItemID)
+                </label>
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="control-label col-md-2">Code</label>
@@ -33,6 +42,22 @@
             <div class="col-md-6">
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.Description)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Substitute Item</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.SubstituteItem)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Complementary Field</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ComplementaryField)
                 </label>
             </div>
         </div>
@@ -85,6 +110,30 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label col-md-2">Last Unit Cost</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.LastUnitCost)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Weighted Average Cost</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.WeightedAverageCost)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Vendor Coding</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.VendorCoding)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label col-md-2">Re Order Level</label>
             <div class="col-md-6">
                 <label class="custom-label">
@@ -105,6 +154,14 @@
             <div class="col-md-6">
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.MaximumStock)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Photo</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    <img src="@Html.Raw(Model.Image)" />
                 </label>
             </div>
         </div>

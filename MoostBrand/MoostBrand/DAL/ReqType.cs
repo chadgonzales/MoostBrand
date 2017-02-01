@@ -21,9 +21,9 @@ namespace MoostBrand.DAL
         public string Type { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RequisitionType> RequisitionTypes { get; set; }
+        public virtual ICollection<Requisition> Requisitions { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Requisition> Requisitions { get; set; }
+        public virtual ICollection<RequisitionType> RequisitionTypes { get; set; }
     }
 }

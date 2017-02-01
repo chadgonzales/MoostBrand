@@ -74,101 +74,73 @@ namespace MoostBrand.Controllers
 
         // POST: Size/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Size size)
         {
-            try
+            if(ModelState.IsValid)
             {
-                var size = new Size();
-
-                if (collection.Count > 0)
+                try
                 {
-                    size.Code = collection["Code"];
-                    size.Description = collection["Description"];
-
-                    if (size.Code.Trim() == string.Empty || size.Description.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    var siz = entity.Colors.ToList().FindAll(b => b.Code == size.Code);
+                    var siz = entity.Sizes.ToList().FindAll(b => b.Code == size.Code);
 
                     if (siz.Count() > 0)
                     {
                         ModelState.AddModelError("", "The code already exists.");
-                        return View();
                     }
-
-                    try
+                    else
                     {
                         entity.Sizes.Add(size);
                         entity.SaveChanges();
+                        return RedirectToAction("Index");
                     }
-                    catch { }
                 }
-
-                return RedirectToAction("Index");
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(size);
         }
 
         // GET: Size/Edit/5
         public ActionResult Edit(int id)
         {
             var size = entity.Sizes.Find(id);
+            if (size == null)
+                return HttpNotFound();
+
             return View(size);
         }
 
         // POST: Size/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Size size)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
-                var size = entity.Sizes.Find(id);
-
-                if (collection.Count > 0)
+                try
                 {
-                    size.Code = collection["Code"];
-                    size.Description = collection["Description"];
-
-                    if (size.Code.Trim() == string.Empty || size.Description.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    try
-                    {
-                        entity.Entry(size).State = EntityState.Modified;
-                        entity.SaveChanges();
-                    }
-                    catch { }
+                    entity.Entry(size).State = EntityState.Modified;
+                    entity.SaveChanges();
+                    return RedirectToAction("Index");
                 }
-
-                return RedirectToAction("Index");
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(size);
         }
 
         // GET: Size/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             var size = entity.Sizes.Find(id);
             return View(size);
         }
 
         // POST: Size/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id = 0)
         {
             try
             {

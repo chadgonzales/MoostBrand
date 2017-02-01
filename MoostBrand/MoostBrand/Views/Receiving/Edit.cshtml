@@ -1,60 +1,34 @@
 ﻿@model MoostBrand.DAL.Receiving
 @{
-    ViewBag.Title = "Edit Stock Transfer";
+    ViewBag.Title = "Edit Receiving";
 }
-<h2>Edit Stock Transfer</h2>
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Receiving", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-    @Html.HiddenFor(model => model.ID)
+    @*@Html.HiddenFor(model => model.ID)
     @Html.HiddenFor(model => model.ReceivingTypeID)
     @Html.HiddenFor(model => model.ReceivingID)
-    @Html.HiddenFor(model => model.StockTransferID)
-    @Html.HiddenFor(model => model.RequisitionID)
+    @Html.HiddenFor(model => model.LocationID)
+    @Html.HiddenFor(model => model.StockTransferID)*@
+    @*@Html.HiddenFor(model => model.RequisitionID)*@
 
     <div class="panel-heading">
-        <h4 class="panel-title">>Edit Stock Transfer</h4>
+        <h4 class="panel-title">Edit Receiving</h4>
         <hr />
-
     </div>
+
+
     <div class="panel-body">
 
         <div class="form-horizontal">
+
             @Html.ValidationSummary(true, "", new { @class = "text-danger alert alert-danger" })
             <div class="form-group">
                 @Html.LabelFor(model => model.ReceivingType, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.DisplayFor(model => model.ReceivingType)
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.ReceivingID, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.DisplayFor(model => model.ReceivingID)
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.StockTransferID, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.DisplayFor(model => model.StockTransfer.TransferID)
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.RequisitionID, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.DisplayFor(model => model.Requisition.RefNumber)
-                </div>
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(model => model.RequisitionID, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.DisplayFor(model => model.Requisition.Employee1.FirstName),
-                    @Html.DisplayFor(model => model.Requisition.Employee1.LastName)
+                    @Html.DropDownList("ReceivingTypeID", String.Empty )
+                    @Html.ValidationMessageFor(model => model.ReceivingTypeID, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -63,6 +37,36 @@
                 <div class="col-md-6">
                     @Html.DropDownList("LocationID", String.Empty)
                     @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReceivingID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.ReceivingID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ReceivingID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.StockTransfer, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownList("StockTransferID", String.Empty)
+                    @Html.ValidationMessageFor(model => model.StockTransferID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Requisition #</label>
+                <div class="col-md-6">
+                    @Html.Editor("RefNumber", new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Requested By</label>
+                <div class="col-md-6">
+                    @Html.Editor("RequestedBy", new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
 
@@ -76,16 +80,16 @@
 
             <div id="br">
                 <div class="form-group">
-                    @Html.Label("Destination", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label class="control-label col-md-2">Receiving Location</label>
                     <div class="col-md-6">
-                        @Html.DisplayFor(model => model.Requisition.Location1.Description)
+                        @Html.Editor("Destination", new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.Label("Location", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label class="control-label col-md-2">Source Location</label>
                     <div class="col-md-6">
-                        @Html.DisplayFor(model => model.Requisition.Location.Description)
+                        @Html.Editor("SourceLoc", new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
 
@@ -130,6 +134,22 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                @Html.LabelFor(model => model.InvoiceReference, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.InvoiceReference, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InvoiceReference, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.InvoiceNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.InvoiceNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InvoiceNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
             <div id="po">
                 <div class="form-group">
                     <label class="control-label col-md-2">Vendor</label>
@@ -161,10 +181,34 @@
                 </div>
 
                 <div class="form-group">
+                    @Html.LabelFor(model => model.WaybillNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.WaybillNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.WaybillNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
                     @Html.LabelFor(model => model.VoyageNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
                         @Html.EditorFor(model => model.VoyageNumber, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.VoyageNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingLine, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.ShippingLine, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ShippingLine, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Forwarder, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.Forwarder, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Forwarder, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -193,16 +237,20 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-md-2">Invoice</label>
+                    <label class="control-label col-md-2">Invoice Number</label>
                     <div class="col-md-6">
                         @Html.Editor("Invoice", new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
             </div>
 
-            @Html.HiddenFor(model => model.ApprovalStatus)
-            @Html.HiddenFor(model => model.ApprovedBy)
-            
+            <div class="form-group">
+                <label class="control-label col-md-2">Receiving Location</label>
+                <div class="col-md-6">
+                    @Html.Editor("ReceivingLocation", new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
             <div class="form-group">
                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
@@ -210,6 +258,16 @@
                     @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Img, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Img, new { type = "file", htmlAttributes = new { @class = "form-control", @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.Img)
+                </div>
+            </div>
+
+
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
                     <input type="submit" value="Save" class="btn btn-green" />
@@ -224,9 +282,46 @@
 }
 
 <script language="javascript">
+    $(function () {
+
+        // add class form-control to textarea and select
+        $("input[disabled]").addClass("form-control");
+        $("textarea").addClass("form-control");
+        $("select").addClass("form-control");
+    });
 
     $(function () {
-        HideOrShow(); //this calls it on load
+        var val1 = $("#StockTransferID").val();
+        GetRequisition(val1);
+
+        var val = $("#ReceivingTypeID").val();
+        if (val == 1) { //PO
+            $("#br").hide();
+            $("#po").show();
+            $("#cr").hide();
+        } else if (val == 2) { //BR
+            $("#br").show();
+            $("#po").hide();
+            $("#cr").hide();
+        } else if (val == 3) { //WR
+            $("#br").show();
+            $("#po").hide();
+            $("#cr").hide();
+        } else if (val == 5) { //OR
+            $("#br").show();
+            $("#po").hide();
+            $("#cr").hide();
+        } else if (val == 4) { //CR
+            $("#br").hide();
+            $("#po").hide();
+            $("#cr").show();
+        } else {
+            $("#RefNumber").val("");
+            $("#br").hide();
+            $("#po").hide();
+            $("#cr").hide();
+        }
+
     });
 
     $("#ReceivingTypeID").change(function () {
@@ -241,6 +336,7 @@
     function BindData(data) {
         $("#ReceivingID").val(data);
     }
+
 
     function GetStockTransfers(id) {
         $.get("@Url.Action("GetStockTransfers", "Receiving")/" + id, null, function (data) {
@@ -304,3 +400,5 @@
         }
     }
 </script>
+
+

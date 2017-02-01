@@ -12,6 +12,7 @@ namespace MoostBrand.DAL
         public SubCategory()
         {
             Items = new HashSet<Item>();
+            SubCategoriesTypes = new HashSet<SubCategoriesType>();
         }
 
         public int ID { get; set; }
@@ -31,5 +32,8 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Item> Items { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SubCategoriesType> SubCategoriesTypes { get; set; }
     }
 }

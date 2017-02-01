@@ -259,6 +259,7 @@
     <Compile Include="Controllers\StockAllocationController.cs" />
     <Compile Include="Controllers\StockTransferController.cs" />
     <Compile Include="Controllers\SubCategoryController.cs" />
+    <Compile Include="Controllers\SubCategoryTypesController.cs" />
     <Compile Include="Controllers\UnitOfMeasureController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
@@ -272,11 +273,15 @@
     <Compile Include="DAL\Downpayment.cs" />
     <Compile Include="DAL\DropShipType.cs" />
     <Compile Include="DAL\Employee.cs" />
+    <Compile Include="DAL\Helper.cs" />
+    <Compile Include="DAL\HtmlHelpers.cs" />
     <Compile Include="DAL\Item.cs" />
+    <Compile Include="DAL\ItemDetails.cs" />
     <Compile Include="DAL\Location.cs" />
     <Compile Include="DAL\LocationType.cs" />
     <Compile Include="DAL\Module.cs" />
     <Compile Include="DAL\MoostBrandEntities.cs" />
+    <Compile Include="DAL\Operator.cs" />
     <Compile Include="DAL\PaymentStatu.cs" />
     <Compile Include="DAL\ReasonForAdjustment.cs" />
     <Compile Include="DAL\Receiving.cs" />
@@ -299,6 +304,7 @@
     <Compile Include="DAL\StockAllocationDetail.cs" />
     <Compile Include="DAL\StockTransfer.cs" />
     <Compile Include="DAL\StockTransferDetail.cs" />
+    <Compile Include="DAL\SubCategoriesType.cs" />
     <Compile Include="DAL\SubCategory.cs" />
     <Compile Include="DAL\TransactionType.cs" />
     <Compile Include="DAL\UnitOfMeasurement.cs" />
@@ -4477,6 +4483,15 @@
     <Content Include="Views\Employee\EditorTemplates\Employee.cshtml" />
     <Content Include="Views\Employee\EditorTemplates\UserAccess.cshtml" />
     <Content Include="Views\Home\Denied.cshtml" />
+    <Content Include="Views\PR\DenyItemPartial.cshtml" />
+    <Content Include="Views\SubCategoryTypes\Details.cshtml" />
+    <Content Include="Views\SubCategoryTypes\Create.cshtml" />
+    <Content Include="Views\SubCategoryTypes\Edit.cshtml" />
+    <Content Include="Views\SubCategoryTypes\Delete.cshtml" />
+    <Content Include="Views\SubCategoryTypes\Index.cshtml" />
+    <Content Include="Views\StockTransfer\EditorTemplates\Helper.cshtml" />
+    <Content Include="Views\StockTransfer\EditorTemplates\Operator.cshtml" />
+    <Content Include="Views\StockTransfer\EditorTemplates\StockTransfer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

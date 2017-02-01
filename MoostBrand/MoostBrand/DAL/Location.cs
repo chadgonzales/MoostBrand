@@ -23,7 +23,7 @@ namespace MoostBrand.DAL
         [StringLength(50)]
         public string Code { get; set; }
 
-        [StringLength(50)]
+        [StringLength(100)]
         public string Description { get; set; }
 
         public int? LocationTypeID { get; set; }

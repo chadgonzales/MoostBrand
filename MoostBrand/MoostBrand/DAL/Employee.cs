@@ -17,6 +17,7 @@ namespace MoostBrand.DAL
             StockTransfers3 = new HashSet<StockTransfer>();
             StockTransfers4 = new HashSet<StockTransfer>();
             StockTransfers5 = new HashSet<StockTransfer>();
+            StockTransfers6 = new HashSet<StockTransfer>();
             Receivings = new HashSet<Receiving>();
             Receivings1 = new HashSet<Receiving>();
             Receivings2 = new HashSet<Receiving>();
@@ -29,6 +30,7 @@ namespace MoostBrand.DAL
             StockAdjustments = new HashSet<StockAdjustment>();
             StockAdjustments1 = new HashSet<StockAdjustment>();
             StockAdjustments2 = new HashSet<StockAdjustment>();
+            StockAdjustments3 = new HashSet<StockAdjustment>();
             UserAccesses = new HashSet<UserAccess>();
             Users = new HashSet<User>();
         }
@@ -61,6 +63,9 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransfer> StockTransfers5 { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockTransfer> StockTransfers6 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Receiving> Receivings { get; set; }
@@ -97,6 +102,9 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAdjustment> StockAdjustments2 { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockAdjustment> StockAdjustments3 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserAccess> UserAccesses { get; set; }

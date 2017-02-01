@@ -18,12 +18,12 @@ namespace MoostBrand.Controllers
         int UserID = 0;
         int UserType = 0;
         int ModuleID = 3;
-        
+
         #region PRIVATE METHODS
         private string Generator(string prefix)
         {
-            //Initiate objects & vars
-            startR: Random random = new Random();
+        //Initiate objects & vars
+        startR: Random random = new Random();
             string randomString = "";
             int randNumber = 0;
 
@@ -32,7 +32,7 @@ namespace MoostBrand.Controllers
             {
                 if (i == 0)
                 {
-                    start: randNumber = random.Next(0, 9); //int {0-9}
+                start: randNumber = random.Next(0, 9); //int {0-9}
                     if (randNumber == 0)
                         goto start;
                 }
@@ -201,7 +201,7 @@ namespace MoostBrand.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            var prs = entity.Requisitions.Where(x => x.Status == 0);
+            var prs = entity.Requisitions.Where(x => x.Status == false); //active
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -228,9 +228,11 @@ namespace MoostBrand.Controllers
         }
 
         // GET: PR/Details/5
+        [AccessChecker(Action = 1, ModuleID = 3)]
         public ActionResult Details(int id = 0)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
+
             var pr = entity.Requisitions.Find(id);
             if (pr == null)
             {
@@ -241,6 +243,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: PR/Create
+        [AccessChecker(Action = 2, ModuleID = 3)]
         public ActionResult Create()
         {
             var pr = new Requisition();
@@ -257,7 +260,7 @@ namespace MoostBrand.Controllers
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
-            ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name");
+            //ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name");
             ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type");
             ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type");
             ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type");
@@ -272,6 +275,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: PR/Create
+        [AccessChecker(Action = 2, ModuleID = 3)]
         [HttpPost]
         public ActionResult Create(Requisition pr)
         {
@@ -280,6 +284,7 @@ namespace MoostBrand.Controllers
                 try
                 {
                     pr.ApprovalStatus = 1; //submitted
+                    pr.Status = false;
 
                     var checkPR = entity.Requisitions.Where(r => r.RefNumber == pr.RefNumber);
 
@@ -331,7 +336,7 @@ namespace MoostBrand.Controllers
 
             if(pr.VendorID != null)
             {
-                ViewBag.VendorName = entity.Vendors.FirstOrDefault(x => x.ID == pr.VendorID).Name;
+                ViewBag.VendorName = entity.Vendors.FirstOrDefault(x => x.ID == pr.VendorID).Name;              
             }
 
             #endregion
@@ -340,6 +345,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: PR/Edit/5
+        [AccessChecker(Action = 2, ModuleID = 3)]
         public ActionResult Edit(int id)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -374,6 +380,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: PR/Edit/5
+        [AccessChecker(Action = 2, ModuleID = 3)]
         [HttpPost]
         public ActionResult Edit(Requisition pr)
         {
@@ -430,6 +437,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: PR/Delete/5
+        [AccessChecker(Action = 3, ModuleID = 3)]
         public ActionResult Delete(int id)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -450,13 +458,14 @@ namespace MoostBrand.Controllers
         }
 
         // POST: PR/Delete/5
+        [AccessChecker(Action = 3, ModuleID = 3)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirm(int id)
         {
             try
             {
                 var pr = entity.Requisitions.Find(id);
-                pr.Status = 1;
+                pr.Status = true;
                 entity.Entry(pr).State = EntityState.Modified;
                 entity.SaveChanges();
 
@@ -502,7 +511,41 @@ namespace MoostBrand.Controllers
             return View();
         }
 
+        // POST: PR/Approve/5
+        [AccessChecker(Action = 5, ModuleID = 3)]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Revise(int id)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
+                var pr = entity.Requisitions.Find(id);
+
+                if (pr.RequisitionDetails.Count() > 0)
+                {
+                    pr.ApprovalStatus = 4;
+                    pr.IsSync = false;
+
+                    entity.Entry(pr).State = EntityState.Modified;
+                    entity.SaveChanges();
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "There's no item");
+                }
+            }
+            catch
+            {
+            }
+            return View();
+        }
+
         // POST: PR/Denied/5
+        [AccessChecker(Action = 5, ModuleID = 3)]
         [HttpPost]
         public ActionResult Denied(int id)
         {
@@ -523,8 +566,9 @@ namespace MoostBrand.Controllers
                 return View();
             }
         }
-        
+
         // GET: PR/Items/5
+        [AccessChecker(Action = 1, ModuleID = 3)]
         public ActionResult Items(int id, int? page)
         {
             var items = entity.RequisitionDetails
@@ -539,6 +583,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: PR/ApprovedItems/5
+        [AccessChecker(Action = 1, ModuleID = 3)]
         public ActionResult ApprovedItems(int id, int? page)
         {
             var items = entity.RequisitionDetails
@@ -551,8 +596,9 @@ namespace MoostBrand.Controllers
             int pageNumber = (page ?? 1);
             return View(items.ToPagedList(pageNumber, pageSize));
         }
-        
+
         // GET: PR/PendingItems/5
+        [AccessChecker(Action = 1, ModuleID = 3)]
         public ActionResult PendingItems(int id, int? page)
         {
             int UserID = Convert.ToInt32(Session["sessionuid"]);
@@ -583,6 +629,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: PR/DeniedItems/5
+        [AccessChecker(Action = 1, ModuleID = 3)]
         public ActionResult DeniedItems(int id, int? page)
         {
             var items = entity.RequisitionDetails
@@ -597,6 +644,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: PR/ApproveItem/5
+        [AccessChecker(Action = 1, ModuleID = 3)]
         public ActionResult ApproveItem(int id, int itemID)
         {
             try
@@ -619,6 +667,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: PR/DenyItem/5
+        [AccessChecker(Action = 1, ModuleID = 3)]
         public ActionResult DenyItem(int id, int itemID)
         {
             try
@@ -638,6 +687,33 @@ namespace MoostBrand.Controllers
 
             }
             return RedirectToAction("PendingItems", "PR", new { id = id });
+        }
+
+        public ActionResult ViewHistoryPartial(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "type" : "";
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "reqno" : "";
+
+            var prs = from o in entity.RequisitionDetails
+                      select o; 
+
+            switch (sortOrder)
+            {
+                case "type":
+                    prs = prs.OrderByDescending(o => o.Item.Description);
+                    break;
+                case "reqno":
+                    prs = prs.OrderByDescending(o => o.Item.Code);
+                    break;
+                default:
+                    prs = prs.OrderBy(o => o.ID);
+                    break;
+            }
+
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = (page ?? 1);
+            return PartialView(prs.ToPagedList(pageNumber, pageSize));
         }
 
         #region PARTIAL
@@ -665,6 +741,42 @@ namespace MoostBrand.Controllers
                             });
             return Json(items, JsonRequestBehavior.AllowGet);
         }
+
+
+        // GET: PR/DenyItemPartial/5
+        public ActionResult DenyItemPartial(int id)
+        {
+             ViewBag.PRid = id;
+
+            return PartialView();
+        }
+
+        // POST: PR/DenyItemPartial/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DenyItemPartial(int id, string Reason)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(Reason))
+                {
+                    var req = entity.Requisitions.Find(id);
+                    req.ApprovalStatus = 3;
+                    req.Remarks = Reason;
+                    entity.Entry(req).State = EntityState.Modified;
+
+                    entity.SaveChanges();
+                }
+                else
+                {
+                    TempData["Error"] = "Reason is required";
+                }
+            }
+            catch { TempData["Error"] = "There's an error"; }
+
+            return RedirectToAction("Index");
+        }
+
 
         // GET: PR/AddItemPartial/5
         public ActionResult AddItemPartial(int id)
@@ -716,6 +828,7 @@ namespace MoostBrand.Controllers
             var rd = entity.RequisitionDetails.Find(id);
 
             ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
+            ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description", rd.ItemID);
 
             return PartialView(rd);
         }
@@ -726,21 +839,37 @@ namespace MoostBrand.Controllers
         {
             try
             {
-                rd.IsSync = false;
+                //rd.IsSync = false;
+                //Robi
+                var prvrequiDetail = entity.RequisitionDetails.Find(rd.ID);
 
-                entity.Entry(rd).State = EntityState.Modified;
+                if (prvrequiDetail.ItemID != rd.ItemID)
+                {
+                    rd.PreviousItemID = prvrequiDetail.ItemID;
+                    rd.PreviousQuantity = prvrequiDetail.Quantity;
+                }
+
+                prvrequiDetail.ItemID = rd.ItemID;
+                prvrequiDetail.Quantity = rd.Quantity;
+                prvrequiDetail.Remarks = rd.Remarks;
+                prvrequiDetail.PreviousItemID = rd.PreviousItemID;
+                prvrequiDetail.PreviousQuantity = rd.PreviousQuantity;
+                prvrequiDetail.IsSync = false;
+
+                entity.Entry(prvrequiDetail).State = EntityState.Modified;
                 entity.SaveChanges();
             }
             catch
             {
-                TempData["PartialError"] = "There's an error.";
+                throw;
+                //TempData["PartialError"] = "There's an error.";
             }
 
             if(rd.AprovalStatusID == 1)
             {
                 return RedirectToAction("PendingItems", new { id = rd.RequisitionID });
             }
-            return RedirectToAction("ApprovedItems", new { id = rd.RequisitionID });
+            return RedirectToAction("ApprovedItems", new { id = rd.RequisitionID });        
         }
 
         // GET: PR/DeleteItemPartial/5

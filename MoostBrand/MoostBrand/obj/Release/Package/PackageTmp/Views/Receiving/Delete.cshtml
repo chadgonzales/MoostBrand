@@ -124,6 +124,15 @@
         </div>
 
         <div class="form-group">
+            <label class="control-label col-md-2">Invoice Reference</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.InvoiceReference)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="control-label col-md-2">Invoice Number</label>
             <div class="col-md-6">
                 <label class="custom-label">
@@ -166,10 +175,34 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="control-label col-md-2">Waybill Number</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.WaybillNumber)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="control-label col-md-2">Voyage Number</label>
                 <div class="col-md-6">
                     <label class="custom-label">
                         @Html.DisplayFor(model => model.VoyageNumber)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Shipping Line</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.ShippingLine)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Forwarder</label>
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(model => model.Forwarder)
                     </label>
                 </div>
             </div>

@@ -46,7 +46,7 @@
                             Location
                         </th>
                         <th>
-                            Status
+                            Approval Status
                         </th>
                         <th>
                             Action
@@ -91,7 +91,31 @@
                                             <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
                                                 <i class="fa fa-thumbs-up"></i>
                                             </a>
-                                            <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
+                                            <a href="#" id="deny_button" onclick="ShowDeny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
+                                                <i class="fa fa-thumbs-down"></i>
+                                            </a>
+                                            <a href="#" id="revise_button" onclick="Revise(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="For Revision">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                        }
+                                    }
+                                    else if (item.ApprovalStatus == 4)
+                                    {
+                                        if (Convert.ToInt32(Session["sessionuid"]) == item.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                        {
+                                            <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                                                <i class="fa fa-times fa fa-white"></i>
+                                            </a>
+                                        }
+                                        if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                        {
+                                            <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
+                                                <i class="fa fa-thumbs-up"></i>
+                                            </a>
+                                            <a href="#" id="deny_button" onclick="ShowDeny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
                                                 <i class="fa fa-thumbs-down"></i>
                                             </a>
                                         }
@@ -113,6 +137,11 @@
 
     </div>
 </div>
+<div id="DenyWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div id="ShowDialogDeny" class="modal-dialog" role="document">
+        
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <script type="text/javascript">
     function ReloadFunction() {
@@ -129,6 +158,16 @@
         $.post(url, frm, ReloadFunction);
     }
 
+    function Revise() {
+        var prID = arguments[0];
+
+        var url = '@Url.Action("Revise", "PR")/' + prID;
+
+        var frm = $("#action_form").serialize();
+
+        $.post(url, frm, ReloadFunction);
+    }
+
     function Deny() {
         var prID = arguments[0];
 
@@ -137,5 +176,19 @@
         var frm = $("#action_form").serialize();
 
         $.post(url, frm, ReloadFunction);
+    }
+
+    function ShowDeny(id) {
+        var url = '@Url.Action("DenyItemPartial", "PR")';
+        $.get(url, {id: id}, function (data) {
+            $('#ShowDialogDeny').html(data);
+
+            $('#DenyWindow').modal('show');
+
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+        });
     }
 </script>

@@ -20,7 +20,7 @@ namespace MoostBrand.DAL
 
         public int ItemID { get; set; }
 
-        public int Quantity { get; set; }
+        public int? Quantity { get; set; }
 
         public int? AprovalStatusID { get; set; }
 
@@ -28,13 +28,22 @@ namespace MoostBrand.DAL
 
         public bool? IsSync { get; set; }
 
+        public int? PreviousItemID { get; set; }
+
+        public int? PreviousQuantity { get; set; }
+
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
         public virtual Item Item { get; set; }
+
+        public virtual Item Item1 { get; set; }
 
         public virtual Requisition Requisition { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransferDetail> StockTransferDetails { get; set; }
+
+
+
     }
 }

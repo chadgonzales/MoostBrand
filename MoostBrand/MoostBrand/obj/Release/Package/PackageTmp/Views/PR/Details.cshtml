@@ -250,11 +250,70 @@
                 
                 <a href='@Url.Action("Index")' class="btn btn-light-orange">
                     Back to List
-                </a>
+                </a>            
             </div>
         </div>
+        @*@Html.Action("ViewHistoryPartial", "PR")*@
 
-    </div>
+        <table class="table table-striped table-bordered table-hover table-full-width dataTable ">
+            <thead>
+                <tr>
+                    <th>
+                        Item Code
+                    </th>
+                    <th>
+                        Item Name
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                    <th>
+                        Remaining Balance
+                    </th>
+                    <th>
+                        Actual Balance
+                    </th>
+                    <th>
+                        Variance
+                    </th>
+                    <th>
+                        Previous Item
+                    </th>
+                    <th>
+                        Previous Quantity
+                    </th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model.RequisitionDetails)
+            {
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Item1.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PreviousQuantity)
+                        </td>
+                    </tr>
+                </tbody>
+            }
+            </table>
+
+
+</div>
 </div>
 
 <script language="javascript">

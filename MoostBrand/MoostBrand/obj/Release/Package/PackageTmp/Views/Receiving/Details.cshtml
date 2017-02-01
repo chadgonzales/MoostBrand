@@ -45,7 +45,7 @@
             <label class="control-label col-md-2">Requested By</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.StockTransfer.Requisition.Employee1.LastName), 
+                    @Html.DisplayFor(model => model.StockTransfer.Requisition.Employee1.LastName),
                     @Html.DisplayFor(model => model.StockTransfer.Requisition.Employee1.FirstName)
                 </label>
             </div>
@@ -119,6 +119,15 @@
             <div class="col-md-6">
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.DRNumber)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Invoice Reference</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.InvoiceReference)
                 </label>
             </div>
         </div>
@@ -219,6 +228,16 @@
                 </label>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Receiving Location</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Remarks)
+                </label>
+            </div>
+        </div>
+
         <div class="form-group">
             <label class="control-label col-md-2">Remarks</label>
             <div class="col-md-6">
@@ -228,6 +247,14 @@
             </div>
         </div>
 
+        <div class="form-group">
+            <label class="control-label col-md-2">Photo</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    <img src="@Html.Raw(Model.Image)" />
+                </label>
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-6">

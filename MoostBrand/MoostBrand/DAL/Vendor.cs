@@ -39,6 +39,19 @@ namespace MoostBrand.DAL
         [StringLength(50)]
         public string Email { get; set; }
 
+        [StringLength(50)]
+        public string ContactPerson { get; set; }
+
+        [StringLength(50)]
+        public string ShippingLine { get; set; }
+
+        public string AcctDetails { get; set; }
+
+        [StringLength(50)]
+        public string FaxNumber { get; set; }
+
+        public string Remarks { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Requisition> Requisitions { get; set; }
     }

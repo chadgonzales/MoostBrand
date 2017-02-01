@@ -1,0 +1,62 @@
+﻿@model MoostBrand.DAL.ItemDetails
+
+@{
+    ViewBag.Title = "Delete Item Details";
+}
+<div class="panel-heading">
+    <h4 class="panel-title">
+        Delete Item Details
+        <br /><small>Are you sure you want to delete this?</small>
+    </h4>
+    <hr />
+</div>
+
+<div class="panel-body">
+    <div class="form-horizontal">
+
+        @Html.HiddenFor(model => model.ItemID)
+        <div class="form-group">
+            <label class="control-label col-md-2">Date</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Date)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Quantity</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Quantity)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Cost</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Cost)
+                </label>
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+            {
+
+            @Html.AntiForgeryToken()
+            @Html.Hidden("ItemID")
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Delete" class="btn btn-red" />
+                    <a href='@Url.Action("ItemViews", new { id = Model.ItemID })' class="btn btn-light-orange">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+        }
+
+
+
+    </div>
+</div>
