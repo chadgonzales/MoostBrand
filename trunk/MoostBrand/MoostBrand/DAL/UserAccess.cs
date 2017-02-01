@@ -17,6 +17,10 @@ namespace MoostBrand.DAL
             ModuleID = i;
             ModuleName = moduleName;
         }
+
+        [NotMapped]
+        public string ModuleName { get; set; }
+
         public int ID { get; set; }
 
         public int? EmployeeID { get; set; }
@@ -36,8 +40,5 @@ namespace MoostBrand.DAL
         public virtual Employee Employee { get; set; }
 
         public virtual Module Module { get; set; }
-
-        [NotMapped]
-        public string ModuleName { get; set; }
     }
 }

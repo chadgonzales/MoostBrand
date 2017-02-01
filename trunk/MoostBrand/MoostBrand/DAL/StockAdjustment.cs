@@ -34,6 +34,12 @@ namespace MoostBrand.DAL
 
         public bool? IsSync { get; set; }
 
+        public int? PostedBy { get; set; }
+
+        public DateTime? PostedDate { get; set; }
+
+        public DateTime? EncodedDate { get; set; }
+
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
         public virtual Employee Employee { get; set; }
@@ -41,6 +47,8 @@ namespace MoostBrand.DAL
         public virtual Employee Employee1 { get; set; }
 
         public virtual Employee Employee2 { get; set; }
+
+        public virtual Employee Employee3 { get; set; }
 
         public virtual ReturnType ReturnType { get; set; }
 

@@ -74,101 +74,73 @@ namespace MoostBrand.Controllers
 
         // POST: ContainerStorage/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(ContainerStorage storage)
         {
-            try
+            if(ModelState.IsValid)
             {
-                var storage = new ContainerStorage();
-
-                if (collection.Count > 0)
+                try
                 {
-                    storage.Code = collection["Code"];
-                    storage.Description = collection["Description"];
+                    var cstorage = entity.ContainerStorages.ToList().FindAll(b => b.Code == storage.Code);
 
-                    if (storage.Code.Trim() == string.Empty || storage.Description.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    var storge = entity.Colors.ToList().FindAll(b => b.Code == storage.Code);
-
-                    if (storge.Count() > 0)
+                    if (cstorage.Count() > 0)
                     {
                         ModelState.AddModelError("", "The code already exists.");
-                        return View();
                     }
-
-                    try
+                    else
                     {
                         entity.ContainerStorages.Add(storage);
                         entity.SaveChanges();
+                        return RedirectToAction("Index");
                     }
-                    catch { }
                 }
-
-                return RedirectToAction("Index");
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(storage);
         }
 
         // GET: ContainerStorage/Edit/5
         public ActionResult Edit(int id)
         {
             var storage = entity.ContainerStorages.Find(id);
+            if (storage == null)
+                return HttpNotFound();
+
             return View(storage);
         }
 
         // POST: ContainerStorage/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(ContainerStorage storage)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
-                var storage = entity.ContainerStorages.Find(id);
-
-                if (collection.Count > 0)
+                try
                 {
-                    storage.Code = collection["Code"];
-                    storage.Description = collection["Description"];
-
-                    if (storage.Code.Trim() == string.Empty || storage.Description.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    try
-                    {
-                        entity.Entry(storage).State = EntityState.Modified;
-                        entity.SaveChanges();
-                    }
-                    catch { }
+                    entity.Entry(storage).State = EntityState.Modified;
+                    entity.SaveChanges();
+                    return RedirectToAction("Index");
                 }
-
-                return RedirectToAction("Index");
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(storage);
         }
 
         // GET: ContainerStorage/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             var storage = entity.ContainerStorages.Find(id);
             return View(storage);
         }
 
         // POST: ContainerStorage/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id = 0)
         {
             try
             {

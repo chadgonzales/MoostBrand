@@ -88,4 +88,14 @@ $(function () {
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
+    <script type="text/javascript">
+        $('#ReceivingID').change(function () {
+           $.get("@Url.Action("GenerateBatchNumber", "StockAllocation")", null, BindData);
+           // $("#BatchNumber").val( $.get("@Url.Action("GenerateBatchNumber", "StockAllocation")/BW1-"));
+        });
+
+        function BindData(data) {
+            $("#BatchNumber").val(data);
+        }
+    </script>
 }

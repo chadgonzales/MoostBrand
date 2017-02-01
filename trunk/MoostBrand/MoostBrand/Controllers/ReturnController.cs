@@ -86,6 +86,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Return
+        [AccessChecker(Action = 1, ModuleID = 7)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -131,6 +132,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Return/Details/5
+        [AccessChecker(Action = 1, ModuleID = 7)]
         public ActionResult Details(int id = 0)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -144,6 +146,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Return/Create/
+        [AccessChecker(Action = 2, ModuleID = 7)]
         public ActionResult Create()
         {
             var retrn = new Return();
@@ -158,6 +161,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Return/Create/
+        [AccessChecker(Action = 2, ModuleID = 7)]
         [HttpPost]
         public ActionResult Create(Return retrn)
         {
@@ -187,11 +191,12 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Return/Edit/5
+        [AccessChecker(Action = 2, ModuleID = 7)]
         public ActionResult Edit(int id = 0)
         {
             var retrn = entity.Returns.Find(id);
 
-            if (retrn != null)
+            if (retrn == null)
             {
                 return HttpNotFound();
             }
@@ -210,6 +215,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Return/Edit/5
+        [AccessChecker(Action = 2, ModuleID = 7)]
         [HttpPost]
         public ActionResult Edit(Return retrn)
         {
@@ -238,6 +244,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Return/Delete/5
+        [AccessChecker(Action = 3, ModuleID = 7)]
         public ActionResult Delete(int id)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -258,6 +265,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Return/Delete/5
+        [AccessChecker(Action = 3, ModuleID = 7)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirm(int id)
         {
@@ -278,6 +286,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Return/Approve/5
+        [AccessChecker(Action = 5, ModuleID = 7)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Approve(int id)
@@ -306,6 +315,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Return/Denied/5
+        [AccessChecker(Action = 5, ModuleID = 7)]
         [HttpPost]
         public ActionResult Denied(int id)
         {
@@ -328,6 +338,7 @@ namespace MoostBrand.Controllers
         }
 
         //GET: Return/Items/5
+        [AccessChecker(Action = 1, ModuleID = 7)]
         public ActionResult Items(int id, int? page)
         {
             int UserID = Convert.ToInt32(Session["sessionuid"]);
@@ -347,6 +358,7 @@ namespace MoostBrand.Controllers
         #region PARTIAL
 
         // GET: Return/AddItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 7)]
         public ActionResult AddItemPartial(int id)
         {
             var ret = entity.Returns.Find(id);
@@ -384,6 +396,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Return/AddItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 7)]
         [HttpPost]
         public ActionResult AddItemPartial(int id, ReturnedItem rd)
         {
@@ -437,6 +450,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Return/EditItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 7)]
         public ActionResult EditItemPartial(int id)
         {
             var rd = entity.ReturnedItems.Find(id);
@@ -445,6 +459,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Return/EditItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 7)]
         [HttpPost]
         public ActionResult EditItemPartial(int id, ReturnedItem rd)
         {
@@ -464,6 +479,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Return/DeleteItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 7)]
         public ActionResult DeleteItemPartial(int id)
         {
             var rd = entity.ReturnedItems.Find(id);
@@ -472,6 +488,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Return/DeleteItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 7)]
         [HttpPost, ActionName("DeleteItemPartial")]
         public ActionResult DeleteItemPartialConfirm(int id)
         {

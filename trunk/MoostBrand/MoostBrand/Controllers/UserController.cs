@@ -88,54 +88,34 @@ namespace MoostBrand.Controllers
 
         // POST: User/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(User user)
         {
-            try
+            if(ModelState.IsValid)
             {
-                var user = new User();
-                
-                if(collection.Count > 0)
+                try
                 {
-                    user.Username = collection["Username"];
-                    user.Password = collection["Password"];
-                    user.UserTypeID = Convert.ToInt32(collection["UserTypeID"]);
-                    user.Department = collection["Department"];
-                    user.EmployeeID = Convert.ToInt32(collection["EmployeeID"]);
-                    user.LocationID = Convert.ToInt32(collection["LocationID"]);
-
-                    if (user.Username.Trim() == string.Empty ||
-                        user.Password.Trim() == string.Empty ||
-                        user.UserTypeID == 0 ||
-                        user.Department.Trim() == string.Empty ||
-                        user.EmployeeID == 0 ||
-                        user.LocationID == 0)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    var usr = entity.Colors.ToList().FindAll(b => b.Code == user.Username);
+                    var usr = entity.Users.ToList().FindAll(b => b.Username == user.Username);
 
                     if (usr.Count() > 0)
                     {
                         ModelState.AddModelError("", "Username already exists.");
-                        return View();
                     }
-
-                    try
+                    else
                     {
                         entity.Users.Add(user);
                         entity.SaveChanges();
+                        return RedirectToAction("Index");
                     }
-                    catch { }
                 }
-
-                return RedirectToAction("Index");
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            ViewBag.Employees = entity.Employees.ToList();
+            ViewBag.UserTypes = entity.UserTypes.ToList();
+            ViewBag.Locations = entity.Locations.ToList();
+            return View(user);            
         }
 
         // GET: User/Edit/5
@@ -151,60 +131,37 @@ namespace MoostBrand.Controllers
 
         // POST: User/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(User user)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
-                var user = entity.Users.Find(id);
-                
-                if(collection.Count >0)
+                try
                 {
-                    user.Username = collection["Username"];
-                    user.Password = collection["Password"];
-                    user.UserTypeID = Convert.ToInt32(collection["UserTypeID"]);
-                    user.Department = collection["Department"];
-                    user.EmployeeID = Convert.ToInt32(collection["EmployeeID"]);
-                    user.LocationID = Convert.ToInt32(collection["LocationID"]);
-
-                    if (user.Username.Trim() == string.Empty ||
-                        user.Password.Trim() == string.Empty ||
-                        user.UserTypeID == 0 ||
-                        user.Department.Trim() == string.Empty ||
-                        user.EmployeeID == 0 ||
-                        user.LocationID == 0)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    try
-                    {
-                        entity.Entry(user).State = EntityState.Modified;
-                        entity.SaveChanges();
-                    }
-                    catch { }
+                    entity.Entry(user).State = EntityState.Modified;
+                    entity.SaveChanges();
+                    return RedirectToAction("Index");
                 }
-
-                return RedirectToAction("Index");
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            ViewBag.Employees = entity.Employees.ToList();
+            ViewBag.UserTypes = entity.UserTypes.ToList();
+            ViewBag.Locations = entity.Locations.ToList();
+            return View(user);
         }
 
         // GET: User/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             var user = entity.Users.Find(id);
             return View(user);
         }
 
         // POST: User/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id = 0)
         {
             try
             {

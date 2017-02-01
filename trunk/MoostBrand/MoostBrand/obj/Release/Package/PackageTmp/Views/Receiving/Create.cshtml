@@ -1,9 +1,9 @@
 ﻿@model MoostBrand.DAL.Receiving
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
-    ViewBag.Title = "Create Receving";
+    ViewBag.Title = "Create Receiving";
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "Receiving", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -126,6 +126,22 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                @Html.LabelFor(model => model.InvoiceReference, htmlAttributes: new { @class = "control-label col-md-2"})
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.InvoiceReference, new { htmlAttributes = new { @class = "form-control"} })
+                    @Html.ValidationMessageFor(model => model.InvoiceReference, "", new { @class = "text-danger"})
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.InvoiceNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.InvoiceNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InvoiceNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
             <div id="po">
                 <div class="form-group">
                     <label class="control-label col-md-2">Vendor</label>
@@ -157,10 +173,34 @@
                 </div>
 
                 <div class="form-group">
+                    @Html.LabelFor(model => model.WaybillNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.WaybillNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.WaybillNumber , "" , new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
                     @Html.LabelFor(model => model.VoyageNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
                         @Html.EditorFor(model => model.VoyageNumber, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.VoyageNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingLine, htmlAttributes: new { @class = "control-label col-md-2"})
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.ShippingLine, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.ValidationMessageFor(model => model.ShippingLine, "", new { @class = "text-danger"})
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Forwarder, htmlAttributes: new { @class = "control-label col-md-2"})
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.Forwarder, new { htmlAttributes = new {@class = "form-control"} })
+                        @Html.ValidationMessageFor(model => model.Forwarder, "" , new { @class = "text-danger"})
                     </div>
                 </div>
 
@@ -189,10 +229,17 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-md-2">Invoice</label>
+                    <label class="control-label col-md-2">Invoice Number</label>
                     <div class="col-md-6">
                         @Html.Editor("Invoice", new { htmlAttributes = new { @class = "form-control" } })
                     </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Receiving Location</label>
+                <div class="col-md-6">
+                    @Html.Editor("ReceivingLocation", new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
 
@@ -203,6 +250,15 @@
                     @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Img, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Img, new { type = "file", htmlAttributes = new { @class = "form-control", @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.Img)
+                </div>
+            </div>
+
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">

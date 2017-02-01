@@ -1,5 +1,13 @@
 ﻿@model MoostBrand.DAL.RequisitionDetail
 
+@*<script>
+$(document).ready(function () {
+    $("#projectName").change(function(){
+        alert("Value: " + $("#identifier").text);
+    });
+});
+</script>*@
+
 <div class="modal-content">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -7,18 +15,21 @@
         </button>
         <h4 class="modal-title">Edit Item</h4>
     </div>
+
     @using (Html.BeginForm())
             {
         <div class="modal-body">
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.RequisitionID)
-            @Html.HiddenFor(model => model.ItemID)
+            @*@Html.HiddenFor(model => model.ItemID)*@
             <div class="form-horizontal">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Item, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.DisplayFor(model => model.Item.Description)
+                        @Html.DropDownList("ItemID", String.Empty)
+                        @Html.ValidationMessageFor(model => model.ItemID, "", new { @class = "text-danger" })
+                        @*@Html.DisplayFor(model => model.Item.Description)*@
                     </div>
                 </div>
             </div>
@@ -26,7 +37,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control"} })
                         @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -49,6 +60,24 @@
                     </div>
                 </div>
             </div>
+            @*<div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PreviousItem, htmlAttributes: new { @class = "control-label col-md-2"})
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.PreviousItem, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.ValidationMessageFor(model => model.PreviousItem, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PreviousQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.PreviousQuantity, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.ValidationMessageFor(model => model.PreviousQuantity, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>*@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -56,3 +85,15 @@
         </div>
     }
 </div><!-- /.modal-content -->
+
+@*@section Scripts {
+@Scripts.Render("~/bundles/jqueryval")
+}
+
+<script language="javascript">
+    $(document).ready(function(){
+    
+
+    });
+
+</script>*@

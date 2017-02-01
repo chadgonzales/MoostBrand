@@ -19,11 +19,11 @@ namespace MoostBrand.DAL
         [StringLength(50)]
         public string Type { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Requisition> Requisitions { get; set; }
-
         public int? ReqTypeID { get; set; }
 
         public virtual ReqType ReqType { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Requisition> Requisitions { get; set; }
     }
 }

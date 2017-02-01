@@ -74,101 +74,73 @@ namespace MoostBrand.Controllers
 
         // POST: ContainerLocation/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(ContainerLocation cLocation)
         {
-            try
+            if(ModelState.IsValid)
             {
-                var location = new ContainerLocation();
-
-                if (collection.Count > 0)
+                try
                 {
-                    location.Code = collection["Code"];
-                    location.Description = collection["Description"];
-
-                    if (location.Code.Trim() == string.Empty || location.Description.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    var loc = entity.Locations.ToList().FindAll(b => b.Code == location.Code);
+                    var loc = entity.ContainerLocations.ToList().FindAll(b => b.Code == cLocation.Code);
 
                     if (loc.Count() > 0)
                     {
                         ModelState.AddModelError("", "The code already exists.");
-                        return View();
                     }
-
-                    try
+                    else
                     {
-                        entity.ContainerLocations.Add(location);
+                        entity.ContainerLocations.Add(cLocation);
                         entity.SaveChanges();
+                        return RedirectToAction("Index");
                     }
-                    catch { }
                 }
-
-                return RedirectToAction("Index");
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(cLocation);
         }
 
         // GET: ContainerLocation/Edit/5
         public ActionResult Edit(int id)
         {
             var location = entity.ContainerLocations.Find(id);
+            if (location == null)
+                return HttpNotFound();
+
             return View(location);
         }
 
         // POST: ContainerLocation/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(ContainerLocation location)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
-                var location = entity.ContainerLocations.Find(id);
-
-                if (collection.Count > 0)
+                try
                 {
-                    location.Code = collection["Code"];
-                    location.Description = collection["Description"];
-
-                    if (location.Code.Trim() == string.Empty || location.Description.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    try
-                    {
-                        entity.Entry(location).State = EntityState.Modified;
-                        entity.SaveChanges();
-                    }
-                    catch { }
+                    entity.Entry(location).State = EntityState.Modified;
+                    entity.SaveChanges();
+                    return RedirectToAction("Index");
                 }
-
-                return RedirectToAction("Index");
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(location);
         }
 
         // GET: ContainerLocation/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             var location = entity.ContainerLocations.Find(id);
             return View(location);
         }
 
         // POST: ContainerLocation/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id = 0)
         {
             try
             {

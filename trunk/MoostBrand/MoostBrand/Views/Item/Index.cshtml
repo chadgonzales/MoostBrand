@@ -51,6 +51,9 @@
                     Sub Category
                 </th>
                 <th>
+                    Sub Categories Type
+                </th>
+                <th>
                     Brand
                 </th>
                 <th>
@@ -63,13 +66,16 @@
                     Unit Of Measure
                 </th>
                 <th>
-                    Re Order Level
-                </th>
-                <th>
                     Minimum Stock
                 </th>
                 <th>
                     Maximum Stock
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Price
                 </th>
                 <th></th>
             </tr>
@@ -94,6 +100,9 @@
                         @Html.DisplayFor(modelItem => item.SubCategory.Description)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.SubCategoriesType.Description)
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => item.Brand.Description)
                     </td>
                     <td>
@@ -106,16 +115,22 @@
                         @Html.DisplayFor(modelItem => item.UnitOfMeasurement.Description)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ReOrderLevel)
-                    </td>
-                    <td>
                         @Html.DisplayFor(modelItem => item.MinimumStock)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.MaximumStock)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
                         <div class="custom-tools">
+                            <a href='@Url.Action("ItemViews", new { id = item.ID })' class="btn btn-green tooltips" data-placement="top" data-original-title="Add">
+                                <i class="fa fa-plus"></i>
+                            </a>
                             <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
                                 <i class="fa fa-edit"></i>
                             </a>

@@ -21,6 +21,8 @@ namespace MoostBrand.DAL
         [StringLength(50)]
         public string RefNumber { get; set; }
 
+        public int? ReqTypeID { get; set; }
+
         public int RequisitionTypeID { get; set; }
 
         public int RequestedBy { get; set; }
@@ -76,11 +78,15 @@ namespace MoostBrand.DAL
 
         public int? ApprovedBy { get; set; }
 
+        public string PreviousItem { get; set; }
+
+        public string PreviousQuantity { get; set; }
+
         public string Remarks { get; set; }
 
         public bool? IsSync { get; set; }
 
-        public byte? Status { get; set; }
+        public bool? Status { get; set; }
 
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
@@ -98,6 +104,8 @@ namespace MoostBrand.DAL
 
         public virtual Location Location1 { get; set; }
 
+        public virtual ReqType ReqType { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequisitionDetail> RequisitionDetails { get; set; }
 
@@ -111,9 +119,5 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransfer> StockTransfers { get; set; }
-
-        public int? ReqTypeID { get; set; }
-
-        public virtual ReqType ReqType { get; set; }
     }
 }

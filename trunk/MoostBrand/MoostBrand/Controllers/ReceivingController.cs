@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Configuration;
 using PagedList;
 using MoostBrand.Models;
+using System.IO;
 
 namespace MoostBrand.Controllers
 {
@@ -14,12 +15,15 @@ namespace MoostBrand.Controllers
     public class ReceivingController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
-        
+
+
+        private int ID;
         #region PRIVATE METHODS
+
         private string Generator(string prefix)
         {
-            //Initiate objects & vars
-            startR: Random random = new Random();
+        //Initiate objects & vars
+        startR: Random random = new Random();
             string randomString = "";
             int randNumber = 0;
 
@@ -28,7 +32,7 @@ namespace MoostBrand.Controllers
             {
                 if (i == 0)
                 {
-                    start: randNumber = random.Next(0, 9); //int {0-9}
+                start: randNumber = random.Next(0, 9); //int {0-9}
                     if (randNumber == 0)
                         goto start;
                 }
@@ -53,8 +57,8 @@ namespace MoostBrand.Controllers
 
         private string POGenerator()
         {
-            //Initiate objects & vars
-            startR: Random random = new Random();
+        //Initiate objects & vars
+        startR: Random random = new Random();
             string randomString = "";
             int randNumber = 0;
 
@@ -63,7 +67,7 @@ namespace MoostBrand.Controllers
             {
                 if (i == 0)
                 {
-                    start: randNumber = random.Next(0, 9); //int {0-9}
+                start: randNumber = random.Next(0, 9); //int {0-9}
                     if (randNumber == 0)
                         goto start;
                 }
@@ -115,12 +119,14 @@ namespace MoostBrand.Controllers
         }
         #endregion
 
+
         public ActionResult GenerateRefNumber(string id)
         {
             return Json(Generator(id), JsonRequestBehavior.AllowGet);
         }
 
         // GET: Receiving
+        [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -166,6 +172,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Receiving/Details/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult Details(int id = 0)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -221,6 +228,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Receiving/Create/
+        [AccessChecker(Action = 2, ModuleID = 5)]
         public ActionResult Create()
         {
             var receiving = new Receiving();
@@ -247,6 +255,7 @@ namespace MoostBrand.Controllers
         }
 
         // Post: Receiving/Create/
+        [AccessChecker(Action = 2, ModuleID = 5)]
         [HttpPost]
         public ActionResult Create(Receiving receiving)
         {
@@ -260,11 +269,21 @@ namespace MoostBrand.Controllers
                     {
                         var newR = SetNull(receiving);
 
-                        if(newR != null)
+                        if (newR != null)
                         {
                             newR.ApprovalStatus = 1;
                             newR.ApprovedBy = Convert.ToInt32(Session["sessionuid"]);
                             newR.IsSync = false;
+
+                            if (receiving.Img != null)
+                            {
+                                string imagePath = ConfigurationManager.AppSettings["imagePath"];
+                                string path = Path.Combine(Server.MapPath("~" + imagePath), "ID" + receiving.ReceivingID + ".jpg");
+                                newR.Img.SaveAs(path);
+
+                                string baseUrl = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
+                                newR.Image = baseUrl + imagePath + "/ID" + receiving.ReceivingID + ".jpg";
+                            }
 
                             entity.Receivings.Add(newR);
                             entity.SaveChanges();
@@ -304,20 +323,22 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Receiving/Edit/
+        [AccessChecker(Action = 2, ModuleID = 5)]
         public ActionResult Edit(int id = 0)
         {
             var receiving = entity.Receivings.Find(id);
 
-            if(receiving != null)
+            if (receiving == null)
             {
                 return HttpNotFound();
             }
 
-            if(receiving.ApprovalStatus == 1)
+            if (receiving.ApprovalStatus == 1)
             {
                 #region DROPDOWNS
-
+                ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
                 ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
+                ViewBag.StockTransferID = new SelectList(entity.StockTransfers, "ID", "TransferID", receiving.StockTransferID);
                 var empList = from s in entity.Employees
                               select new
                               {
@@ -339,6 +360,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Receiving/Edit/5
+        [AccessChecker(Action = 2, ModuleID = 5)]
         [HttpPost]
         public ActionResult Edit(Receiving receiving)
         {
@@ -347,12 +369,22 @@ namespace MoostBrand.Controllers
                 try
                 {
                     //var r = entity.Requisitions.FirstOrDefault(r1 => r1.ID == pr.ID && (r1.RequestedBy == UserID || AcctType == 1 || AcctType == 4)).ApprovalStatus;
-                    var r = entity.Receivings.FirstOrDefault(r1 => r1.ID == receiving.ID).ApprovalStatus;
-                    if (r == 1)
+                    var r = entity.Receivings.FirstOrDefault(r1 => r1.ID == receiving.ID);
+                    if (r.ApprovalStatus == 1)
                     {
-                        receiving.IsSync = false;
 
-                        entity.Entry(SetNull(receiving)).State = EntityState.Modified;
+                        if (receiving.Img != null)
+                        {
+                            string imagePath = ConfigurationManager.AppSettings["imagePath"];
+                            string path = Path.Combine(Server.MapPath("~" + imagePath), "ID" + receiving.ReceivingID + ".jpg");
+                            receiving.Img.SaveAs(path);
+
+                            string baseUrl = string.Format("{0}://{1}", Request.Url.Scheme, Request.Url.Authority);
+                            receiving.Image = baseUrl + imagePath + "/ID" + receiving.ReceivingID + ".jpg";
+                        }
+
+                        var newReceiving = SetNull(receiving);
+                        entity.Entry(r).CurrentValues.SetValues(newReceiving);
                         entity.SaveChanges();
 
                         return RedirectToAction("Index");
@@ -362,15 +394,16 @@ namespace MoostBrand.Controllers
                         return RedirectToAction("Details", new { id = receiving.ID });
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
                     ModelState.AddModelError("", "There's an error.");
                 }
             }
 
             #region DROPDOWNS
-
+            ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
+            ViewBag.StockTransferID = new SelectList(entity.StockTransfers, "ID", "TransferID", receiving.StockTransferID);
             var empList = from s in entity.Employees
                           select new
                           {
@@ -389,6 +422,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Receiving/Delete/5
+        [AccessChecker(Action = 3, ModuleID = 5)]
         public ActionResult Delete(int id)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -409,6 +443,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Receiving/Delete/5
+        [AccessChecker(Action = 3, ModuleID = 5)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirm(int id)
         {
@@ -429,6 +464,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Receiving/Approve/5
+        [AccessChecker(Action = 5, ModuleID = 5)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Approve(int id)
@@ -438,7 +474,7 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var receving = entity.Receivings.Find(id);
-                if(receving.ReceivingDetails.Count() > 0)
+                if (receving.ReceivingDetails.Count() > 0)
                 {
                     receving.ApprovalStatus = 2;
                     receving.IsSync = false;
@@ -456,6 +492,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Receiving/Denied/5
+        [AccessChecker(Action = 5, ModuleID = 5)]
         [HttpPost]
         public ActionResult Denied(int id)
         {
@@ -478,6 +515,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Receiving/Items/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult Items(int id, int? page)
         {
             var items = entity.ReceivingDetails
@@ -492,6 +530,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Receiving/ApprovedItems/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult ApprovedItems(int id, int? page)
         {
             var items = entity.ReceivingDetails
@@ -506,6 +545,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Receiving/GetRequisitionDetail/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult GetRequisitionDetail(int id)
         {
             var rd = entity.RequisitionDetails
@@ -521,6 +561,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Receiving/PendingItems/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult PendingItems(int id, int? page)
         {
             int UserID = Convert.ToInt32(Session["sessionuid"]);
@@ -550,6 +591,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Receiving/DeniedItems/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult DeniedItems(int id, int? page)
         {
             var items = entity.ReceivingDetails
@@ -564,6 +606,8 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Receiving/ApproveItem/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
+        [HttpPost]
         public ActionResult ApproveItem(int id, int itemID)
         {
             try
@@ -586,6 +630,8 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Receiving/DenyItem/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
+        [HttpPost]
         public ActionResult DenyItem(int id, int itemID)
         {
             try
@@ -609,6 +655,7 @@ namespace MoostBrand.Controllers
 
         #region PARTIAL
         // GET: Receiving/AddItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult AddItemPartial(int id)
         {
             int transferID = entity.Receivings.Find(id).StockTransferID;
@@ -628,6 +675,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Receiving/AddItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
         [HttpPost]
         public ActionResult AddItemPartial(int id, ReceivingDetail rd)
         {
@@ -665,6 +713,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Receiving/EditItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult EditItemPartial(int id)
         {
             var rd = entity.ReceivingDetails.Find(id);
@@ -675,6 +724,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Receiving/EditItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
         [HttpPost]
         public ActionResult EditItemPartial(int id, ReceivingDetail rd)
         {
@@ -698,6 +748,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: Receiving/DeleteItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult DeleteItemPartial(int id)
         {
             var rd = entity.ReceivingDetails.Find(id);
@@ -706,6 +757,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Receiving/DeleteItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
         [HttpPost, ActionName("DeleteItemPartial")]
         public ActionResult DeleteItemPartialConfirm(int id)
         {

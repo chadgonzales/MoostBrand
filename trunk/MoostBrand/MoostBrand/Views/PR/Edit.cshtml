@@ -264,7 +264,7 @@
             function HideOrShow() {
                 var val = $("#RequisitionTypeID").val();
                 if (val == 1) { //PR
-                    $.get("@Url.Action("GenerateRefNumber", "PR")/PR", null, BindData);
+                    $.get("@Url.Action("GenerateRefNumber", "PR")/PUR", null, BindData);
                     $("#br").hide();
                     $("#pr").show();
                     $("#cr").hide();

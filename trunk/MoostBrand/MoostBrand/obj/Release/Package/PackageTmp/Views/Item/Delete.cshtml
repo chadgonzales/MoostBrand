@@ -16,6 +16,15 @@
     <div class="form-horizontal">
 
         <div class="form-group">
+            <label class="control-label col-md-2">ItemID</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ItemID)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="control-label col-md-2">Code</label>
             <div class="col-md-6">
                 <label class="custom-label">
@@ -52,6 +61,14 @@
             <div class="col-md-6">
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.SubCategory.Description)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Sub Category Types</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.SubCategoriesType.Description)
                 </label>
             </div>
         </div>
@@ -108,6 +125,14 @@
             <div class="col-md-6">
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.MaximumStock)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Lead Time</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.LeadTime)
                 </label>
             </div>
         </div>

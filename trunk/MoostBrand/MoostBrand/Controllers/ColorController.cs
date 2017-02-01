@@ -74,101 +74,74 @@ namespace MoostBrand.Controllers
 
         // POST: Color/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Color color)
         {
-            try
+            if(ModelState.IsValid)
             {
-                var color = new Color();
-
-                if (collection.Count > 0)
+                try
                 {
-                    color.Code = collection["Code"];
-                    color.Description = collection["Description"];
-
-                    if (color.Code.Trim() == string.Empty || color.Description.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
                     var colorr = entity.Colors.ToList().FindAll(b => b.Code == color.Code);
 
                     if (colorr.Count() > 0)
                     {
                         ModelState.AddModelError("", "The code already exists.");
-                        return View();
                     }
-
-                    try
+                    else
                     {
                         entity.Colors.Add(color);
                         entity.SaveChanges();
+                        return RedirectToAction("Index");
                     }
-                    catch { }
                 }
-
-                return RedirectToAction("Index");
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return View(color);
         }
 
         // GET: Color/Edit/5
         public ActionResult Edit(int id)
         {
             var color = entity.Colors.Find(id);
+            if (color == null)
+                return HttpNotFound();
+
             return View(color);
         }
 
         // POST: Color/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Color color)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add update logic here
-
-                var color = entity.Colors.Find(id);
-
-                if (collection.Count > 0)
+                try
                 {
-                    color.Code = collection["Code"];
-                    color.Description = collection["Description"];
-
-                    if (color.Code.Trim() == string.Empty || color.Description.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    try
-                    {
-                        entity.Entry(color).State = EntityState.Modified;
-                        entity.SaveChanges();
-                    }
-                    catch { }
+                    entity.Entry(color).State = EntityState.Modified;
+                    entity.SaveChanges();
+                    return RedirectToAction("Index");
                 }
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View(color);
         }
 
         // GET: Color/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             var color = entity.Colors.Find(id);
             return View(color);
         }
 
         // POST: Color/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id = 0)
         {
             try
             {

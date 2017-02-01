@@ -75,128 +75,75 @@ namespace MoostBrand.Controllers
 
         // POST: Vendor/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Vendor vendor)
         {
-            try
+            if(ModelState.IsValid)
             {
-                var vendor = new Vendor();
-                // TODO: Add insert logic here
-
-                if (collection.Count > 0)
+                try
                 {
-                    vendor.Code = collection["Code"];
-                    vendor.Name = collection["Name"];
-                    vendor.GeneralName = collection["GeneralName"];
-                    vendor.Attn = collection["Attn"];
-                    vendor.Address = collection["Address"];
-                    vendor.City = collection["City"];
-                    vendor.ContactNo = collection["ContactNo"];
-                    vendor.Email = collection["Email"];
-
-                    if (vendor.Code.Trim() == string.Empty ||
-                        vendor.Name.Trim() == string.Empty ||
-                        vendor.GeneralName.Trim() == string.Empty ||
-                        vendor.Attn.Trim() == string.Empty ||
-                        vendor.Address.Trim() == string.Empty ||
-                        vendor.City.Trim() == string.Empty ||
-                        vendor.ContactNo.Trim() == string.Empty ||
-                        vendor.Email.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    var vendr = entity.Colors.ToList().FindAll(b => b.Code == vendor.Code);
+                    var vendr = entity.Vendors.ToList().FindAll(b => b.Code == vendor.Code);
 
                     if (vendr.Count() > 0)
                     {
                         ModelState.AddModelError("", "The code already exists.");
-                        return View();
                     }
-
-                    try
+                    else
                     {
                         entity.Vendors.Add(vendor);
                         entity.SaveChanges();
-                    }
-                    catch { }
+                        return RedirectToAction("Index");
+                    }                    
                 }
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View(vendor);
         }
 
         // GET: Vendor/Edit/5
         public ActionResult Edit(int id)
         {
             var vendor = entity.Vendors.Find(id);
+            if(vendor == null)
+                return HttpNotFound();
 
             return View(vendor);
         }
 
         // POST: Vendor/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Vendor vendor)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add update logic here
-                var vendor = entity.Vendors.Find(id);
-
-                if (collection.Count > 0)
+                try
                 {
-                    vendor.Code = collection["Code"];
-                    vendor.Name = collection["Name"];
-                    vendor.GeneralName = collection["GeneralName"];
-                    vendor.Attn = collection["Attn"];
-                    vendor.Address = collection["Address"];
-                    vendor.City = collection["City"];
-                    vendor.ContactNo = collection["ContactNo"];
-                    vendor.Email = collection["Email"];
-
-                    if (vendor.Code.Trim() == string.Empty ||
-                        vendor.Name.Trim() == string.Empty ||
-                        vendor.GeneralName.Trim() == string.Empty ||
-                        vendor.Attn.Trim() == string.Empty ||
-                        vendor.Address.Trim() == string.Empty ||
-                        vendor.City.Trim() == string.Empty ||
-                        vendor.ContactNo.Trim() == string.Empty ||
-                        vendor.Email.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    try
-                    {
-                        entity.Entry(vendor).State = EntityState.Modified;
-                        entity.SaveChanges();
-                    }
-                    catch { }
+                    entity.Entry(vendor).State = EntityState.Modified;
+                    entity.SaveChanges();
+                    return RedirectToAction("Index");
                 }
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }                
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View(vendor);
         }
 
         // GET: Vendor/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             var vendor = entity.Vendors.Find(id);
             return View(vendor);
         }
 
         // POST: Vendor/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id = 0)
         {
             try
             {

@@ -76,46 +76,32 @@ namespace MoostBrand.Controllers
 
         // POST: Category/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(Category category)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add insert logic here
-                var category = new Category();
-
-                if(collection.Count >0)
+                try
                 {
-                    category.Code = collection["Code"];
-                    category.Description = collection["Description"];
-
-                    if (category.Code.Trim() == string.Empty || category.Description.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
                     var cat = entity.Categories.ToList().FindAll(b => b.Code == category.Code);
 
                     if (cat.Count() > 0)
                     {
                         ModelState.AddModelError("", "The code already exists.");
-                        return View();
                     }
-
-                    try
+                    else
                     {
                         entity.Categories.Add(category);
                         entity.SaveChanges();
+                        return RedirectToAction("Index");
                     }
-                    catch { }
                 }
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View(category);
         }
 
         // GET: Category/Edit/5
@@ -123,47 +109,35 @@ namespace MoostBrand.Controllers
         {
             var category = entity.Categories.Find(id);
 
+            if (category == null)
+                return HttpNotFound();
+
             return View(category);
         }
 
         // POST: Category/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(Category category)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add update logic here
-                var category = entity.Categories.Find(id);
-
-                if (collection.Count > 0)
+                try
                 {
-                    category.Code = collection["Code"];
-                    category.Description = collection["Description"];
-
-                    if (category.Code.Trim() == string.Empty || category.Description.Trim() == string.Empty)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    try
-                    {
-                        entity.Entry(category).State = EntityState.Modified;
-                        entity.SaveChanges();
-                    }
-                    catch { }
+                    entity.Entry(category).State = EntityState.Modified;
+                    entity.SaveChanges();
+                    return RedirectToAction("Index");
                 }
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View(category);
         }
 
         // GET: Category/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             var category = entity.Categories.Find(id);
 
@@ -171,8 +145,8 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Category/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id = 0)
         {
             try
             {

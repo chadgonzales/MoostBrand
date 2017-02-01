@@ -40,7 +40,7 @@
             <label class="control-label col-md-2">Time Started</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.StartTime)
+                    @Html.DisplayFor(model => model.TimeStarted)
                 </label>
             </div>
         </div>
@@ -48,7 +48,7 @@
             <label class="control-label col-md-2">Time End</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.EndTime)
+                    @Html.DisplayFor(model => model.TimeFinish)
                 </label>
             </div>
         </div>
@@ -62,11 +62,14 @@
         </div>
         <div class="form-group">
             <label class="control-label col-md-2">Helper</label>
-            <div class="col-md-6">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.Helper)
-                </label>
-            </div>
+            @foreach (var item in Model.Helpers)
+            {
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </label>
+                </div>
+            }
         </div>
         <div class="form-group">
             <label class="control-label col-md-2">Received By</label>
@@ -97,11 +100,14 @@
         </div>
         <div class="form-group">
             <label class="control-label col-md-2">Operator</label>
-            <div class="col-md-6">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.Operator)
-                </label>
-            </div>
+            @foreach (var item in Model.Operators)
+            {
+                <div class="col-md-6">
+                    <label class="custom-label">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </label>
+                </div>
+            }
         </div>
         <div class="form-group">
             <label class="control-label col-md-2">Checked By</label>
@@ -118,6 +124,15 @@
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.Employee2.FirstName),
                     @Html.DisplayFor(model => model.Employee2.LastName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Encoded By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee6.FirstName),
+                    @Html.DisplayFor(model => model.Employee6.LastName)
                 </label>
             </div>
         </div>
@@ -177,4 +192,3 @@
     </div>
 </div>
 
-        

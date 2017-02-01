@@ -5,6 +5,8 @@ namespace MoostBrand.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Linq;
+    using System.Web;
 
     public partial class Receiving
     {
@@ -42,9 +44,13 @@ namespace MoostBrand.DAL
         public string PONumber { get; set; }
 
         [StringLength(50)]
+        [Display(Name = "Vendor Invoice Number")]
         public string DRNumber { get; set; }
 
+        public string InvoiceReference { get; set; }
+
         [StringLength(50)]
+        [Display(Name = "Sales Invoice Number")]
         public string InvoiceNumber { get; set; }
 
         [StringLength(50)]
@@ -52,6 +58,15 @@ namespace MoostBrand.DAL
 
         [StringLength(50)]
         public string VoyageNumber { get; set; }
+
+        [StringLength(100)]
+        public string WaybillNumber { get; set; }
+
+        [StringLength(100)]
+        public string ShippingLine { get; set; }
+
+        [StringLength(100)]
+        public string Forwarder { get; set; }
 
         [StringLength(50)]
         public string VanNumber { get; set; }
@@ -63,6 +78,11 @@ namespace MoostBrand.DAL
         public string Remarks { get; set; }
 
         public bool? IsSync { get; set; }
+
+        [StringLength(100)]
+        public string ReceivingLocation { get; set; }
+
+        public string Image { get; set; }
 
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
@@ -85,5 +105,40 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAllocation> StockAllocations { get; set; }
+
+        [Display(Name = "Upload Image")]
+        [ValidateImage]
+        [NotMapped]
+        public HttpPostedFileBase Img { get; set; }
+
+        public class ValidateImageAttribute : ValidationAttribute
+        {
+            public override bool IsValid(object value)
+            {
+                int MaxContentLength = 1024 * 1024 * 10; //10 MB
+                string[] AllowedFileExtensions = new string[] { ".jpg", ".jpeg", ".gif", ".png" };
+
+                var file = value as HttpPostedFileBase;
+
+                if (file == null)
+                {
+                    return true;
+                }
+                else if (!AllowedFileExtensions.Contains(file.FileName.Substring(file.FileName.LastIndexOf('.')).ToLower()))
+                {
+                    ErrorMessage = "Please upload Your Photo of type: " + string.Join(", ", AllowedFileExtensions);
+                    return false;
+                }
+                else if (file.ContentLength > MaxContentLength)
+                {
+                    ErrorMessage = "Your Photo is too large, maximum allowed size is : " + (MaxContentLength / 1024).ToString() + "MB";
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
     }
 }

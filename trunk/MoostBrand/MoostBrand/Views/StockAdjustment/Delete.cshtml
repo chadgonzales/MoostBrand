@@ -3,9 +3,13 @@
     ViewBag.Title = "Delete";
 }
 <div class="panel-heading">
-    <h4 class="panel-title">Stock Adjustment Details</h4>
+    <h4 class="panel-title">
+        Delete Stock Adjustment
+        <br /><small>Are you sure you want to delete this?</small>
+    </h4>
     <hr />
 </div>
+
 <div class="panel-body">
     <div class="form-horizontal">
         <div class="form-group">
@@ -42,11 +46,19 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-2">Adjusted By</label>
+            <label class="control-label col-md-2">Encoded By</label>
             <div class="col-md-6">
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.Employee1.LastName),
                     @Html.DisplayFor(model => model.Employee1.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Encoded Date</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.EncodedDate)
                 </label>
             </div>
         </div>
@@ -68,6 +80,23 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label col-md-2">Posted By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee3.LastName),
+                    @Html.DisplayFor(model => model.Employee3.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Posted Date</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.PostedDate)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label col-md-2">Remarks</label>
             <div class="col-md-6">
                 <label class="custom-label">
@@ -76,26 +105,14 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-6">
-                @if (Convert.ToInt32(Session["sessionuid"]) == Model.ApprovedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
-                {
-                    <a href='@Url.Action("Items", new { id = Model.ID })' class="btn btn-dark-yellow">
-                        Items
-                    </a>
-
-                    <br /><br />
-
-                    <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
-                        Edit
-                    </a>
-                }
-
-                <a href='@Url.Action("Index")' class="btn btn-light-orange">
-                    Back to List
-                </a>
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Delete" class="btn btn-dark-red" />
+                </div>
             </div>
-        </div>
+        }
 
     </div>
 </div>

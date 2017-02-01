@@ -81,48 +81,33 @@ namespace MoostBrand.Controllers
 
         // POST: SubCategory/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(SubCategory subcategory)
         {
-            try
+            if(ModelState.IsValid)
             {
-                var sub = new SubCategory();
-
-                if (collection.Count > 0)
+                try
                 {
-                    sub.Code = collection["Code"];
-                    sub.Description = collection["Description"];
-                    sub.CategoryID = Convert.ToInt32(collection["CategoryID"]);
-
-                    if (sub.Code.Trim() == string.Empty ||
-                        sub.Description.Trim() == string.Empty ||
-                        sub.CategoryID == 0)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-
-                    var subb = entity.Colors.ToList().FindAll(b => b.Code == sub.Code);
+                    var subb = entity.SubCategories.ToList().FindAll(b => b.Code == subcategory.Code);
 
                     if (subb.Count() > 0)
                     {
                         ModelState.AddModelError("", "The code already exists.");
-                        return View();
                     }
-
-                    try
+                    else
                     {
-                        entity.SubCategories.Add(sub);
+                        entity.SubCategories.Add(subcategory);
                         entity.SaveChanges();
+                        return RedirectToAction("Index");
                     }
-                    catch (Exception err) { }
                 }
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            ViewBag.Categories = entity.Categories.ToList();
+            return View(subcategory);
         }
 
         // GET: SubCategory/Edit/5
@@ -137,52 +122,36 @@ namespace MoostBrand.Controllers
 
         // POST: SubCategory/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(SubCategory subcategory)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add update logic here
-                var sub = entity.SubCategories.Find(id);
-
-                if (collection.Count > 0)
+                try
                 {
-                    sub.Code = collection["Code"];
-                    sub.Description = collection["Description"];
-                    sub.CategoryID = Convert.ToInt32(collection["CategoryID"]);
-
-                    if (sub.Code.Trim() == string.Empty ||
-                        sub.Description.Trim() == string.Empty ||
-                        sub.CategoryID == 0)
-                    {
-                        ModelState.AddModelError("", "Fill all fields");
-                        return View();
-                    }
-                    try
-                    {
-                        entity.Entry(sub).State = EntityState.Modified;
-                        entity.SaveChanges();
-                    }
-                    catch (Exception err) { }
+                    entity.Entry(subcategory).State = EntityState.Modified;
+                    entity.SaveChanges();
+                    return RedirectToAction("Index");
                 }
+                catch
+                {
+                    ModelState.AddModelError("", "Fill all fields");
+                }
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            ViewBag.Categories = entity.Categories.ToList();
+            return View(subcategory);
         }
 
         // GET: SubCategory/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id = 0)
         {
             var sub = entity.SubCategories.Find(id);
             return View(sub);
         }
 
         // POST: SubCategory/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id = 0)
         {
             try
             {

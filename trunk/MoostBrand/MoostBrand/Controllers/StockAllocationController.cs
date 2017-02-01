@@ -6,6 +6,7 @@ using PagedList;
 using System.Data.Entity;
 using System.Configuration;
 using MoostBrand.Models;
+using System.Data.SqlClient;
 
 namespace MoostBrand.Controllers
 {
@@ -14,7 +15,54 @@ namespace MoostBrand.Controllers
     {
         MoostBrandEntities entity = new MoostBrandEntities();
 
+        private string Generator()
+        {
+            ////Initiate objects & vars
+            startR: Random random = new Random();
+            string randomString = "", id = "";
+            int randNumber = 0;
+
+            //string result = "", generatedID = ""; int numRes = 0, xres = 0;
+
+            //Loop ‘length’ times to generate a random number or character
+            for (int i = 0; i < 6; i++)
+            {
+                if (i == 0)
+                {
+                    start: randNumber = random.Next(0, 9); //int {0-9}
+                    if (randNumber == 0)
+                        goto start;
+                }
+                else
+                {
+                    randNumber = random.Next(0, 9);
+                }
+                //append random char or digit to random string
+                randomString += randNumber.ToString();
+            }
+
+            Int32? newID = (from p in entity.StockAllocations select (int?)p.ID).Max();
+            newID = newID.HasValue ? newID.Value + 1 : 1;
+            // id = "BW1-" + randomString + "-" + String.Format("{0:D5}", numRes);
+            id = "BW1-112316-" + String.Format("{0:D5}", newID);
+
+
+            //var br = entity.StockAllocations.ToList().FindAll(p => p.BatchNumber == id);
+            //if (br.Count() > 0)
+            //{
+            //    goto startR;
+            //}
+
+            return id;
+        }
+
+        public ActionResult GenerateBatchNumber()
+        {
+            return Json(Generator(), JsonRequestBehavior.AllowGet);
+        }
+
         // GET: StockAllocation
+        [AccessChecker(Action = 1, ModuleID = 6)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -56,6 +104,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockAllocation/Details/5
+        [AccessChecker(Action = 1, ModuleID = 6)]
         public ActionResult Details(int id = 0)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -69,6 +118,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockAllocation/Create
+        [AccessChecker(Action = 2, ModuleID = 6)]
         public ActionResult Create()
         {
             var sa = new StockAllocation();
@@ -80,8 +130,9 @@ namespace MoostBrand.Controllers
 
             return View(sa);
         }
-        
+
         // POST: StockAllocation/Create
+        [AccessChecker(Action = 2, ModuleID = 6)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(StockAllocation sa)
@@ -119,6 +170,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockAllocation/Edit
+        [AccessChecker(Action = 2, ModuleID = 6)]
         public ActionResult Edit(int id = 0)
         {
             var sa = entity.StockAllocations.Find(id);
@@ -131,6 +183,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockAllocation/Edit
+        [AccessChecker(Action = 2, ModuleID = 6)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(StockAllocation sa)
@@ -160,6 +213,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockAllocation/Delete/5
+        [AccessChecker(Action = 3, ModuleID = 6)]
         public ActionResult Delete(int id)
         {
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -173,6 +227,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockAllocation/Delete/5
+        [AccessChecker(Action = 3, ModuleID = 6)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirm(int id)
         {
@@ -193,6 +248,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockAllocation/Items/5
+        [AccessChecker(Action = 1, ModuleID = 6)]
         public ActionResult Items(int id, int? page)
         {
             int UserID = Convert.ToInt32(Session["sessionuid"]);
@@ -217,6 +273,7 @@ namespace MoostBrand.Controllers
         #region PARTIAL
 
         // GET: StockAllocation/AddItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 6)]
         public ActionResult AddItemPartial(int id)
         {
             int recID = entity.StockAllocations.Find(id).ReceivingID;
@@ -238,6 +295,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockAllocation/AddItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 6)]
         [HttpPost]
         public ActionResult AddItemPartial(int id, StockAllocationDetail sad)
         {
@@ -259,6 +317,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockAllocation/EditItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 6)]
         public ActionResult EditItemPartial(int id)
         {
             var sad = entity.StockAllocationDetails.Find(id);
@@ -270,6 +329,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockAllocation/EditItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 6)]
         [HttpPost]
         public ActionResult EditItemPartial(int id, StockAllocationDetail rd)
         {
@@ -289,6 +349,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: StockAllocation/DeleteItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 6)]
         public ActionResult DeleteItemPartial(int id)
         {
             var rd = entity.StockAllocationDetails.Find(id);
@@ -297,6 +358,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Receiving/DeleteItemPartial/5
+        [AccessChecker(Action = 1, ModuleID = 6)]
         [HttpPost, ActionName("DeleteItemPartial")]
         public ActionResult DeleteItemPartialConfirm(int id)
         {

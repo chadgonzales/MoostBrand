@@ -19,7 +19,7 @@ namespace MoostBrand.DAL
         [StringLength(50)]
         public string Code { get; set; }
 
-        [StringLength(50)]
+        [StringLength(100)]
         public string Description { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
