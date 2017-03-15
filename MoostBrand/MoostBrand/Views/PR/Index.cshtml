@@ -54,9 +54,9 @@
                     </tr>
                 </thead>
 
-                @foreach (var item in Model)
-                {
-                    <tbody>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.RefNumber)
@@ -79,52 +79,52 @@
                                     {
                                         if (Convert.ToInt32(Session["sessionuid"]) == item.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                                         {
-                                            <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
-                                                <i class="fa fa-times fa fa-white"></i>
-                                            </a>
+                    <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                        <i class="fa fa-times fa fa-white"></i>
+                    </a>
                                         }
                                         if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                                         {
-                                            <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
-                                                <i class="fa fa-thumbs-up"></i>
-                                            </a>
-                                            <a href="#" id="deny_button" onclick="ShowDeny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
-                                                <i class="fa fa-thumbs-down"></i>
-                                            </a>
-                                            <a href="#" id="revise_button" onclick="Revise(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="For Revision">
-                                                <i class="fa fa-pencil"></i>
-                                            </a>
+                    <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
+                        <i class="fa fa-thumbs-up"></i>
+                    </a>
+                    <a href="#" id="deny_button" onclick="ShowDeny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
+                        <i class="fa fa-thumbs-down"></i>
+                    </a>
+                    <a href="#" id="revise_button" onclick="Revise(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="For Revision">
+                        <i class="fa fa-pencil"></i>
+                    </a>
                                         }
                                     }
                                     else if (item.ApprovalStatus == 4)
                                     {
                                         if (Convert.ToInt32(Session["sessionuid"]) == item.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                                         {
-                                            <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-                                            <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
-                                                <i class="fa fa-times fa fa-white"></i>
-                                            </a>
+                    <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                        <i class="fa fa-times fa fa-white"></i>
+                    </a>
                                         }
                                         if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                                         {
-                                            <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
-                                                <i class="fa fa-thumbs-up"></i>
-                                            </a>
-                                            <a href="#" id="deny_button" onclick="ShowDeny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
-                                                <i class="fa fa-thumbs-down"></i>
-                                            </a>
+                    <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
+                        <i class="fa fa-thumbs-up"></i>
+                    </a>
+                    <a href="#" id="deny_button" onclick="ShowDeny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
+                        <i class="fa fa-thumbs-down"></i>
+                    </a>
                                         }
                                     }
-                                </div>                                
+                                </div>
                             </td>
                         </tr>
-                    </tbody>
-                }
+                    }
+                </tbody>
 
             </table>
         </form>
