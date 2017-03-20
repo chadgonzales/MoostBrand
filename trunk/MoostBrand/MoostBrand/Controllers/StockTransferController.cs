@@ -52,6 +52,49 @@ namespace MoostBrand.Controllers
         }
         #endregion
 
+        #region COMMENTS
+        //// GET: Receiving/GetStockTransfers/5
+        //public ActionResult GetReceivings(int id) //returns Json
+        //{
+        //    var sts = entity.Receivings
+        //             .Include(st => st.Requisition)
+        //             .ToList()
+        //             .FindAll(st => st.Requisition.RequisitionTypeID == id)
+        //             .Select(st => new
+        //             {
+        //                 ID = st.ID,
+        //                 ReceivingID = st.ReceivingID
+        //             });
+
+        //    return Json(sts, JsonRequestBehavior.AllowGet);
+        //}
+
+        // GET: Receiving/GetRequisition/5
+        //public ActionResult GetRequisition(int id) //returns Json
+        //{
+        //    var req = entity.Receivings
+        //             .Include(st => st.Requisition)
+        //             .Where(st => st.ID == id)
+        //             .Select(st => new
+        //             {
+        //                 ID = st.RequisitionID,
+        //                 RefNumber = st.Requisition.RefNumber,
+        //                 RequestedBy = st.Requisition.Employee1.FirstName + " " + st.Requisition.Employee1.LastName,
+        //                 Destination = st.Requisition.Location1.Description,
+        //                 SourceLoc = st.Requisition.Location.Description,
+        //                 Vendor = st.Requisition.Vendor.Name,
+        //                 VendorCode = st.Requisition.Vendor.Code,
+        //                 VendorContact = st.Requisition.Vendor.Attn,
+        //                 CustName = st.Requisition.Customer,
+        //                 ShipmentType = st.Requisition.ShipmentType.Type,
+        //                 Invoice = st.Requisition.InvoiceNumber
+        //             })
+        //             .FirstOrDefault();
+
+        //    return Json(req, JsonRequestBehavior.AllowGet);
+        //}
+        #endregion
+
         // GET: StockTransfer
         [AccessChecker(Action = 1, ModuleID = 4)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -121,15 +164,23 @@ namespace MoostBrand.Controllers
         {
             var stocktransfer = new StockTransfer();
             stocktransfer.STDAte = DateTime.Now;
-            
+
             #region DROPDOWNS
-            var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2)
-                                .Select(r => new
-                                {
-                                    ID = r.ID,
-                                    RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
-                                });
-            ViewBag.RequisitionID = new SelectList(_requisitions, "ID", "RefNumber");
+            var _receivings = entity.Receivings.Where(r => r.ApprovalStatus == 2)
+                .Select(r => new
+                {
+                    ID = r.ID,
+                    ReceivingID = (r.ReceivingID.Contains("PR")) ? "PO" + r.ReceivingID.Substring(2) : r.ReceivingID
+                });
+            ViewBag.ReceivingID = new SelectList(_receivings, "ID", "ReceivingID");
+
+            //var _requisition = entity.Requisitions.Where(r => r.ApprovalStatus == 2)
+            //                    .Select(r => new
+            //                    {
+            //                        ID = r.ID,
+            //                        RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
+            //                    });
+            //ViewBag.ReceivingID = new SelectList(_requisition, "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
             var empList = new SelectList((from s in entity.Employees
                                           select new
@@ -200,7 +251,8 @@ namespace MoostBrand.Controllers
             }
 
             #region DROPDOWNS
-            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
+            ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID");
+            //ViewBag.ReceivingID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees
                           select new
@@ -235,7 +287,7 @@ namespace MoostBrand.Controllers
             if(stocktransfer.ApprovedStatus == 1)
             {
                 #region DROPDOWNS
-                ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
+                //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
                 ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
                 var empList = from s in entity.Employees
                               select new
@@ -351,7 +403,7 @@ namespace MoostBrand.Controllers
 
             #region DROPDOWNS
 
-            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
+            //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees
                           select new
@@ -506,7 +558,7 @@ namespace MoostBrand.Controllers
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
-            return View(items.ToPagedList(pageNumber, pageSize));
+            return PartialView(items.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: StockTransfer/DeniedItems/5
@@ -650,7 +702,8 @@ namespace MoostBrand.Controllers
             //ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description", rd.ItemID);
             //ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
 
-            return RedirectToAction("PendingItems", new { id = id });
+            //return RedirectToAction("PendingItems", new { id = id });
+            return RedirectToAction("Details", new { id = id });
         }
 
         // GET: StockTransfer/EditItemPartial/5
@@ -789,6 +842,21 @@ namespace MoostBrand.Controllers
                 .Select(s => new { s.Code });
 
             return Json(code, JsonRequestBehavior.AllowGet);
+        }
+
+        [AccessChecker(Action = 1, ModuleID = 5)]
+        public ActionResult GetRequisitionDetail(int id)
+        {
+            var rd = entity.RequisitionDetails
+                    .Include(r => r.Item)
+                    .Where(r => r.ID == id)
+                    .Select(r => new
+                    {
+                        Quantity = r.Quantity,
+                    })
+                    .FirstOrDefault();
+
+            return Json(rd, JsonRequestBehavior.AllowGet);
         }
     }
 }

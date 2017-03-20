@@ -21,23 +21,33 @@
             <label class="control-label col-md-2">Type</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.StockTransfer.Requisition.RequisitionType.Type)
+                    @Html.DisplayFor(model => model.Requisition.RequisitionType.Type)
                 </label>
             </div>
         </div>
-        <div class="form-group">
+        @*<div class="form-group">
             <label class="control-label col-md-2">Transfer ID</label>
             <div class="col-md-6">
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.StockTransfer.TransferID)
                 </label>
             </div>
+        </div>*@
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Requisition ID</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.RequisitionID)
+                </label>
+            </div>
         </div>
+
         <div class="form-group">
             <label class="control-label col-md-2">Requisition #</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.StockTransfer.Requisition.RefNumber)
+                    @Html.DisplayFor(model => model.Requisition.RefNumber)
                 </label>
             </div>
         </div>
@@ -45,8 +55,8 @@
             <label class="control-label col-md-2">Requested By</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.StockTransfer.Requisition.Employee1.LastName),
-                    @Html.DisplayFor(model => model.StockTransfer.Requisition.Employee1.FirstName)
+                    @Html.DisplayFor(model => model.Requisition.Employee1.LastName),
+                    @Html.DisplayFor(model => model.Requisition.Employee1.FirstName)
                 </label>
             </div>
         </div>
@@ -72,7 +82,7 @@
                 <label class="control-label col-md-2">Receving Location</label>
                 <div class="col-md-6">
                     <label class="custom-label">
-                        @Html.DisplayFor(model => model.StockTransfer.Requisition.Location1.Description)
+                        @Html.DisplayFor(model => model.Requisition.Location1.Description)
                     </label>
                 </div>
             </div>
@@ -80,7 +90,7 @@
                 <label class="control-label col-md-2">Source Location</label>
                 <div class="col-md-6">
                     <label class="custom-label">
-                        @Html.DisplayFor(model => model.StockTransfer.Requisition.Location.Description)
+                        @Html.DisplayFor(model => model.Requisition.Location.Description)
                     </label>
                 </div>
             </div>
@@ -146,7 +156,7 @@
                 <label class="control-label col-md-2">Shipper Name</label>
                 <div class="col-md-6">
                     <label class="custom-label">
-                        @Html.DisplayFor(model => model.StockTransfer.Requisition.Vendor.GeneralName)
+                        @Html.DisplayFor(model => model.Requisition.Vendor.GeneralName)
                     </label>
                 </div>
             </div>
@@ -154,7 +164,7 @@
                 <label class="control-label col-md-2">Shipper Code</label>
                 <div class="col-md-6">
                     <label class="custom-label">
-                        @Html.DisplayFor(model => model.StockTransfer.Requisition.Vendor.Code)
+                        @Html.DisplayFor(model => model.Requisition.Vendor.Code)
                     </label>
                 </div>
             </div>
@@ -162,7 +172,7 @@
                 <label class="control-label col-md-2">Shipper Attn</label>
                 <div class="col-md-6">
                     <label class="custom-label">
-                        @Html.DisplayFor(model => model.StockTransfer.Requisition.Vendor.Attn)
+                        @Html.DisplayFor(model => model.Requisition.Vendor.Attn)
                     </label>
                 </div>
             </div>
@@ -196,7 +206,7 @@
                 <label class="control-label col-md-2">Customer Name</label>
                 <div class="col-md-6">
                     <label class="custom-label">
-                        @Html.DisplayFor(model => model.StockTransfer.Requisition.Customer)
+                        @Html.DisplayFor(model => model.Requisition.Customer)
                     </label>
                 </div>
             </div>
@@ -204,7 +214,7 @@
                 <label class="control-label col-md-2">Shipment Type</label>
                 <div class="col-md-6">
                     <label class="custom-label">
-                        @Html.DisplayFor(model => model.StockTransfer.Requisition.ShipmentType.Type)
+                        @Html.DisplayFor(model => model.Requisition.ShipmentType.Type)
                     </label>
                 </div>
             </div>
@@ -260,9 +270,9 @@
             <div class="col-md-offset-2 col-md-6">
                 @if (Convert.ToInt32(Session["sessionuid"]) == Model.ReceivedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                 {
-                    <a href='@Url.Action("PendingItems", new { id = Model.ID })' class="btn btn-dark-yellow">
+                    @*<a href='@Url.Action("PendingItems", new { id = Model.ID })' class="btn btn-dark-yellow">
                         Pending Items
-                    </a>
+                    </a>*@
                     <a href='@Url.Action("ApprovedItems", new { id = Model.ID })' class="btn btn-dark-green">
                         Approved Items
                     </a>
@@ -282,6 +292,11 @@
                 </a>
             </div>
         </div>
+
+        @if (Convert.ToInt32(Session["sessionuid"]) == Model.ReceivedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+        {
+            @Html.Action("PendingItems" , "Receiving")
+        }
 
     </div>
 </div>

@@ -163,6 +163,23 @@
     </div><!-- /.modal -->
 </div>
 <script>
+    window.onload = function () {
+        //$('#ShowPopop').click(function () {
+
+            var url = $('#AddItemWindow').data('url');
+            $.get(url, function (data) {
+                $('#ShowDialogAdd').html(data);
+
+                $('#AddItemWindow').modal('show');
+
+                // add class form-control to textarea and select
+                $("input[disabled]").addClass("form-control");
+                $("textarea").addClass("form-control");
+                $("select").addClass("form-control");
+            });
+        //});
+    }
+
     $('#ShowPopop').click(function () {
 
         var url = $('#AddItemWindow').data('url');

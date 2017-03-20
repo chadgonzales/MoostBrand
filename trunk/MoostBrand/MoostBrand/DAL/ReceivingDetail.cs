@@ -22,6 +22,7 @@ namespace MoostBrand.DAL
 
         public int? StockTransferDetailID { get; set; }
 
+        public int? RequisitionDetailID { get; set; }
         public int? Quantity { get; set; }
 
         public int? AprovalStatusID { get; set; }
@@ -34,6 +35,7 @@ namespace MoostBrand.DAL
 
         public virtual Receiving Receiving { get; set; }
 
+        public virtual RequisitionDetail RequisitionDetail { get; set; }
         public virtual StockTransferDetail StockTransferDetail { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -7,12 +7,21 @@
 
     @Html.HiddenFor(model => model.ID)
     <div class="form-group">
-        @Html.LabelFor(model => model.RequisitionID, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.ReceivingID, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("RequisitionID", String.Empty)
-            @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
+            @Html.DropDownList("ReceivingID", String.Empty)
+            @Html.ValidationMessageFor(model => model.ReceivingID, "", new { @class = "text-danger" })
         </div>
     </div>
+
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.ReceivingID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownListFor(model => model.ReceivingID, Enumerable.Empty<SelectListItem>())
+                @Html.ValidationMessageFor(model => model.ReceivingID, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
 
     <div class="form-group">
         @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -171,6 +180,18 @@ $(function () {
     @Scripts.Render("~/bundles/jqueryval")
 
 }
+
+@*<script type="text/javascript">
+    function GetStockTransfers(id) {
+        $.get("@Url.Action("GetReceivings", "StockTransfer")/" + id, null, function (data) {
+            var markup = "<option value=''></option>";
+            for (var x = 0; x < data.length; x++) {
+                markup += "<option value=" + data[x].ID + ">" + data[x].TransferID + "</option>";
+            }
+            $("#ReceivingID").html(markup).show();
+        });
+    }
+</script>*@
 
 <script type="text/jscript">
     jQuery.validator.unobtrusive.adapters.add("dropdown", function (options) {

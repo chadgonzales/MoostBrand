@@ -20,6 +20,7 @@ namespace MoostBrand.DAL
         public int ID { get; set; }
 
         public int RequisitionID { get; set; }
+        public int ReceivingID { get; set; }
 
         public int LocationID { get; set; }
 
@@ -97,6 +98,8 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransferDetail> StockTransferDetails { get; set; }
 
+
+        public virtual Receiving Receiving { get; set; }
         public virtual ICollection<Helper> Helpers { get; set; }
         public virtual ICollection<Operator> Operators { get; set; }     
 

@@ -625,7 +625,7 @@ namespace MoostBrand.Controllers
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
-            return View(items.ToPagedList(pageNumber, pageSize));
+            return PartialView(items.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: PR/DeniedItems/5
@@ -819,7 +819,8 @@ namespace MoostBrand.Controllers
             //ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description", rd.ItemID);
             //ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
 
-            return RedirectToAction("PendingItems", new { id = id });
+            //return RedirectToAction("PendingItems", new { id = id });
+            return RedirectToAction("Details", new { id = id });
         }
 
         // GET: PR/EditItemPartial/5

@@ -13,6 +13,7 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Receiving()
         {
+            StockTransfers = new HashSet<StockTransfer>();
             ReceivingDetails = new HashSet<ReceivingDetail>();
             StockAllocations = new HashSet<StockAllocation>();
         }
@@ -22,6 +23,8 @@ namespace MoostBrand.DAL
         public int LocationID { get; set; }
 
         public int ReceivingTypeID { get; set; }
+
+        public int RequisitionID { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -99,7 +102,12 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceivingDetail> ReceivingDetails { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockTransfer> StockTransfers { get; set; }
+
         public virtual ReceivingType ReceivingType { get; set; }
+
+        public virtual Requisition Requisition { get; set; }
 
         public virtual StockTransfer StockTransfer { get; set; }
 

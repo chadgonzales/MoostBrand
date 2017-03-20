@@ -305,6 +305,17 @@ $(function () {
     //    });
     //});
 
+    @*function GetStockTransfers(id) {
+        $.get("@Url.Action("GetReceivings", "StockTransfer")/" + id, null, function (data) {
+            var markup = "<option value=''></option>";
+            for (var x = 0; x < data.length; x++) {
+                markup += "<option value=" + data[x].ID + ">" + data[x].TransferID + "</option>";
+            }
+            $("#ReceivingID").html(markup).show();
+        });
+    }*@
+
+
     $('#LocationID').change(function () {
         _locID = $('#LocationID').val();
         var url = "/StockTransfer/GetLocationCode/";
