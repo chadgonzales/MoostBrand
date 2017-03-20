@@ -166,9 +166,9 @@
             <div class="col-md-offset-2 col-md-6">
                 @if (Convert.ToInt32(Session["sessionuid"]) == Model.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                 {
-                    <a href='@Url.Action("PendingItems", new { id = Model.ID })' class="btn btn-dark-yellow">
+                    @*<a href='@Url.Action("PendingItems", new { id = Model.ID })' class="btn btn-dark-yellow">
                         Pending Items
-                    </a>
+                    </a>*@
                     <a href='@Url.Action("ApprovedItems", new { id = Model.ID })' class="btn btn-dark-green">
                         Approved Items
                     </a>
@@ -188,6 +188,11 @@
                 </a>
             </div>
         </div>
+
+        @if (Convert.ToInt32(Session["sessionuid"]) == Model.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+        {
+            @Html.Action("PendingItems", "StockTransfer")
+        }
 
     </div>
 </div>

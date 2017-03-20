@@ -185,44 +185,67 @@ namespace MoostBrand.Controllers
             return View(r);
         }
 
+        #region COMMENTS
         // GET: Receiving/GetStockTransfers/5
-        public ActionResult GetStockTransfers(int id) //returns Json
-        {
-            var sts = entity.StockTransfers
-                     .Include(st => st.Requisition)
-                     .ToList()
-                     .FindAll(st => st.Requisition.RequisitionTypeID == id)
-                     .Select(st => new
-                     {
-                         ID = st.ID,
-                         TransferID = st.TransferID
-                     });
+        //public ActionResult GetStockTransfers(int id) //returns Json
+        //{
+        //    var sts = entity.StockTransfers
+        //             .Include(st => st.Requisition)
+        //             .ToList()
+        //             .FindAll(st => st.Requisition.RequisitionTypeID == id)
+        //             .Select(st => new
+        //             {
+        //                 ID = st.ID,
+        //                 TransferID = st.TransferID
+        //             });
 
-            return Json(sts, JsonRequestBehavior.AllowGet);
-        }
+        //    return Json(sts, JsonRequestBehavior.AllowGet);
+        //}
 
 
+        //public ActionResult GetRequisition(int id) //returns Json
+        //{
+        //    //var req = entity.StockTransfers
+        //    //         .Include(st => st.Requisition)
+        //    //         .Where(st => st.ID == id)
+        //    //         .Select(st => new
+        //    //         {
+        //    //             ID = st.RequisitionID,
+        //    //             RefNumber = st.Requisition.RefNumber,
+        //    //             RequestedBy = st.Requisition.Employee1.FirstName + " " + st.Requisition.Employee1.LastName,
+        //    //             Destination = st.Requisition.Location1.Description,
+        //    //             SourceLoc = st.Requisition.Location.Description,
+        //    //             Vendor = st.Requisition.Vendor.Name,
+        //    //             VendorCode = st.Requisition.Vendor.Code,
+        //    //             VendorContact = st.Requisition.Vendor.Attn,
+        //    //             CustName = st.Requisition.Customer,
+        //    //             ShipmentType = st.Requisition.ShipmentType.Type,
+        //    //             Invoice = st.Requisition.InvoiceNumber
+        //    //         })
+        //    //         .FirstOrDefault();
+        //    return Json(req, JsonRequestBehavior.AllowGet);
+        //}
+
+        #endregion
         // GET: Receiving/GetRequisition/5
         public ActionResult GetRequisition(int id) //returns Json
         {
-            var req = entity.StockTransfers
-                     .Include(st => st.Requisition)
-                     .Where(st => st.ID == id)
-                     .Select(st => new
-                     {
-                         ID = st.RequisitionID,
-                         RefNumber = st.Requisition.RefNumber,
-                         RequestedBy = st.Requisition.Employee1.FirstName + " " + st.Requisition.Employee1.LastName,
-                         Destination = st.Requisition.Location1.Description,
-                         SourceLoc = st.Requisition.Location.Description,
-                         Vendor = st.Requisition.Vendor.Name,
-                         VendorCode = st.Requisition.Vendor.Code,
-                         VendorContact = st.Requisition.Vendor.Attn,
-                         CustName = st.Requisition.Customer,
-                         ShipmentType = st.Requisition.ShipmentType.Type,
-                         Invoice = st.Requisition.InvoiceNumber
-                     })
-                     .FirstOrDefault();
+            var req = entity.Requisitions
+                .Where(r => r.ID == id)
+                .Select(r => new
+                {
+                    RefNumber = r.RefNumber,
+                    RequestedBy = r.Employee1.FirstName + " " + r.Employee1.LastName,
+                    Destination = r.Location1.Description,
+                    SourceLoc = r.Location.Description,
+                    Vendor = r.Vendor.Name,
+                    VendorCode = r.Vendor.Code,
+                    VendorContact = r.Vendor.Attn,
+                    CustName = r.Customer,
+                    ShipmentType = r.ShipmentType.Type,
+                    Invoice = r.InvoiceNumber
+                })
+                .FirstOrDefault();
 
             return Json(req, JsonRequestBehavior.AllowGet);
         }
@@ -236,6 +259,14 @@ namespace MoostBrand.Controllers
             receiving.PONumber = POGenerator();
 
             #region DROPDOWNS
+
+            var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2)
+                                .Select(r => new
+                                {
+                                    ID = r.ID,
+                                    RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
+                                });
+            ViewBag.RequisitionID = new SelectList(_requisitions, "ID", "RefNumber");
             ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
             var empList = new SelectList((from s in entity.Employees
@@ -296,13 +327,15 @@ namespace MoostBrand.Controllers
                         ModelState.AddModelError("", "The Receiving ID already exists.");
                     }
                 }
-                catch
+                catch(Exception e)
                 {
                     ModelState.AddModelError("", "There's an error.");
                 }
             }
 
             #region DROPDOWNS
+
+            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
             var empList = from s in entity.Employees
@@ -336,6 +369,8 @@ namespace MoostBrand.Controllers
             if (receiving.ApprovalStatus == 1)
             {
                 #region DROPDOWNS
+
+                ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", receiving.RequisitionID);
                 ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
                 ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
                 ViewBag.StockTransferID = new SelectList(entity.StockTransfers, "ID", "TransferID", receiving.StockTransferID);
@@ -401,6 +436,8 @@ namespace MoostBrand.Controllers
             }
 
             #region DROPDOWNS
+        
+            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
             ViewBag.StockTransferID = new SelectList(entity.StockTransfers, "ID", "TransferID", receiving.StockTransferID);
@@ -587,7 +624,7 @@ namespace MoostBrand.Controllers
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
-            return View(items.ToPagedList(pageNumber, pageSize));
+            return PartialView(items.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Receiving/DeniedItems/5
@@ -658,18 +695,32 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult AddItemPartial(int id)
         {
-            int transferID = entity.Receivings.Find(id).StockTransferID;
-            var items = entity.StockTransferDetails
+            //int transferID = entity.Receivings.Find(id).StockTransferID;
+            //var items = entity.StockTransferDetails
+            //            .ToList()
+            //            .FindAll(rd => rd.StockTransferID == transferID && rd.AprovalStatusID == 2)
+            //            .Select(ed => new
+            //            {
+            //                ID = ed.ID,
+            //                Description = ed.RequisitionDetail.Item.Description
+            //            });
+
+            //ViewBag.Rid = id;
+            //ViewBag.StockTransferDetailID = new SelectList(items, "ID", "Description");
+
+
+            int reqID = entity.Receivings.Find(id).RequisitionID;
+            var items = entity.RequisitionDetails
                         .ToList()
-                        .FindAll(rd => rd.StockTransferID == transferID && rd.AprovalStatusID == 2)
+                        .FindAll(rd => rd.RequisitionID == reqID && rd.AprovalStatusID == 2)
                         .Select(ed => new
                         {
                             ID = ed.ID,
-                            Description = ed.RequisitionDetail.Item.Description
+                            Description = ed.Item.Description
                         });
 
-            ViewBag.Rid = id;
-            ViewBag.StockTransferDetailID = new SelectList(items, "ID", "Description");
+            ViewBag.STid = id;
+            ViewBag.RequisitionDetailID = new SelectList(items, "ID", "Description");
 
             return PartialView();
         }
@@ -685,7 +736,9 @@ namespace MoostBrand.Controllers
                 rd.ReceivingID = id;
                 rd.AprovalStatusID = 1; //submitted
 
-                var rd1 = entity.ReceivingDetails.Where(r => r.ReceivingID == rd.ReceivingID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
+                //var rd1 = entity.ReceivingDetails.Where(r => r.ReceivingID == rd.ReceivingID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
+
+                var rd1 = entity.ReceivingDetails.Where(s => s.ReceivingID == rd.ReceivingID && s.RequisitionDetailID == rd.RequisitionDetailID).ToList();
 
                 if (rd1.Count() > 0)
                 {
@@ -701,7 +754,7 @@ namespace MoostBrand.Controllers
             }
             catch
             {
-                throw;
+                //throw;
                 TempData["PartialError"] = "There's an error.";
             }
 
@@ -709,7 +762,8 @@ namespace MoostBrand.Controllers
             //ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description", rd.ItemID);
             //ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
 
-            return RedirectToAction("PendingItems", new { id = id });
+            //return RedirectToAction("PendingItems", new { id = id });
+            return RedirectToAction("Details", new { id = id });
         }
 
         // GET: Receiving/EditItemPartial/5

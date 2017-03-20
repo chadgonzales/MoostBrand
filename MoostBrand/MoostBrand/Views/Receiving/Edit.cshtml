@@ -48,11 +48,19 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            @*<div class="form-group">
                 @Html.LabelFor(model => model.StockTransfer, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
                     @Html.DropDownList("StockTransferID", String.Empty)
                     @Html.ValidationMessageFor(model => model.StockTransferID, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RequisitionID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownList("RequisitionID", String.Empty)
+                    @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -328,8 +336,8 @@
         HideOrShow();
     });
 
-    $("#StockTransferID").change(function () {
-        var val = $("#StockTransferID").val();
+    $("#RequisitionID").change(function () {
+        var val = $("#RequisitionID").val();
         GetRequisition(val);
     });
 
@@ -350,7 +358,7 @@
 
     function GetRequisition(id) {
         $.get("@Url.Action("GetRequisition", "Receiving")/" + id, null, function (data) {
-            $("#RequisitionID").val(data.ID);
+            //$("#RequisitionID").val(data.ID);
             $("#RefNumber").val(data.RefNumber);
             $("#RequestedBy").val(data.RequestedBy);
             $("#Destination").val(data.Destination);

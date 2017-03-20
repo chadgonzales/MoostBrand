@@ -12,13 +12,13 @@
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.ReceivingID)
-            @Html.HiddenFor(model => model.StockTransferDetailID)
+            @Html.HiddenFor(model => model.RequisitionDetailID)
 
             <div class="form-horizontal">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.StockTransferDetail.RequisitionDetail.Item, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.RequisitionDetail.Item, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.DisplayFor(model => model.StockTransferDetail.RequisitionDetail.Item.Description)
+                        @Html.DisplayFor(model => model.RequisitionDetail.Item.Description)
                     </div>
                 </div>
             </div>
