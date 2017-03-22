@@ -798,7 +798,8 @@ namespace MoostBrand.Controllers
                     entity.SaveChanges();
                 }
                 #endregion
-                return RedirectToAction("PendingItems", new { id = stocktransfer.StockTransferID });
+                //return RedirectToAction("PendingItems", new { id = stocktransfer.StockTransferID });
+                return RedirectToAction("Details", new { id = id });
             }
             return RedirectToAction("ApprovedItems", new { id = stocktransfer.StockTransferID });
         }
@@ -830,7 +831,9 @@ namespace MoostBrand.Controllers
                 TempData["PartialError"] = "There's an error.";
             }
 
-            return RedirectToAction("PendingItems", new { id = reqID });
+            //return RedirectToAction("PendingItems", new { id = reqID });
+
+            return RedirectToAction("Details", new { id = id });
         }
         #endregion
         // -Pearl

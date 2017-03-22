@@ -407,7 +407,6 @@ namespace MoostBrand.Controllers
                     var r = entity.Receivings.FirstOrDefault(r1 => r1.ID == receiving.ID);
                     if (r.ApprovalStatus == 1)
                     {
-
                         if (receiving.Img != null)
                         {
                             string imagePath = ConfigurationManager.AppSettings["imagePath"];
@@ -796,7 +795,8 @@ namespace MoostBrand.Controllers
 
             if (rd.AprovalStatusID == 1)
             {
-                return RedirectToAction("PendingItems", new { id = rd.ReceivingID });
+                //return RedirectToAction("PendingItems", new { id = rd.ReceivingID });
+                return RedirectToAction("Details", new { id = id });
             }
             return RedirectToAction("ApprovedItems", new { id = rd.ReceivingID });
         }
@@ -827,8 +827,8 @@ namespace MoostBrand.Controllers
             {
                 TempData["PartialError"] = "There's an error.";
             }
-
-            return RedirectToAction("PendingItems", new { id = reqID });
+            //return RedirectToAction("PendingItems", new { id = reqID });
+            return RedirectToAction("Details", new { id = id });
         }
         #endregion
     }
