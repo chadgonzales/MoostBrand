@@ -259,6 +259,9 @@
 
                     <!-- start: MAIN NAVIGATION MENU -->
                     <ul class="main-navigation-menu">
+                        <li @ViewBag.ReservationActive>
+                            <a href="@Url.Action("Index", "Reservation")"><i class="fa fa-book"></i> <span class="title">Reservation</span></a>
+                        </li>
                         <li @ViewBag.PRActive>
                             <a href="@Url.Action("Index", "PR")"><i class="fa fa-shopping-cart"></i> <span class="title">Requisition</span> </a>
                         </li>
