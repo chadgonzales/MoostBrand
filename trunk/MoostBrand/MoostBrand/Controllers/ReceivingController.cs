@@ -275,6 +275,7 @@ namespace MoostBrand.Controllers
                                               ID = s.ID,
                                               FullName = s.FirstName + " " + s.LastName
                                           }), "ID", "FullName");
+
             ViewBag.EncodedBy = empList;
             ViewBag.CheckedBy = empList;
             ViewBag.ReceivedBy = empList;
@@ -345,7 +346,7 @@ namespace MoostBrand.Controllers
                               FullName = s.FirstName + " " + s.LastName
                           };
             //new SelectList((), "ID", "FullName");
-            ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", receiving.EncodedBy);
+            //ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", receiving.EncodedBy);
             ViewBag.CheckedBy = new SelectList(empList, "ID", "FullName", receiving.CheckedBy);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", receiving.ReceivedBy);
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", receiving.ApprovalStatus);

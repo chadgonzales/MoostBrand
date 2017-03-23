@@ -287,6 +287,8 @@ namespace MoostBrand.Controllers
             if(stocktransfer.ApprovedStatus == 1)
             {
                 #region DROPDOWNS
+
+                ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID" , stocktransfer.ReceivingID);
                 //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
                 ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
                 var empList = from s in entity.Employees
@@ -403,6 +405,8 @@ namespace MoostBrand.Controllers
 
             #region DROPDOWNS
 
+
+            ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID");
             //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees
