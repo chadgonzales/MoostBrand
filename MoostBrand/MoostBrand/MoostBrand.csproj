@@ -253,6 +253,7 @@
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\PRController.cs" />
     <Compile Include="Controllers\ReceivingController.cs" />
+    <Compile Include="Controllers\ReservationController.cs" />
     <Compile Include="Controllers\ReturnController.cs" />
     <Compile Include="Controllers\SizeController.cs" />
     <Compile Include="Controllers\StockAdjustmentController.cs" />
@@ -4492,6 +4493,15 @@
     <Content Include="Views\StockTransfer\EditorTemplates\Helper.cshtml" />
     <Content Include="Views\StockTransfer\EditorTemplates\Operator.cshtml" />
     <Content Include="Views\StockTransfer\EditorTemplates\StockTransfer.cshtml" />
+    <Content Include="Views\Reservation\Index.cshtml" />
+    <Content Include="Views\Reservation\Create.cshtml" />
+    <Content Include="Views\Reservation\Delete.cshtml" />
+    <Content Include="Views\Reservation\Edit.cshtml" />
+    <Content Include="Views\Reservation\Details.cshtml" />
+    <Content Include="Views\Reservation\AddItemPartial.cshtml" />
+    <Content Include="Views\Reservation\PendingItems.cshtml" />
+    <Content Include="Views\Reservation\ApprovedItems.cshtml" />
+    <Content Include="Views\Reservation\DeniedItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
