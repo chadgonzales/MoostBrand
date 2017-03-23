@@ -11,170 +11,187 @@
 <div class="panel-body">
     <div class="form-horizontal">
         @Html.HiddenFor(model => model.RequisitionTypeID)
-        <div class="form-group">
-            <label class="control-label col-md-2">Reference #</label>
-            <div class="col-md-6">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.RefNumber)
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">Type</label>
-            <div class="col-md-6">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.RequisitionType.Type)
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">Requested Date</label>
-            <div class="col-md-6">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.RequestedDate)
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">Requested By</label>
-            <div class="col-md-6">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.Employee1.LastName),
-                    @Html.DisplayFor(model => model.Employee1.FirstName)
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">Location</label>
-            <div class="col-md-6">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.Location.Description)
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">Date Required</label>
-            <div class="col-md-6">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.DateRequired)
-                </label>
-            </div>
-        </div>
-        <div id="cr">
-            <div class="form-group">
-                <label class="control-label col-md-2">Project/Customer</label>
-                <div class="col-md-6">
-                    <label class="custom-label">
-                        @Html.DisplayFor(model => model.Customer)
-                    </label>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">Reference #</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.RefNumber)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Type</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.RequisitionType.Type)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Requested Date</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.RequestedDate)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Requested By</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Employee1.LastName),
+                            @Html.DisplayFor(model => model.Employee1.FirstName)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Location</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Location.Description)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Date Required</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.DateRequired)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Approval Status</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.ApprovalStatu.Status)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Approved By</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Employee.LastName),
+                            @Html.DisplayFor(model => model.Employee.FirstName)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Remarks</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Remarks)
+                        </label>
+                    </div>
+                </div>
+
+
+                <div id="brcr">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Driver</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Driver)
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Reservation Type</label>
-                <div class="col-md-6">
-                    <label class="custom-label">
-                        @Html.DisplayFor(model => model.ReservationType.Type)
-                    </label>
+            <div class="col-sm-6">
+                <div id="cr">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Project/Customer</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Customer)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Reservation Type</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.ReservationType.Type)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Reserved By</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Employee2.LastName),
+                                @Html.DisplayFor(model => model.Employee2.FirstName)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Payment Status</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.PaymentStatus)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Invoice #</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.InvoiceNumber)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Authorized Person</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.AuthorizedPerson)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Validated By</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Employee3.LastName),
+                                @Html.DisplayFor(model => model.Employee3.FirstName)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Shipment Type</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.ShipmentType)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Drop Ship Type</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.DropShipType.Type)
+                            </label>
+                        </div>
+                    </div>
                 </div>
+
+
+
             </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Reserved By</label>
-                <div class="col-md-6">
-                    <label class="custom-label">
-                        @Html.DisplayFor(model => model.Employee2.LastName),
-                        @Html.DisplayFor(model => model.Employee2.FirstName)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Payment Status</label>
-                <div class="col-md-6">
-                    <label class="custom-label">
-                        @Html.DisplayFor(model => model.PaymentStatus)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Invoice #</label>
-                <div class="col-md-6">
-                    <label class="custom-label">
-                        @Html.DisplayFor(model => model.InvoiceNumber)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Authorized Person</label>
-                <div class="col-md-6">
-                    <label class="custom-label">
-                        @Html.DisplayFor(model => model.AuthorizedPerson)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Validated By</label>
-                <div class="col-md-6">
-                    <label class="custom-label">
-                        @Html.DisplayFor(model => model.Employee3.LastName),
-                        @Html.DisplayFor(model => model.Employee3.FirstName)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Shipment Type</label>
-                <div class="col-md-6">
-                    <label class="custom-label">
-                        @Html.DisplayFor(model => model.ShipmentType)
-                    </label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label col-md-2">Drop Ship Type</label>
-                <div class="col-md-6">
-                    <label class="custom-label">
-                        @Html.DisplayFor(model => model.DropShipType.Type)
-                    </label>
-                </div>
-            </div>
+
         </div>
 
 
-        <div id="brcr">
-            <div class="form-group">
-                <label class="control-label col-md-2">Driver</label>
-                <div class="col-md-6">
-                    <label class="custom-label">
-                        @Html.DisplayFor(model => model.Driver)
-                    </label>
-                </div>
-            </div>
-        </div>
+        
+      
+         
 
-        <div class="form-group">
-            <label class="control-label col-md-2">Approval Status</label>
-            <div class="col-md-6">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.ApprovalStatu.Status)
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2">Approved By</label>
-            <div class="col-md-6">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.Employee.LastName),
-                    @Html.DisplayFor(model => model.Employee.FirstName)
-                </label>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">Remarks</label>
-            <div class="col-md-6">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.Remarks)
-                </label>
-            </div>
-        </div>
+        
 
 
         <div class="form-group">
@@ -182,20 +199,20 @@
                 @if (Convert.ToInt32(Session["sessionuid"]) == Model.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                 {
                     @*<a href='@Url.Action("PendingItems", new { id = Model.ID })' class="btn btn-dark-yellow">
-                        Pending Items
-                    </a>*@
+                            Pending Items
+                        </a>*@
                     <a href='@Url.Action("ApprovedItems", new { id = Model.ID })' class="btn btn-dark-green">
                         Approved Items
                     </a>
-                    <a href='@Url.Action("DeniedItems", new { id = Model.ID })' class="btn btn-dark-red">
-                        Denied Items
-                    </a>
+                            <a href='@Url.Action("DeniedItems", new { id = Model.ID })' class="btn btn-dark-red">
+                                Denied Items
+                            </a>
 
-                    <br /><br />
+                            <br /><br />
 
-                    <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
-                        Edit
-                    </a>
+                            <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
+                                Edit
+                            </a>
                 }
 
                 <a href='@Url.Action("Index")' class="btn btn-light-orange">
