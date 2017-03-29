@@ -360,7 +360,8 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 2, ModuleID = 5)]
         public ActionResult Edit(int id = 0)
         {
-            var receiving = entity.Receivings.Find(id);
+            //var receiving = entity.Receivings.Find(id);
+            var receiving = entity.Receivings.FirstOrDefault(r => r.ID == id);
 
             if (receiving == null)
             {
@@ -406,6 +407,7 @@ namespace MoostBrand.Controllers
                 {
                     //var r = entity.Requisitions.FirstOrDefault(r1 => r1.ID == pr.ID && (r1.RequestedBy == UserID || AcctType == 1 || AcctType == 4)).ApprovalStatus;
                     var r = entity.Receivings.FirstOrDefault(r1 => r1.ID == receiving.ID);
+                    receiving.ApprovalStatus = 1;
                     if (r.ApprovalStatus == 1)
                     {
                         if (receiving.Img != null)

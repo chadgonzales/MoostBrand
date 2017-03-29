@@ -551,6 +551,7 @@ namespace MoostBrand.Controllers
             var items = entity.StockTransferDetails
                         .ToList()
                         .FindAll(rd => rd.StockTransferID == id && rd.AprovalStatusID == 1 && (rd.StockTransfer.RequestedBy == UserID || UserType == 1 || UserType == 4));
+
             //var items = entity.RequisitionDetails
             //            .ToList()
             //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
@@ -657,18 +658,19 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 2, ModuleID = 4)]
         public ActionResult AddItemPartial(int id)
         {
-            int reqID = entity.StockTransfers.Find(id).RequisitionID;
-            var items = entity.RequisitionDetails
+
+            int reqID = entity.StockTransfers.Find(id).ReceivingID;
+            var items = entity.ReceivingDetails
                         .ToList()
-                        .FindAll(rd => rd.RequisitionID == reqID && rd.AprovalStatusID == 2)
+                        .FindAll(rd => rd.ReceivingID == reqID && rd.AprovalStatusID == 2)
                         .Select(ed => new
                         {
                             ID = ed.ID,
-                            Description = ed.Item.Description
+                            Description = ed.RequisitionDetail.Item.Description
                         });
 
             ViewBag.STid = id;
-            ViewBag.RequisitionDetailID = new SelectList(items, "ID", "Description");
+            ViewBag.ReceivingID = new SelectList(items, "ID", "Description");
 
             return PartialView();
         }
@@ -683,8 +685,24 @@ namespace MoostBrand.Controllers
                 stocktransfer.StockTransferID = id;
                 stocktransfer.AprovalStatusID = 1; //submitted
 
-                var st = entity.StockTransferDetails.Where(s => s.StockTransferID == stocktransfer.StockTransferID && s.RequisitionDetailID == stocktransfer.RequisitionDetailID).ToList();
+                var receivingID = entity.StockTransfers.Find(stocktransfer.StockTransferID).ReceivingID;
 
+                var items = entity.ReceivingDetails
+                            .ToList()
+                            .FindAll(rd => rd.ReceivingID == receivingID && rd.AprovalStatusID == 2)
+                            .Select(ed => new
+                            {
+                                ID = ed.ID,
+                                Description = ed.RequisitionDetail.Item.Description
+                            }).FirstOrDefault();
+
+                stocktransfer.ReceivingDetailID = items.ID;
+
+                
+
+                var st = entity.StockTransferDetails.Where(s => s.StockTransferID == stocktransfer.StockTransferID && s.ReceivingDetailID == stocktransfer.ReceivingDetailID).ToList();
+
+                //var rd1 = entity.ReceivingDetails.Where(r => r.ReceivingID == rd.ReceivingID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
                 if (st.Count() > 0)
                 {
                     TempData["PartialError"] = "Item is already in the list.";
@@ -697,7 +715,7 @@ namespace MoostBrand.Controllers
                     entity.SaveChanges();
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 TempData["PartialError"] = "There's an error.";
             }
@@ -803,7 +821,7 @@ namespace MoostBrand.Controllers
                 }
                 #endregion
                 //return RedirectToAction("PendingItems", new { id = stocktransfer.StockTransferID });
-                return RedirectToAction("Details", new { id = id });
+                return RedirectToAction("Details", new { id = stocktransfer.StockTransferID });
             }
             return RedirectToAction("ApprovedItems", new { id = stocktransfer.StockTransferID });
         }
@@ -837,7 +855,7 @@ namespace MoostBrand.Controllers
 
             //return RedirectToAction("PendingItems", new { id = reqID });
 
-            return RedirectToAction("Details", new { id = id });
+            return RedirectToAction("Details", new { id = reqID });
         }
         #endregion
         // -Pearl
@@ -864,6 +882,11 @@ namespace MoostBrand.Controllers
                     .FirstOrDefault();
 
             return Json(rd, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult StockDetails(int id)
+        {
+            return View(entity.StockTransferDetails.Find(id));
         }
     }
 }
