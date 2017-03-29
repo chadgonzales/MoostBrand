@@ -11,11 +11,13 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ReceivingDetail()
         {
+            //StockTransferDetails = new HashSet<StockTransferDetail>();
             ReturnedItems = new HashSet<ReturnedItem>();
             StockAdjustmentDetails = new HashSet<StockAdjustmentDetail>();
             StockAllocationDetails = new HashSet<StockAllocationDetail>();
         }
 
+        [Key]
         public int ID { get; set; }
 
         public int ReceivingID { get; set; }
@@ -23,6 +25,7 @@ namespace MoostBrand.DAL
         public int? StockTransferDetailID { get; set; }
 
         public int? RequisitionDetailID { get; set; }
+
         public int? Quantity { get; set; }
 
         public int? AprovalStatusID { get; set; }
@@ -32,11 +35,12 @@ namespace MoostBrand.DAL
         public bool? IsSync { get; set; }
 
         public virtual ApprovalStatu ApprovalStatu { get; set; }
-
         public virtual Receiving Receiving { get; set; }
-
         public virtual RequisitionDetail RequisitionDetail { get; set; }
         public virtual StockTransferDetail StockTransferDetail { get; set; }
+
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<StockTransferDetail> StockTransferDetails { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReturnedItem> ReturnedItems { get; set; }

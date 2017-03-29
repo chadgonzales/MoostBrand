@@ -153,6 +153,7 @@ namespace MoostBrand.Controllers
         }
         #endregion
 
+        #region JSON
         public ActionResult GenerateRefNumber(string id)
         {
             return Json(Generator(id), JsonRequestBehavior.AllowGet);
@@ -181,6 +182,9 @@ namespace MoostBrand.Controllers
                             });
             return Json(vendors, JsonRequestBehavior.AllowGet);
         }
+        #endregion
+
+
 
         // GET: PR
         [AccessChecker(Action = 1, ModuleID = 3)]
