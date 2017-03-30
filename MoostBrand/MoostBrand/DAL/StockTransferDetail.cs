@@ -16,11 +16,14 @@ namespace MoostBrand.DAL
             StockAdjustmentDetails = new HashSet<StockAdjustmentDetail>();
         }
 
+        [Key]
         public int ID { get; set; }
 
         public int? StockTransferID { get; set; }
 
         public int? RequisitionDetailID { get; set; }
+
+        public int? ReceivingDetailID { get; set; }
 
         public int? Quantity { get; set; }
 
@@ -30,11 +33,12 @@ namespace MoostBrand.DAL
 
         public bool? IsSync { get; set; }
 
+        public virtual StockTransfer StockTransfer { get; set; }
         public virtual ApprovalStatu ApprovalStatu { get; set; }
+        public virtual ReceivingDetail ReceivingDetail { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceivingDetail> ReceivingDetails { get; set; }
-
         public virtual RequisitionDetail RequisitionDetail { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -43,6 +47,5 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAdjustmentDetail> StockAdjustmentDetails { get; set; }
 
-        public virtual StockTransfer StockTransfer { get; set; }
     }
 }
