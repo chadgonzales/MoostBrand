@@ -11,12 +11,11 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public StockTransferDetail()
         {
-            ReceivingDetails = new HashSet<ReceivingDetail>();
-            ReturnedItems = new HashSet<ReturnedItem>();
-            StockAdjustmentDetails = new HashSet<StockAdjustmentDetail>();
+            this.ReturnedItems = new HashSet<ReturnedItem>();
+            this.StockAdjustmentDetails = new HashSet<StockAdjustmentDetail>();
         }
 
-        [Key]
+
         public int ID { get; set; }
 
         public int? StockTransferID { get; set; }
@@ -33,19 +32,14 @@ namespace MoostBrand.DAL
 
         public bool? IsSync { get; set; }
 
-        public virtual StockTransfer StockTransfer { get; set; }
         public virtual ApprovalStatu ApprovalStatu { get; set; }
         public virtual ReceivingDetail ReceivingDetail { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReceivingDetail> ReceivingDetails { get; set; }
-        public virtual RequisitionDetail RequisitionDetail { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReturnedItem> ReturnedItems { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAdjustmentDetail> StockAdjustmentDetails { get; set; }
-
+        public virtual StockTransfer StockTransfer { get; set; }
     }
 }
+
+

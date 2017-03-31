@@ -799,7 +799,7 @@ namespace MoostBrand.Controllers
             if (rd.AprovalStatusID == 1)
             {
                 //return RedirectToAction("PendingItems", new { id = rd.ReceivingID });
-                return RedirectToAction("Details", new { id = id });
+                return RedirectToAction("Details", new { id = rd.ReceivingID });
             }
             return RedirectToAction("ApprovedItems", new { id = rd.ReceivingID });
         }

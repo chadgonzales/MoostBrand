@@ -597,27 +597,27 @@ namespace MoostBrand.Controllers
                     entity.SaveChanges();
 
                     #region WAC                    
-                    var itm = entity.Items.Where(i => i.ID == item.RequisitionDetail.ItemID).FirstOrDefault();
-                    if (item.Quantity <= itm.Quantity)
-                    {
-                        var itmDetail = from s in entity.ItemDetail
-                                        where s.ItemID == itm.ID
-                                        select s;
+                    //var itm = entity.Items.Where(i => i.ID == item.RequisitionDetail.ItemID).FirstOrDefault();
+                    //if (item.Quantity <= itm.Quantity)
+                    //{
+                    //    var itmDetail = from s in entity.ItemDetail
+                    //                    where s.ItemID == itm.ID
+                    //                    select s;
 
-                        itm.Quantity -= item.Quantity;
+                    //    itm.Quantity -= item.Quantity;
 
-                        //decimal qtyCost = 0;
+                    //    //decimal qtyCost = 0;
 
-                        //foreach (var detail in itmDetail)
-                        //    qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
+                    //    //foreach (var detail in itmDetail)
+                    //    //    qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
 
-                        //itm.Price = Convert.ToDecimal((qtyCost) / itm.Quantity);
+                    //    //itm.Price = Convert.ToDecimal((qtyCost) / itm.Quantity);
 
-                        //WAC
+                    //    //WAC
 
-                        entity.Entry(itm).State = EntityState.Modified;
-                        entity.SaveChanges();
-                    }
+                    //    entity.Entry(itm).State = EntityState.Modified;
+                    //    entity.SaveChanges();
+                    //}
                     #endregion
 
                 }
@@ -668,9 +668,10 @@ namespace MoostBrand.Controllers
                             ID = ed.ID,
                             Description = ed.RequisitionDetail.Item.Description
                         });
+            
 
-            ViewBag.STid = id;
-            ViewBag.ReceivingID = new SelectList(items, "ID", "Description");
+            //ViewBag.STid = id;
+            ViewBag.ReceivingDetailID = new SelectList(items, "ID", "Description");
 
             return PartialView();
         }
@@ -678,29 +679,30 @@ namespace MoostBrand.Controllers
         // POST: StockTransfer/AddItemPartial/5
         [AccessChecker(Action = 2, ModuleID = 4)]
         [HttpPost]
-        public ActionResult AddItemPartial(int id, StockTransferDetail stocktransfer)
+        public ActionResult AddItemPartial(int id, StockTransferDetail stocktransferdetail)
         {
             try
             {
-                stocktransfer.StockTransferID = id;
-                stocktransfer.AprovalStatusID = 1; //submitted
+                stocktransferdetail.StockTransferID = id;
+                stocktransferdetail.AprovalStatusID = 1; //submitted
 
-                var receivingID = entity.StockTransfers.Find(stocktransfer.StockTransferID).ReceivingID;
+                //var receivingID = entity.StockTransfers.Find(stocktransferdetail.StockTransferID).ReceivingID;
+                //var receivingdetailID = entity.ReceivingDetails.Find(receivingID).ID;
 
-                var items = entity.ReceivingDetails
-                            .ToList()
-                            .FindAll(rd => rd.ReceivingID == receivingID && rd.AprovalStatusID == 2)
-                            .Select(ed => new
-                            {
-                                ID = ed.ID,
-                                Description = ed.RequisitionDetail.Item.Description
-                            }).FirstOrDefault();
+                //var items = entity.ReceivingDetails
+                //            .ToList()
+                //            .FindAll(rd => rd.ID == receivingdetailID && rd.AprovalStatusID == 2)
+                //            .Select(ed => new
+                //            {
+                //                ID = ed.ID,
+                //                Description = ed.RequisitionDetail.Item.Description
+                //            }).FirstOrDefault();
 
-                stocktransfer.ReceivingDetailID = items.ID;
+                //stocktransferdetail.ReceivingDetailID = items.ID;
 
-                
 
-                var st = entity.StockTransferDetails.Where(s => s.StockTransferID == stocktransfer.StockTransferID && s.ReceivingDetailID == stocktransfer.ReceivingDetailID).ToList();
+
+                var st = entity.StockTransferDetails.Where(s => s.StockTransferID == stocktransferdetail.StockTransferID && s.ReceivingDetailID == stocktransferdetail.ReceivingDetailID).ToList();
 
                 //var rd1 = entity.ReceivingDetails.Where(r => r.ReceivingID == rd.ReceivingID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
                 if (st.Count() > 0)
@@ -709,9 +711,9 @@ namespace MoostBrand.Controllers
                 }
                 else
                 {
-                    stocktransfer.IsSync = false;
+                    stocktransferdetail.IsSync = false;
 
-                    entity.StockTransferDetails.Add(stocktransfer);
+                    entity.StockTransferDetails.Add(stocktransferdetail);
                     entity.SaveChanges();
                 }
             }
