@@ -13,9 +13,9 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Receiving()
         {
-            StockTransfers = new HashSet<StockTransfer>();
-            ReceivingDetails = new HashSet<ReceivingDetail>();
-            StockAllocations = new HashSet<StockAllocation>();
+            this.ReceivingDetails = new HashSet<ReceivingDetail>();
+            this.StockAllocations = new HashSet<StockAllocation>();
+            this.StockTransfers = new HashSet<StockTransfer>();
         }
 
         public int ID { get; set; }
@@ -88,31 +88,19 @@ namespace MoostBrand.DAL
         public string Image { get; set; }
 
         public virtual ApprovalStatu ApprovalStatu { get; set; }
-
         public virtual Employee Employee { get; set; }
-
         public virtual Employee Employee1 { get; set; }
-
         public virtual Employee Employee2 { get; set; }
-
         public virtual Employee Employee3 { get; set; }
-
         public virtual Location Location { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceivingDetail> ReceivingDetails { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StockTransfer> StockTransfers { get; set; }
-
         public virtual ReceivingType ReceivingType { get; set; }
-
         public virtual Requisition Requisition { get; set; }
-
-        public virtual StockTransfer StockTransfer { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAllocation> StockAllocations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockTransfer> StockTransfers { get; set; }
 
         [Display(Name = "Upload Image")]
         [ValidateImage]

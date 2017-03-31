@@ -283,7 +283,7 @@ namespace MoostBrand.Controllers
                         .Select(ed => new
                         {
                             ID = ed.ID,
-                            Description = ed.StockTransferDetail.RequisitionDetail.Item.Description
+                            Description = ed.RequisitionDetail.Item.Description
                         });
 
             ViewBag.STAid = id;

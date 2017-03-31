@@ -367,12 +367,14 @@ namespace MoostBrand.Controllers
             {
                 var items = entity.StockTransferDetails
                         .ToList()
-                        .FindAll(rd => rd.AprovalStatusID == 2 && rd.StockTransfer.Requisition.RequisitionTypeID == ret.ReturnTypeID)
+                        .FindAll(rd => rd.AprovalStatusID == 2 && rd.StockTransfer.Receiving.ReceivingTypeID == ret.ReturnTypeID)
                         .Select(ed => new
                         {
                             ID = ed.ID,
-                            Description = ed.RequisitionDetail.Item.Description
+                            Description = ed.ReceivingDetail.RequisitionDetail.Item.Description
                         });
+
+
                 ViewBag.StockTransferDetailID = new SelectList(items, "ID", "Description");
             }
             else
@@ -383,7 +385,7 @@ namespace MoostBrand.Controllers
                         .Select(ed => new
                         {
                             ID = ed.ID,
-                            Description = ed.StockTransferDetail.RequisitionDetail.Item.Description
+                            Description = ed.RequisitionDetail.Item.Description
                         });
                 ViewBag.ReceivingDetailID = new SelectList(items, "ID", "Description");
             }

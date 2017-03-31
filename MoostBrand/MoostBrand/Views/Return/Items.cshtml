@@ -31,22 +31,36 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    @if (item.StockTransferDetailID != null)
+                    @if (item.ReceivingDetailID != null)
                     {
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.StockTransferDetail.RequisitionDetail.Item.Description)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.StockTransferDetail.StockTransfer.TransferID)
+                        </td>*@
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReceivingDetail.RequisitionDetail.Item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReceivingDetail.Receiving.ReceivingID)
                         </td>
                     }
                     else
                     {
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.ReceivingDetail.StockTransferDetail.RequisitionDetail.Item.Description)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ReceivingDetail.Receiving.ReceivingID)
+                        </td>*@
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StockTransferDetail.ReceivingDetail.RequisitionDetail.Item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StockTransferDetail.StockTransfer.TransferID)
                         </td>
                     }
                     <td>

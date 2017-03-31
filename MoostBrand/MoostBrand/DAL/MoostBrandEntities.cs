@@ -282,10 +282,10 @@ namespace MoostBrand.DAL
                 .WithRequired(e => e.ReceivingType)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Requisition>()
-                .HasMany(e => e.StockTransfers)
-                .WithRequired(e => e.Requisition)
-                .WillCascadeOnDelete(false);
+            //modelBuilder.Entity<Requisition>()
+            //    .HasMany(e => e.StockTransfers)
+            //    .WithRequired(e => e.Requisition)
+            //    .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Requisition>()
                 .HasMany(e => e.Receivings)
@@ -312,9 +312,9 @@ namespace MoostBrand.DAL
                 .WithOptional(e => e.StockAllocation)
                 .WillCascadeOnDelete();
 
-            modelBuilder.Entity<StockTransfer>()
-                .HasMany(e => e.Receivings)
-                .WithRequired(e => e.StockTransfer)
+            modelBuilder.Entity<Receiving>()
+                .HasMany(e => e.StockTransfers)
+                .WithRequired(e => e.Receiving)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Receiving>()
