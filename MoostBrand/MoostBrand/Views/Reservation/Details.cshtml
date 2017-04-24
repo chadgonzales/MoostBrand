@@ -186,14 +186,6 @@
 
         </div>
 
-
-        
-      
-         
-
-        
-
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-6">
                 @if (Convert.ToInt32(Session["sessionuid"]) == Model.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
@@ -227,7 +219,6 @@
             @Html.Action("PendingItems", "Reservation")
         }
 
-        @*@Html.Action("ViewHistoryPartial", "PR")*@
         <div class="panel-heading">
             <h4 class="panel-title">History</h4>
             <hr />
@@ -245,13 +236,16 @@
                         Quantity
                     </th>
                     <th>
-                        Remaining Balance
+                        In Stock
                     </th>
                     <th>
-                        Actual Balance
+                        Committed
                     </th>
                     <th>
-                        Variance
+                        Ordered
+                    </th>
+                    <th>
+                        Available
                     </th>
                     <th>
                         Previous Item
@@ -275,9 +269,18 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Quantity)
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InStock)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Committed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ordered)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Available)
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Item1.Description)
                         </td>
@@ -288,8 +291,6 @@
                 </tbody>
             }
         </table>
-
-
     </div>
 </div>
 
