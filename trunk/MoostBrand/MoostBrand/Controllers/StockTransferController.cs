@@ -753,6 +753,18 @@ namespace MoostBrand.Controllers
                 int presentQty = Convert.ToInt32(stocktransfer.Quantity);
                 int previousQty = Convert.ToInt32(sdetails.Quantity);
 
+                if(sdetails.ReceivingDetailID != stocktransfer.ReceivingDetailID || sdetails.Quantity != stocktransfer.Quantity)
+                {
+                    stocktransfer.PreviousItemID = sdetails.ReceivingDetailID;
+                    stocktransfer.PreviousQuantity = sdetails.Quantity;
+                }
+
+                sdetails.ReceivingDetailID = stocktransfer.ReceivingDetailID;
+                sdetails.Quantity = stocktransfer.Quantity;
+                sdetails.Remarks = stocktransfer.Remarks;
+                sdetails.PreviousItemID = stocktransfer.PreviousItemID;
+                sdetails.PreviousQuantity = stocktransfer.PreviousQuantity;
+
                 if ((presentQty != previousQty) && stocktransfer.AprovalStatusID == 2)
                 {
                     int itemID = Convert.ToInt32(entity.RequisitionDetails.Find(stocktransfer.RequisitionDetailID).ItemID);

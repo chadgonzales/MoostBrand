@@ -375,7 +375,7 @@ namespace MoostBrand.Controllers
                 ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", receiving.RequisitionID);
                 ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
                 ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
-                ViewBag.StockTransferID = new SelectList(entity.StockTransfers, "ID", "TransferID", receiving.StockTransferID);
+                //ViewBag.StockTransferID = new SelectList(entity.StockTransfers, "ID", "TransferID", receiving.StockTransferID);
                 var empList = from s in entity.Employees
                               select new
                               {
@@ -442,7 +442,7 @@ namespace MoostBrand.Controllers
             ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
-            ViewBag.StockTransferID = new SelectList(entity.StockTransfers, "ID", "TransferID", receiving.StockTransferID);
+            //ViewBag.StockTransferID = new SelectList(entity.StockTransfers, "ID", "TransferID", receiving.StockTransferID);
             var empList = from s in entity.Employees
                           select new
                           {
@@ -787,8 +787,21 @@ namespace MoostBrand.Controllers
             try
             {
                 rd.IsSync = false;
+                var prvreceivingDetail = entity.ReceivingDetails.Find(rd.ID);
+                if(prvreceivingDetail.RequisitionDetailID != rd.RequisitionDetailID || prvreceivingDetail.Quantity != rd.Quantity)
+                {
+                    rd.PreviousItemID = prvreceivingDetail.RequisitionDetailID;
+                    rd.PreviousQuantity = prvreceivingDetail.Quantity;
+                }
 
-                entity.Entry(rd).State = EntityState.Modified;
+                prvreceivingDetail.RequisitionDetailID = rd.RequisitionDetailID;
+                prvreceivingDetail.Quantity = rd.Quantity;
+                prvreceivingDetail.Remarks = rd.Remarks;
+                prvreceivingDetail.PreviousItemID = rd.PreviousItemID;
+                prvreceivingDetail.PreviousQuantity = rd.PreviousQuantity;
+                prvreceivingDetail.IsSync = false;
+
+                entity.Entry(prvreceivingDetail).State = EntityState.Modified;
                 entity.SaveChanges();
             }
             catch

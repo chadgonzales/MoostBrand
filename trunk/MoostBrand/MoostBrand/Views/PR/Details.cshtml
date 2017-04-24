@@ -297,13 +297,16 @@
                         Quantity
                     </th>
                     <th>
-                        Remaining Balance
+                        In Stock
                     </th>
                     <th>
-                        Actual Balance
+                        Committed
                     </th>
                     <th>
-                        Variance
+                        Ordered
+                    </th>
+                    <th>
+                        Available
                     </th>
                     <th>
                         Previous Item
@@ -327,9 +330,18 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Quantity)
                         </td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InStock)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Committed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Ordered)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Available)
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Item1.Description)
                         </td>
