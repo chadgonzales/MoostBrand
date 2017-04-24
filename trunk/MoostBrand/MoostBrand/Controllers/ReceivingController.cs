@@ -796,6 +796,7 @@ namespace MoostBrand.Controllers
 
                 prvreceivingDetail.RequisitionDetailID = rd.RequisitionDetailID;
                 prvreceivingDetail.Quantity = rd.Quantity;
+                prvreceivingDetail.InStock = rd.InStock;
                 prvreceivingDetail.Remarks = rd.Remarks;
                 prvreceivingDetail.PreviousItemID = rd.PreviousItemID;
                 prvreceivingDetail.PreviousQuantity = rd.PreviousQuantity;

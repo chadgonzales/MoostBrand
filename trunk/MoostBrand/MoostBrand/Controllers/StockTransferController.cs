@@ -761,6 +761,7 @@ namespace MoostBrand.Controllers
 
                 sdetails.ReceivingDetailID = stocktransfer.ReceivingDetailID;
                 sdetails.Quantity = stocktransfer.Quantity;
+                sdetails.InStock = stocktransfer.InStock;
                 sdetails.Remarks = stocktransfer.Remarks;
                 sdetails.PreviousItemID = stocktransfer.PreviousItemID;
                 sdetails.PreviousQuantity = stocktransfer.PreviousQuantity;
