@@ -905,7 +905,7 @@ namespace MoostBrand.Controllers
             }
 
             //return RedirectToAction("PendingItems", new { id = reqID });
-            return RedirectToAction("Details", new { id = id });
+            return RedirectToAction("Details", new { id = reqID });
         }
         #endregion
     }
