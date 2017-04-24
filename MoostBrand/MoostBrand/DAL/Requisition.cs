@@ -12,7 +12,7 @@ namespace MoostBrand.DAL
         public Requisition()
         {
             RequisitionDetails = new HashSet<RequisitionDetail>();
-            StockTransfers = new HashSet<StockTransfer>();
+            //StockTransfers = new HashSet<StockTransfer>();
             Receivings = new HashSet<Receiving>();
         }
 
@@ -118,8 +118,8 @@ namespace MoostBrand.DAL
 
         public virtual Vendor Vendor { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StockTransfer> StockTransfers { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<StockTransfer> StockTransfers { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

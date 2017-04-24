@@ -849,7 +849,7 @@ namespace MoostBrand.Controllers
                 //Robi
                 var prvrequiDetail = entity.RequisitionDetails.Find(rd.ID);
 
-                if (prvrequiDetail.ItemID != rd.ItemID)
+                if (prvrequiDetail.ItemID != rd.ItemID || prvrequiDetail.Quantity != rd.Quantity)
                 {
                     rd.PreviousItemID = prvrequiDetail.ItemID;
                     rd.PreviousQuantity = prvrequiDetail.Quantity;
@@ -867,14 +867,14 @@ namespace MoostBrand.Controllers
             }
             catch
             {
-                throw;
-                //TempData["PartialError"] = "There's an error.";
+                //throw;
+                TempData["PartialError"] = "There's an error.";
             }
 
             if(rd.AprovalStatusID == 1)
             {
                 //return RedirectToAction("PendingItems", new { id = rd.RequisitionID });
-                return RedirectToAction("Details", new { id = id });
+                return RedirectToAction("Details", new { id = rd.RequisitionID });
             }
             return RedirectToAction("ApprovedItems", new { id = rd.RequisitionID });        
         }

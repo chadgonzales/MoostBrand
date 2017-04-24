@@ -13,6 +13,7 @@ namespace MoostBrand.DAL
         {
             StockTransferDetails = new HashSet<StockTransferDetail>();
             ReceivingDetails = new HashSet<ReceivingDetail>();
+            ReceivingDetails1 = new HashSet<ReceivingDetail>();
         }
 
         public int ID { get; set; }
@@ -32,6 +33,10 @@ namespace MoostBrand.DAL
         public int? PreviousItemID { get; set; }
 
         public int? PreviousQuantity { get; set; }
+        public int? InStock { get; set; }
+        public int? Committed { get; set; }
+        public int? Ordered { get; set; }
+        public int? Available { get; set; }
 
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
@@ -46,6 +51,9 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReceivingDetail> ReceivingDetails { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReceivingDetail> ReceivingDetails1 { get; set; }
 
 
 

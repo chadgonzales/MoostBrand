@@ -282,15 +282,20 @@ namespace MoostBrand.DAL
                 .WithRequired(e => e.ReceivingType)
                 .WillCascadeOnDelete(false);
 
-            //modelBuilder.Entity<Requisition>()
-            //    .HasMany(e => e.StockTransfers)
-            //    .WithRequired(e => e.Requisition)
-            //    .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<Requisition>()
                 .HasMany(e => e.Receivings)
                 .WithRequired(e => e.Requisition)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<RequisitionDetail>()
+                .HasMany(e => e.ReceivingDetails1)
+                .WithOptional(e => e.RequisitionDetail1)
+                .HasForeignKey(e => e.PreviousItemID);
+
+            modelBuilder.Entity<ReceivingDetail>()
+                .HasMany(e => e.StockTransferDetails1)
+                .WithOptional(e => e.ReceivingDetail1)
+                .HasForeignKey(e => e.PreviousItemID);
 
             modelBuilder.Entity<RequisitionType>()
                 .HasMany(e => e.Requisitions)
@@ -311,11 +316,6 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.StockAllocationDetails)
                 .WithOptional(e => e.StockAllocation)
                 .WillCascadeOnDelete();
-
-            modelBuilder.Entity<Receiving>()
-                .HasMany(e => e.StockTransfers)
-                .WithRequired(e => e.Receiving)
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Receiving>()
                 .HasMany(e => e.StockTransfers)
