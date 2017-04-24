@@ -831,7 +831,7 @@ namespace MoostBrand.Controllers
                 TempData["PartialError"] = "There's an error.";
             }
             //return RedirectToAction("PendingItems", new { id = reqID });
-            return RedirectToAction("Details", new { id = id });
+            return RedirectToAction("Details", new { id = reqID });
         }
         #endregion
     }
