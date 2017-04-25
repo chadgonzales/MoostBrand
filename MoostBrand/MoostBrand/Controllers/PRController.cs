@@ -802,6 +802,25 @@ namespace MoostBrand.Controllers
                 rd.RequisitionID = id;
                 rd.AprovalStatusID = 1; //submitted
 
+                var com = entity.RequisitionDetails.Where(model => model.ItemID == rd.ItemID && model.AprovalStatusID == 2);
+                var committed = com.Sum(x => x.Quantity);
+                var pur = entity.RequisitionDetails.Where(model => model.Requisition.ReqTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == rd.ItemID);
+                var porder = pur.Sum(x => x.Quantity);
+
+                rd.Committed = committed;
+                rd.Ordered = porder;
+
+                if (committed == null)
+                {
+                    rd.Committed = 0;
+                }
+                if (porder == null)
+                {
+                    rd.Ordered = 0;
+                }
+
+                rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+
                 var rd1 = entity.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
 
                 if (rd1.Count() > 0)
