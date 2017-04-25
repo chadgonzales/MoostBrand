@@ -739,6 +739,25 @@ namespace MoostBrand.Controllers
                 rd.AprovalStatusID = 1; //submitted
 
                 //var rd1 = entity.ReceivingDetails.Where(r => r.ReceivingID == rd.ReceivingID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
+                
+                var com = entity.ReceivingDetails.Where(r => r.RequisitionDetailID == rd.RequisitionDetailID && r.AprovalStatusID == 2);
+                var committed = com.Sum(x => x.Quantity);
+                var pur = entity.ReceivingDetails.Where(s => s.Receiving.ReceivingTypeID == 1 && s.AprovalStatusID == 2 && s.RequisitionDetailID == rd.RequisitionDetailID);
+                var porder = pur.Sum(x => x.Quantity);
+
+                rd.Committed = committed;
+                rd.Ordered = porder;
+
+                if (committed == null)
+                {
+                    rd.Committed = 0;
+                }
+                if (porder == null)
+                {
+                    rd.Ordered = 0;
+                }
+
+                rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                 var rd1 = entity.ReceivingDetails.Where(s => s.ReceivingID == rd.ReceivingID && s.RequisitionDetailID == rd.RequisitionDetailID).ToList();
 
