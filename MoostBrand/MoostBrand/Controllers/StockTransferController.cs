@@ -812,28 +812,28 @@ namespace MoostBrand.Controllers
             if (stocktransfer.AprovalStatusID == 1)
             {
                 #region WAC    
-                var st = entity.StockTransferDetails.Where(s => s.ID == stocktransfer.ID).FirstOrDefault();
-                var req = entity.RequisitionDetails.Where(r => r.ID == stocktransfer.RequisitionDetailID).FirstOrDefault();
-                var itm = entity.Items.Where(i => i.ID == req.ItemID).FirstOrDefault();
-                if (st.Quantity <= itm.Quantity)
-                {
-                    var itmDetail = from s in entity.ItemDetail
-                                    where s.ItemID == itm.ID
-                                    select s;
+                //var st = entity.StockTransferDetails.Where(s => s.ID == stocktransfer.ID).FirstOrDefault();
+                //var req = entity.RequisitionDetails.Where(r => r.ID == stocktransfer.RequisitionDetailID).FirstOrDefault();
+                //var itm = entity.Items.Where(i => i.ID == req.ItemID).FirstOrDefault();
+                //if (st.Quantity <= itm.Quantity)
+                //{
+                //    var itmDetail = from s in entity.ItemDetail
+                //                    where s.ItemID == itm.ID
+                //                    select s;
 
-                    itm.Quantity += st.Quantity;
+                //    itm.Quantity += st.Quantity;
 
-                    decimal qtyCost = 0;
+                //    decimal qtyCost = 0;
 
-                    foreach (var detail in itmDetail)
-                        qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
+                //    foreach (var detail in itmDetail)
+                //        qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
 
-                    double WeightedAverageCost = Convert.ToDouble((qtyCost) / itm.Quantity);
-                    itm.WeightedAverageCost = Convert.ToDecimal(WeightedAverageCost);
+                //    double WeightedAverageCost = Convert.ToDouble((qtyCost) / itm.Quantity);
+                //    itm.WeightedAverageCost = Convert.ToDecimal(WeightedAverageCost);
 
-                    entity.Entry(itm).State = EntityState.Modified;
-                    entity.SaveChanges();
-                }
+                //    entity.Entry(itm).State = EntityState.Modified;
+                //    entity.SaveChanges();
+                //}
                 #endregion
                 //return RedirectToAction("PendingItems", new { id = stocktransfer.StockTransferID });
                 return RedirectToAction("Details", new { id = stocktransfer.StockTransferID });

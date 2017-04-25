@@ -858,12 +858,17 @@ namespace MoostBrand.Controllers
                 prvrequiDetail.ItemID = rd.ItemID;
                 prvrequiDetail.Quantity = rd.Quantity;
                 prvrequiDetail.InStock = rd.InStock;
+                prvrequiDetail.Ordered = rd.Ordered;
+                prvrequiDetail.Committed = rd.Committed;
+                prvrequiDetail.Available = rd.Available;
                 prvrequiDetail.Remarks = rd.Remarks;
                 prvrequiDetail.PreviousItemID = rd.PreviousItemID;
                 prvrequiDetail.PreviousQuantity = rd.PreviousQuantity;
                 prvrequiDetail.IsSync = false;
 
-                entity.Entry(prvrequiDetail).State = EntityState.Modified;
+
+                entity.Entry(prvrequiDetail).CurrentValues.SetValues(rd);
+                //entity.Entry(prvrequiDetail).State = EntityState.Modified;
                 entity.SaveChanges();
             }
             catch
@@ -872,12 +877,12 @@ namespace MoostBrand.Controllers
                 TempData["PartialError"] = "There's an error.";
             }
 
-            if(rd.AprovalStatusID == 1)
+            if (rd.AprovalStatusID == 1)
             {
                 //return RedirectToAction("PendingItems", new { id = rd.RequisitionID });
                 return RedirectToAction("Details", new { id = rd.RequisitionID });
             }
-            return RedirectToAction("ApprovedItems", new { id = rd.RequisitionID });        
+            return RedirectToAction("ApprovedItems", new { id = rd.RequisitionID });
         }
 
         // GET: PR/DeleteItemPartial/5
