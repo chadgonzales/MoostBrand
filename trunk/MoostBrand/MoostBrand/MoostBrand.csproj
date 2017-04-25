@@ -4524,7 +4524,7 @@
     <Content Include="Views\PR\PendingItems.cshtml" />
     <Content Include="Views\PR\DeniedItems.cshtml" />
     <Content Include="Views\PR\AddItemPartial.cshtml" />
-    <Content Include="Views\PR\EditItemPartial.cshtml" />
+    <Content Include="Views\Reservation\EditItemPartial.cshtml" />
     <Content Include="Views\PR\DeleteItemPartial.cshtml" />
     <Content Include="Views\StockTransfer\Edit.cshtml" />
     <Content Include="Views\StockTransfer\Details.cshtml" />
@@ -4592,6 +4592,7 @@
     <Content Include="Views\Reservation\ApprovedItems.cshtml" />
     <Content Include="Views\Reservation\DeniedItems.cshtml" />
     <Content Include="Views\Reservation\DeleteItemPartial.cshtml" />
+    <Content Include="Views\PR\EditItemPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
