@@ -627,8 +627,7 @@ namespace MoostBrand.Controllers
                             });
             return Json(items, JsonRequestBehavior.AllowGet);
         }
-
-
+        
         // GET: PR/DenyItemPartial/5
         public ActionResult DenyItemPartial(int id)
         {
@@ -669,13 +668,33 @@ namespace MoostBrand.Controllers
         {
             ViewBag.PRid = id;
             ViewBag.ItemID = new SelectList(db.Items, "ID", "Description");
-            var com = db.RequisitionDetails.Where(model => model.RequisitionID == id && model.AprovalStatusID == 2);
-            var committed = com.Sum(x => x.Quantity);
-            ViewBag.comm = committed;
 
             return PartialView();
         }
-        
+        public int getCommited(int itemID)
+        {
+            int c = 0;
+            var com = db.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2);
+            var committed = com.Sum(x => x.Quantity);
+            c = Convert.ToInt32(committed);
+            if (committed == null)
+            {
+                c = 0;
+            }
+            return c;
+        }
+        public int getPurchaseOrder(int itemID)
+        {
+            int po = 0;
+            var pur = db.RequisitionDetails.Where(model => model.Requisition.ReqTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itemID);
+            var porder = pur.Sum(x => x.Quantity);
+            po = Convert.ToInt32(porder);
+            if (porder == null)
+            {
+                po = 0;
+            }
+            return po;
+        }
         // POST: PR/AddItemPartial/5
         [HttpPost]
         public ActionResult AddItemPartial(int id, RequisitionDetail rd)
@@ -687,23 +706,12 @@ namespace MoostBrand.Controllers
                 // TODO: Add insert logic here
                 rd.RequisitionID = id;
                 rd.AprovalStatusID = 1; //submitted
+                
+                int com = getCommited(rd.ItemID);
+                rd.Committed = com;
 
-                var com = db.RequisitionDetails.Where(model => model.ItemID == itmID && model.AprovalStatusID == 2);
-                var committed = com.Sum(x=>x.Quantity);
-                var pur = db.RequisitionDetails.Where(model => model.Requisition.ReqTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID);
-                var porder = pur.Sum(x => x.Quantity);
-
-                rd.Committed = committed;
-                rd.Ordered = porder;
-
-                if (committed == null)
-                {
-                    rd.Committed = 0;
-                }
-                if (porder == null)
-                {
-                    rd.Ordered = 0;
-                }
+                int por = getPurchaseOrder(rd.ItemID);
+                rd.Ordered = por;
 
                 rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
                 var rd1 = db.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
