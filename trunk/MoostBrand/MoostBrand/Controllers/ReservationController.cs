@@ -739,12 +739,16 @@ namespace MoostBrand.Controllers
                 prvrequiDetail.ItemID = rd.ItemID;
                 prvrequiDetail.Quantity = rd.Quantity;
                 prvrequiDetail.InStock = rd.InStock;
+                prvrequiDetail.Ordered = rd.Ordered;
+                prvrequiDetail.Committed = rd.Committed;
+                prvrequiDetail.Available = rd.Available;
                 prvrequiDetail.Remarks = rd.Remarks;
                 prvrequiDetail.PreviousItemID = rd.PreviousItemID;
                 prvrequiDetail.PreviousQuantity = rd.PreviousQuantity;
                 prvrequiDetail.IsSync = false;
 
-                db.Entry(prvrequiDetail).State = EntityState.Modified;
+                db.Entry(prvrequiDetail).CurrentValues.SetValues(rd);
+                //db.Entry(prvrequiDetail).State = EntityState.Modified;
                 db.SaveChanges();
             }
             catch

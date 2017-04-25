@@ -802,7 +802,8 @@ namespace MoostBrand.Controllers
                 prvreceivingDetail.PreviousQuantity = rd.PreviousQuantity;
                 prvreceivingDetail.IsSync = false;
 
-                entity.Entry(prvreceivingDetail).State = EntityState.Modified;
+                entity.Entry(prvreceivingDetail).CurrentValues.SetValues(rd);
+                //entity.Entry(prvreceivingDetail).State = EntityState.Modified;
                 entity.SaveChanges();
             }
             catch
