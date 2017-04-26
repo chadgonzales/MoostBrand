@@ -740,24 +740,24 @@ namespace MoostBrand.Controllers
 
                 //var rd1 = entity.ReceivingDetails.Where(r => r.ReceivingID == rd.ReceivingID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
                 
-                var com = entity.ReceivingDetails.Where(r => r.RequisitionDetailID == rd.RequisitionDetailID && r.AprovalStatusID == 2);
-                var committed = com.Sum(x => x.Quantity);
-                var pur = entity.ReceivingDetails.Where(s => s.Receiving.ReceivingTypeID == 1 && s.AprovalStatusID == 2 && s.RequisitionDetailID == rd.RequisitionDetailID);
-                var porder = pur.Sum(x => x.Quantity);
+                //var com = entity.ReceivingDetails.Where(r => r.RequisitionDetailID == rd.RequisitionDetailID && r.AprovalStatusID == 2);
+                //var committed = com.Sum(x => x.Quantity);
+                //var pur = entity.ReceivingDetails.Where(s => s.Receiving.ReceivingTypeID == 1 && s.AprovalStatusID == 2 && s.RequisitionDetailID == rd.RequisitionDetailID);
+                //var porder = pur.Sum(x => x.Quantity);
 
-                rd.Committed = committed;
-                rd.Ordered = porder;
+                //rd.Committed = committed;
+                //rd.Ordered = porder;
 
-                if (committed == null)
-                {
-                    rd.Committed = 0;
-                }
-                if (porder == null)
-                {
-                    rd.Ordered = 0;
-                }
+                //if (committed == null)
+                //{
+                //    rd.Committed = 0;
+                //}
+                //if (porder == null)
+                //{
+                //    rd.Ordered = 0;
+                //}
 
-                rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                 var rd1 = entity.ReceivingDetails.Where(s => s.ReceivingID == rd.ReceivingID && s.RequisitionDetailID == rd.RequisitionDetailID).ToList();
 
@@ -868,5 +868,24 @@ namespace MoostBrand.Controllers
             return RedirectToAction("Details", new { id = reqID });
         }
         #endregion
+
+        public ActionResult DisplayComputations(int? reqID)
+        {
+            var itmID = entity.RequisitionDetails.Find(reqID).ItemID;
+            var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID);
+            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID);
+
+
+            var computations = entity.RequisitionDetails
+                               .Where(x => x.ItemID == itmID && x.AprovalStatusID == 2)
+                               .Select(x => new
+                               {
+                                   Committed = com.Sum(y => y.Quantity) ?? 0,
+                                   Ordered = pur.Sum(z => z.Quantity) ?? 0
+                               })
+                               .FirstOrDefault();
+
+            return Json(computations, JsonRequestBehavior.AllowGet);
+        }
     }
 }

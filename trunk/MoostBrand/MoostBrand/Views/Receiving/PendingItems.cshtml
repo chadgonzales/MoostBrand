@@ -122,6 +122,29 @@
 
                 $('#AddItemWindow').modal('show');
 
+                $("#RequisitionDetailID").change(function () {
+                    var val = $("#RequisitionDetailID option:selected").val();
+
+                    $.ajax({
+                        url: '@Url.Action("DisplayComputations", "Receiving")',
+                        data: { reqID: val },
+                        type: 'get',
+                        success: function (data) {
+                            $("#Committed").val(data.Committed);
+                            $("#Ordered").val(data.Ordered);
+                        }
+                    })
+                });
+
+                $('#InStock').keyup(function () {
+                    var ordered = parseInt($('#Ordered').val());
+                    var committed = parseInt($('#Committed').val());
+                    var instock = parseInt($(this).val());
+                    console.log(instock);
+
+                    $('#Available').val((instock + ordered) - committed);
+                })
+
                 // add class form-control to textarea and select
                 $("input[disabled]").addClass("form-control");
                 $("textarea").addClass("form-control");
