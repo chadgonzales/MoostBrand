@@ -100,8 +100,13 @@
                 $("#uom").html('');
             }
         });
-
-        
+        var is = $("#InStock").val();
+        var op = $("#Ordered").val();
+        var com = $("#Committed").val();
+        var sum = is + op - com;
+        $("#InStock").focusout(function () {
+            $("#Available").val(sum);
+        });
     })
 </script>
 <div class="panel-heading">
