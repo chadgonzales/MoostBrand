@@ -119,8 +119,38 @@
             var url = $('#AddItemWindow').data('url');
             $.get(url, function (data) {
                 $('#ShowDialogAdd').html(data);
-
                 $('#AddItemWindow').modal('show');
+
+
+                $("#ReceivingDetailID").change(function () {
+                    var val = $("#ReceivingDetailID option:selected").val();
+                    @*$.get('@Url.Action("DisplayComputations", "StockTransfer")' , itmID, function (data) {
+                        $("#Committed").val(data.Committed);
+                        $("#Ordered").val(data.Ordered);
+                        $("#Available").val("Sum");
+                    });*@
+
+                    $.ajax({
+                        url: '@Url.Action("DisplayComputations", "StockTransfer")',
+                        data: { recID: val },
+                        type: 'get',
+                        success: function (data) {
+                            $("#Committed").val(data.Committed);
+                            $("#Ordered").val(data.Ordered);
+                        }
+                    })
+                });
+
+                $('#InStock').keyup(function () {
+                    var ordered = parseInt($('#Ordered').val());
+                    var committed = parseInt($('#Committed').val());
+                    var instock = parseInt($(this).val());
+                    console.log(instock);
+
+                    $('#Available').val((instock + ordered) - committed);
+                })
+
+
 
                 // add class form-control to textarea and select
                 $("input[disabled]").addClass("form-control");
@@ -129,6 +159,9 @@
             });
         //});
     }
+
+
+
 
     $('#ShowPopop').click(function () {
 

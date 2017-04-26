@@ -659,10 +659,10 @@ namespace MoostBrand.Controllers
         public ActionResult AddItemPartial(int id)
         {
 
-            int reqID = entity.StockTransfers.Find(id).ReceivingID;
+            int recID = entity.StockTransfers.Find(id).ReceivingID;
             var items = entity.ReceivingDetails
                         .ToList()
-                        .FindAll(rd => rd.ReceivingID == reqID && rd.AprovalStatusID == 2)
+                        .FindAll(rd => rd.ReceivingID == recID && rd.AprovalStatusID == 2)
                         .Select(ed => new
                         {
                             ID = ed.ID,
@@ -673,6 +673,12 @@ namespace MoostBrand.Controllers
             //ViewBag.STid = id;
             ViewBag.ReceivingDetailID = new SelectList(items, "ID", "Description");
 
+            int reqID = entity.StockTransfers.Find(id).RequisitionID;
+
+            //var com = entity.RequisitionDetails.Where(model => model.RequisitionID == reqID && model.AprovalStatusID == 2);
+            //var committed = com.Sum(x => x.Quantity);
+            //ViewBag.comm = committed;
+
             return PartialView();
         }
 
@@ -680,9 +686,10 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 2, ModuleID = 4)]
         [HttpPost]
         public ActionResult AddItemPartial(int id, StockTransferDetail stocktransferdetail)
-        {
+        {           
             try
             {
+
                 stocktransferdetail.StockTransferID = id;
                 stocktransferdetail.AprovalStatusID = 1; //submitted
 
@@ -699,6 +706,21 @@ namespace MoostBrand.Controllers
                 //            }).FirstOrDefault();
 
                 //stocktransferdetail.ReceivingDetailID = items.ID;
+
+
+                //var reqID = entity.ReceivingDetails.Find(stocktransferdetail.ReceivingDetailID).RequisitionDetailID;
+                //var itmID = entity.RequisitionDetails.Find(reqID).ItemID;
+
+
+                //var com = entity.RequisitionDetails.Where(model => model.ItemID == itmID && model.AprovalStatusID == 2);
+                //var committed = com.Sum(x => x.Quantity) ?? 0;
+                //var pur = entity.RequisitionDetails.Where(model => model.Requisition.ReqTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID);
+                //var porder = pur.Sum(x => x.Quantity) ?? 0;
+
+                //stocktransferdetail.Committed = committed;
+                //stocktransferdetail.Ordered = porder;
+
+                //stocktransferdetail.Available = (stocktransferdetail.InStock + stocktransferdetail.Ordered) - stocktransferdetail.Committed;
 
 
 
@@ -729,6 +751,8 @@ namespace MoostBrand.Controllers
             //return RedirectToAction("PendingItems", new { id = id });
             return RedirectToAction("Details", new { id = id });
         }
+
+
 
         // GET: StockTransfer/EditItemPartial/5
         [AccessChecker(Action = 2, ModuleID = 4)]
@@ -903,5 +927,26 @@ namespace MoostBrand.Controllers
         {
             return View(entity.StockTransferDetails.Find(id));
         }
+
+
+        public ActionResult DisplayComputations(int? recID)
+        {
+            var itmID = entity.ReceivingDetails.Find(recID).RequisitionDetail.ItemID;
+            var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID);
+            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID);
+
+
+            var computations = entity.RequisitionDetails
+                               .Where(x => x.ItemID == itmID && x.AprovalStatusID == 2)
+                               .Select(x => new
+                               {
+                                   Committed = com.Sum(y => y.Quantity) ?? 0,
+                                   Ordered = pur.Sum(z => z.Quantity) ?? 0
+                               })
+                               .FirstOrDefault();
+
+            return Json(computations, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
