@@ -747,7 +747,51 @@ namespace MoostBrand.Controllers
             return Json(items, JsonRequestBehavior.AllowGet);
         }
 
-
+        [HttpPost]
+        public JsonResult GetCommitted(int ItemID)
+        {
+            //Available = In Stock + Ordered – Committed
+            var num = ItemID;
+            return Json(num, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult getCommit(int ItemID)
+        {
+            var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2);
+            var total = com.Sum(x => x.Quantity);
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult getPO(int ItemID)
+        {
+            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == ItemID);
+            var total = pur.Sum(x => x.Quantity);
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+        public int getCommited(int itemID)
+        {
+            int c = 0;
+            var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
+            var committed = com.Sum(x => x.Quantity);
+            c = Convert.ToInt32(committed);
+            if (committed == null)
+            {
+                c = 0;
+            }
+            return c;
+        }
+        public int getPurchaseOrder(int itemID)
+        {
+            int po = 0;
+            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itemID);
+            var porder = pur.Sum(x => x.Quantity);
+            po = Convert.ToInt32(porder);
+            if (porder == null)
+            {
+                po = 0;
+            }
+            return po;
+        }
         // GET: PR/DenyItemPartial/5
         public ActionResult DenyItemPartial(int id)
         {
@@ -802,22 +846,11 @@ namespace MoostBrand.Controllers
                 rd.RequisitionID = id;
                 rd.AprovalStatusID = 1; //submitted
 
-                var com = entity.RequisitionDetails.Where(model => model.ItemID == rd.ItemID && model.AprovalStatusID == 2);
-                var committed = com.Sum(x => x.Quantity);
-                var pur = entity.RequisitionDetails.Where(model => model.Requisition.ReqTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == rd.ItemID);
-                var porder = pur.Sum(x => x.Quantity);
+                int com = getCommited(rd.ItemID);
+                rd.Committed = com;
 
-                rd.Committed = committed;
-                rd.Ordered = porder;
-
-                if (committed == null)
-                {
-                    rd.Committed = 0;
-                }
-                if (porder == null)
-                {
-                    rd.Ordered = 0;
-                }
+                int por = getPurchaseOrder(rd.ItemID);
+                rd.Ordered = por;
 
                 rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
