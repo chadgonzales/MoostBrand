@@ -8,6 +8,31 @@
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script>
     $(document).ajaxSuccess(function () {
+        $("#itemsearch").focusout(function () {
+            var itmID = $("#ItemID").val();
+            $.ajax({
+                url: '@Url.Action("getCommit","PR")',
+                type: "POST",
+                dataType: "json",
+                data: { ItemID: itmID },
+                success: function (data) {
+                    $("#Committed").val(data);
+                }
+            });
+        });
+        $("#itemsearch").focusout(function () {
+            var itmID = $("#ItemID").val();
+            $.ajax({
+                url: '@Url.Action("getPO", "PR")',
+                type: "POST",
+                dataType: "json",
+                data: { ItemID: itmID },
+                success: function (data) {
+                    $("#Ordered").val(data);
+                }
+            });
+        });
+
         $("#catsearch").autocomplete({
             source: function (request, response) {
                 $.ajax({
@@ -72,6 +97,13 @@
                 $('#ItemID').removeAttr('value');
                 $("#uom").html('');
             }
+        });
+        var is = $("#InStock").val();
+        var op = $("#Ordered").val();
+        var com = $("#Committed").val();
+        var sum = is + op - com;
+        $("#InStock").focusout(function () {
+            $("#Available").val(sum);
         });
     })
 </script>
