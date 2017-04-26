@@ -602,7 +602,8 @@ namespace MoostBrand.Controllers
             int pageNumber = (page ?? 1);
             return PartialView(prs.ToPagedList(pageNumber, pageSize));
         }
-
+        
+        
         [HttpPost]
         public JsonResult GetCategories(string name)
         {
@@ -661,20 +662,31 @@ namespace MoostBrand.Controllers
 
             return RedirectToAction("Index");
         }
-
-
-        // GET: PR/AddItemPartial/5
-        public ActionResult AddItemPartial(int id)
+        [HttpPost]
+        public JsonResult GetCommitted(int ItemID)
         {
-            ViewBag.PRid = id;
-            ViewBag.ItemID = new SelectList(db.Items, "ID", "Description");
-
-            return PartialView();
+            //Available = In Stock + Ordered – Committed
+            var num = ItemID;
+            return Json(num, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult getCommit(int ItemID)
+        {
+            var com = db.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2);
+            var total = com.Sum(x => x.Quantity);
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult getPO(int ItemID)
+        {
+            var pur = db.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == ItemID);
+            var total = pur.Sum(x => x.Quantity);
+            return Json(total, JsonRequestBehavior.AllowGet);
         }
         public int getCommited(int itemID)
         {
             int c = 0;
-            var com = db.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2);
+            var com = db.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -686,7 +698,7 @@ namespace MoostBrand.Controllers
         public int getPurchaseOrder(int itemID)
         {
             int po = 0;
-            var pur = db.RequisitionDetails.Where(model => model.Requisition.ReqTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itemID);
+            var pur = db.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itemID);
             var porder = pur.Sum(x => x.Quantity);
             po = Convert.ToInt32(porder);
             if (porder == null)
@@ -695,6 +707,15 @@ namespace MoostBrand.Controllers
             }
             return po;
         }
+        // GET: PR/AddItemPartial/5
+        public ActionResult AddItemPartial(int id)
+        {
+            ViewBag.PRid = id;
+            ViewBag.ItemID = new SelectList(db.Items, "ID", "Description");
+
+            return PartialView();
+        }
+        
         // POST: PR/AddItemPartial/5
         [HttpPost]
         public ActionResult AddItemPartial(int id, RequisitionDetail rd)
@@ -707,13 +728,14 @@ namespace MoostBrand.Controllers
                 rd.RequisitionID = id;
                 rd.AprovalStatusID = 1; //submitted
                 
-                int com = getCommited(rd.ItemID);
+                int com = getCommited(itmID);
                 rd.Committed = com;
 
-                int por = getPurchaseOrder(rd.ItemID);
+                int por = getPurchaseOrder(itmID);
                 rd.Ordered = por;
 
                 rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+
                 var rd1 = db.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
 
                 if (rd1.Count() > 0)

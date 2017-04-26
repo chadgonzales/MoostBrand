@@ -27,6 +27,7 @@
                     <div class="col-md-8">
                         @Html.TextBox("itemsearch", ViewBag.ItemName as string, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ItemID, "", new { @class = "text-danger" })
+                        
                     </div>
                 </div>
             </div>
