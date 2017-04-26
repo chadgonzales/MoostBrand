@@ -1,5 +1,4 @@
 ﻿@model PagedList.IPagedList<MoostBrand.DAL.RequisitionDetail>
-
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
@@ -9,6 +8,32 @@
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script>
     $(document).ajaxSuccess(function () {
+        $("#itemsearch").focusout(function () {
+            var itmID = $("#ItemID").val();
+            $.ajax({
+                url: '@Url.Action("getCommit","Reservation")',
+                type: "POST",
+                dataType: "json",
+                data: { ItemID: itmID },
+                success: function (data)
+                {
+                    $("#Committed").val(data);
+                }
+            });
+        });
+        $("#itemsearch").focusout(function () {
+            var itmID = $("#ItemID").val();
+            $.ajax({
+                url: '@Url.Action("getPO", "Reservation")',
+                type: "POST",
+                dataType: "json",
+                data: { ItemID: itmID },
+                success: function (data) {
+                    $("#Ordered").val(data);
+                }
+            });
+        });
+
         $("#catsearch").autocomplete({
             source: function (request, response) {
                 $.ajax({
@@ -36,6 +61,7 @@
             },
 
         });
+
         $("#catsearch").autocomplete("option", "appendTo", "#modalCat");
         $("#itemsearch").autocomplete({
             source: function (request, response) {
@@ -74,6 +100,8 @@
                 $("#uom").html('');
             }
         });
+
+        
     })
 </script>
 <div class="panel-heading">
