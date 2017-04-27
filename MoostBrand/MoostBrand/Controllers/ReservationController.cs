@@ -531,27 +531,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: PR/ApproveItem/5
-        [AccessChecker(Action = 1, ModuleID = 3)]
-        public ActionResult ApproveItem(int id, int itemID)
-        {
-            try
-            {
-                var item = db.RequisitionDetails.Find(itemID);
-                if (item != null)
-                {
-                    item.AprovalStatusID = 2;
-                    item.IsSync = false;
-
-                    db.Entry(item).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-            }
-            catch
-            {
-
-            }
-            return RedirectToAction("PendingItems", "Customer", new { id = id });
-        }
+       
 
         // POST: PR/DenyItem/5
         [AccessChecker(Action = 1, ModuleID = 3)]
@@ -663,13 +643,6 @@ namespace MoostBrand.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public JsonResult GetCommitted(int ItemID)
-        {
-            //Available = In Stock + Ordered – Committed
-            var num = ItemID;
-            return Json(num, JsonRequestBehavior.AllowGet);
-        }
-        [HttpPost]
         public JsonResult getCommit(int ItemID)
         {
             var com = db.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2);
@@ -682,6 +655,36 @@ namespace MoostBrand.Controllers
             var pur = db.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == ItemID);
             var total = pur.Sum(x => x.Quantity);
             return Json(total, JsonRequestBehavior.AllowGet);
+        }
+        [AccessChecker(Action = 1, ModuleID = 3)]
+        public ActionResult ApproveItem(int id, int itemID)
+        {
+            try
+            {
+                var item = db.RequisitionDetails.Find(itemID);
+                if (item != null)
+                {
+                    int com = getCommited(item.ItemID);
+                    item.Committed = com + item.Quantity;
+
+                    int po = getPurchaseOrder(item.ItemID);
+                    item.Ordered = po + item.Ordered;
+
+                    //Available = In Stock + Ordered – Committed
+                    int avail = (Convert.ToInt32(item.InStock) + Convert.ToInt32(item.Ordered)) - Convert.ToInt32(item.Committed);
+                    item.Available = avail;
+
+                    item.AprovalStatusID = 2;
+                    item.IsSync = false;
+                    db.Entry(item).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+            catch
+            {
+
+            }
+            return RedirectToAction("PendingItems", "Reservation", new { id = id });
         }
         public int getCommited(int itemID)
         {
