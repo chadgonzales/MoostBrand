@@ -284,7 +284,7 @@
         location.reload();
     }
     function Approve(id, itemID){
-        var url = '@Url.Action("ApproveItem", "PR")/' + id;
+        var url = '@Url.Action("ApproveItem", "Reservation")/' + id;
         $.post(url, {id: id, itemID : itemID }, ReloadFunction);
     }
     function Deny(id, itemID){
