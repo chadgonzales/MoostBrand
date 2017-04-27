@@ -657,6 +657,16 @@ namespace MoostBrand.Controllers
                 var item = entity.RequisitionDetails.Find(itemID);
                 if(item != null)
                 {
+                    int com = getCommited(item.ItemID);
+                    item.Committed = com + item.Quantity;
+
+                    int po = getPurchaseOrder(item.ItemID);
+                    item.Ordered = po + item.Ordered;
+
+                    //Available = In Stock + Ordered – Committed
+                    int avail = (Convert.ToInt32(item.InStock) + Convert.ToInt32(item.Ordered)) - Convert.ToInt32(item.Committed);
+                    item.Available = avail;
+
                     item.AprovalStatusID = 2;
                     item.IsSync = false;
 

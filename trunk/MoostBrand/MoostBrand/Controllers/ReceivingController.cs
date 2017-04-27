@@ -334,6 +334,7 @@ namespace MoostBrand.Controllers
                 }
             }
 
+
             #region DROPDOWNS
 
             ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
@@ -346,7 +347,7 @@ namespace MoostBrand.Controllers
                               FullName = s.FirstName + " " + s.LastName
                           };
             //new SelectList((), "ID", "FullName");
-            //ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", receiving.EncodedBy);
+            ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", receiving.EncodedBy);
             ViewBag.CheckedBy = new SelectList(empList, "ID", "FullName", receiving.CheckedBy);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", receiving.ReceivedBy);
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", receiving.ApprovalStatus);
