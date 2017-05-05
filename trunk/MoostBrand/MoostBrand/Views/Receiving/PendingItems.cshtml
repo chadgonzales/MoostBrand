@@ -4,6 +4,52 @@
 @{
     ViewBag.Title = "Pending Items";
 }
+<script>
+    $(document).ajaxSuccess(function () {
+        $("#RequisitionDetailID").focusout(function () {
+            var itmID = $("#ItemID").val();
+            $.ajax({
+                url: '@Url.Action("getCommit","PR")',
+                type: "POST",
+                dataType: "json",
+                data: { ItemID: itmID },
+                success: function (data) {
+                    $("#Committed").val(data);
+                }
+            });
+        });
+        $("#RequisitionDetailID").focusout(function () {
+            var itmID = $("#ItemID").val();
+            $.ajax({
+                url: '@Url.Action("getPO", "PR")',
+                type: "POST",
+                dataType: "json",
+                data: { ItemID: itmID },
+                success: function (data) {
+                    $("#Ordered").val(data);
+                }
+            });
+        });
+
+        var is = $("#InStock").val();
+        var op = $("#Ordered").val();
+        var com = $("#Committed").val();
+        //var sum = is + op - com;
+        $("#InStock").focusout(function () {
+            var stock = Number($(this).val());
+            var ordered = Number($("#Ordered").val());
+            var committed = Number($("#Committed").val());
+            //console.log(stock + ", " + ordered + ", " + committed);
+            var result = stock + ordered - committed;
+            console.log(result);
+            $("#Available").val(result);
+            //$("#Available").val(sum);
+        });
+    })
+</script>
+
+
+
 <div class="panel-heading">
     <h4 class="panel-title">Pending Items</h4>
     <hr />
@@ -119,6 +165,17 @@
             var url = $('#AddItemWindow').data('url');
             $.get(url, function (data) {
                 $('#ShowDialogAdd').html(data);
+
+                var addItemPartial = $("#addItemPartial");
+                addItemPartial.submit(function (e) {
+                    var ordered = $("#Ordered");
+                    var committed = $("#Committed");
+                    var available = $("#Available");
+                    ordered.prop('disabled', false);
+                    committed.prop('disabled', false);
+                    available.prop('disabled', false);
+                    return true;
+                });
 
                 $('#AddItemWindow').modal('show');
 

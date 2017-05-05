@@ -6,8 +6,8 @@
         </button>
         <h4 class="modal-title">Add Item</h4>
     </div>
-    @using (Html.BeginForm())
-            {
+    @using (Html.BeginForm("AddItemPartial", "Receiving", FormMethod.Post, new { id = "addItemPartial" }))
+    {
         <div class="modal-body">
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })

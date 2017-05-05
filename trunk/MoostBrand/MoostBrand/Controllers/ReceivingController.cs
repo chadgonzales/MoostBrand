@@ -333,6 +333,12 @@ namespace MoostBrand.Controllers
                     ModelState.AddModelError("", "There's an error.");
                 }
             }
+            else
+            {
+                string messages = string.Join("; ", ModelState.Values
+                                                        .SelectMany(x => x.Errors)
+                                                        .Select(x => x.ErrorMessage));
+            }
 
 
             #region DROPDOWNS
@@ -600,6 +606,52 @@ namespace MoostBrand.Controllers
             return Json(rd, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult GetCommitted(int ItemID)
+        {
+            //Available = In Stock + Ordered – Committed
+            var num = ItemID;
+            return Json(num, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult getCommit(int ItemID)
+        {
+            var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2);
+            var total = com.Sum(x => x.Quantity);
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult getPO(int ItemID)
+        {
+            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == ItemID);
+            var total = pur.Sum(x => x.Quantity);
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+        public int getCommited(int itemID)
+        {
+            int c = 0;
+            var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
+            var committed = com.Sum(x => x.Quantity);
+            c = Convert.ToInt32(committed);
+            if (committed == null)
+            {
+                c = 0;
+            }
+            return c;
+        }
+        public int getPurchaseOrder(int itemID)
+        {
+            int po = 0;
+            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itemID);
+            var porder = pur.Sum(x => x.Quantity);
+            po = Convert.ToInt32(porder);
+            if (porder == null)
+            {
+                po = 0;
+            }
+            return po;
+        }
+
         // GET: Receiving/PendingItems/5
         [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult PendingItems(int id, int? page)
@@ -655,6 +707,17 @@ namespace MoostBrand.Controllers
                 var item = entity.ReceivingDetails.Find(itemID);
                 if (item != null)
                 {
+
+                    //int com = getCommited(itemID);
+                    //item.Committed = com + item.Quantity;
+
+                    //int po = getPurchaseOrder(itemID);
+                    //item.Ordered = po + item.Ordered;
+
+                    ////Available = In Stock + Ordered – Committed
+                    //int avail = (Convert.ToInt32(item.InStock) + Convert.ToInt32(item.Ordered)) - Convert.ToInt32(item.Committed);
+                    //item.Available = avail;
+
                     item.AprovalStatusID = 2;
                     item.IsSync = false;
 
@@ -740,27 +803,16 @@ namespace MoostBrand.Controllers
                 rd.AprovalStatusID = 1; //submitted
 
                 //var rd1 = entity.ReceivingDetails.Where(r => r.ReceivingID == rd.ReceivingID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
-                
-                //var com = entity.ReceivingDetails.Where(r => r.RequisitionDetailID == rd.RequisitionDetailID && r.AprovalStatusID == 2);
-                //var committed = com.Sum(x => x.Quantity);
-                //var pur = entity.ReceivingDetails.Where(s => s.Receiving.ReceivingTypeID == 1 && s.AprovalStatusID == 2 && s.RequisitionDetailID == rd.RequisitionDetailID);
-                //var porder = pur.Sum(x => x.Quantity);
-
-                //rd.Committed = committed;
-                //rd.Ordered = porder;
-
-                //if (committed == null)
-                //{
-                //    rd.Committed = 0;
-                //}
-                //if (porder == null)
-                //{
-                //    rd.Ordered = 0;
-                //}
-
-                //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                 var rd1 = entity.ReceivingDetails.Where(s => s.ReceivingID == rd.ReceivingID && s.RequisitionDetailID == rd.RequisitionDetailID).ToList();
+
+                //int com = getCommited(Convert.ToInt32(rd.RequisitionDetailID));
+                //rd.Committed = com;
+
+                //int por = getPurchaseOrder(Convert.ToInt32(rd.RequisitionDetailID));
+                //rd.Ordered = por;
+
+                //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                 if (rd1.Count() > 0)
                 {

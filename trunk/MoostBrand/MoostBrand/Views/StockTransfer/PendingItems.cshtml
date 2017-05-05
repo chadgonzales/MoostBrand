@@ -121,6 +121,17 @@
                 $('#ShowDialogAdd').html(data);
                 $('#AddItemWindow').modal('show');
 
+                var addItemPartial = $("#addItemPartial");
+                addItemPartial.submit(function (e) {
+                    var ordered = $("#Ordered");
+                    var committed = $("#Committed");
+                    var available = $("#Available");
+                    ordered.prop('disabled', false);
+                    committed.prop('disabled', false);
+                    available.prop('disabled', false);
+                    return true;
+                });
+
 
                 $("#ReceivingDetailID").change(function () {
                     var val = $("#ReceivingDetailID option:selected").val();
