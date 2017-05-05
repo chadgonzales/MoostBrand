@@ -809,12 +809,13 @@ namespace MoostBrand.Controllers
             }
             catch
             {
-                throw;
-                //TempData["PartialError"] = "There's an error.";
+                //throw;
+                TempData["PartialError"] = "There's an error.";
             }
 
             if (rd.AprovalStatusID == 1)
             {
+                
                 return RedirectToAction("PendingItems", new { id = rd.RequisitionID });
             }
             return RedirectToAction("ApprovedItems", new { id = rd.RequisitionID });
