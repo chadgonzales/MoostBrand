@@ -32,7 +32,8 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                    @*@Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.TextBox("Date", (string)ViewBag.Date)
                     @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -80,8 +81,17 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.PostedDate, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.PostedDate, new { htmlAttributes = new { @class = "form-control"}})
+                    @*@Html.EditorFor(model => model.PostedDate, new { htmlAttributes = new { @class = "form-control"}})*@
+                    @Html.TextBox("PostedDate", (string)ViewBag.PostedDate)
                     @Html.ValidationMessageFor(model => model.PostedDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Reference, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Reference, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Reference, "", new { @class = "text-danger" })
                 </div>
             </div>
 

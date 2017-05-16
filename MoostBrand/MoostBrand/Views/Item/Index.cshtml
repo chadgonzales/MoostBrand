@@ -56,6 +56,9 @@
                         Sub Categories Type
                     </th>
                     <th>
+                        Year
+                    </th>
+                    <th>
                         Brand
                     </th>
                     <th>
@@ -67,12 +70,12 @@
                     <th>
                         Unit Of Measure
                     </th>
-                    <th>
+                    @*<th>
                         Minimum Stock
                     </th>
                     <th>
                         Maximum Stock
-                    </th>
+                    </th>*@
                     <th>
                         Quantity
                     </th>
@@ -105,6 +108,9 @@
                             @Html.DisplayFor(modelItem => item.SubCategoriesType.Description)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.Year)
+                        </td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.Brand.Description)
                         </td>
                         <td>
@@ -116,12 +122,12 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.UnitOfMeasurement.Description)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.MinimumStock)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.MaximumStock)
-                        </td>
+                        </td>*@
                         <td>
                             @Html.DisplayFor(modelItem => item.Quantity)
                         </td>

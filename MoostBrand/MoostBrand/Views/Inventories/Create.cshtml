@@ -1,0 +1,199 @@
+﻿@model MoostBrand.DAL.Inventory
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@section Scripts{
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script>
+    $(function () {
+        var select = [];
+        var itemcode = $("#itemcode");
+        var action = "@Url.Action("GetItems")";
+        itemcode.autocomplete({
+            source: function (request, response) {
+                $.get(action, { name: request.term }, function (results) {
+                    response($.map(results, function (item) {
+                        return {
+                            id: item.ID,
+                            label: item.Code,
+                            value: item.Code,
+                            desc: item.Name,
+                            barcode: item.BarCode,
+                            uom: item.UOM,
+                            year: item.Year,
+                            cat: item.Categories
+                        };
+                    }));
+                });
+            },
+            change: function (event, ui) {
+                $("#ItemCode").val(ui.item.value)
+                $("#InventoryUoM").val(ui.item.uom)
+                $("#Year").val(ui.item.year)
+                $("#POSBarCode").val(ui.item.barcode)
+                $("#Category").val(ui.item.cat)
+                $("#Description").val(ui.item.desc)
+            },
+            select: function (event, ui) {
+                $("#ItemCode").val(ui.item.value)
+                $("#InventoryUoM").val(ui.item.uom)
+                $("#Year").val(ui.item.year)
+                $("#POSBarCode").val(ui.item.barcode)
+                $("#Category").val(ui.item.cat)
+                $("#Description").val(ui.item.desc)
+            },
+            delay: 300
+        });
+
+
+    });
+</script>
+}
+
+@using (Html.BeginForm("Create", "Inventories", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ItemCode)
+    <div class="panel-heading">
+        <h4 class="panel-title">Create Inventory</h4>
+        <hr />
+    </div>
+    <div class="panel-body">
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.ItemCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.TextBox("itemcode", ViewBag.ItemCode as string, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ItemCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.POSBarCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.POSBarCode, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.POSBarCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.InventoryUoM, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.InventoryUoM, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InventoryUoM, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.InventoryStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @*@Html.DropDownListFor(model => model.InventoryStatus, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.DropDownList("InventoryStatus", String.Empty)
+                    @Html.ValidationMessageFor(model => model.InventoryStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LocationCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @*@Html.EditorFor(model => model.LocationCode, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @Html.DropDownList("LocationCode", String.Empty)
+                    @Html.ValidationMessageFor(model => model.LocationCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.ReOrder, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ReOrder, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.InStock, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.InStock, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InStock, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Ordered, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Ordered, new { htmlAttributes = new { @class = "form-control" , @Value = "0", @readonly = true } })
+                    @Html.ValidationMessageFor(model => model.Ordered, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Committed, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Committed, new { htmlAttributes = new { @class = "form-control", @Value = "0", @readonly = true } })
+                    @Html.ValidationMessageFor(model => model.Committed, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Available, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Available, new { htmlAttributes = new { @class = "form-control", @Value = "0" , @readonly = true} })
+                    @Html.ValidationMessageFor(model => model.Available, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MinimumInventory, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.MinimumInventory, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MinimumInventory, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MaximumInventory, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.MaximumInventory, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MaximumInventory, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Create" class="btn btn-green"/>
+                    <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

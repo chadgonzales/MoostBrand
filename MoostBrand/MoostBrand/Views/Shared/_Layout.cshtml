@@ -16,6 +16,9 @@
         @Scripts.Render("~/bundles/modernizr")
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>*@
+
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
@@ -28,9 +31,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta content="" name="description" />
     <meta content="" name="author" />
-
-
-
 
     <!-- end: META -->
     <!-- start: MAIN CSS -->
@@ -115,7 +115,7 @@
                 <div class="col-md-4 col-sm-4">
                     <h2>My Recent Works</h2>
                     <div class="blog-photo-stream margin-bottom-30">
-                        <ul class="list-unstyled">
+                        @*<ul class="list-unstyled">
                             <li>
                                 <a href="#"><img alt="" src="assets/images/image01_th.jpg"></a>
                             </li>
@@ -146,7 +146,7 @@
                             <li>
                                 <a href="#"><img alt="" src="assets/images/image10_th.jpg"></a>
                             </li>
-                        </ul>
+                        </ul>*@
                     </div>
                 </div>
                 <!-- end: SLIDING BAR SECOND COLUMN -->
@@ -202,7 +202,7 @@
                         <!-- start: USER DROPDOWN -->
                         <li class="dropdown current-user">
                             <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
-                                <img src="assets/images/avatar-1-small.jpg" class="img-circle" alt=""> <span class="username hidden-xs">Username</span> <i class="fa fa-caret-down "></i>
+                                @*<img src="assets/images/avatar-1-small.jpg" class="img-circle" alt="">*@ <span class="username hidden-xs">Username</span> <i class="fa fa-caret-down "></i>
                             </a>
                             <ul class="dropdown-menu dropdown-dark">
                                 <li>
@@ -279,6 +279,9 @@
                         </li>
                         <li @ViewBag.StockAdjustmentActive>
                             <a href="@Url.Action("Index", "StockAdjustment")"><i class="fa fa-bar-chart-o"></i> <span class="title">Stock Adjustment</span> </a>
+                        </li>
+                        <li @ViewBag.InventoryActive>
+                            <a href="@Url.Action("Index", "Inventories")"><i class="fa fa-archive"></i> <span class="title">Inventory</span> </a>
                         </li>
                         <li>
 							<a href="javascript:void(0)"><i class="fa fa-desktop"></i> <span class="title"> Management </span><i class="icon-arrow"></i> </a>
@@ -916,9 +919,16 @@
     <!-- end: CORE JAVASCRIPTS  -->
     <script>
         jQuery(document).ready(function () {
+            try{
             Main.init();
             SVExamples.init();
             Index.init();
+
+            }
+            catch(err)
+            {
+
+            }
         });
     </script>
 </body>
