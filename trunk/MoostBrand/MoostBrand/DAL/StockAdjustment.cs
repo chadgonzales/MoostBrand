@@ -38,7 +38,10 @@ namespace MoostBrand.DAL
 
         public DateTime? PostedDate { get; set; }
 
+        [Display(Name = "Error Date")]
         public DateTime? EncodedDate { get; set; }
+
+        public string Reference { get; set; }
 
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 

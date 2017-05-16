@@ -59,7 +59,8 @@ namespace MoostBrand.DAL
         public virtual DbSet<Vendor> Vendors { get; set; }
         public virtual DbSet<Helper> Helpers { get; set; }
         public virtual DbSet<Operator> Operators { get; set; }
-
+        public virtual DbSet<Inventory> Inventories { get; set; }
+        public virtual DbSet<InventoryStatu> InventoryStatus { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ApprovalStatu>()
@@ -245,6 +246,11 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.RequisitionDetails1)
                 .WithOptional(e => e.Item1)
                 .HasForeignKey(e => e.PreviousItemID);
+
+            modelBuilder.Entity<InventoryStatu>()
+                .HasMany(e => e.Inventories)
+                .WithOptional(e => e.InventoryStatu)
+                .HasForeignKey(e => e.InventoryStatus);
 
             modelBuilder.Entity<Location>()
                 .HasMany(e => e.StockTransfers)
