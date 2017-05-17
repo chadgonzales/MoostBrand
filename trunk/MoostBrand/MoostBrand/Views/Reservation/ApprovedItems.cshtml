@@ -84,7 +84,7 @@
 
 <script>
     function ShowEdit(id) {
-        var url = '@Url.Action("EditItemPartial", "PR")/' + id;
+        var url = '@Url.Action("EditItemPartial", "Reservation")/' + id;
         $.get(url, function (data) {
             $('#ShowDialogEdit').html(data);
 

@@ -643,10 +643,27 @@ namespace MoostBrand.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
+        public JsonResult getInstock(string Code)
+        {
+            var instock = db.Inventories.FirstOrDefault(x => x.ItemCode == Code);
+            int total;
+            if (instock != null){
+                total = Convert.ToInt32(instock.InStock);
+            }
+            else{
+                total = 0;
+            }
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
         public JsonResult getCommit(int ItemID)
         {
             var com = db.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2);
             var total = com.Sum(x => x.Quantity);
+            if (total == null)
+            {
+                total = 0;
+            }
             return Json(total, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -654,31 +671,44 @@ namespace MoostBrand.Controllers
         {
             var pur = db.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == ItemID);
             var total = pur.Sum(x => x.Quantity);
+            if (total == null)
+            {
+                total = 0;
+            }
             return Json(total, JsonRequestBehavior.AllowGet);
         }
         [AccessChecker(Action = 1, ModuleID = 3)]
-        public ActionResult ApproveItem(int id, int itemID)
+        public ActionResult ApproveItem(int id, int itemID, int reqID)
         {
             try
             {
-                var item = db.RequisitionDetails.Find(itemID);
-                if (item != null)
+                var req = db.RequisitionDetails.Find(reqID);
+                var itm = db.Items.FirstOrDefault(x => x.ID == itemID);
+                var inventory = db.Inventories.FirstOrDefault(x => x.Description == itm.Description);
+                
+                if (req != null)
                 {
-                    int com = getCommited(item.ItemID);
-                    item.Committed = com + item.Quantity;
+                    
 
-                    int po = getPurchaseOrder(item.ItemID);
-                    item.Ordered = po + item.Ordered;
-
-                    //Available = In Stock + Ordered – Committed
-                    int avail = (Convert.ToInt32(item.InStock) + Convert.ToInt32(item.Ordered)) - Convert.ToInt32(item.Committed);
-                    item.Available = avail;
-
-                    item.AprovalStatusID = 2;
-                    item.IsSync = false;
-                    db.Entry(item).State = EntityState.Modified;
-                    db.SaveChanges();
+                    req.AprovalStatusID = 2;
+                    req.IsSync = false;
+                    
+                    req.Committed = Convert.ToInt32(getCommited(itemID) + req.Quantity);
+                    req.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
+                    int avail = (Convert.ToInt32(req.InStock) + Convert.ToInt32(req.Ordered)) - Convert.ToInt32(req.Committed);
+                    req.Available = avail;
+                    req.InStock -= req.Quantity;
+                    db.Entry(req).State = EntityState.Modified;
                 }
+                if (inventory!=null)
+                {
+                    inventory.Committed = Convert.ToInt32(getCommited(req.ItemID) + quantity);
+                    inventory.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
+                    inventory.Available = Convert.ToInt32(inventory.InStock) + Convert.ToInt32(inventory.Ordered) - Convert.ToInt32(inventory.Committed);
+                    inventory.InStock -= req.Quantity;
+                    db.Entry(inventory).State = EntityState.Modified;
+                }
+                db.SaveChanges();
             }
             catch
             {
@@ -710,6 +740,18 @@ namespace MoostBrand.Controllers
             }
             return po;
         }
+        public int getInstocked(string description)
+        {
+            int getIS = 0;
+            var query = db.Inventories.FirstOrDefault(x => x.Description == description);
+            var instock = query.InStock;
+            getIS = Convert.ToInt32(instock);
+            if (query == null)
+            {
+                getIS = 0;
+            }
+            return getIS;
+        }
         // GET: PR/AddItemPartial/5
         public ActionResult AddItemPartial(int id)
         {
@@ -723,19 +765,20 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public ActionResult AddItemPartial(int id, RequisitionDetail rd)
         {
+            var itm = db.Items.FirstOrDefault(x => x.ID == rd.ItemID);
             var itmID = rd.ItemID;
-
+            var desc = itm.Description;
             try
             {
                 // TODO: Add insert logic here
                 rd.RequisitionID = id;
                 rd.AprovalStatusID = 1; //submitted
                 
-                int com = getCommited(itmID);
-                rd.Committed = com;
+                rd.Committed = getCommited(itmID);
 
-                int por = getPurchaseOrder(itmID);
-                rd.Ordered = por;
+                rd.Ordered = getPurchaseOrder(itmID);
+
+                rd.InStock = getInstocked(desc);
 
                 rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
