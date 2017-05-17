@@ -33,7 +33,18 @@
                 }
             });
         });
-
+        $("#itemsearch").focusout(function () {
+            var itmCode = $("#itemsearch").val();
+            $.ajax({
+                url: '@Url.Action("getInstock", "Reservation")',
+                type: "POST",
+                dataType: "json",
+                data: { Code: itmCode },
+                success: function (data) {
+                    $("#InStock").val(data);
+                }
+            });
+        });
         $("#catsearch").autocomplete({
             source: function (request, response) {
                 $.ajax({
@@ -100,13 +111,15 @@
                 $("#uom").html('');
             }
         });
-        var is = $("#InStock").val();
-        var op = $("#Ordered").val();
-        var com = $("#Committed").val();
-        var sum = is + op - com;
-        $("#InStock").focusout(function () {
-            $("#Available").val(sum);
+        var ins = parseInt($("#InStock").val());
+        var ord = parseInt($("#Ordered").val());
+        var com = parseInt($("#Committed").val());
+        var sum = ins + ord;
+        $("#Quantity").focusout(function () {
+            console.log(sum - com);
+            $("#Available").val(sum - com);
         });
+
     })
 </script>
 <div class="panel-heading">
@@ -168,7 +181,7 @@
                         <div class="custom-tools">
                             <a href="#" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit" id="ShowPopopEdit" onclick="ShowEdit(@item.ID)"><i class="fa fa-edit"></i></a>
                             <a href="#" class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete" id="ShowPopopDelete" onclick="ShowDelete(@item.ID)"><i class="fa fa-times fa fa-white"></i></a>
-                            <a href="#" id="approve_button" onclick="Approve(@ViewBag.PRid, @item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
+                            <a href="#" id="approve_button" onclick="Approve(@ViewBag.PRid, @item.Item.ID, @item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
                                 <i class="fa fa-thumbs-up"></i>
                             </a>
                             <a href="#" id="deny_button" onclick="Deny(@ViewBag.PRid, @item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
@@ -254,7 +267,7 @@
     });
 
     function ShowEdit(id) {
-        var url = '@Url.Action("EditItemPartial", "PR")/' + id;
+        var url = '@Url.Action("EditItemPartial", "Reservation")/' + id;
         $.get(url, function (data) {
             $('#ShowDialogEdit').html(data);
 
@@ -268,7 +281,7 @@
     }
 
     function ShowDelete(id) {
-        var url = '@Url.Action("DeleteItemPartial", "PR")/' + id;
+        var url = '@Url.Action("DeleteItemPartial", "Reservation")/' + id;
         $.get(url, function (data) {
             $('#ShowDialogDelete').html(data);
 
@@ -283,12 +296,12 @@
     function ReloadFunction() {
         location.reload();
     }
-    function Approve(id, itemID){
+    function Approve(id, itemID, ReqID){
         var url = '@Url.Action("ApproveItem", "Reservation")/' + id;
-        $.post(url, {id: id, itemID : itemID }, ReloadFunction);
+        $.post(url, {id: id, itemID : itemID , ReqID , ReqID}, ReloadFunction);
     }
     function Deny(id, itemID){
-        var url = '@Url.Action("DenyItem", "PR")/' + id;
+        var url = '@Url.Action("DenyItem", "Reservation")/' + id;
         $.post(url, {id: id, itemID : itemID }, ReloadFunction);
     }
 </script>
