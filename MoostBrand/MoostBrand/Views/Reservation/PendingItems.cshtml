@@ -10,6 +10,7 @@
     $(document).ajaxSuccess(function () {
         $("#itemsearch").focusout(function () {
             var itmID = $("#ItemID").val();
+            var itmCode = $("#itemsearch").val();
             $.ajax({
                 url: '@Url.Action("getCommit","Reservation")',
                 type: "POST",
@@ -20,9 +21,6 @@
                     $("#Committed").val(data);
                 }
             });
-        });
-        $("#itemsearch").focusout(function () {
-            var itmID = $("#ItemID").val();
             $.ajax({
                 url: '@Url.Action("getPO", "Reservation")',
                 type: "POST",
@@ -32,9 +30,6 @@
                     $("#Ordered").val(data);
                 }
             });
-        });
-        $("#itemsearch").focusout(function () {
-            var itmCode = $("#itemsearch").val();
             $.ajax({
                 url: '@Url.Action("getInstock", "Reservation")',
                 type: "POST",
@@ -116,10 +111,8 @@
         var com = parseInt($("#Committed").val());
         var sum = ins + ord;
         $("#Quantity").focusout(function () {
-            console.log(sum - com);
             $("#Available").val(sum - com);
         });
-
     })
 </script>
 <div class="panel-heading">
