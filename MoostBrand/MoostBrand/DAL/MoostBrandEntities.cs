@@ -356,6 +356,11 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.Users)
                 .WithRequired(e => e.UserType)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Location>()
+                .HasMany(e => e.Inventories)
+                .WithOptional(e => e.Location)
+                .HasForeignKey(e => e.LocationCode);
         }
     }
 }

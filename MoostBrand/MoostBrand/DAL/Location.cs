@@ -11,6 +11,7 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Location()
         {
+            Inventories = new HashSet<Inventory>();
             StockTransfers = new HashSet<StockTransfer>();
             Users = new HashSet<User>();
             Receivings = new HashSet<Receiving>();
@@ -27,6 +28,9 @@ namespace MoostBrand.DAL
         public string Description { get; set; }
 
         public int? LocationTypeID { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Inventory> Inventories { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransfer> StockTransfers { get; set; }
