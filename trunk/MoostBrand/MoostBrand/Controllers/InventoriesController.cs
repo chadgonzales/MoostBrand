@@ -78,7 +78,7 @@ namespace MoostBrand.Controllers
                     invt = invt.OrderByDescending(i => i.Description);
                     break;
                 case "wsh":
-                    invt = invt.OrderByDescending(i => i.LocationCode);
+                    invt = invt.OrderByDescending(i => i.Location.Description);
                     break;
                 default:
                     invt = invt.OrderBy(i => i.ID);

@@ -10,6 +10,7 @@
     $(document).ajaxSuccess(function () {
         $("#itemsearch").focusout(function () {
             var itmID = $("#ItemID").val();
+            var itmCode = $("#itemsearch").val();
             $.ajax({
                 url: '@Url.Action("getCommit","PR")',
                 type: "POST",
@@ -19,9 +20,6 @@
                     $("#Committed").val(data);
                 }
             });
-        });
-        $("#itemsearch").focusout(function () {
-            var itmID = $("#ItemID").val();
             $.ajax({
                 url: '@Url.Action("getPO", "PR")',
                 type: "POST",
@@ -29,6 +27,15 @@
                 data: { ItemID: itmID },
                 success: function (data) {
                     $("#Ordered").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getInstock", "PR")',
+                type: "POST",
+                dataType: "json",
+                data: { Code: itmCode },
+                success: function (data) {
+                    $("#InStock").val(data);
                 }
             });
         });
@@ -98,12 +105,12 @@
                 $("#uom").html('');
             }
         });
-        var is = $("#InStock").val();
-        var op = $("#Ordered").val();
-        var com = $("#Committed").val();
-        var sum = is + op - com;
-        $("#InStock").focusout(function () {
-            $("#Available").val(sum);
+        var ins = parseInt($("#InStock").val());
+        var ord = parseInt($("#Ordered").val());
+        var com = parseInt($("#Committed").val());
+        var sum = ins + ord;
+        $("#Quantity").focusout(function () {
+            $("#Available").val(sum - com);
         });
     })
 </script>

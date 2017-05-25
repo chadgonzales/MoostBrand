@@ -48,5 +48,6 @@
         public int? MaximumInventory { get; set; }
 
         public virtual InventoryStatu InventoryStatu { get; set; }
+        public virtual Location Location { get; set; }
     }
 }
