@@ -266,6 +266,7 @@ namespace MoostBrand.Controllers
                                     ID = r.ID,
                                     RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
                                 });
+
             ViewBag.RequisitionID = new SelectList(_requisitions, "ID", "RefNumber");
             ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
@@ -607,24 +608,50 @@ namespace MoostBrand.Controllers
         }
 
         [HttpPost]
+        public JsonResult getInstock(string Code)
+        {
+            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == Code);
+            int total;
+            if (instock != null)
+            {
+                total = Convert.ToInt32(instock.InStock);
+            }
+            else
+            {
+                total = 0;
+            }
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
         public JsonResult GetCommitted(int ItemID)
         {
             //Available = In Stock + Ordered – Committed
             var num = ItemID;
             return Json(num, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public JsonResult getCommit(int ItemID)
         {
             var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2);
             var total = com.Sum(x => x.Quantity);
+            if (total == null)
+            {
+                total = 0;
+            }
             return Json(total, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public JsonResult getPO(int ItemID)
         {
             var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == ItemID);
             var total = pur.Sum(x => x.Quantity);
+            if (total == null)
+            {
+                total = 0;
+            }
             return Json(total, JsonRequestBehavior.AllowGet);
         }
         public int getCommited(int itemID)
@@ -651,6 +678,17 @@ namespace MoostBrand.Controllers
             }
             return po;
         }
+        public int getInstocked(string description)
+        {
+            int getIS = 0;
+            var query = entity.Inventories.FirstOrDefault(x => x.Description == description);
+            if (query != null)
+            {
+                getIS = Convert.ToInt32(query.InStock);
+            }
+            return getIS;
+        }
+
 
         // GET: Receiving/PendingItems/5
         [AccessChecker(Action = 1, ModuleID = 5)]
@@ -925,16 +963,18 @@ namespace MoostBrand.Controllers
         public ActionResult DisplayComputations(int? reqID)
         {
             var itmID = entity.RequisitionDetails.Find(reqID).ItemID;
+            var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID).Description;
             var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID);
             var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID);
-
+            var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc).InStock;
 
             var computations = entity.RequisitionDetails
                                .Where(x => x.ItemID == itmID && x.AprovalStatusID == 2)
                                .Select(x => new
                                {
                                    Committed = com.Sum(y => y.Quantity) ?? 0,
-                                   Ordered = pur.Sum(z => z.Quantity) ?? 0
+                                   Ordered = pur.Sum(z => z.Quantity) ?? 0,
+                                   InStock = instock
                                })
                                .FirstOrDefault();
 

@@ -11,9 +11,9 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Requisition()
         {
-            RequisitionDetails = new HashSet<RequisitionDetail>();
-            //StockTransfers = new HashSet<StockTransfer>();
             Receivings = new HashSet<Receiving>();
+            RequisitionDetails = new HashSet<RequisitionDetail>();
+            StockTransfers = new HashSet<StockTransfer>();
         }
 
         public int ID { get; set; }
@@ -79,15 +79,17 @@ namespace MoostBrand.DAL
 
         public int? ApprovedBy { get; set; }
 
-        public string PreviousItem { get; set; }
-
-        public string PreviousQuantity { get; set; }
-
         public string Remarks { get; set; }
 
         public bool? IsSync { get; set; }
 
         public bool? Status { get; set; }
+
+        [StringLength(100)]
+        public string PreviousItem { get; set; }
+
+        [StringLength(50)]
+        public string PreviousQuantity { get; set; }
 
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
@@ -105,6 +107,9 @@ namespace MoostBrand.DAL
 
         public virtual Location Location1 { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Receiving> Receivings { get; set; }
+
         public virtual ReqType ReqType { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -118,11 +123,7 @@ namespace MoostBrand.DAL
 
         public virtual Vendor Vendor { get; set; }
 
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //public virtual ICollection<StockTransfer> StockTransfers { get; set; }
-
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Receiving> Receivings { get; set; }
+        public virtual ICollection<StockTransfer> StockTransfers { get; set; }
     }
 }

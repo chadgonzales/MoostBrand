@@ -15,11 +15,9 @@ namespace MoostBrand.DAL
             this.Operators = new HashSet<Operator>();
             this.StockTransferDetails = new HashSet<StockTransferDetail>();
         }
-
         public int ID { get; set; }
 
-        public int RequisitionID { get; set; }
-        public int ReceivingID { get; set; }
+        public int? RequisitionID { get; set; }
 
         public int LocationID { get; set; }
 
@@ -38,8 +36,8 @@ namespace MoostBrand.DAL
         [StringLength(150)]
         public string Driver { get; set; }
 
-        //[StringLength(150)]
-        //public string Helper { get; set; }
+        [StringLength(150)]
+        public string Helper { get; set; }
 
         [StringLength(20)]
         public string TimeReceived { get; set; }
@@ -52,8 +50,8 @@ namespace MoostBrand.DAL
 
         public int ReleasedBy { get; set; }
 
-        //[StringLength(150)]
-        //public string Operator { get; set; }
+        [StringLength(150)]
+        public string Operator { get; set; }
 
         public int CounterCheckedBy { get; set; }
 
@@ -67,22 +65,45 @@ namespace MoostBrand.DAL
 
         public int? EncodedBy { get; set; }
 
+        [StringLength(50)]
+        public string PlateNo { get; set; }
+
+        public int? ReceivingID { get; set; }
+
+        public int StockTransferTypeID { get; set; }
+
         public virtual ApprovalStatu ApprovalStatu { get; set; }
+
         public virtual Employee Employee { get; set; }
+
         public virtual Employee Employee1 { get; set; }
+
         public virtual Employee Employee2 { get; set; }
+
         public virtual Employee Employee3 { get; set; }
+
         public virtual Employee Employee4 { get; set; }
+
         public virtual Employee Employee5 { get; set; }
+
         public virtual Employee Employee6 { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Helper> Helpers { get; set; }
+
         public virtual Location Location { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Operator> Operators { get; set; }
+
         public virtual Receiving Receiving { get; set; }
+
+        public virtual Requisition Requisition { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransferDetail> StockTransferDetails { get; set; }
+
+        public virtual StockTransferType StockTransferType { get; set; }
 
         internal void CreateHelpers(int count = 1)
         {

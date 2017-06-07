@@ -371,3 +371,28 @@ $(function () {
     });
 
 </script>
+
+
+<script language="javascript">
+    $(function () {
+        HideOrShow(); //this calls it on load
+    });
+
+    function HideOrShow() {
+        var val = $("#StockTransferTypeID").val();
+        if (val == 1) { 
+            $("#rc").hide();
+            $("#rq").show();
+        } else if (val == 2) { 
+            $("#rc").show();
+            $("#rq").hide();
+        } else {
+            $("#rc").hide();
+            $("#rq").hide();
+        }
+    }
+
+    $("#StockTransferTypeID").change(function () {
+        HideOrShow();
+    });
+</script>
