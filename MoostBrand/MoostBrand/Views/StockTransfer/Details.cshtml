@@ -249,9 +249,11 @@
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.ReceivingDetail.RequisitionDetail.Item.Code)
+                            @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.Code)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ReceivingDetail.RequisitionDetail.Item.Description)
+                            @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.Description)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Quantity)

@@ -43,6 +43,7 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.ReceivingDetail.RequisitionDetail.Item.Description)
+                        @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.Description)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Quantity)
@@ -116,58 +117,66 @@
     window.onload = function () {
         //$('#ShowPopop').click(function () {
 
-            var url = $('#AddItemWindow').data('url');
-            $.get(url, function (data) {
-                $('#ShowDialogAdd').html(data);
-                $('#AddItemWindow').modal('show');
+        var url = $('#AddItemWindow').data('url');
+        $.get(url, function (data) {
+            $('#ShowDialogAdd').html(data);
+            $('#AddItemWindow').modal('show');
 
-                var addItemPartial = $("#addItemPartial");
-                addItemPartial.submit(function (e) {
-                    var ordered = $("#Ordered");
-                    var committed = $("#Committed");
-                    var available = $("#Available");
-                    ordered.prop('disabled', false);
-                    committed.prop('disabled', false);
-                    available.prop('disabled', false);
-                    return true;
-                });
+            var addItemPartial = $("#addItemPartial");
+            addItemPartial.submit(function (e) {
+                var ordered = $("#Ordered");
+                var committed = $("#Committed");
+                var available = $("#Available");
+                ordered.prop('disabled', false);
+                committed.prop('disabled', false);
+                available.prop('disabled', false);
+                return true;
+            });
 
+            $("#ReceivingDetailID").change(function () {
+                var val = $("#ReceivingDetailID option:selected").val();
 
-                $("#ReceivingDetailID").change(function () {
-                    var val = $("#ReceivingDetailID option:selected").val();
-                    @*$.get('@Url.Action("DisplayComputations", "StockTransfer")' , itmID, function (data) {
+                $.ajax({
+                    url: '@Url.Action("DisplayComputations", "StockTransfer")',
+                    data: { recID: val },
+                    type: 'get',
+                    success: function (data) {
                         $("#Committed").val(data.Committed);
                         $("#Ordered").val(data.Ordered);
-                        $("#Available").val("Sum");
-                    });*@
-
-                    $.ajax({
-                        url: '@Url.Action("DisplayComputations", "StockTransfer")',
-                        data: { recID: val },
-                        type: 'get',
-                        success: function (data) {
-                            $("#Committed").val(data.Committed);
-                            $("#Ordered").val(data.Ordered);
-                        }
-                    })
-                });
-
-                $('#InStock').keyup(function () {
-                    var ordered = parseInt($('#Ordered').val());
-                    var committed = parseInt($('#Committed').val());
-                    var instock = parseInt($(this).val());
-                    console.log(instock);
-
-                    $('#Available').val((instock + ordered) - committed);
+                        $("#InStock").val(data.InStock);
+                    }
                 })
-
-
-
-                // add class form-control to textarea and select
-                $("input[disabled]").addClass("form-control");
-                $("textarea").addClass("form-control");
-                $("select").addClass("form-control");
             });
+
+            $("#RequisitionDetailID").change(function () {
+                var val = $("#RequisitionDetailID option:selected").val();
+
+                $.ajax({
+                    url: '@Url.Action("DisplayComputation", "StockTransfer")',
+                    data: { reqID: val },
+                    type: 'get',
+                    success: function (data) {
+                        $("#Committed").val(data.Committed);
+                        $("#Ordered").val(data.Ordered);
+                        $("#InStock").val(data.InStock);
+                    }
+                })
+            });
+
+            $('#Quantity').focusout(function () {
+                var ordered = parseInt($('#Ordered').val());
+                var committed = parseInt($('#Committed').val());
+                var instock = parseInt($('#InStock').val());
+                console.log(instock);
+
+                $('#Available').val((instock + ordered) - committed);
+            })
+
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+        });
         //});
     }
 

@@ -308,6 +308,7 @@
     <Compile Include="DAL\StockAllocationDetail.cs" />
     <Compile Include="DAL\StockTransfer.cs" />
     <Compile Include="DAL\StockTransferDetail.cs" />
+    <Compile Include="DAL\StockTransferType.cs" />
     <Compile Include="DAL\SubCategoriesType.cs" />
     <Compile Include="DAL\SubCategory.cs" />
     <Compile Include="DAL\TransactionType.cs" />

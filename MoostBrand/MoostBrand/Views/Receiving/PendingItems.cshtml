@@ -4,51 +4,6 @@
 @{
     ViewBag.Title = "Pending Items";
 }
-<script>
-    $(document).ajaxSuccess(function () {
-        $("#RequisitionDetailID").focusout(function () {
-            var itmID = $("#ItemID").val();
-            $.ajax({
-                url: '@Url.Action("getCommit","PR")',
-                type: "POST",
-                dataType: "json",
-                data: { ItemID: itmID },
-                success: function (data) {
-                    $("#Committed").val(data);
-                }
-            });
-        });
-        $("#RequisitionDetailID").focusout(function () {
-            var itmID = $("#ItemID").val();
-            $.ajax({
-                url: '@Url.Action("getPO", "PR")',
-                type: "POST",
-                dataType: "json",
-                data: { ItemID: itmID },
-                success: function (data) {
-                    $("#Ordered").val(data);
-                }
-            });
-        });
-
-        var is = $("#InStock").val();
-        var op = $("#Ordered").val();
-        var com = $("#Committed").val();
-        //var sum = is + op - com;
-        $("#InStock").focusout(function () {
-            var stock = Number($(this).val());
-            var ordered = Number($("#Ordered").val());
-            var committed = Number($("#Committed").val());
-            //console.log(stock + ", " + ordered + ", " + committed);
-            var result = stock + ordered - committed;
-            console.log(result);
-            $("#Available").val(result);
-            //$("#Available").val(sum);
-        });
-    })
-</script>
-
-
 
 <div class="panel-heading">
     <h4 class="panel-title">Pending Items</h4>
@@ -189,18 +144,26 @@
                         success: function (data) {
                             $("#Committed").val(data.Committed);
                             $("#Ordered").val(data.Ordered);
+                            $("#InStock").val(data.InStock);
                         }
                     })
                 });
 
-                $('#InStock').keyup(function () {
+                $('#Quantity').focusout(function () {
                     var ordered = parseInt($('#Ordered').val());
                     var committed = parseInt($('#Committed').val());
-                    var instock = parseInt($(this).val());
+                    var instock = parseInt($('#InStock').val());
                     console.log(instock);
 
                     $('#Available').val((instock + ordered) - committed);
                 })
+
+                //var ordered = parseInt($('#Ordered').val());
+                //var committed = parseInt($('#Committed').val());
+                //var instock = parseInt($('#InStock').val());
+                //console.log(instock);
+
+                //$('#Available').val((instock + ordered) - committed);
 
                 // add class form-control to textarea and select
                 $("input[disabled]").addClass("form-control");

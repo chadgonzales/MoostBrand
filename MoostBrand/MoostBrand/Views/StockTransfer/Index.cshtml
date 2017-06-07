@@ -61,7 +61,18 @@
                             @Html.DisplayFor(modelItem => item.TransferID)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.Requisition.RequisitionType.Type)
                             @Html.DisplayFor(modelItem => item.Receiving.ReceivingType.Type)
+                            @*@{
+                                if (item.Receiving == null)
+                                {
+                                    Html.DisplayFor(modelItem => item.Requisition.RequisitionType.Type);
+                                }
+                                else
+                                {
+                                    Html.DisplayFor(modelItem => item.Receiving.ReceivingType.Type);
+                                }
+                            }*@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Location.Description)
@@ -81,9 +92,9 @@
                                         <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                            <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
-                                                <i class="fa fa-times fa fa-white"></i>
-                                            </a>
+                                        <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                                            <i class="fa fa-times fa fa-white"></i>
+                                        </a>
                                     }
                                     if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                                     {
@@ -98,7 +109,7 @@
                             </div>
                         </td>
                     </tr>
-                }
+                                }
             </tbody>
         </table>
     </form>

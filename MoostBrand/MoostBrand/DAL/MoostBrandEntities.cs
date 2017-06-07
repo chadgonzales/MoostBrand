@@ -22,11 +22,15 @@ namespace MoostBrand.DAL
         public virtual DbSet<Downpayment> Downpayments { get; set; }
         public virtual DbSet<DropShipType> DropShipTypes { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<Helper> Helpers { get; set; }
+        public virtual DbSet<Inventory> Inventories { get; set; }
+        public virtual DbSet<InventoryStatu> InventoryStatus { get; set; }
         public virtual DbSet<ItemDetails> ItemDetail { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<LocationType> LocationTypes { get; set; }
         public virtual DbSet<Module> Modules { get; set; }
+        public virtual DbSet<Operator> Operators { get; set; }
         public virtual DbSet<PaymentStatu> PaymentStatus { get; set; }
         public virtual DbSet<ReasonForAdjustment> ReasonForAdjustments { get; set; }
         public virtual DbSet<ReceivingDetail> ReceivingDetails { get; set; }
@@ -49,6 +53,7 @@ namespace MoostBrand.DAL
         public virtual DbSet<StockAllocation> StockAllocations { get; set; }
         public virtual DbSet<StockTransferDetail> StockTransferDetails { get; set; }
         public virtual DbSet<StockTransfer> StockTransfers { get; set; }
+        public virtual DbSet<StockTransferType> StockTransferTypes { get; set; }
         public virtual DbSet<SubCategory> SubCategories { get; set; }
         public virtual DbSet<SubCategoriesType> SubCategoriesTypes { get; set; }
         public virtual DbSet<TransactionType> TransactionTypes { get; set; }
@@ -57,10 +62,7 @@ namespace MoostBrand.DAL
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<Vendor> Vendors { get; set; }
-        public virtual DbSet<Helper> Helpers { get; set; }
-        public virtual DbSet<Operator> Operators { get; set; }
-        public virtual DbSet<Inventory> Inventories { get; set; }
-        public virtual DbSet<InventoryStatu> InventoryStatus { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ApprovalStatu>()
@@ -102,11 +104,6 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.StockTransfers)
                 .WithOptional(e => e.ApprovalStatu)
                 .HasForeignKey(e => e.ApprovedStatus);
-
-            modelBuilder.Entity<Category>()
-                .HasMany(e => e.SubCategories)
-                .WithOptional(e => e.Category)
-                .HasForeignKey(e => e.CategoryID);
 
             modelBuilder.Entity<Downpayment>()
                 .Property(e => e.Amount)
@@ -229,6 +226,19 @@ namespace MoostBrand.DAL
                 .WithOptional(e => e.Employee)
                 .WillCascadeOnDelete();
 
+            modelBuilder.Entity<InventoryStatu>()
+                .HasMany(e => e.Inventories)
+                .WithOptional(e => e.InventoryStatu)
+                .HasForeignKey(e => e.InventoryStatus);
+
+            modelBuilder.Entity<ItemDetails>()
+                .Property(e => e.Cost)
+                .HasPrecision(12, 2);
+
+            modelBuilder.Entity<ItemDetails>()
+                .Property(e => e.WeightedAverageCost)
+                .HasPrecision(12, 2);
+
             modelBuilder.Entity<Item>()
                 .Property(e => e.LastUnitCost)
                 .HasPrecision(12, 2);
@@ -238,8 +248,13 @@ namespace MoostBrand.DAL
                 .HasPrecision(12, 2);
 
             modelBuilder.Entity<Item>()
+                .Property(e => e.Price)
+                .HasPrecision(12, 2);
+
+            modelBuilder.Entity<Item>()
                 .HasMany(e => e.RequisitionDetails)
                 .WithRequired(e => e.Item)
+                .HasForeignKey(e => e.ItemID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Item>()
@@ -247,10 +262,10 @@ namespace MoostBrand.DAL
                 .WithOptional(e => e.Item1)
                 .HasForeignKey(e => e.PreviousItemID);
 
-            modelBuilder.Entity<InventoryStatu>()
+            modelBuilder.Entity<Location>()
                 .HasMany(e => e.Inventories)
-                .WithOptional(e => e.InventoryStatu)
-                .HasForeignKey(e => e.InventoryStatus);
+                .WithOptional(e => e.Location)
+                .HasForeignKey(e => e.LocationCode);
 
             modelBuilder.Entity<Location>()
                 .HasMany(e => e.StockTransfers)
@@ -278,6 +293,16 @@ namespace MoostBrand.DAL
                 .WithOptional(e => e.Module)
                 .WillCascadeOnDelete();
 
+            modelBuilder.Entity<ReceivingDetail>()
+                .HasMany(e => e.StockTransferDetails)
+                .WithOptional(e => e.ReceivingDetail)
+                .HasForeignKey(e => e.ReceivingDetailID);
+
+            modelBuilder.Entity<ReceivingDetail>()
+                .HasMany(e => e.StockTransferDetails1)
+                .WithOptional(e => e.ReceivingDetail1)
+                .HasForeignKey(e => e.PreviousItemID);
+
             modelBuilder.Entity<Receiving>()
                 .HasMany(e => e.StockAllocations)
                 .WithRequired(e => e.Receiving)
@@ -288,20 +313,20 @@ namespace MoostBrand.DAL
                 .WithRequired(e => e.ReceivingType)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<Requisition>()
-                .HasMany(e => e.Receivings)
-                .WithRequired(e => e.Requisition)
-                .WillCascadeOnDelete(false);
+            modelBuilder.Entity<RequisitionDetail>()
+                .HasMany(e => e.ReceivingDetails)
+                .WithOptional(e => e.RequisitionDetail)
+                .HasForeignKey(e => e.RequisitionDetailID);
 
             modelBuilder.Entity<RequisitionDetail>()
                 .HasMany(e => e.ReceivingDetails1)
                 .WithOptional(e => e.RequisitionDetail1)
                 .HasForeignKey(e => e.PreviousItemID);
 
-            modelBuilder.Entity<ReceivingDetail>()
-                .HasMany(e => e.StockTransferDetails1)
-                .WithOptional(e => e.ReceivingDetail1)
-                .HasForeignKey(e => e.PreviousItemID);
+            modelBuilder.Entity<Requisition>()
+                .HasMany(e => e.Receivings)
+                .WithRequired(e => e.Requisition)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<RequisitionType>()
                 .HasMany(e => e.Requisitions)
@@ -323,20 +348,15 @@ namespace MoostBrand.DAL
                 .WithOptional(e => e.StockAllocation)
                 .WillCascadeOnDelete();
 
-            modelBuilder.Entity<Receiving>()
-                .HasMany(e => e.StockTransfers)
-                .WithRequired(e => e.Receiving)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<StockTransfer>()
                 .HasMany(e => e.StockTransferDetails)
                 .WithOptional(e => e.StockTransfer)
                 .WillCascadeOnDelete();
 
-            modelBuilder.Entity<SubCategory>()
-                .HasMany(e => e.Items)
-                .WithOptional(e => e.SubCategory)
-                .HasForeignKey(e => e.SubCategoryID);
+            modelBuilder.Entity<StockTransferType>()
+                .HasMany(e => e.StockTransfers)
+                .WithRequired(e => e.StockTransferType)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<SubCategory>()
                 .HasMany(e => e.SubCategoriesTypes)
@@ -356,11 +376,6 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.Users)
                 .WithRequired(e => e.UserType)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<Location>()
-                .HasMany(e => e.Inventories)
-                .WithOptional(e => e.Location)
-                .HasForeignKey(e => e.LocationCode);
         }
     }
 }

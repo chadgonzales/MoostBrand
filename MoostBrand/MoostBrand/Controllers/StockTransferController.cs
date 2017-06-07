@@ -158,29 +158,56 @@ namespace MoostBrand.Controllers
             return Json(Generator(id), JsonRequestBehavior.AllowGet);
         }
 
+        public class ReqCustom {
+            public int ID { get; set; }
+            public string RefNumber { get; set; }
+        }
+
         // GET: StockTransfer/Create/
         [AccessChecker(Action = 2, ModuleID = 4)]
         public ActionResult Create()
         {
             var stocktransfer = new StockTransfer();
             stocktransfer.STDAte = DateTime.Now;
-
+            
             #region DROPDOWNS
+            var _types = entity.StockTransferTypes.ToList();
+
             var _receivings = entity.Receivings.Where(r => r.ApprovalStatus == 2)
                 .Select(r => new
                 {
                     ID = r.ID,
                     ReceivingID = (r.ReceivingID.Contains("PR")) ? "PO" + r.ReceivingID.Substring(2) : r.ReceivingID
                 });
-            ViewBag.ReceivingID = new SelectList(_receivings, "ID", "ReceivingID");
 
-            //var _requisition = entity.Requisitions.Where(r => r.ApprovalStatus == 2)
-            //                    .Select(r => new
-            //                    {
-            //                        ID = r.ID,
-            //                        RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
-            //                    });
-            //ViewBag.ReceivingID = new SelectList(_requisition, "ID", "RefNumber");
+            List<ReqCustom> lstReqCustom = new List<ReqCustom>();
+
+            foreach (var _req in entity.Requisitions.Where(r => r.ApprovalStatus == 2 && r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))) {
+                string refNumber;
+
+                if (_req.RefNumber.Contains("BR"))
+                {
+                    refNumber = "BR" + _req.RefNumber.Substring(2);
+                }
+                else if (_req.RefNumber.Contains("WR"))
+                {
+                    refNumber = "WR" + _req.RefNumber.Substring(2);
+                }
+                else {
+                    refNumber = _req.RefNumber;
+                }
+
+                lstReqCustom.Add(
+                    new ReqCustom
+                    {
+                        ID = _req.ID,
+                        RefNumber = refNumber
+                    });
+            }
+
+            ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name");
+            ViewBag.RequisitionID = new SelectList(lstReqCustom, "ID", "RefNumber");
+            ViewBag.ReceivingID = new SelectList(_receivings, "ID", "ReceivingID");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
             var empList = new SelectList((from s in entity.Employees
                                           select new
@@ -204,55 +231,56 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public ActionResult Create(StockTransfer stocktransfer)
         {
-            //if (ModelState.IsValid)
-            //{
-                var stransfer = entity.StockTransfers.Where(s => s.TransferID == stocktransfer.TransferID).ToList();
 
-                if (stransfer.Count() > 0)
+            var _types = entity.StockTransferTypes.ToList();
+            var stransfer = entity.StockTransfers.Where(s => s.TransferID == stocktransfer.TransferID).ToList();
+
+            if (stransfer.Count() > 0)
+            {
+                ModelState.AddModelError("", "Stock Transfer ID already exists");
+            }
+            else
+            {
+                #region Helper
+                foreach (Helper h in stocktransfer.Helpers.ToList())
                 {
-                    ModelState.AddModelError("", "Stock Transfer ID already exists");
-                }
-                else
-                {
-                    #region Helper
-                    foreach (Helper h in stocktransfer.Helpers.ToList())
+                    try
                     {
-                        try
+                        if (h.DeletedHelper == 1)
                         {
-                            if (h.DeletedHelper == 1)
-                            {
                             stocktransfer.Helpers.Remove(h);
-                            }
-                            
                         }
-                        catch
-                        {
-                            ModelState.AddModelError(string.Empty, "There's an error");
-                        }
+
                     }
-                    #endregion
-                    #region Operator
-                    foreach (Operator o in stocktransfer.Operators.ToList())
+                    catch
                     {
-                        if (o.DeletedOperator == 1)
-                        {
-                        stocktransfer.Operators.Remove(o);
-                        }
+                        ModelState.AddModelError(string.Empty, "There's an error");
                     }
-                    #endregion
+                }
+                #endregion
+                #region Operator
+                foreach (Operator o in stocktransfer.Operators.ToList())
+                {
+                    if (o.DeletedOperator == 1)
+                    {
+                        stocktransfer.Operators.Remove(o);
+                    }
+                }
+                #endregion
 
-                    stocktransfer.ApprovedStatus = 1;
-                    stocktransfer.ApprovedBy = Convert.ToInt32(Session["sessionuid"]);
-                    stocktransfer.IsSync = false;
+                stocktransfer.ApprovedStatus = 1;
+                stocktransfer.ApprovedBy = Convert.ToInt32(Session["sessionuid"]);
+                stocktransfer.IsSync = false;
 
-                    entity.StockTransfers.Add(stocktransfer);
-                    entity.SaveChanges();
-                    return RedirectToAction("Index");
+                entity.StockTransfers.Add(stocktransfer);
+                entity.SaveChanges();
+                return RedirectToAction("Index");
             }
 
             #region DROPDOWNS
+            ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name");
+            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID");
-            //ViewBag.ReceivingID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees
                           select new
@@ -260,7 +288,7 @@ namespace MoostBrand.Controllers
                               ID = s.ID,
                               FullName = s.FirstName + " " + s.LastName
                           };
-            
+
             ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", stocktransfer.EncodedBy);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ReceivedBy);
             ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stocktransfer.RequestedBy); ;
@@ -278,17 +306,17 @@ namespace MoostBrand.Controllers
         public ActionResult Edit(int id = 0)
         {
             var stocktransfer = entity.StockTransfers.Find(id);
-            
-            if(stocktransfer == null)
+
+            if (stocktransfer == null)
             {
                 return HttpNotFound();
             }
 
-            if(stocktransfer.ApprovedStatus == 1)
+            if (stocktransfer.ApprovedStatus == 1)
             {
                 #region DROPDOWNS
 
-                ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID" , stocktransfer.ReceivingID);
+                ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID", stocktransfer.ReceivingID);
                 //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
                 ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
                 var empList = from s in entity.Employees
@@ -480,7 +508,7 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 //var pr = entity.StockTransfers.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var st = entity.StockTransfers.Find(id);
-                if(st.StockTransferDetails.Count > 0)
+                if (st.StockTransferDetails.Count > 0)
                 {
                     st.ApprovedStatus = 2;
                     st.IsSync = false;
@@ -659,26 +687,34 @@ namespace MoostBrand.Controllers
         public ActionResult AddItemPartial(int id)
         {
 
-            int recID = entity.StockTransfers.Find(id).ReceivingID;
+            var recID = entity.StockTransfers.Find(id);
+            int recIDs = Convert.ToInt32(recID.ReceivingID);
             var items = entity.ReceivingDetails
                         .ToList()
-                        .FindAll(rd => rd.ReceivingID == recID && rd.AprovalStatusID == 2)
+                        .FindAll(rd => rd.ReceivingID == recIDs && rd.AprovalStatusID == 2)
                         .Select(ed => new
                         {
                             ID = ed.ID,
                             Description = ed.RequisitionDetail.Item.Description
                         });
-            
+
+            var reqID = entity.StockTransfers.Find(id);
+            int reqIDs = Convert.ToInt32(reqID.RequisitionID);
+            var _items = entity.RequisitionDetails
+                        .ToList()
+                        .FindAll(rd => rd.RequisitionID == reqIDs && rd.AprovalStatusID == 2)
+                        .Select(ed => new
+                        {
+                            ID = ed.ID,
+                            Description = ed.Item.Description
+                        });
+
+
 
             //ViewBag.STid = id;
+            ViewBag.Post = recID.ReceivingID;
             ViewBag.ReceivingDetailID = new SelectList(items, "ID", "Description");
-
-            int reqID = entity.StockTransfers.Find(id).RequisitionID;
-
-            //var com = entity.RequisitionDetails.Where(model => model.RequisitionID == reqID && model.AprovalStatusID == 2);
-            //var committed = com.Sum(x => x.Quantity);
-            //ViewBag.comm = committed;
-
+            ViewBag.RequisitionDetailID = new SelectList(_items, "ID", "Description");
             return PartialView();
         }
 
@@ -686,13 +722,14 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 2, ModuleID = 4)]
         [HttpPost]
         public ActionResult AddItemPartial(int id, StockTransferDetail stocktransferdetail)
-        {           
+        {
             try
             {
 
                 stocktransferdetail.StockTransferID = id;
                 stocktransferdetail.AprovalStatusID = 1; //submitted
 
+                #region COMMENT
                 //var receivingID = entity.StockTransfers.Find(stocktransferdetail.StockTransferID).ReceivingID;
                 //var receivingdetailID = entity.ReceivingDetails.Find(receivingID).ID;
 
@@ -721,12 +758,10 @@ namespace MoostBrand.Controllers
                 //stocktransferdetail.Ordered = porder;
 
                 //stocktransferdetail.Available = (stocktransferdetail.InStock + stocktransferdetail.Ordered) - stocktransferdetail.Committed;
-
-
+                #endregion
 
                 var st = entity.StockTransferDetails.Where(s => s.StockTransferID == stocktransferdetail.StockTransferID && s.ReceivingDetailID == stocktransferdetail.ReceivingDetailID).ToList();
-
-                //var rd1 = entity.ReceivingDetails.Where(r => r.ReceivingID == rd.ReceivingID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
+                
                 if (st.Count() > 0)
                 {
                     TempData["PartialError"] = "Item is already in the list.";
@@ -739,7 +774,7 @@ namespace MoostBrand.Controllers
                     entity.SaveChanges();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 TempData["PartialError"] = "There's an error.";
             }
@@ -777,7 +812,7 @@ namespace MoostBrand.Controllers
                 int presentQty = Convert.ToInt32(stocktransfer.Quantity);
                 int previousQty = Convert.ToInt32(sdetails.Quantity);
 
-                if(sdetails.ReceivingDetailID != stocktransfer.ReceivingDetailID || sdetails.Quantity != stocktransfer.Quantity)
+                if (sdetails.ReceivingDetailID != stocktransfer.ReceivingDetailID || sdetails.Quantity != stocktransfer.Quantity)
                 {
                     stocktransfer.PreviousItemID = sdetails.ReceivingDetailID;
                     stocktransfer.PreviousQuantity = sdetails.Quantity;
@@ -932,8 +967,10 @@ namespace MoostBrand.Controllers
         public ActionResult DisplayComputations(int? recID)
         {
             var itmID = entity.ReceivingDetails.Find(recID).RequisitionDetail.ItemID;
+            var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID).Description;
             var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID);
             var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID);
+            var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc).InStock;
 
 
             var computations = entity.RequisitionDetails
@@ -941,12 +978,34 @@ namespace MoostBrand.Controllers
                                .Select(x => new
                                {
                                    Committed = com.Sum(y => y.Quantity) ?? 0,
-                                   Ordered = pur.Sum(z => z.Quantity) ?? 0
+                                   Ordered = pur.Sum(z => z.Quantity) ?? 0,
+                                   InStock = instock
                                })
                                .FirstOrDefault();
 
             return Json(computations, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult DisplayComputation(int? reqID)
+        {
+            var itmID = entity.RequisitionDetails.Find(reqID).ItemID;
+            var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID).Description;
+            var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID);
+            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID);
+            var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc).InStock;
+
+
+            var computations = entity.RequisitionDetails
+                               .Where(x => x.ItemID == itmID && x.AprovalStatusID == 2)
+                               .Select(x => new
+                               {
+                                   Committed = com.Sum(y => y.Quantity) ?? 0,
+                                   Ordered = pur.Sum(z => z.Quantity) ?? 0,
+                                   InStock = instock
+                               })
+                               .FirstOrDefault();
+
+            return Json(computations, JsonRequestBehavior.AllowGet);
+        }
     }
 }
