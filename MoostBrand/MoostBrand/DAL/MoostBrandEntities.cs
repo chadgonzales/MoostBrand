@@ -52,6 +52,9 @@ namespace MoostBrand.DAL
         public virtual DbSet<StockAllocationDetail> StockAllocationDetails { get; set; }
         public virtual DbSet<StockAllocation> StockAllocations { get; set; }
         public virtual DbSet<StockTransferDetail> StockTransferDetails { get; set; }
+        public virtual DbSet<StockTransferDirect> StockTransferDirects { get; set; }
+        public virtual DbSet<StockTransferHelper> StockTransferHelpers { get; set; }
+        public virtual DbSet<StockTransferOperator> StockTransferOperators { get; set; }
         public virtual DbSet<StockTransfer> StockTransfers { get; set; }
         public virtual DbSet<StockTransferType> StockTransferTypes { get; set; }
         public virtual DbSet<SubCategory> SubCategories { get; set; }
@@ -65,6 +68,11 @@ namespace MoostBrand.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<StockTransferDetail>()
+            //    .HasMany(e => e.StockTransferDirects)
+            //    .WithOptional(e => e.StockTransferDetail)
+            //    .HasForeignKey(e => e.ItemName);
+
             modelBuilder.Entity<ApprovalStatu>()
                 .HasMany(e => e.ReceivingDetails)
                 .WithOptional(e => e.ApprovalStatu)
@@ -99,6 +107,11 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.StockTransferDetails)
                 .WithOptional(e => e.ApprovalStatu)
                 .HasForeignKey(e => e.AprovalStatusID);
+
+            modelBuilder.Entity<ApprovalStatu>()
+                .HasMany(e => e.StockTransferDirects)
+                .WithOptional(e => e.ApprovalStatu)
+                .HasForeignKey(e => e.ApprovedStatus);
 
             modelBuilder.Entity<ApprovalStatu>()
                 .HasMany(e => e.StockTransfers)
@@ -215,6 +228,41 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.StockAdjustments3)
                 .WithOptional(e => e.Employee3)
                 .HasForeignKey(e => e.PostedBy);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.StockTransferDirects)
+                .WithOptional(e => e.Employee)
+                .HasForeignKey(e => e.ReceivedBy);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.StockTransferDirects1)
+                .WithOptional(e => e.Employee1)
+                .HasForeignKey(e => e.RequestedBy);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.StockTransferDirects2)
+                .WithOptional(e => e.Employee2)
+                .HasForeignKey(e => e.ApprovedBy);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.StockTransferDirects3)
+                .WithOptional(e => e.Employee3)
+                .HasForeignKey(e => e.ReleasedBy);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.StockTransferDirects4)
+                .WithOptional(e => e.Employee4)
+                .HasForeignKey(e => e.CounterCheckedBy);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.StockTransferDirects5)
+                .WithOptional(e => e.Employee5)
+                .HasForeignKey(e => e.PostedBy);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.StockTransferDirects6)
+                .WithOptional(e => e.Employee6)
+                .HasForeignKey(e => e.EncodedBy);
 
             modelBuilder.Entity<Employee>()
                 .HasMany(e => e.StockTransfers6)

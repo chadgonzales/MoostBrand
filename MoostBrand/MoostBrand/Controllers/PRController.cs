@@ -210,11 +210,12 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult GetVendors(string name)
         {
-            var vendors = entity.Vendors.Where(x => x.Name.Contains(name) || x.GeneralName.Contains(name))
+            //x.Name.Contains(name) ||
+            var vendors = entity.Vendors.Where(x => x.GeneralName.Contains(name))
                             .Select(x => new
                             {
                                 ID = x.ID,
-                                Name = x.Name
+                                Name = x.GeneralName
                             });
             return Json(vendors, JsonRequestBehavior.AllowGet);
         }

@@ -1,0 +1,227 @@
+﻿@model MoostBrand.DAL.StockTransferDirect
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="panel-heading">
+    <h4 class="panel-title">Stock Transfer Details</h4>
+    <hr />
+</div>
+
+<div class="panel-body">
+    <div class="form-horizontal">
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label col-md-4">Item Name</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.ItemName)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Quantity</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Quantity)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">StockTransfer #</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.TransferID)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Date</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.STDate)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Time Started</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.TimeStarted)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Time End</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.TimeFinish)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Driver</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Driver)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Helper</label>
+                    @foreach (var item in Model.StockTransferHelpers)
+                    {
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </label>
+                        </div>
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Operator</label>
+                    @foreach (var item in Model.StockTransferOperators)
+                    {
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </label>
+                        </div>
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Received By</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Employee.FirstName),
+                            @Html.DisplayFor(model => model.Employee.LastName)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Requested By</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Employee1.FirstName),
+                            @Html.DisplayFor(model => model.Employee1.LastName)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Released By</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Employee3.FirstName),
+                            @Html.DisplayFor(model => model.Employee3.LastName)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Checked By</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Employee4.FirstName),
+                            @Html.DisplayFor(model => model.Employee4.LastName)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Posted By</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Employee5.FirstName),
+                            @Html.DisplayFor(model => model.Employee5.LastName)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Encoded By</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Employee6.FirstName),
+                            @Html.DisplayFor(model => model.Employee6.LastName)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Approved By</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Employee2.FirstName),
+                            @Html.DisplayFor(model => model.Employee2.LastName)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Approval Status</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.ApprovalStatu.Status)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-4">Remarks</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Remarks)
+                        </label>
+                    </div>
+                </div>
+
+                @*<dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Location)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TimeReceived)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TimeReceived)
+        </dd>
+
+        </dl>*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                @if (Convert.ToInt32(Session["sessionuid"]) == Model.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                {
+                    <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
+                        Edit
+                    </a>
+                }
+
+                <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

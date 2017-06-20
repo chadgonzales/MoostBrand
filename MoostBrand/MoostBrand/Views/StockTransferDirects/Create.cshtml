@@ -1,11 +1,10 @@
-﻿@model MoostBrand.DAL.StockTransfer
+﻿@model MoostBrand.DAL.StockTransferDirect
 
 @{
-    ViewBag.Title = "Create Stock Transfer";
+    ViewBag.Title = "Create";
 }
 
-
-@using (Html.BeginForm("Create", "StockTransfer", FormMethod.Post))
+@using (Html.BeginForm("Create", "StockTransferDirects", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -38,35 +37,9 @@
 <script src="~/Scripts/CustomJs.js"></script>
 <script src="~/Scripts/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-
-    $(function () {
-        HideOrShow();
-    });
-
-    function HideOrShow() {
-        var val = $("#StockTransferTypeID").val();
-        if (val == "") {
-            $("#rc").hide();
-            $("#rq").hide();
-        } else if (val == 1) {
-            $("#rc").hide();
-            $("#rq").show();
-        } else if (val == 2) {
-            $("#rc").show();
-            $("#rq").hide();
-        } else {
-            $("#rc").hide();
-            $("#rq").hide();
-        }
-    }
-
-    $("#StockTransferTypeID").change(function () {
-        HideOrShow();
-    });
-
-    $('#LocationID').change(function () {
+    @*$('#LocationID').change(function () {
         _locID = $('#LocationID').val();
-        var url = "/StockTransfer/GetLocationCode/";
+        var url = "/StockTransferDirects/GetLocationCode/";
 
         $.ajax({
             url: url,
@@ -75,21 +48,21 @@
             type: "POST",
             success: function (data) {
                 $.each(data, function (i, val) {
-                    $.get("@Url.Action("GenerateSTRNumber", "StockTransfer")/STR " + val.Code + "", null, BindData);
+                    $.get("@Url.Action("GenerateSTRNumber", "StockTransferDirects")/STR", null, BindData);
                 })
             },
             error: function (reponse) {
                 alert("error : " + reponse);
             }
         });
-    });
+    });*@
 
-    function BindData(data) {
-        $("#TransferID").val(data);
-    }
+    //function BindData(data) {
+    //    $("#TransferID").val(data);
+    //}
 
-    function GetLocationCode(_locID) {
-        var url = "/StockTransfer/GetLocationCode/";
+    @*function GetLocationCode(_locID) {
+        var url = "/StockTransferDirects/GetLocationCode/";
 
         $.ajax({
             url: url,
@@ -97,13 +70,14 @@
             cache: false,
             type: "POST",
             success: function (data) {
-                $.get("@Url.Action("GenerateSTRNumber", "StockTransfer")/STR - '" + data.locID + "'", null, BindData);
+                $.get("@Url.Action("GenerateSTRNumber", "StockTransferDirects")/STR", null, BindData);
+                $.get("@Url.Action("GenerateSTRNumber", "StockTransferDirects")/STR - ", null, BindData);
             },
             error: function (reponse) {
                 alert("error : " + reponse);
             }
         });
-    }
+    }*@
 
     jQuery.validator.unobtrusive.adapters.add("dropdown", function (options) {
         if (options.element.tagName.toUpperCase() == "SELECT" && options.element.type.toUpperCase() == "SELECT-ONE") {
@@ -115,4 +89,5 @@
     });
 
 </script>
-    
+
+

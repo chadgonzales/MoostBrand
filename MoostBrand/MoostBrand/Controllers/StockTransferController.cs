@@ -95,6 +95,8 @@ namespace MoostBrand.Controllers
         //}
         #endregion
 
+        #region ST Action
+
         // GET: StockTransfer
         [AccessChecker(Action = 1, ModuleID = 4)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -932,6 +934,7 @@ namespace MoostBrand.Controllers
             return RedirectToAction("Details", new { id = reqID });
         }
         #endregion
+
         // -Pearl
         [HttpPost]
         public ActionResult GetLocationCode(int locID)
@@ -962,7 +965,6 @@ namespace MoostBrand.Controllers
         {
             return View(entity.StockTransferDetails.Find(id));
         }
-
 
         public ActionResult DisplayComputations(int? recID)
         {
@@ -1007,5 +1009,8 @@ namespace MoostBrand.Controllers
 
             return Json(computations, JsonRequestBehavior.AllowGet);
         }
+
+        #endregion
+
     }
 }

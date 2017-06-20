@@ -13,6 +13,7 @@ namespace MoostBrand.DAL
         {
             this.ReturnedItems = new HashSet<ReturnedItem>();
             this.StockAdjustmentDetails = new HashSet<StockAdjustmentDetail>();
+            //StockTransferDirects = new HashSet<StockTransferDirect>();
         }
 
 
@@ -59,6 +60,9 @@ namespace MoostBrand.DAL
         public virtual ICollection<StockAdjustmentDetail> StockAdjustmentDetails { get; set; }
 
         public virtual StockTransfer StockTransfer { get; set; }
+
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<StockTransferDirect> StockTransferDirects { get; set; }
     }
 }
 
