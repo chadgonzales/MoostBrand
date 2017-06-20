@@ -1,13 +1,10 @@
-﻿@model PagedList.IPagedList<MoostBrand.DAL.StockTransfer>
+﻿@model PagedList.IPagedList<MoostBrand.DAL.StockTransferDirect>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "Stock Transfer";
 }
-
-
-
 <div class="panel-heading">
-    <h4 class="panel-title">Stock Transfer</h4>
+    <h4 class="panel-title">Direct Transfer</h4>
 
 </div>
 <div class="panel-body">
@@ -15,10 +12,9 @@
     <div class="dataTables_wrapper no-footer">
         <div class="dataTables_length">
             <a href="@Url.Action("Create")" class="btn btn-green" style="float:left;"> Create New <i class="fa fa-plus"></i></a>
-            <a href="@Url.Action("Index", "StockTransferDirects")" class="btn btn-green" style="float:left;"> Direct Transfer <i class="fa fa-plus"></i></a>
         </div>
         <div class="dataTables_filter">
-            @using (Html.BeginForm("Index", "StockTransfer", FormMethod.Post))
+            @using (Html.BeginForm("Index", "StockTransferDirects", FormMethod.Post))
             {
                 <p>
                     @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-sm", @placeholder = "Search" })
@@ -31,17 +27,19 @@
         <div class="clearfix"></div>
 
     </div>
-
     <form id="action_form">
         @Html.AntiForgeryToken()
         <table class="table table-striped table-bordered table-hover table-full-width dataTable no-footer">
             <thead>
                 <tr>
                     <th>
-                        @Html.ActionLink("Transfer ID", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                        Item Name
                     </th>
                     <th>
-                        Type
+                        Quantity
+                    </th>
+                    <th>
+                        @Html.ActionLink("Transfer ID", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
                         Location
@@ -59,11 +57,17 @@
             {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.TransferID)
+                            @*@ViewBag.ItemName*@
+                            @Html.DisplayFor(modelItem => item.ItemName)
+                            @*@Html.DisplayFor(modelItem => item.StockTransferDetail.RequisitionDetail.Item.Description)*@
+                            @*@Html.DisplayFor(modelItem => item.ReceivingDetail.RequisitionDetail.Item.Description)
+                            @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.Description)*@
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Requisition.RequisitionType.Type)
-                            @Html.DisplayFor(modelItem => item.Receiving.ReceivingType.Type)
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TransferID)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Location.Description)
@@ -100,7 +104,7 @@
                             </div>
                         </td>
                     </tr>
-                                }
+                }
             </tbody>
         </table>
     </form>

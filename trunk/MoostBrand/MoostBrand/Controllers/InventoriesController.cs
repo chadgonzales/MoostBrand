@@ -66,7 +66,8 @@ namespace MoostBrand.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 invt = invt.Where(i => i.ItemCode.Contains(searchString)
-                                       || i.Description.Contains(searchString));
+                                       || i.Description.Contains(searchString)
+                                       || i.InStock.ToString().Contains(searchString));
             }
 
             switch (sortOrder)

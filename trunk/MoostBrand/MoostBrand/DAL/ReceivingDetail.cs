@@ -17,6 +17,7 @@ namespace MoostBrand.DAL
             StockAllocationDetails = new HashSet<StockAllocationDetail>();
             StockTransferDetails = new HashSet<StockTransferDetail>();
             StockTransferDetails1 = new HashSet<StockTransferDetail>();
+            //StockTransferDirects = new HashSet<StockTransferDirect>();
         }
 
         public int ID { get; set; }
@@ -69,6 +70,9 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransferDetail> StockTransferDetails1 { get; set; }
+
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<StockTransferDirect> StockTransferDirects { get; set; }
     }
 }
 

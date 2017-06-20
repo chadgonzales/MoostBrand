@@ -18,7 +18,7 @@
             <a href="@Url.Action("Create")" class="btn btn-green" style="float:left;"> Create New <i class="fa fa-plus"></i></a>
         </div>
         <div class="dataTables_filter">
-            @using (Html.BeginForm("Index", "Inventory", FormMethod.Post))
+            @using (Html.BeginForm("Index", "Inventories", FormMethod.Post))
             {
                 <p>
                     @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-sm", @placeholder = "Search" })
