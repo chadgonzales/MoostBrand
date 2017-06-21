@@ -34,12 +34,12 @@ namespace MoostBrand.Controllers
                             });
             return Json(items, JsonRequestBehavior.AllowGet);
         }
-       
+
         #endregion
 
-
-
         // GET: Inventories
+
+        [AccessChecker(Action = 1, ModuleID = 10)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -91,6 +91,8 @@ namespace MoostBrand.Controllers
             return View(invt.ToPagedList(pageNumber, pageSize));
         }
 
+
+        [AccessChecker(Action = 1, ModuleID = 10)]
         // GET: Inventories/Details/5
         public ActionResult Details(int? id)
         {
@@ -106,6 +108,7 @@ namespace MoostBrand.Controllers
             return View(inventory);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 10)]
         // GET: Inventories/Create
         public ActionResult Create()
         {
@@ -117,6 +120,7 @@ namespace MoostBrand.Controllers
             return View();
         }
 
+        [AccessChecker(Action = 2, ModuleID = 10)]
         // POST: Inventories/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -137,6 +141,7 @@ namespace MoostBrand.Controllers
             return View(inventory);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 10)]
         // GET: Inventories/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -159,6 +164,7 @@ namespace MoostBrand.Controllers
             return View(inventory);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 10)]
         // POST: Inventories/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -180,6 +186,7 @@ namespace MoostBrand.Controllers
             return View(inventory);
         }
 
+        [AccessChecker(Action = 3, ModuleID = 10)]
         // GET: Inventories/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -195,6 +202,7 @@ namespace MoostBrand.Controllers
             return View(inventory);
         }
 
+        [AccessChecker(Action = 3, ModuleID = 10)]
         // POST: Inventories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

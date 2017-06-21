@@ -293,7 +293,7 @@ namespace MoostBrand.Controllers
 
         #endregion
 
-
+        #region Actions
         // GET: PR
         [AccessChecker(Action = 1, ModuleID = 3)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -824,6 +824,8 @@ namespace MoostBrand.Controllers
             }
             return RedirectToAction("PendingItems", "PR", new { id = id });
         }
+
+        #endregion
 
         #region PARTIAL
 

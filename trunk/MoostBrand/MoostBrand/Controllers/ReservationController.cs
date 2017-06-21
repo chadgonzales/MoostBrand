@@ -258,7 +258,7 @@ namespace MoostBrand.Controllers
             return View(prs.ToPagedList(pageNumber, pageSize));
         }
 
-        [AccessChecker(Action = 1, ModuleID = 3)]
+        [AccessChecker(Action = 1, ModuleID = 9)]
         public ActionResult Details(int id = 0)
         {
             //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -287,7 +287,7 @@ namespace MoostBrand.Controllers
                                 FullName = s.FirstName + " " + s.LastName
                             };
             ViewBag.reqType = db.RequisitionTypes.Where(model => model.ID == 4).ToList();
-
+            ViewBag.PaymentStatus = new SelectList(db.PaymentStatus, "ID", "Status");
             ViewBag.ReqTypeID = new SelectList(db.ReqTypes, "ID", "Type");
             ViewBag.RequisitionTypeID = new SelectList(db.RequisitionTypes, "ID", "Type");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName");
@@ -335,6 +335,7 @@ namespace MoostBrand.Controllers
                                 FullName = s.FirstName + " " + s.LastName
                             };
 
+            ViewBag.PaymentStatus = new SelectList(db.PaymentStatus, "ID", "Status");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", req.RequestedBy);
             ViewBag.LocationID = new SelectList(db.Locations, "ID", "Description", req.LocationID);
             ViewBag.ReservationTypeID = new SelectList(db.ReservationTypes, "ID", "Type", req.ReservationTypeID);
@@ -346,7 +347,7 @@ namespace MoostBrand.Controllers
             return View(req);
         }
 
-        [AccessChecker(Action = 2, ModuleID = 3)]
+        [AccessChecker(Action = 2, ModuleID = 9)]
         public ActionResult Edit(int id)
         {
             //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -360,6 +361,8 @@ namespace MoostBrand.Controllers
                                     ID = s.ID,
                                     FullName = s.FirstName + " " + s.LastName
                                 };
+
+                ViewBag.PaymentStatus = new SelectList(db.PaymentStatus, "ID", "Status");
                 ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
                 ViewBag.LocationID = new SelectList(db.Locations, "ID", "Description", pr.LocationID);
                 ViewBag.ReservationTypeID = new SelectList(db.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
@@ -378,7 +381,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: PR/Edit/5
-        [AccessChecker(Action = 2, ModuleID = 3)]
+        [AccessChecker(Action = 2, ModuleID = 9)]
         [HttpPost]
         public ActionResult Edit(Requisition req)
         {
@@ -419,6 +422,8 @@ namespace MoostBrand.Controllers
                                 ID = s.ID,
                                 FullName = s.FirstName + " " + s.LastName
                             };
+
+            ViewBag.PaymentStatus = new SelectList(db.PaymentStatus, "ID", "Status");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", req.RequestedBy);
             ViewBag.LocationID = new SelectList(db.Locations, "ID", "Description", req.LocationID);
             ViewBag.ReservationTypeID = new SelectList(db.ReservationTypes, "ID", "Type", req.ReservationTypeID);
@@ -432,7 +437,7 @@ namespace MoostBrand.Controllers
 
             return View(req);
         }
-        [AccessChecker(Action = 3, ModuleID = 3)]
+        [AccessChecker(Action = 3, ModuleID = 9)]
         public ActionResult Delete(int id)
         {
             var pr = db.Requisitions.FirstOrDefault(r => r.ID == id);
@@ -450,7 +455,7 @@ namespace MoostBrand.Controllers
 
             return RedirectToAction("Details", new { id = pr.ID });
         }
-        [AccessChecker(Action = 3, ModuleID = 3)]
+        [AccessChecker(Action = 3, ModuleID = 9)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirm(int id)
         {
@@ -471,7 +476,7 @@ namespace MoostBrand.Controllers
         #endregion
 
         #region actions 
-        [AccessChecker(Action = 5, ModuleID = 3)]
+        [AccessChecker(Action = 5, ModuleID = 9)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Approve(int id)
@@ -504,7 +509,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: PR/Approve/5
-        [AccessChecker(Action = 5, ModuleID = 3)]
+        [AccessChecker(Action = 5, ModuleID = 9)]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Revise(int id)
@@ -537,7 +542,7 @@ namespace MoostBrand.Controllers
         }
 
         // POST: PR/Denied/5
-        [AccessChecker(Action = 5, ModuleID = 3)]
+        [AccessChecker(Action = 5, ModuleID = 9)]
         [HttpPost]
         public ActionResult Denied(int id)
         {
@@ -560,7 +565,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: PR/Items/5
-        [AccessChecker(Action = 1, ModuleID = 3)]
+        [AccessChecker(Action = 1, ModuleID = 9)]
         public ActionResult Items(int id, int? page)
         {
             var items = db.RequisitionDetails
@@ -575,7 +580,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: PR/ApprovedItems/5
-        [AccessChecker(Action = 1, ModuleID = 3)]
+        [AccessChecker(Action = 1, ModuleID = 9)]
         public ActionResult ApprovedItems(int id, int? page)
         {
             var items = db.RequisitionDetails
@@ -590,7 +595,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: PR/PendingItems/5
-        [AccessChecker(Action = 1, ModuleID = 3)]
+        [AccessChecker(Action = 1, ModuleID = 9)]
         public ActionResult PendingItems(int id, int? page)
         {
             int UserID = Convert.ToInt32(Session["sessionuid"]);
@@ -621,7 +626,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: PR/DeniedItems/5
-        [AccessChecker(Action = 1, ModuleID = 3)]
+        [AccessChecker(Action = 1, ModuleID = 9)]
         public ActionResult DeniedItems(int id, int? page)
         {
             var items = db.RequisitionDetails
@@ -639,7 +644,7 @@ namespace MoostBrand.Controllers
        
 
         // POST: PR/DenyItem/5
-        [AccessChecker(Action = 1, ModuleID = 3)]
+        [AccessChecker(Action = 1, ModuleID = 9)]
         public ActionResult DenyItem(int id, int itemID)
         {
             try
@@ -695,7 +700,7 @@ namespace MoostBrand.Controllers
             return RedirectToAction("Index");
         }
 
-        [AccessChecker(Action = 1, ModuleID = 3)]
+        [AccessChecker(Action = 1, ModuleID = 9)]
         public ActionResult ApproveItem(int id, int itemID, int reqID)
         {
             try

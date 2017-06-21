@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace MoostBrand.Controllers
 {
@@ -58,6 +59,13 @@ namespace MoostBrand.Controllers
             }
 
             return View(login);
+        }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+
+            return RedirectToAction("Login");
         }
     }
 }
