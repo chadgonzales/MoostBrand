@@ -70,18 +70,35 @@
 }
 
 <script language="javascript">
-$(function () {
+    $(function () {
 
-    // add class form-control to textarea and select
-    $("input[disabled]").addClass("form-control");
-    $("textarea").addClass("form-control");
-    $("select").addClass("form-control");
+        // add class form-control to textarea and select
+        $("input[disabled]").addClass("form-control");
+        $("textarea").addClass("form-control");
+        $("select").addClass("form-control");
 
-    $('.date-picker').datepicker({
-        autoclose: true
+        $('.date-picker').datepicker({
+            autoclose: true
+        });
     });
-});
 
+
+    $('#BatchNumber').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#SADate').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Time').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
 </script>
 
 

@@ -287,7 +287,7 @@ namespace MoostBrand.Controllers
                                 FullName = s.FirstName + " " + s.LastName
                             };
             ViewBag.reqType = db.RequisitionTypes.Where(model => model.ID == 4).ToList();
-            ViewBag.PaymentStatus = new SelectList(db.PaymentStatus, "ID", "Status");
+            ViewBag.PaymentStatusID = new SelectList(db.PaymentStatus, "ID", "Status");
             ViewBag.ReqTypeID = new SelectList(db.ReqTypes, "ID", "Type");
             ViewBag.RequisitionTypeID = new SelectList(db.RequisitionTypes, "ID", "Type");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName");
@@ -335,7 +335,7 @@ namespace MoostBrand.Controllers
                                 FullName = s.FirstName + " " + s.LastName
                             };
 
-            ViewBag.PaymentStatus = new SelectList(db.PaymentStatus, "ID", "Status");
+            ViewBag.PaymentStatusID = new SelectList(db.PaymentStatus, "ID", "Status");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", req.RequestedBy);
             ViewBag.LocationID = new SelectList(db.Locations, "ID", "Description", req.LocationID);
             ViewBag.ReservationTypeID = new SelectList(db.ReservationTypes, "ID", "Type", req.ReservationTypeID);
@@ -900,5 +900,45 @@ namespace MoostBrand.Controllers
             return RedirectToAction("Details", new { id = reqID });
         }
         #endregion
+
+        public ActionResult OrderCheckingIndex(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "reqno" : "";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            //var prs = db.Requisitions.Where(x => x.Status == false && x.RequisitionTypeID == 4); //active
+
+            var prs = db.Requisitions.Where(x => x.Status == false && x.RequisitionTypeID == 4 && x.ApprovalStatus == 2);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                prs = prs.Where(o => o.RequisitionTypeID == 4 && o.RefNumber.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "reqno":
+                    prs = prs.OrderByDescending(o => o.RefNumber);
+                    break;
+                default:
+                    prs = prs.OrderBy(o => o.ID);
+                    break;
+            }
+
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = (page ?? 1);
+            return View(prs.ToPagedList(pageNumber, pageSize));
+        }
     }
 }

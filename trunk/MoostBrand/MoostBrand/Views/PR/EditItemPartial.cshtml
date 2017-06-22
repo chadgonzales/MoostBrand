@@ -1,12 +1,12 @@
 ﻿@model MoostBrand.DAL.RequisitionDetail
 
 @*<script>
-$(document).ready(function () {
-    $("#projectName").change(function(){
-        alert("Value: " + $("#identifier").text);
+    $(document).ready(function () {
+        $("#projectName").change(function(){
+            alert("Value: " + $("#identifier").text);
+        });
     });
-});
-</script>*@
+    </script>*@
 
 <div class="modal-content">
     <div class="modal-header">
@@ -37,7 +37,7 @@ $(document).ready(function () {
                 <div class="form-group">
                     @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control"} })
+                        @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -97,23 +97,23 @@ $(document).ready(function () {
                 </div>
             </div>
             @*<div class="form-horizontal">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PreviousItem, htmlAttributes: new { @class = "control-label col-md-2"})
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.PreviousItem, new { htmlAttributes = new { @class = "form-control"} })
-                        @Html.ValidationMessageFor(model => model.PreviousItem, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PreviousItem, htmlAttributes: new { @class = "control-label col-md-2"})
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.PreviousItem, new { htmlAttributes = new { @class = "form-control"} })
+                            @Html.ValidationMessageFor(model => model.PreviousItem, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-horizontal">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PreviousQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.PreviousQuantity, new { htmlAttributes = new { @class = "form-control"} })
-                        @Html.ValidationMessageFor(model => model.PreviousQuantity, "", new { @class = "text-danger" })
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PreviousQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.PreviousQuantity, new { htmlAttributes = new { @class = "form-control"} })
+                            @Html.ValidationMessageFor(model => model.PreviousQuantity, "", new { @class = "text-danger" })
+                        </div>
                     </div>
-                </div>
-            </div>*@
+                </div>*@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -121,15 +121,21 @@ $(document).ready(function () {
         </div>
     }
 </div><!-- /.modal-content -->
-
 @*@section Scripts {
-@Scripts.Render("~/bundles/jqueryval")
-}
+    @Scripts.Render("~/bundles/jqueryval")
+    }
 
-<script language="javascript">
-    $(document).ready(function(){
-    
+    <script language="javascript">
+        $(document).ready(function(){
 
+
+        });
+
+    </script>*@
+
+<script>
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
     });
-
-</script>*@
+</script>

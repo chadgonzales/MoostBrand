@@ -84,11 +84,11 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.PaymentStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.PaymentStatusID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
                 @*@Html.EditorFor(model => model.PaymentStatus, new { htmlAttributes = new { @class = "form-control" } })*@
-                @Html.DropDownList("PaymentStatus", String.Empty)
-                @Html.ValidationMessageFor(model => model.PaymentStatus, "", new { @class = "text-danger" })
+                @Html.DropDownList("PaymentStatusID", String.Empty)
+                @Html.ValidationMessageFor(model => model.PaymentStatusID, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -162,3 +162,36 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script>
+
+    $('#RequestedDate').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#DateRequired').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Customer').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#InvoiceNumber').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#AuthorizedPerson').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Driver').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+
+</script>

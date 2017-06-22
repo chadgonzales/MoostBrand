@@ -148,26 +148,34 @@ namespace MoostBrand.Controllers
         }
 
         // POST: Employee/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
         {
+            //, FormCollection collection
             try
             {
                 // TODO: Add delete logic here
                 var employee = entity.Employees.Find(id);
 
-                try
-                {
+                //try
+                //{
+
+                    var useraccess = entity.UserAccesses.ToList().FindAll(x => x.EmployeeID == employee.ID);
+                    foreach (var ua in useraccess)
+                        entity.UserAccesses.Remove(ua);
+
                     entity.Employees.Remove(employee);
                     entity.SaveChanges();
-                }
-                catch { }
-                return RedirectToAction("Index");
+
+                    //entity.Employees.Remove(employee);
+                //    //entity.SaveChanges();
+                //}
+                //catch(Exception ex) { }
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
             }
+            return RedirectToAction("Index");
         }
     }
 }

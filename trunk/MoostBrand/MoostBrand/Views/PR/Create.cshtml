@@ -38,6 +38,7 @@
         });
     })
 </script>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -54,7 +55,7 @@
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                <label class = "control-label col-md-2" >Type</label>
+                <label class="control-label col-md-2">Type</label>
                 <div class="col-md-6">
                     @Html.DropDownList("ReqTypeID", String.Empty)
                     @Html.ValidationMessageFor(model => model.ReqTypeID, "", new { @class = "text-danger" })
@@ -146,10 +147,11 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.PaymentStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.PaymentStatusID, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
-                        @Html.EditorFor(model => model.PaymentStatus, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.PaymentStatus, "", new { @class = "text-danger" })
+                        @*@Html.EditorFor(model => model.PaymentStatus, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @Html.DropDownList("PaymentStatusID", String.Empty)
+                        @Html.ValidationMessageFor(model => model.PaymentStatusID, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -249,20 +251,20 @@
             </div>
 
             @*<div class="form-group">
-                @Html.LabelFor(model => model.ApprovalStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.DropDownList("ApprovalStatus", String.Empty)
-                    @Html.ValidationMessageFor(model => model.ApprovalStatus, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.ApprovalStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.DropDownList("ApprovalStatus", String.Empty)
+                        @Html.ValidationMessageFor(model => model.ApprovalStatus, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.DropDownList("ApprovedBy", String.Empty)
-                    @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.DropDownList("ApprovedBy", String.Empty)
+                        @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -284,93 +286,138 @@
 
 
     </div>
-    
+
 
 }
 
-        @section Scripts {
-            @*@Scripts.Render("~/bundles/jqueryval")*@
+@section Scripts {
+    @*@Scripts.Render("~/bundles/jqueryval")*@
 
+}
+
+<script language="javascript">
+    
+    $('#RequestedDate').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#DateRequired').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Customer').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#InvoiceNumber').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#AuthorizedPerson').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#PlateNumber').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Others').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#TimeDeparted').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#TimeArrived').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Driver').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+
+    $(function () {
+        HideOrShow(); //this calls it on load
+
+        // add class form-control to textarea and select
+        $("input[disabled]").addClass("form-control");
+        $("textarea").addClass("form-control");
+        $("select").addClass("form-control");
+    });
+
+    function BindData(data) {
+        $("#RefNumber").val(data);
+    }
+
+    function HideOrShow() {
+        var val = $("#RequisitionTypeID").val();
+        if (val == 1) { //PR
+            $.get("@Url.Action("GenerateRefNumber", "PR")/PUR", null, BindData);
+            $("#br").hide();
+            $("#pr").show();
+            $("#cr").hide();
+            $("#brcr").hide();
+        } else if (val == 2) { //BR
+            $.get("@Url.Action("GenerateRefNumber", "PR")/BR", null, BindData);
+            $("#br").show();
+            $("#brcr").show();
+            $("#pr").hide();
+            $("#cr").hide();
+        } else if (val == 3) { //WR
+            $.get("@Url.Action("GenerateRefNumber", "PR")/WR", null, BindData);
+            $("#br").show();
+            $("#pr").hide();
+            $("#cr").hide();
+            $("#brcr").show();
+        } else if (val == 5) { //OR
+            $.get("@Url.Action("GenerateRefNumber", "PR")/OR", null, BindData);
+            $("#br").show();
+            $("#pr").hide();
+            $("#cr").hide();
+            $("#brcr").show();
+        } else if (val == 4) { //CR
+            $.get("@Url.Action("GenerateRefNumber", "PR")/CR", null, BindData);
+            $("#br").hide();
+            $("#pr").hide();
+            $("#cr").show();
+            $("#brcr").show();
+        } else {
+            $("#RefNumber").val("");
+            $("#br").hide();
+            $("#pr").hide();
+            $("#cr").hide();
+            $("#brcr").hide();
         }
+    }
 
-        <script language="javascript">
-
-            $(function () {
-                HideOrShow(); //this calls it on load
-
-                // add class form-control to textarea and select
-                $("input[disabled]").addClass("form-control");
-                $("textarea").addClass("form-control");
-                $("select").addClass("form-control");
-            });
-
-            function BindData(data) {
-                $("#RefNumber").val(data);
+    $("#ReqTypeID").change(function () {
+        var id = $("#ReqTypeID").val();
+        $.post('@Url.Action("GetRequisitionType")', { id: id }, function (data) {
+            var markup = "<option>Select Requisition Type</option>";
+            for (var x = 0; x < data.length; x++) {
+                markup += "<option value=" + data[x].ID + ">" + data[x].Type + "</option>";
             }
+            $("#RequisitionTypeID").html(markup).show();
+            HideOrShow();
+        })
+    });
 
-            function HideOrShow() {
-                var val = $("#RequisitionTypeID").val();
-                if (val == 1) { //PR
-                    $.get("@Url.Action("GenerateRefNumber", "PR")/PUR", null, BindData);
-                    $("#br").hide();
-                    $("#pr").show();
-                    $("#cr").hide();
-                    $("#brcr").hide();
-                } else if (val == 2) { //BR
-                    $.get("@Url.Action("GenerateRefNumber", "PR")/BR", null, BindData);
-                    $("#br").show();
-                    $("#brcr").show();
-                    $("#pr").hide();
-                    $("#cr").hide();
-                } else if (val == 3) { //WR
-                    $.get("@Url.Action("GenerateRefNumber", "PR")/WR", null, BindData);
-                    $("#br").show();
-                    $("#pr").hide();
-                    $("#cr").hide();
-                    $("#brcr").show();
-                } else if (val == 5) { //OR
-                    $.get("@Url.Action("GenerateRefNumber", "PR")/OR", null, BindData);
-                    $("#br").show();
-                    $("#pr").hide();
-                    $("#cr").hide();
-                    $("#brcr").show();
-                } else if (val == 4) { //CR
-                    $.get("@Url.Action("GenerateRefNumber", "PR")/CR", null, BindData);
-                    $("#br").hide();
-                    $("#pr").hide();
-                    $("#cr").show();
-                    $("#brcr").show();
-                } else {
-                    $("#RefNumber").val("");
-                    $("#br").hide();
-                    $("#pr").hide();
-                    $("#cr").hide();
-                    $("#brcr").hide();
-                }
-            }
+    $("#RequisitionTypeID").change(function () {
+        HideOrShow();
+    });
 
-            $("#ReqTypeID").change(function () {
-                var id = $("#ReqTypeID").val();
-                $.post('@Url.Action("GetRequisitionType")', { id: id }, function (data) {
-                    var markup = "<option>Select Requisition Type</option>";
-                    for (var x = 0; x < data.length; x++) {
-                        markup += "<option value=" + data[x].ID + ">" + data[x].Type + "</option>";
-                    }
-                    $("#RequisitionTypeID").html(markup).show();
-                    HideOrShow();
-                })
-            });
-
-            $("#RequisitionTypeID").change(function () {
-                HideOrShow();
-            });
-
-            $("#ShipmentTypeID").change(function () {
-                var val = this.value;
-                if (val == 1) { //PR
-                    $("#dship").show();
-                } else {
-                    $("#dship").hide();
-                }
-            });
-        </script>
+    $("#ShipmentTypeID").change(function () {
+        var val = this.value;
+        if (val == 1) { //PR
+            $("#dship").show();
+        } else {
+            $("#dship").hide();
+        }
+    });
+</script>

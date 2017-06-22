@@ -26,6 +26,7 @@ namespace MoostBrand.DAL
 
         public int RequisitionTypeID { get; set; }
 
+        [Display(Name = "Sales Person")]
         public int RequestedBy { get; set; }
 
         public DateTime RequestedDate { get; set; }
@@ -45,8 +46,7 @@ namespace MoostBrand.DAL
 
         public int? DropShipID { get; set; }
 
-        [StringLength(50)]
-        public string PaymentStatus { get; set; }
+        public int? PaymentStatusID { get; set; }
 
         [StringLength(50)]
         public string InvoiceNumber { get; set; }
@@ -111,6 +111,8 @@ namespace MoostBrand.DAL
         public virtual ICollection<Receiving> Receivings { get; set; }
 
         public virtual ReqType ReqType { get; set; }
+
+        public virtual PaymentStatu PaymentStatu { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequisitionDetail> RequisitionDetails { get; set; }

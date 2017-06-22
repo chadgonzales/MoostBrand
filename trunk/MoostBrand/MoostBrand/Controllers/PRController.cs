@@ -68,7 +68,7 @@ namespace MoostBrand.Controllers
                 pr.Customer = null;
                 pr.ReservationTypeID = null;
                 pr.ReservedBy = null;
-                pr.PaymentStatus = null;
+                pr.PaymentStatusID = null;
                 pr.InvoiceNumber = null;
                 pr.AuthorizedPerson = null;
                 pr.ValidatedBy = null;
@@ -82,7 +82,7 @@ namespace MoostBrand.Controllers
                 pr.Customer = null;
                 pr.ReservationTypeID = null;
                 pr.ReservedBy = null;
-                pr.PaymentStatus = null;
+                pr.PaymentStatusID = null;
                 pr.InvoiceNumber = null;
                 pr.AuthorizedPerson = null;
                 pr.ValidatedBy = null;
@@ -368,6 +368,8 @@ namespace MoostBrand.Controllers
                                 ID = s.ID,
                                 FullName = s.FirstName + " " + s.LastName
                             };
+
+            ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
             ViewBag.ReqTypeID = new SelectList(entity.ReqTypes, "ID", "Type");
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName");
@@ -432,6 +434,7 @@ namespace MoostBrand.Controllers
                                 ID = s.ID,
                                 FullName = s.FirstName + " " + s.LastName
                             };
+            ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
             ViewBag.ReqTypeID = new SelectList(entity.ReqTypes, "ID", "Type", pr.ReqTypeID);
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);

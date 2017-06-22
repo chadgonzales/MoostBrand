@@ -202,7 +202,7 @@
             <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
         }
     }
-    
+
     <a href='@Url.Action("Index", new { id = ViewBag.PRid })' class="btn btn-light-orange">
         Back to Details
     </a>
@@ -229,17 +229,17 @@
     window.onload = function () {
         //$('#ShowPopop').click(function () {
 
-            var url = $('#AddItemWindow').data('url');
-            $.get(url, function (data) {
-                $('#ShowDialogAdd').html(data);
+        var url = $('#AddItemWindow').data('url');
+        $.get(url, function (data) {
+            $('#ShowDialogAdd').html(data);
 
-                $('#AddItemWindow').modal('show');
+            $('#AddItemWindow').modal('show');
 
-                // add class form-control to textarea and select
-                $("input[disabled]").addClass("form-control");
-                $("textarea").addClass("form-control");
-                $("select").addClass("form-control");
-            });
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+        });
         //});
     }
 
@@ -288,12 +288,12 @@
     function ReloadFunction() {
         location.reload();
     }
-    function Approve(id, itemID){
+    function Approve(id, itemID) {
         var url = '@Url.Action("ApproveItem", "PR")/' + id;
-        $.post(url, {id: id, itemID : itemID }, ReloadFunction);
+        $.post(url, { id: id, itemID: itemID }, ReloadFunction);
     }
-    function Deny(id, itemID){
+    function Deny(id, itemID) {
         var url = '@Url.Action("DenyItem", "PR")/' + id;
-        $.post(url, {id: id, itemID : itemID }, ReloadFunction);
+        $.post(url, { id: id, itemID: itemID }, ReloadFunction);
     }
 </script>

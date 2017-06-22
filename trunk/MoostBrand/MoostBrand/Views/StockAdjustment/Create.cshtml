@@ -121,4 +121,17 @@
         $("textarea").addClass("form-control");
         $("select").addClass("form-control");
     });
+
+    $('#EncodedDate').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Reference').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
 </script>

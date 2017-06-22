@@ -5,52 +5,52 @@
 }
 
 @section Scripts{
-<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<script>
-    $(function () {
-        var select = [];
-        var itemcode = $("#itemcode");
-        var action = "@Url.Action("GetItems")";
-        itemcode.autocomplete({
-            source: function (request, response) {
-                $.get(action, { name: request.term }, function (results) {
-                    response($.map(results, function (item) {
-                        return {
-                            id: item.ID,
-                            label: item.Code,
-                            value: item.Code,
-                            desc: item.Name,
-                            barcode: item.BarCode,
-                            uom: item.UOM,
-                            year: item.Year,
-                            cat: item.Categories
-                        };
-                    }));
-                });
-            },
-            change: function (event, ui) {
-                $("#ItemCode").val(ui.item.value)
-                $("#InventoryUoM").val(ui.item.uom)
-                $("#Year").val(ui.item.year)
-                $("#POSBarCode").val(ui.item.barcode)
-                $("#Category").val(ui.item.cat)
-                $("#Description").val(ui.item.desc)
-            },
-            select: function (event, ui) {
-                $("#ItemCode").val(ui.item.value)
-                $("#InventoryUoM").val(ui.item.uom)
-                $("#Year").val(ui.item.year)
-                $("#POSBarCode").val(ui.item.barcode)
-                $("#Category").val(ui.item.cat)
-                $("#Description").val(ui.item.desc)
-            },
-            delay: 300
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script>
+        $(function () {
+            var select = [];
+            var itemcode = $("#itemcode");
+            var action = "@Url.Action("GetItems")";
+            itemcode.autocomplete({
+                source: function (request, response) {
+                    $.get(action, { name: request.term }, function (results) {
+                        response($.map(results, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Code,
+                                value: item.Code,
+                                desc: item.Name,
+                                barcode: item.BarCode,
+                                uom: item.UOM,
+                                year: item.Year,
+                                cat: item.Categories
+                            };
+                        }));
+                    });
+                },
+                change: function (event, ui) {
+                    $("#ItemCode").val(ui.item.value)
+                    $("#InventoryUoM").val(ui.item.uom)
+                    $("#Year").val(ui.item.year)
+                    $("#POSBarCode").val(ui.item.barcode)
+                    $("#Category").val(ui.item.cat)
+                    $("#Description").val(ui.item.desc)
+                },
+                select: function (event, ui) {
+                    $("#ItemCode").val(ui.item.value)
+                    $("#InventoryUoM").val(ui.item.uom)
+                    $("#Year").val(ui.item.year)
+                    $("#POSBarCode").val(ui.item.barcode)
+                    $("#Category").val(ui.item.cat)
+                    $("#Description").val(ui.item.desc)
+                },
+                delay: 300
+            });
+
+
         });
-
-
-    });
-</script>
+    </script>
 }
 
 @using (Html.BeginForm("Create", "Inventories", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -149,7 +149,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Ordered, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Ordered, new { htmlAttributes = new { @class = "form-control" , @Value = "0", @readonly = true } })
+                    @Html.EditorFor(model => model.Ordered, new { htmlAttributes = new { @class = "form-control", @Value = "0", @readonly = true } })
                     @Html.ValidationMessageFor(model => model.Ordered, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -165,7 +165,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Available, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Available, new { htmlAttributes = new { @class = "form-control", @Value = "0" , @readonly = true} })
+                    @Html.EditorFor(model => model.Available, new { htmlAttributes = new { @class = "form-control", @Value = "0", @readonly = true } })
                     @Html.ValidationMessageFor(model => model.Available, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -188,7 +188,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
-                    <input type="submit" value="Create" class="btn btn-green"/>
+                    <input type="submit" value="Create" class="btn btn-green" />
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
                     </a>
@@ -197,3 +197,47 @@
         </div>
     </div>
 }
+
+<script>
+
+    $('#ItemID').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Code').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Barcode').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Description').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#DescriptionPurchase').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#SubstituteItem').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#ComplementaryField').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Year').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#VendorCoding').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#LeadTime').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+</script>

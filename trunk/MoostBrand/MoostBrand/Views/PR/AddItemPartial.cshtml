@@ -15,7 +15,7 @@
             @Html.Hidden("ItemID")
             <div class="form-horizontal" id="modalCat">
                 <div class="form-group">
-                    <label class = "control-label col-md-2">Category</label>
+                    <label class="control-label col-md-2">Category</label>
                     <div class="col-md-8">
                         @Html.TextBox("catsearch", ViewBag.CatName as string, new { @class = "form-control" })
                     </div>
@@ -32,7 +32,7 @@
             </div>
             <div class="form-horizontal" id="modalItem">
                 <div class="form-group">
-                    <label class = "control-label col-md-2">Unit of Measurement</label>
+                    <label class="control-label col-md-2">Unit of Measurement</label>
                     <div class="col-md-8">
                         <label id="uom"></label>
                     </div>
@@ -49,10 +49,10 @@
             </div>
             <div class="form-horizontal">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.InStock, htmlAttributes: new {@class = "control-label col-md-2"})
+                    @Html.LabelFor(model => model.InStock, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.InStock, new { htmlAttributes = new { @class = "form-control" , @placeholder = "0", @readonly = "@readonly" } })
-                        @Html.ValidationMessageFor(model => model.InStock, "", new { @class = "text-danger"})
+                        @Html.EditorFor(model => model.InStock, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @readonly = "@readonly" } })
+                        @Html.ValidationMessageFor(model => model.InStock, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -60,7 +60,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Ordered, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.Ordered, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" , @disabled = true} })
+                        @Html.EditorFor(model => model.Ordered, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @disabled = true } })
                         @Html.ValidationMessageFor(model => model.Ordered, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Committed, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.Committed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" , @disabled = true} })
+                        @Html.EditorFor(model => model.Committed, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @disabled = true } })
                         @Html.ValidationMessageFor(model => model.Committed, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Available, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.Available, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" , @disabled = true} })
+                        @Html.EditorFor(model => model.Available, new { htmlAttributes = new { @class = "form-control", @placeholder = "0", @disabled = true } })
                         @Html.ValidationMessageFor(model => model.Available, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -99,3 +99,10 @@
         </div>
     }
 </div><!-- /.modal-content -->
+
+<script>
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+</script>

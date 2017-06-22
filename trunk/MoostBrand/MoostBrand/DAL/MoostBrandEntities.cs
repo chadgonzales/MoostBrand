@@ -341,6 +341,11 @@ namespace MoostBrand.DAL
                 .WithOptional(e => e.Module)
                 .WillCascadeOnDelete();
 
+            modelBuilder.Entity<PaymentStatu>()
+                .HasMany(e => e.Requisitions)
+                .WithOptional(e => e.PaymentStatu)
+                .HasForeignKey(e => e.PaymentStatusID);
+
             modelBuilder.Entity<ReceivingDetail>()
                 .HasMany(e => e.StockTransferDetails)
                 .WithOptional(e => e.ReceivingDetail)
