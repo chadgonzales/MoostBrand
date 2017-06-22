@@ -417,7 +417,9 @@ namespace MoostBrand.Controllers
                             entity.Requisitions.Add(newPR);
                             entity.SaveChanges();
 
-                            return RedirectToAction("Index");
+                            //return RedirectToAction("Index");
+
+                            return RedirectToAction("Details", new { pr = pr.ID });
                         }
                     }
                 }

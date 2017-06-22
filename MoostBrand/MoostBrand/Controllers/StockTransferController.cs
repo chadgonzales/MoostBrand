@@ -276,7 +276,9 @@ namespace MoostBrand.Controllers
 
                 entity.StockTransfers.Add(stocktransfer);
                 entity.SaveChanges();
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+
+                return RedirectToAction("Details", new { stocktransfer = stocktransfer.ID });
             }
 
             #region DROPDOWNS

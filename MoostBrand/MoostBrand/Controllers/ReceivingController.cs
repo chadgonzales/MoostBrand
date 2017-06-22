@@ -321,7 +321,9 @@ namespace MoostBrand.Controllers
                             entity.Receivings.Add(newR);
                             entity.SaveChanges();
 
-                            return RedirectToAction("Index");
+                            //return RedirectToAction("Index");
+
+                            return RedirectToAction("Details", new { receiving = receiving.ID });
                         }
                     }
                     else
@@ -967,6 +969,11 @@ namespace MoostBrand.Controllers
             var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID);
             var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID);
             var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc).InStock;
+
+            //if(instock == null)
+            //{
+            //    instock = 0;
+            //}
 
             var computations = entity.RequisitionDetails
                                .Where(x => x.ItemID == itmID && x.AprovalStatusID == 2)
