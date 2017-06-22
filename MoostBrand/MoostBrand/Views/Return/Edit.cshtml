@@ -72,4 +72,17 @@
         $("textarea").addClass("form-control");
         $("select").addClass("form-control");
     });
+
+    $('#Date').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#InspectedBy').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
 </script>

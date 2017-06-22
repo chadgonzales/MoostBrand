@@ -4623,6 +4623,7 @@
     <Content Include="Views\StockTransferDirects\EditorTemplates\Helper.cshtml" />
     <Content Include="Views\StockTransferDirects\EditorTemplates\Operator.cshtml" />
     <Content Include="Views\StockTransferDirects\EditorTemplates\StockTransferDirect.cshtml" />
+    <Content Include="Views\Reservation\OrderCheckingIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -63,8 +63,15 @@
     <!-- end: COPYRIGHT -->
 </div>
 <!-- end: LOGIN BOX -->
-
-
-
 }
 
+<script>
+    $('#Username').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Password').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+</script>

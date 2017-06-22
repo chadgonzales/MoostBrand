@@ -84,20 +84,20 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(model => model.PlateNo, htmlAttributes: new { @class = "control-label col-md-2"})
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.PlateNo, new { htmlAttributes = new { @class = "form-control"} })
+            @Html.ValidationMessageFor(model => model.PlateNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
         @Html.LabelFor(model => model.Helpers, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
             <div id="helper-fields">
                 @Html.EditorFor(model => model.Helpers, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.AddLink("Add", "#helper-fields", ".helper-field", "Helpers", typeof(MoostBrand.DAL.Helper))
             </div>
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ReceivedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-6">
-            @Html.DropDownList("ReceivedBy", String.Empty)
-            @Html.ValidationMessageFor(model => model.ReceivedBy, "", new { @class = "text-danger" })
         </div>
     </div>
 
@@ -114,6 +114,14 @@
         <div class="col-md-6">
             @Html.DropDownList("RequestedBy", String.Empty)
             @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ReceivedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.DropDownList("ReceivedBy", String.Empty)
+            @Html.ValidationMessageFor(model => model.ReceivedBy, "", new { @class = "text-danger" })
         </div>
     </div>
 
