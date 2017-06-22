@@ -320,7 +320,9 @@ namespace MoostBrand.Controllers
                         db.Requisitions.Add(newPR);
                         db.SaveChanges();
 
-                        return RedirectToAction("Index");
+                        //return RedirectToAction("Index");
+
+                        return RedirectToAction("Details", new { req = req.ID });
                     }
                 }
                 catch

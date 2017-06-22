@@ -67,6 +67,10 @@ namespace MoostBrand.Controllers
             {
                 invt = invt.Where(i => i.ItemCode.Contains(searchString)
                                        || i.Description.Contains(searchString)
+                                       || i.Year.Contains(searchString)
+                                       || i.POSBarCode.Contains(searchString)
+                                       || i.Category.Contains(searchString)
+                                       || i.InventoryUoM.Contains(searchString)
                                        || i.InStock.ToString().Contains(searchString));
             }
 
