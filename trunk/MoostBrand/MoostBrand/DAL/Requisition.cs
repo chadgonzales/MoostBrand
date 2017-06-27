@@ -31,7 +31,13 @@ namespace MoostBrand.DAL
 
         public DateTime RequestedDate { get; set; }
 
+        public string ReservationStatus { get; set; }
+
         public int LocationID { get; set; }
+
+        public string ValidityOfReservation { get; set; }
+
+        public string DaysOfNotification { get; set; }
 
         public DateTime? DateRequired { get; set; }
 

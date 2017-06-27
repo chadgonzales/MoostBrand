@@ -154,6 +154,46 @@ namespace MoostBrand.Controllers
         #endregion
 
         #region JSON
+        [HttpPost]
+        public JsonResult GetExp()
+        {
+            string message = "";
+            string noErrJs = "";
+            bool success = false;
+
+            var lstreserved = db.Requisitions.Where(x => x.Status == false && x.RequisitionTypeID == 4);
+
+            foreach (var reserved in lstreserved)
+            {
+                DateTime startedDate = reserved.RequestedDate;
+                DateTime validityDate = Convert.ToDateTime(reserved.ValidityOfReservation);
+                DateTime notif = Convert.ToDateTime(reserved.DaysOfNotification);
+
+                //DateTime expiryDateW = startedDate;
+                DateTime expiryDateFD = startedDate.AddDays(7);
+                if(reserved.PaymentStatusID == 1 && DateTime.Now == notif)
+                {
+                    noErrJs = "false";
+                    message = "Days of notif";
+                }
+                if (reserved.PaymentStatusID == 1 && DateTime.Now > validityDate)
+                {
+                    reserved.ReservationStatus = "Cancelled";
+                    db.Entry(lstreserved).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+                else if (reserved.PaymentStatusID == 2 || reserved.PaymentStatusID == 3 || reserved.PaymentStatusID == 4 && DateTime.Now > expiryDateFD)
+                {
+
+                    noErrJs = "true";
+                    message = "Reservation is required on" + startedDate;
+                    //reserved.ReservationStatus = "Cancelled";
+                    //db.Entry(lstreserved).State = EntityState.Modified;
+                    //db.SaveChanges();
+                }
+            }
+            return Json(new { message = message, noErrJs = noErrJs, success = success }, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         public JsonResult GetCategories(string name)

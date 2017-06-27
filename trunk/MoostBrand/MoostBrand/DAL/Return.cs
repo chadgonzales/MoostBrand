@@ -45,6 +45,7 @@ namespace MoostBrand.DAL
 
         public virtual ReturnType ReturnType { get; set; }
 
-        public virtual TransactionType TransactionType { get; set; }
+        public virtual ReturnTransactionType ReturnTransactionType { get; set; }
+
     }
 }

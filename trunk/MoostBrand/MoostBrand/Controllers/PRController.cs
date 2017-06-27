@@ -239,6 +239,21 @@ namespace MoostBrand.Controllers
                             .Select(x => new
                             {
                                 ID = x.ID,
+                                Code = x.Code,
+                                Name = x.Description,
+                                UOM = x.UnitOfMeasurement.Description
+                            });
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetItemCode(int catID, string name)
+        {
+            var items = entity.Items.Where(x => x.CategoryID == catID && x.Code.Contains(name))
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Code = x.Code,
                                 Name = x.Description,
                                 UOM = x.UnitOfMeasurement.Description
                             });
@@ -290,6 +305,30 @@ namespace MoostBrand.Controllers
             }
             return Json(total, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult getCodeCommit(string Code)
+        {
+            var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemCode == Code && x.AprovalStatusID == 2);
+            var total = com.Sum(x => x.Quantity);
+            if (total == null)
+            {
+                total = 0;
+            }
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult getCodePO(string Code)
+        {
+            var pur = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemCode == Code);
+            var total = pur.Sum(x => x.Quantity);
+            if (total == null)
+            {
+                total = 0;
+            }
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+
 
         #endregion
 

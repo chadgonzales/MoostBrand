@@ -23,6 +23,16 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.RequisitionID)
             @*@Html.HiddenFor(model => model.ItemID)*@
+
+            @*<div class="form-horizontal" id="modalItem">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ItemCode, "Item Code", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.TextBox("itemcode", ViewBag.ItemCode as string, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ItemCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>*@
             <div class="form-horizontal">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Item, htmlAttributes: new { @class = "control-label col-md-2" })

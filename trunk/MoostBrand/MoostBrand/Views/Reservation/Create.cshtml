@@ -91,6 +91,16 @@
                 </div>
             </div>
 
+            <div id="exp">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ValidityOfReservation , "Validity Of Reservation", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.ValidityOfReservation, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ValidityOfReservation, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
                 @Html.LabelFor(model => model.InvoiceNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
@@ -198,6 +208,21 @@
         $("#dropship").hide();
 
     });
+
+    $(function () {
+        $("#exp").hide();
+    })
+
+    $("#PaymentStatusID").change(function () {
+        var val = this.value;
+        if (val == 1) {
+            $("#exp").show();
+        }
+        else {
+            $("#exp").hide();
+        }
+    })
+
 
     $("#ShipmentTypeID").change(function () {
         var val = this.value;

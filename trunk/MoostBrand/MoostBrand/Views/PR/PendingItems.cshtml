@@ -40,6 +40,38 @@
             });
         });
 
+        $("#itemcode").focusout(function () {
+            var itmID = $("#ItemCode").val();
+            var itmCode = $("#itemcode").val();
+            $.ajax({
+                url: '@Url.Action("getCodeCommit", "PR")',
+                type: "POST",
+                dataType: "json",
+                data: { Code: itmID },
+                success: function (data) {
+                    $("#Committed").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getCodePO", "PR")',
+                type: "POST",
+                dataType: "json",
+                data: { Code: itmID },
+                success: function (data) {
+                    $("#Ordered").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getInstock", "PR")',
+                type: "POST",
+                dataType: "json",
+                data: { Code: itmCode },
+                success: function (data) {
+                    $("#InStock").val(data);
+                }
+            });
+        });
+
         $("#catsearch").autocomplete({
             source: function (request, response) {
                 $.ajax({
@@ -82,6 +114,7 @@
                                 id: item.ID,
                                 label: item.Name,
                                 value: item.Name,
+                                code: item.Code,
                                 uom: item.UOM
                             };
                         }))
@@ -90,7 +123,8 @@
                 })
             },
             select: function (event, ui) {
-                $("#ItemID").val(ui.item.id);
+                $("#itemsearch").val(ui.item.id);
+                $("#itemcode").val(ui.item.code);
                 $("#uom").html(ui.item.uom);
             },
             messages: {
@@ -102,9 +136,52 @@
         $("#itemsearch").keyup(function () {
             if (!this.value) {
                 $('#ItemID').removeAttr('value');
+                $('#ItemCode').html('');
                 $("#uom").html('');
             }
         });
+
+        $("#itemcode").autocomplete({
+            source: function (request, response) {
+                var catID = $("#CategoryID").val();
+                $.ajax({
+                    url: '@Url.Action("GetItemCode")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { catID: catID, name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Code,
+                                value: item.Code,
+                                name: item.Name,
+                                uom: item.UOM
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#itemsearch").val(ui.item.name);
+                $("#itemcode").val(ui.item.id);
+                $("#uom").html(ui.item.uom);
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#itemcode").autocomplete("option", "appendTo", "#modalItem");
+        $("#itemcode").keyup(function () {
+            if (!this.value) {
+                $('#ItemID').html('');
+                $('#ItemCode').removeAttr('value');
+                $("#uom").html('');
+            }
+        });
+
         var ins = parseInt($("#InStock").val());
         var ord = parseInt($("#Ordered").val());
         var com = parseInt($("#Committed").val());
