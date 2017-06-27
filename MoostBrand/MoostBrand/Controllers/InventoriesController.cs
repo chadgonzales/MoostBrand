@@ -132,9 +132,18 @@ namespace MoostBrand.Controllers
         {
             if (ModelState.IsValid)
             {
-                entity.Inventories.Add(inventory);
-                entity.SaveChanges();
-                return RedirectToAction("Index");
+                var invnt = entity.Inventories.Where(x => x.ItemCode == inventory.ItemCode && x.Description == inventory.Description && x.LocationCode == inventory.LocationCode).ToList();
+
+                if (invnt.Count() > 0)
+                {
+                    ModelState.AddModelError("", "Item already exists");
+                }
+                else
+                {
+                    entity.Inventories.Add(inventory);
+                    entity.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
 
             #region DROPDOWNS

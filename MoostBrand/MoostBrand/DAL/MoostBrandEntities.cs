@@ -66,6 +66,8 @@ namespace MoostBrand.DAL
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<Vendor> Vendors { get; set; }
 
+        public virtual DbSet<ReturnTransactionType> ReturnTransactionTypes { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<StockTransferDetail>()

@@ -22,6 +22,7 @@ namespace MoostBrand.DAL
         public int RequisitionID { get; set; }
 
         public int ItemID { get; set; }
+        public string ItemCode { get; set; }
 
         public int? Quantity { get; set; }
 

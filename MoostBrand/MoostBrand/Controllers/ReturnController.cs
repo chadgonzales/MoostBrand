@@ -110,7 +110,7 @@ namespace MoostBrand.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 rrs = rrs.Where(o => o.ReturnType.Type.Contains(searchString)
-                                  || o.TransactionType.Type.Contains(searchString));
+                                  || o.ReturnTransactionType.Type.Contains(searchString));
             }
 
             switch (sortOrder)
@@ -119,7 +119,7 @@ namespace MoostBrand.Controllers
                     rrs = rrs.OrderByDescending(o => o.ReturnType.Type);
                     break;
                 case "trans":
-                    rrs = rrs.OrderByDescending(o => o.TransactionType.Type);
+                    rrs = rrs.OrderByDescending(o => o.ReturnTransactionType.Type);
                     break;
                 default:
                     rrs = rrs.OrderBy(o => o.ID);
@@ -153,7 +153,9 @@ namespace MoostBrand.Controllers
             retrn.Date = DateTime.Now;
 
             #region DROPDOWNS
-            ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type");
+            //var TransacType = entity.TransactionTypes.Where(x => x.ID != 3).ToList();
+
+            ViewBag.TransactionTypeID = new SelectList(entity.ReturnTransactionTypes, "ID", "Type");
             ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type");
             #endregion
 
@@ -183,7 +185,9 @@ namespace MoostBrand.Controllers
                 }
             }
             #region DROPDOWNS
-            ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", retrn.TransactionTypeID);
+            //var TransacType = entity.TransactionTypes.Where(x => x.ID != 3).ToList();
+
+            ViewBag.TransactionTypeID = new SelectList(entity.ReturnTransactionTypes, "ID", "Type", retrn.TransactionTypeID);
             ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type", retrn.ReturnTypeID);
             #endregion
 
@@ -204,7 +208,7 @@ namespace MoostBrand.Controllers
             if(retrn.ApprovalStatus == 1)
             {
                 #region DROPDOWNS
-                ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type");
+                ViewBag.TransactionTypeID = new SelectList(entity.ReturnTransactionTypes, "ID", "Type");
                 ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type");
                 #endregion
 
@@ -236,7 +240,7 @@ namespace MoostBrand.Controllers
                 }
             }
             #region DROPDOWNS
-            ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", retrn.TransactionTypeID);
+            ViewBag.TransactionTypeID = new SelectList(entity.ReturnTransactionTypes, "ID", "Type", retrn.TransactionTypeID);
             ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type", retrn.ReturnTypeID);
             #endregion
 

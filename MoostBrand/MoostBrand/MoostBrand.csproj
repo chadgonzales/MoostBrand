@@ -300,6 +300,7 @@
     <Compile Include="DAL\ReservationType.cs" />
     <Compile Include="DAL\Return.cs" />
     <Compile Include="DAL\ReturnedItem.cs" />
+    <Compile Include="DAL\ReturnTransactionType.cs" />
     <Compile Include="DAL\ReturnType.cs" />
     <Compile Include="DAL\ShipmentType.cs" />
     <Compile Include="DAL\Size.cs" />
