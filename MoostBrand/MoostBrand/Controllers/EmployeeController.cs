@@ -14,8 +14,8 @@ namespace MoostBrand.Controllers
     public class EmployeeController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
-        
 
+        [AccessChecker(Action = 1, ModuleID = 1)]
         // GET: Employee
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -58,6 +58,7 @@ namespace MoostBrand.Controllers
             return View(employees.ToPagedList(pageNumber, pageSize));
         }
 
+        [AccessChecker(Action = 1, ModuleID = 1)]
         // GET: Employee/Details/5
         public ActionResult Details(int id)
         {
@@ -66,6 +67,7 @@ namespace MoostBrand.Controllers
             return View(employee);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // GET: Employee/Create
         public ActionResult Create()
         {
@@ -75,6 +77,7 @@ namespace MoostBrand.Controllers
             return View(employee);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // POST: Employee/Create
         [HttpPost]
         public ActionResult Create(Employee employee)
@@ -104,6 +107,7 @@ namespace MoostBrand.Controllers
             return View(employee);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // GET: Employee/Edit/5
         public ActionResult Edit(int id)
         {
@@ -112,6 +116,7 @@ namespace MoostBrand.Controllers
             return View(employee);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // POST: Employee/Edit/5
         [HttpPost]
         public ActionResult Edit(Employee employee)
@@ -140,6 +145,7 @@ namespace MoostBrand.Controllers
             return View(employee);
         }
 
+        [AccessChecker(Action = 3, ModuleID = 1)]
         // GET: Employee/Delete/5
         public ActionResult Delete(int id)
         {
@@ -147,6 +153,7 @@ namespace MoostBrand.Controllers
             return View(employee);
         }
 
+        [AccessChecker(Action = 3, ModuleID = 1)]
         // POST: Employee/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)

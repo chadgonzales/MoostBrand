@@ -98,7 +98,7 @@
                         <!-- start: USER DROPDOWN -->
                         <li class="dropdown current-user">
                             <a data-toggle="dropdown" data-hover="dropdown" class="dropdown-toggle" data-close-others="true" href="#">
-                                @*<img src="assets/images/avatar-1-small.jpg" class="img-circle" alt="">*@ <span class="username hidden-xs">Username</span> <i class="fa fa-caret-down "></i>
+                                @*<img src="assets/images/avatar-1-small.jpg" class="img-circle" alt="">*@ <span class="username hidden-xs">@HttpContext.Current.Session["username"]</span> <i class="fa fa-caret-down "></i>
                             </a>
                             <ul class="dropdown-menu dropdown-dark">
                                 <li>

@@ -59,7 +59,10 @@ namespace MoostBrand.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
+            //int locID = Convert.ToInt32(Session["locationID"]);
+            //int UserID = Convert.ToInt32(Session["userID"]);
 
+            //var user = entity.Users.FirstOrDefault(x => x.ID == UserID);
             var invt = from i in entity.Inventories
                         select i;
 
@@ -92,9 +95,17 @@ namespace MoostBrand.Controllers
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
+
+            //if (user.LocationID != 10)
+            //{
+            //    invt = invt.Where(x => x.LocationCode == locID);
+            //    return View(invt.ToPagedList(pageNumber, pageSize));
+            //}
+            //else
+            //    return View(invt.ToPagedList(pageNumber, pageSize));
+
             return View(invt.ToPagedList(pageNumber, pageSize));
         }
-
 
         [AccessChecker(Action = 1, ModuleID = 10)]
         // GET: Inventories/Details/5
@@ -117,8 +128,15 @@ namespace MoostBrand.Controllers
         public ActionResult Create()
         {
             #region DROPDOWNS
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Description = x.Description
+                            });
+
             ViewBag.InventoryStatus = new SelectList(entity.InventoryStatus, "ID", "Status");
-            ViewBag.LocationCode = new SelectList(entity.Locations, "ID", "Description");
+            ViewBag.LocationCode = new SelectList(loc, "ID", "Description");
             #endregion
 
             return View();
@@ -140,6 +158,9 @@ namespace MoostBrand.Controllers
                 }
                 else
                 {
+                    var reOrder = inventory.DailyAverageUsage * inventory.LeadTime;
+                    inventory.ReOrder = reOrder;
+
                     entity.Inventories.Add(inventory);
                     entity.SaveChanges();
                     return RedirectToAction("Index");
@@ -147,8 +168,16 @@ namespace MoostBrand.Controllers
             }
 
             #region DROPDOWNS
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                .Select(x => new
+                {
+                    ID = x.ID,
+                    Description = x.Description
+                });
+
+
             ViewBag.InventoryStatus = new SelectList(entity.InventoryStatus, "ID", "Status");
-            ViewBag.LocationCode = new SelectList(entity.Locations, "ID", "Description");
+            ViewBag.LocationCode = new SelectList(loc, "ID", "Description");
             #endregion
 
             return View(inventory);
@@ -170,8 +199,15 @@ namespace MoostBrand.Controllers
 
 
             #region DROPDOWNS
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                      .Select(x => new
+                      {
+                          ID = x.ID,
+                          Description = x.Description
+                      });
+
             ViewBag.InventoryStatus = new SelectList(entity.InventoryStatus, "ID", "Status");
-            ViewBag.LocationCode = new SelectList(entity.Locations, "ID", "Description");
+            ViewBag.LocationCode = new SelectList(loc, "ID", "Description");
             #endregion
 
             return View(inventory);
@@ -192,8 +228,15 @@ namespace MoostBrand.Controllers
 
 
             #region DROPDOWNS
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                      .Select(x => new
+                      {
+                          ID = x.ID,
+                          Description = x.Description
+                      });
+
             ViewBag.InventoryStatus = new SelectList(entity.InventoryStatus, "ID", "Status");
-            ViewBag.LocationCode = new SelectList(entity.Locations, "ID", "Description");
+            ViewBag.LocationCode = new SelectList(loc, "ID", "Description");
             #endregion
 
             return View(inventory);

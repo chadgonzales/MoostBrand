@@ -7,12 +7,15 @@ using MoostBrand.DAL;
 using PagedList;
 using System.Data.Entity;
 using System.Configuration;
+using MoostBrand.Models;
 
 namespace MoostBrand.Controllers
 {
     public class ContainerStorageController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
+
+        [AccessChecker(Action = 1, ModuleID = 1)]
         // GET: ContainerStorage
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -59,6 +62,7 @@ namespace MoostBrand.Controllers
             return View(storages.ToPagedList(pageNumber, pageSize));
         }
 
+        [AccessChecker(Action = 1, ModuleID = 1)]
         // GET: ContainerStorage/Details/5
         public ActionResult Details(int id)
         {
@@ -66,12 +70,14 @@ namespace MoostBrand.Controllers
             return View(storage);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // GET: ContainerStorage/Create
         public ActionResult Create()
         {
             return View();
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // POST: ContainerStorage/Create
         [HttpPost]
         public ActionResult Create(ContainerStorage storage)
@@ -101,6 +107,7 @@ namespace MoostBrand.Controllers
             return View(storage);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // GET: ContainerStorage/Edit/5
         public ActionResult Edit(int id)
         {
@@ -111,6 +118,7 @@ namespace MoostBrand.Controllers
             return View(storage);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // POST: ContainerStorage/Edit/5
         [HttpPost]
         public ActionResult Edit(ContainerStorage storage)
@@ -131,6 +139,7 @@ namespace MoostBrand.Controllers
             return View(storage);
         }
 
+        [AccessChecker(Action = 3, ModuleID = 1)]
         // GET: ContainerStorage/Delete/5
         public ActionResult Delete(int id = 0)
         {
@@ -138,6 +147,7 @@ namespace MoostBrand.Controllers
             return View(storage);
         }
 
+        [AccessChecker(Action = 3, ModuleID = 1)]
         // POST: ContainerStorage/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id = 0)

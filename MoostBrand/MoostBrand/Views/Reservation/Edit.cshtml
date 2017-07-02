@@ -28,7 +28,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.RequestedBy, "RequestedBy", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.RequestedBy, "Sales Person", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
                 @Html.DropDownList("RequestedBy", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
@@ -141,13 +141,13 @@
         </div>
 
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.Driver, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
                 @Html.EditorFor(model => model.Driver, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Driver, "", new { @class = "text-danger" })
             </div>
-        </div>
+        </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })

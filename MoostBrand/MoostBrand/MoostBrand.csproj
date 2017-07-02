@@ -4621,8 +4621,8 @@
     <Content Include="Views\StockTransferDirects\Details.cshtml" />
     <Content Include="Views\StockTransferDirects\Edit.cshtml" />
     <Content Include="Views\StockTransferDirects\Index.cshtml" />
-    <Content Include="Views\StockTransferDirects\EditorTemplates\Helper.cshtml" />
-    <Content Include="Views\StockTransferDirects\EditorTemplates\Operator.cshtml" />
+    <Content Include="Views\StockTransferDirects\EditorTemplates\StockTransferHelper.cshtml" />
+    <Content Include="Views\StockTransferDirects\EditorTemplates\StockTransferOperator.cshtml" />
     <Content Include="Views\StockTransferDirects\EditorTemplates\StockTransferDirect.cshtml" />
     <Content Include="Views\Reservation\OrderCheckingIndex.cshtml" />
   </ItemGroup>

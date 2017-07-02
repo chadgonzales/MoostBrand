@@ -84,7 +84,7 @@
         <div class="col-md-6">
             <div id="helper-fields">
                 @Html.EditorFor(model => model.StockTransferHelpers, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.AddLink("Add", "#helper-fields", ".helper-field", "Helper", typeof(MoostBrand.DAL.StockTransferHelper))
+                @Html.AddLink("Add", "#helper-fields", ".helper-field", "StockTransferHelpers", typeof(MoostBrand.DAL.StockTransferHelper))
             </div>
         </div>
     </div>
@@ -126,7 +126,7 @@
         <div class="col-md-6">
             <div id="operator-fields">
                 @Html.EditorFor(model => model.StockTransferOperators, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.AddLink("Add", "#operator-fields", ".operator-field", "Operators", typeof(MoostBrand.DAL.StockTransferOperator))
+                @Html.AddLink("Add", "#operator-fields", ".operator-field", "StockTransferOperators", typeof(MoostBrand.DAL.StockTransferOperator))
             </div>
         </div>
     </div>

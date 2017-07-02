@@ -47,6 +47,10 @@
 
         public int? MaximumInventory { get; set; }
 
+        public int? DailyAverageUsage { get; set; }
+
+        public int? LeadTime { get; set; }
+
         public virtual InventoryStatu InventoryStatu { get; set; }
         public virtual Location Location { get; set; }
     }

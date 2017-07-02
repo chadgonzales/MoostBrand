@@ -7,6 +7,7 @@ using MoostBrand.DAL;
 using PagedList;
 using System.Data.Entity;
 using System.Configuration;
+using MoostBrand.Models;
 
 namespace MoostBrand.Controllers
 {
@@ -14,6 +15,8 @@ namespace MoostBrand.Controllers
     {
         MoostBrandEntities entity = new MoostBrandEntities();
         // GET: UnitOfMeasures
+
+        [AccessChecker(Action = 1, ModuleID = 1)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -59,6 +62,7 @@ namespace MoostBrand.Controllers
             return View(uoms.ToPagedList(pageNumber, pageSize));
         }
 
+        [AccessChecker(Action = 1, ModuleID = 1)]
         // GET: UnitOfMeasure/Details/5
         public ActionResult Details(int id)
         {
@@ -66,12 +70,14 @@ namespace MoostBrand.Controllers
             return View(uom);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // GET: UnitOfMeasure/Create
         public ActionResult Create()
         {
             return View();
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // POST: UnitOfMeasure/Create
         [HttpPost]
         public ActionResult Create(UnitOfMeasurement unitofmeasurement)
@@ -101,6 +107,7 @@ namespace MoostBrand.Controllers
             return View(unitofmeasurement);            
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // GET: UnitOfMeasure/Edit/5
         public ActionResult Edit(int id)
         {
@@ -108,6 +115,7 @@ namespace MoostBrand.Controllers
             return View(uom);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // POST: UnitOfMeasure/Edit/5
         [HttpPost]
         public ActionResult Edit(UnitOfMeasurement uom)
@@ -128,6 +136,7 @@ namespace MoostBrand.Controllers
             return View(uom);
         }
 
+        [AccessChecker(Action = 3, ModuleID = 1)]
         // GET: UnitOfMeasure/Delete/5
         public ActionResult Delete(int id = 0)
         {
@@ -135,6 +144,7 @@ namespace MoostBrand.Controllers
             return View(uom);
         }
 
+        [AccessChecker(Action = 3, ModuleID = 1)]
         // POST: UnitOfMeasure/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id = 0)

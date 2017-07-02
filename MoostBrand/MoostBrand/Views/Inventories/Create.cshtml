@@ -131,9 +131,25 @@
             </div>
 
             <div class="form-group">
+                @Html.LabelFor(model => model.DailyAverageUsage, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.DailyAverageUsage, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DailyAverageUsage, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.LeadTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.LeadTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LeadTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
                 @Html.LabelFor(model => model.ReOrder, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.ReOrder, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.ReOrder, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
                     @Html.ValidationMessageFor(model => model.ReOrder, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -199,6 +215,26 @@
 }
 
 <script>
+
+    $('#DailyAverageUsage').keyup(function () {
+        var daily = $(this).val();
+        var leadTime = $('#LeadTime').val();
+
+        $('#ReOrder').val(daily * leadTime);
+    })
+
+    $('#LeadTime').keyup(function () {
+        var leadTime = parseInt($(this).val());
+        var daily = parseInt($('#DailyAverageUsage').val());
+
+        $('#ReOrder').val(daily * leadTime);
+    })
+
+    var lead = parseInt($("#LeadTime").val());
+    var daily = parseInt($("#DailyAverageUsage").val());
+    $("#InStock").focusout(function () {
+        $("#Available").val(lead * daily);
+    });
 
     $('#ItemID').keyup(function () {
         var text = $(this).val();

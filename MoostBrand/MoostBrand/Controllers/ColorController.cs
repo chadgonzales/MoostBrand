@@ -7,6 +7,7 @@ using MoostBrand.DAL;
 using PagedList;
 using System.Data.Entity;
 using System.Configuration;
+using MoostBrand.Models;
 
 namespace MoostBrand.Controllers
 {
@@ -14,6 +15,8 @@ namespace MoostBrand.Controllers
     {
         MoostBrandEntities entity = new MoostBrandEntities();
         // GET: Colors
+
+        [AccessChecker(Action = 1, ModuleID = 1)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -59,6 +62,7 @@ namespace MoostBrand.Controllers
             return View(colors.ToPagedList(pageNumber, pageSize));
         }
 
+        [AccessChecker(Action = 1, ModuleID = 1)]
         // GET: Color/Details/5
         public ActionResult Details(int id)
         {
@@ -66,12 +70,14 @@ namespace MoostBrand.Controllers
             return View(color);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // GET: Color/Create
         public ActionResult Create()
         {
             return View();
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // POST: Color/Create
         [HttpPost]
         public ActionResult Create(Color color)
@@ -101,6 +107,7 @@ namespace MoostBrand.Controllers
             return View(color);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // GET: Color/Edit/5
         public ActionResult Edit(int id)
         {
@@ -111,6 +118,7 @@ namespace MoostBrand.Controllers
             return View(color);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // POST: Color/Edit/5
         [HttpPost]
         public ActionResult Edit(Color color)
@@ -132,6 +140,7 @@ namespace MoostBrand.Controllers
             return View(color);
         }
 
+        [AccessChecker(Action = 3, ModuleID = 1)]
         // GET: Color/Delete/5
         public ActionResult Delete(int id = 0)
         {
@@ -139,6 +148,7 @@ namespace MoostBrand.Controllers
             return View(color);
         }
 
+        [AccessChecker(Action = 3, ModuleID = 1)]
         // POST: Color/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id = 0)
