@@ -309,7 +309,7 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getCodeCommit(string Code)
         {
-            var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemCode == Code && x.AprovalStatusID == 2);
+            var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.AprovalStatusID == 2);
             var total = com.Sum(x => x.Quantity);
             if (total == null)
             {
@@ -320,7 +320,7 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getCodePO(string Code)
         {
-            var pur = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemCode == Code);
+            var pur = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2);
             var total = pur.Sum(x => x.Quantity);
             if (total == null)
             {
@@ -351,7 +351,11 @@ namespace MoostBrand.Controllers
             }
 
             ViewBag.CurrentFilter = searchString;
+            
+            //int locID = Convert.ToInt32(Session["locationID"]);
+            //int UserID = Convert.ToInt32(Session["userID"]);
 
+            //var user = entity.Users.FirstOrDefault(x => x.ID == UserID);
             var prs = entity.Requisitions.Where(x => x.Status == false); //active
 
             if (!String.IsNullOrEmpty(searchString))
@@ -375,6 +379,15 @@ namespace MoostBrand.Controllers
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
+
+            //if (user.LocationID != 10)
+            //{
+            //    prs = prs.Where(x => x.LocationID == locID);
+            //    return View(prs.ToPagedList(pageNumber, pageSize));
+            //}
+            //else
+            //    return View(prs.ToPagedList(pageNumber, pageSize));
+
             return View(prs.ToPagedList(pageNumber, pageSize));
         }
 
@@ -408,11 +421,18 @@ namespace MoostBrand.Controllers
                                 FullName = s.FirstName + " " + s.LastName
                             };
 
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                        .Select(x => new
+                        {
+                            ID = x.ID,
+                            Description = x.Description
+                        });
+
             ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
             ViewBag.ReqTypeID = new SelectList(entity.ReqTypes, "ID", "Type");
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName");
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description");
             //ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name");
             ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type");
             ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type");
@@ -449,17 +469,22 @@ namespace MoostBrand.Controllers
                     {
                         var newPR = SetNull(pr);
 
-                        if (newPR != null)
-                        {
-                            newPR.IsSync = false;
+                        //if (pr.Proceed == false)
+                        //{
+                            if (newPR != null)
+                            {
+                                newPR.IsSync = false;
 
-                            entity.Requisitions.Add(newPR);
-                            entity.SaveChanges();
+                                //ViewBag.Error = "Would you like to proceed?";
 
-                            //return RedirectToAction("Index");
+                                entity.Requisitions.Add(newPR);
+                                entity.SaveChanges();
 
-                            return RedirectToAction("Details", new { pr = pr.ID });
-                        }
+                                //return RedirectToAction("Index");
+
+                                return RedirectToAction("Details", new { id = pr.ID });
+                            }
+                        //}
                     }
                 }
                 catch
@@ -475,11 +500,19 @@ namespace MoostBrand.Controllers
                                 ID = s.ID,
                                 FullName = s.FirstName + " " + s.LastName
                             };
+
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Description = x.Description
+                            });
+
             ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
             ViewBag.ReqTypeID = new SelectList(entity.ReqTypes, "ID", "Type", pr.ReqTypeID);
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description", pr.LocationID);
             //ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name", pr.VendorID);
             ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
             ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type", pr.ShipmentTypeID);
@@ -923,16 +956,16 @@ namespace MoostBrand.Controllers
         {
             try
             {
-                var itm = entity.Items.FirstOrDefault(x => x.ID == rd.ItemID);
+                //var itm = entity.Items.FirstOrDefault(x => x.ID == rd.ItemID);
                 // TODO: Add insert logic here
                 rd.RequisitionID = id;
                 rd.AprovalStatusID = 1; //submitted
-                
-                rd.Committed = getCommited(rd.ItemID);
-                rd.Ordered = getPurchaseOrder(rd.ItemID);
-                rd.InStock = getInstocked(itm.Description);
 
-                rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                //rd.Committed = getCommited(rd.ItemID);
+                //rd.Ordered = getPurchaseOrder(rd.ItemID);
+                //rd.InStock = getInstocked(itm.Description);
+
+                //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                 var rd1 = entity.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
 
@@ -947,7 +980,7 @@ namespace MoostBrand.Controllers
                     entity.SaveChanges();
                 }
             }
-            catch
+            catch(Exception e)
             {
                 TempData["PartialError"] = "There's an error.";
             }
@@ -967,6 +1000,7 @@ namespace MoostBrand.Controllers
 
             ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
             ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description", rd.ItemID);
+            ViewBag.ItemCode = new SelectList(entity.Items, "ID", "Code", rd.ItemCode);
 
             return PartialView(rd);
         }
@@ -986,19 +1020,19 @@ namespace MoostBrand.Controllers
                     rd.PreviousItemID = prvrequiDetail.ItemID;
                     rd.PreviousQuantity = prvrequiDetail.Quantity;
 
-                    rd.Ordered = getPurchaseOrder(rd.ItemID);
-                    rd.Committed = getCommited(rd.ItemID);
-                    rd.InStock = getInstocked(itm.Description);
+                    //rd.Ordered = getPurchaseOrder(rd.ItemID);
+                    //rd.Committed = getCommited(rd.ItemID);
+                    //rd.InStock = getInstocked(itm.Description);
 
-                    rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                    //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
                     rd.Remarks = rd.Remarks;
                 }
                 else
                 {
-                    rd.InStock = getInstocked(itm.Description);
-                    rd.Ordered = getPurchaseOrder(rd.ItemID);
-                    rd.Committed = getCommited(rd.ItemID);
-                    rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                    //rd.InStock = getInstocked(itm.Description);
+                    //rd.Ordered = getPurchaseOrder(rd.ItemID);
+                    //rd.Committed = getCommited(rd.ItemID);
+                    //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                     rd.Remarks = rd.Remarks;
                     rd.PreviousQuantity = prvrequiDetail.Quantity;

@@ -16,9 +16,9 @@ namespace MoostBrand.Controllers
     {
         MoostBrandEntities entity = new MoostBrandEntities();
 
-
         private int ID;
-        #region PRIVATE METHODS
+
+        #region METHODS
 
         private string Generator(string prefix)
         {
@@ -117,73 +117,151 @@ namespace MoostBrand.Controllers
             }
             return r;
         }
-        #endregion
-
 
         public ActionResult GenerateRefNumber(string id)
         {
             return Json(Generator(id), JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Receiving
-        [AccessChecker(Action = 1, ModuleID = 5)]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult GetRequisition(int id) //returns Json
         {
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "type" : "";
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "recno" : "";
+            var req = entity.Requisitions
+                .Where(r => r.ID == id)
+                .Select(r => new
+                {
+                    RefNumber = r.RefNumber,
+                    RequestedBy = r.Employee1.FirstName + " " + r.Employee1.LastName,
+                    Destination = r.Location1.Description,
+                    SourceLoc = r.Location.Description,
+                    Vendor = r.Vendor.Name,
+                    VendorCode = r.Vendor.Code,
+                    VendorContact = r.Vendor.Attn,
+                    CustName = r.Customer,
+                    ShipmentType = r.ShipmentType.Type,
+                    Invoice = r.InvoiceNumber
+                })
+                .FirstOrDefault();
 
-            if (searchString != null)
+            return Json(req, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult getInstock(string Code)
+        {
+            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == Code);
+            int total;
+            if (instock != null)
             {
-                page = 1;
+                total = Convert.ToInt32(instock.InStock);
             }
             else
             {
-                searchString = currentFilter;
+                total = 0;
             }
-
-            ViewBag.CurrentFilter = searchString;
-
-            var rrs = from o in entity.Receivings
-                      select o;
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                rrs = rrs.Where(o => o.ReceivingType.Type.Contains(searchString)
-                                       || o.ReceivingID.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "type":
-                    rrs = rrs.OrderByDescending(o => o.ReceivingType.Type);
-                    break;
-                case "recno":
-                    rrs = rrs.OrderByDescending(o => o.ReceivingID);
-                    break;
-                default:
-                    rrs = rrs.OrderBy(o => o.ID);
-                    break;
-            }
-
-            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
-            int pageNumber = (page ?? 1);
-            return View(rrs.ToPagedList(pageNumber, pageSize));
+            return Json(total, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Receiving/Details/5
-        [AccessChecker(Action = 1, ModuleID = 5)]
-        public ActionResult Details(int id = 0)
+        [HttpPost]
+        public JsonResult GetCommitted(int ItemID)
         {
-            //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
-            var r = entity.Receivings.Find(id);
-            if (r == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(r);
+            //Available = In Stock + Ordered – Committed
+            var num = ItemID;
+            return Json(num, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult getCommit(int ItemID)
+        {
+            var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2);
+            var total = com.Sum(x => x.Quantity);
+            if (total == null)
+            {
+                total = 0;
+            }
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult getPO(int ItemID)
+        {
+            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == ItemID);
+            var total = pur.Sum(x => x.Quantity);
+            if (total == null)
+            {
+                total = 0;
+            }
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+        public int getCommited(int itemID)
+        {
+            int c = 0;
+            var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
+            var committed = com.Sum(x => x.Quantity);
+            c = Convert.ToInt32(committed);
+            if (committed == null)
+            {
+                c = 0;
+            }
+            return c;
+        }
+        public int getPurchaseOrder(int itemID)
+        {
+            int po = 0;
+            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itemID);
+            var porder = pur.Sum(x => x.Quantity);
+            po = Convert.ToInt32(porder);
+            if (porder == null)
+            {
+                po = 0;
+            }
+            return po;
+        }
+        public int getInstocked(string description)
+        {
+            int getIS = 0;
+            var query = entity.Inventories.FirstOrDefault(x => x.Description == description);
+            if (query != null)
+            {
+                getIS = Convert.ToInt32(query.InStock);
+            }
+            return getIS;
+        }
+
+        public ActionResult DisplayComputations(int? reqID)
+        {
+            var itmID = entity.RequisitionDetails.Find(reqID).ItemID;
+            var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID).Description;
+            var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID);
+            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID);
+            var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc).InStock;
+
+            var computations = entity.RequisitionDetails
+                               .Where(x => x.ItemID == itmID && x.AprovalStatusID == 2)
+                               .Select(x => new
+                               {
+                                   Committed = com.Sum(y => y.Quantity) ?? 0,
+                                   Ordered = pur.Sum(z => z.Quantity) ?? 0,
+                                   InStock = instock
+                               })
+                               .FirstOrDefault();
+
+            return Json(computations, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult getRequiLoc(int id)
+        {
+            var loc = entity.Locations.Find(id);
+            var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && r.LocationID == loc.ID)
+                    .Select(r => new
+                    {
+                        ID = r.ID,
+                        RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
+                    });
+
+            return Json(_requisitions, JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
 
         #region COMMENTS
         // GET: Receiving/GetStockTransfers/5
@@ -227,28 +305,82 @@ namespace MoostBrand.Controllers
         //}
 
         #endregion
-        // GET: Receiving/GetRequisition/5
-        public ActionResult GetRequisition(int id) //returns Json
-        {
-            var req = entity.Requisitions
-                .Where(r => r.ID == id)
-                .Select(r => new
-                {
-                    RefNumber = r.RefNumber,
-                    RequestedBy = r.Employee1.FirstName + " " + r.Employee1.LastName,
-                    Destination = r.Location1.Description,
-                    SourceLoc = r.Location.Description,
-                    Vendor = r.Vendor.Name,
-                    VendorCode = r.Vendor.Code,
-                    VendorContact = r.Vendor.Attn,
-                    CustName = r.Customer,
-                    ShipmentType = r.ShipmentType.Type,
-                    Invoice = r.InvoiceNumber
-                })
-                .FirstOrDefault();
 
-            return Json(req, JsonRequestBehavior.AllowGet);
+        #region ACTIONS
+        // GET: Receiving
+        [AccessChecker(Action = 1, ModuleID = 5)]
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "type" : "";
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "recno" : "";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            //int locID = Convert.ToInt32(Session["locationID"]);
+            //int UserID = Convert.ToInt32(Session["userID"]);
+
+            //var user = entity.Users.FirstOrDefault(x => x.ID == UserID);
+
+            var rrs = from o in entity.Receivings
+                      select o;
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                rrs = rrs.Where(o => o.ReceivingType.Type.Contains(searchString)
+                                       || o.ReceivingID.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "type":
+                    rrs = rrs.OrderByDescending(o => o.ReceivingType.Type);
+                    break;
+                case "recno":
+                    rrs = rrs.OrderByDescending(o => o.ReceivingID);
+                    break;
+                default:
+                    rrs = rrs.OrderBy(o => o.ID);
+                    break;
+            }
+
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = (page ?? 1);
+
+            //if (user.LocationID != 10)
+            //{
+            //    rrs = rrs.Where(x => x.LocationID == locID);
+            //    return View(rrs.ToPagedList(pageNumber, pageSize));
+            //}
+            //else
+            //    return View(rrs.ToPagedList(pageNumber, pageSize));
+
+            return View(rrs.ToPagedList(pageNumber, pageSize));
         }
+
+        // GET: Receiving/Details/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
+        public ActionResult Details(int id = 0)
+        {
+            //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
+            var r = entity.Receivings.Find(id);
+            if (r == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(r);
+        }
+
 
         // GET: Receiving/Create/
         [AccessChecker(Action = 2, ModuleID = 5)]
@@ -258,18 +390,26 @@ namespace MoostBrand.Controllers
             receiving.ReceivingDate = DateTime.Now;
             receiving.PONumber = POGenerator();
 
+            int userID = Convert.ToInt32(Session["userID"]);
+
             #region DROPDOWNS
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                .Select(x => new
+                {
+                    ID = x.ID,
+                    Description = x.Description
+                });
 
-            var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2)
-                                .Select(r => new
-                                {
-                                    ID = r.ID,
-                                    RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
-                                });
+            //var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2)
+            //                    .Select(r => new
+            //                    {
+            //                        ID = r.ID,
+            //                        RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
+            //                    });
 
-            ViewBag.RequisitionID = new SelectList(_requisitions, "ID", "RefNumber");
+            //ViewBag.RequisitionID = new SelectList(_requisitions, "ID", "RefNumber");
             ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type");
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description");
             var empList = new SelectList((from s in entity.Employees
                                           select new
                                           {
@@ -323,7 +463,7 @@ namespace MoostBrand.Controllers
 
                             //return RedirectToAction("Index");
 
-                            return RedirectToAction("Details", new { receiving = receiving.ID });
+                            return RedirectToAction("Details", new { id = receiving.ID });
                         }
                     }
                     else
@@ -343,12 +483,17 @@ namespace MoostBrand.Controllers
                                                         .Select(x => x.ErrorMessage));
             }
 
-
             #region DROPDOWNS
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                    .Select(x => new
+                    {
+                        ID = x.ID,
+                        Description = x.Description
+                    });
 
-            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
+            //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description", receiving.LocationID);
             var empList = from s in entity.Employees
                           select new
                           {
@@ -381,10 +526,16 @@ namespace MoostBrand.Controllers
             if (receiving.ApprovalStatus == 1)
             {
                 #region DROPDOWNS
+                var loc = entity.Locations.Where(x => x.ID != 10)
+                        .Select(x => new
+                        {
+                            ID = x.ID,
+                            Description = x.Description
+                        });
 
                 ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", receiving.RequisitionID);
                 ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
-                ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
+                ViewBag.LocationID = new SelectList(loc, "ID", "Description", receiving.LocationID);
                 //ViewBag.StockTransferID = new SelectList(entity.StockTransfers, "ID", "TransferID", receiving.StockTransferID);
                 var empList = from s in entity.Employees
                               select new
@@ -448,10 +599,16 @@ namespace MoostBrand.Controllers
             }
 
             #region DROPDOWNS
-        
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                    .Select(x => new
+                    {
+                        ID = x.ID,
+                        Description = x.Description
+                    });
+
             ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", receiving.LocationID);
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description", receiving.LocationID);
             //ViewBag.StockTransferID = new SelectList(entity.StockTransfers, "ID", "TransferID", receiving.StockTransferID);
             var empList = from s in entity.Employees
                           select new
@@ -609,89 +766,6 @@ namespace MoostBrand.Controllers
             return Json(rd, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public JsonResult getInstock(string Code)
-        {
-            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == Code);
-            int total;
-            if (instock != null)
-            {
-                total = Convert.ToInt32(instock.InStock);
-            }
-            else
-            {
-                total = 0;
-            }
-            return Json(total, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public JsonResult GetCommitted(int ItemID)
-        {
-            //Available = In Stock + Ordered – Committed
-            var num = ItemID;
-            return Json(num, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public JsonResult getCommit(int ItemID)
-        {
-            var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2);
-            var total = com.Sum(x => x.Quantity);
-            if (total == null)
-            {
-                total = 0;
-            }
-            return Json(total, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public JsonResult getPO(int ItemID)
-        {
-            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == ItemID);
-            var total = pur.Sum(x => x.Quantity);
-            if (total == null)
-            {
-                total = 0;
-            }
-            return Json(total, JsonRequestBehavior.AllowGet);
-        }
-        public int getCommited(int itemID)
-        {
-            int c = 0;
-            var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
-            var committed = com.Sum(x => x.Quantity);
-            c = Convert.ToInt32(committed);
-            if (committed == null)
-            {
-                c = 0;
-            }
-            return c;
-        }
-        public int getPurchaseOrder(int itemID)
-        {
-            int po = 0;
-            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itemID);
-            var porder = pur.Sum(x => x.Quantity);
-            po = Convert.ToInt32(porder);
-            if (porder == null)
-            {
-                po = 0;
-            }
-            return po;
-        }
-        public int getInstocked(string description)
-        {
-            int getIS = 0;
-            var query = entity.Inventories.FirstOrDefault(x => x.Description == description);
-            if (query != null)
-            {
-                getIS = Convert.ToInt32(query.InStock);
-            }
-            return getIS;
-        }
-
-
         // GET: Receiving/PendingItems/5
         [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult PendingItems(int id, int? page)
@@ -795,6 +869,8 @@ namespace MoostBrand.Controllers
             }
             return RedirectToAction("PendingItems", "Receiving", new { id = id });
         }
+
+        #endregion
 
         #region PARTIAL
         // GET: Receiving/AddItemPartial/5
@@ -962,30 +1038,5 @@ namespace MoostBrand.Controllers
         }
         #endregion
 
-        public ActionResult DisplayComputations(int? reqID)
-        {
-            var itmID = entity.RequisitionDetails.Find(reqID).ItemID;
-            var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID).Description;
-            var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID);
-            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID);
-            var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc).InStock;
-
-            //if(instock == null)
-            //{
-            //    instock = 0;
-            //}
-
-            var computations = entity.RequisitionDetails
-                               .Where(x => x.ItemID == itmID && x.AprovalStatusID == 2)
-                               .Select(x => new
-                               {
-                                   Committed = com.Sum(y => y.Quantity) ?? 0,
-                                   Ordered = pur.Sum(z => z.Quantity) ?? 0,
-                                   InStock = instock
-                               })
-                               .FirstOrDefault();
-
-            return Json(computations, JsonRequestBehavior.AllowGet);
-        }
     }
 }

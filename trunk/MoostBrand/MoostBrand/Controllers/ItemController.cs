@@ -8,6 +8,7 @@ using PagedList;
 using System.Data.Entity;
 using System.Configuration;
 using System.IO;
+using MoostBrand.Models;
 
 namespace MoostBrand.Controllers
 {
@@ -18,6 +19,7 @@ namespace MoostBrand.Controllers
         private int ID;
         DateTime dt = DateTime.Now; //Robi
 
+        #region METHODS
         //Robi
         private string CodeGenerator()
         {
@@ -53,6 +55,69 @@ namespace MoostBrand.Controllers
             return randomString;
         }
 
+        [HttpPost]
+        public ActionResult GetSubCategory(int categoryID)
+        {
+
+            var objsubcat = entity.SubCategories
+                    .Where(s => s.CategoryID == categoryID)
+                    .Select(s => new { s.ID, s.Description })
+                    .OrderBy(s => s.Description);
+
+            return Json(objsubcat, JsonRequestBehavior.AllowGet);
+        }
+
+        //Robi
+        [HttpPost]
+        public ActionResult GetSubCategoriesTypes(int subcategoryID)
+        {
+            var objsubcattypes = entity.SubCategoriesTypes
+                .Where(s => s.SubCategoriesID == subcategoryID)
+                .Select(s => new { s.ID, s.Description })
+                .OrderBy(s => s.Description);
+
+            return Json(objsubcattypes, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult GetItemById(int itemID)
+        {
+            var item = entity.Items.FirstOrDefault(i => i.ID == itemID);
+
+            return Json(
+                new
+                {
+                    ID = item.ID,
+                    Category = item.CategoryID,
+                    SubCategory = item.SubCategoryID
+
+                },
+                JsonRequestBehavior.AllowGet);
+        }
+
+        #endregion
+
+        #region COMMENTS
+
+        //[HttpPost]
+        //public JsonResult IsUniq(string code, string description)
+        //{
+        //    bool status;
+        //    var itm = entity.Items.ToList().FindAll(b => b.Code == code && b.Description == description);
+
+        //    if (itm.Count() > 0)
+        //        status = false;
+        //    else
+        //        status = true;
+
+        //    return new JsonResult { Data = new { status = status } };
+        //}
+
+        // GET: Item/Edit/5
+
+        #endregion
+
+        [AccessChecker(Action = 1, ModuleID = 1)]
         // GET: Items
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -99,6 +164,7 @@ namespace MoostBrand.Controllers
             return View(items.ToPagedList(pageNumber, pageSize));
         }
 
+        [AccessChecker(Action = 1, ModuleID = 1)]
         // GET: Item/Details/5
         public ActionResult Details(int id)
         {
@@ -106,6 +172,7 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // GET: Item/Create
         public ActionResult Create()
         {
@@ -122,6 +189,7 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // POST: Item/Create
         [HttpPost]
         public ActionResult Create(int? selectedSubCatID, int? selectedSubCatTypeID, Item item)
@@ -192,22 +260,7 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
-
-        //[HttpPost]
-        //public JsonResult IsUniq(string code, string description)
-        //{
-        //    bool status;
-        //    var itm = entity.Items.ToList().FindAll(b => b.Code == code && b.Description == description);
-
-        //    if (itm.Count() > 0)
-        //        status = false;
-        //    else
-        //        status = true;
-
-        //    return new JsonResult { Data = new { status = status } };
-        //}
-
-        // GET: Item/Edit/5
+        [AccessChecker(Action = 2, ModuleID = 1)]
         public ActionResult Edit(int id)
         {
             ViewBag.Categories = entity.Categories.ToList();
@@ -220,6 +273,7 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 1)]
         // POST: Item/Edit/5
         [HttpPost]
         public ActionResult Edit(Item item)
@@ -255,6 +309,7 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
+        [AccessChecker(Action = 3, ModuleID = 1)]
         // GET: Item/Delete/5
         public ActionResult Delete(int id = 0)
         {
@@ -262,6 +317,7 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
+        [AccessChecker(Action = 3, ModuleID = 1)]
         // POST: Item/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id = 0)
@@ -285,6 +341,8 @@ namespace MoostBrand.Controllers
                 return View();
             }
         }
+
+        #region PARTIAL
 
         public ActionResult ItemViews(int id)
         {
@@ -503,44 +561,7 @@ namespace MoostBrand.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult GetSubCategory(int categoryID)
-        {
+        #endregion
 
-            var objsubcat = entity.SubCategories
-                    .Where(s => s.CategoryID == categoryID)
-                    .Select(s => new { s.ID, s.Description })
-                    .OrderBy(s => s.Description);
-
-            return Json(objsubcat, JsonRequestBehavior.AllowGet);
-        }
-
-        //Robi
-        [HttpPost]
-        public ActionResult GetSubCategoriesTypes(int subcategoryID)
-        {
-            var objsubcattypes = entity.SubCategoriesTypes
-                .Where(s => s.SubCategoriesID == subcategoryID)
-                .Select(s => new { s.ID, s.Description })
-                .OrderBy(s => s.Description);
-
-            return Json(objsubcattypes, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public ActionResult GetItemById(int itemID)
-        {
-            var item = entity.Items.FirstOrDefault(i => i.ID == itemID);
-
-            return Json(
-                new
-                {
-                    ID = item.ID,
-                    Category = item.CategoryID,
-                    SubCategory = item.SubCategoryID
-
-                },
-                JsonRequestBehavior.AllowGet);
-        }
     }
 }

@@ -42,6 +42,8 @@ namespace MoostBrand.Controllers
                         Session["sessionuid"] = user.EmployeeID;
                         Session["usertype"] = user.UserTypeID;
                         Session["username"] = user.Username;
+                        Session["locationID"] = user.LocationID;
+                        Session["userID"] = user.ID;
 
                         UserID = user.EmployeeID;
 

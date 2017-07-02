@@ -5,7 +5,7 @@
     ViewBag.Title = "Create Reservations";
 }
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create", "Reservation", FormMethod.Post, new { enctype = "multipart/form-data", id = "editForm" }))
 {
     @Html.AntiForgeryToken()
 
@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="form-group">
-                @Html.LabelFor(model => model.RequestedBy, "RequestedBy", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.RequestedBy, "Sales Person", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
                     @Html.DropDownList("RequestedBy", String.Empty)
                     @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
@@ -142,13 +142,13 @@
             </div>
 
 
-            <div class="form-group">
+            @*<div class="form-group">
                 @Html.LabelFor(model => model.Driver, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.Driver, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Driver, "", new { @class = "text-danger" })
                 </div>
-            </div>
+            </div>*@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -160,7 +160,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
+                    <input type="button" onclick="myModal()" value="Create" class="btn btn-green" id="save" />
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
                     </a>
@@ -168,12 +168,42 @@
             </div>
         </div>
     </div>
+
+    <div id="SaveWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <div id="ShowDialogSave" class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        Would you like to proceed?
+                    </h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">CLOSE</button>
+                    <button type="submit" class="btn btn-primary" onclick="Submit()" id="save">SUBMIT</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
 <script>
+    function myModal() {
+        $('#SaveWindow').modal('show');
+    }
+
+    function Submit() {
+        $(document).on("click", "#save", function () {
+            $("#editForm").unbind('submit').submit();
+
+        });
+    }
+
 
     $('#RequestedDate').keyup(function () {
         var text = $(this).val();

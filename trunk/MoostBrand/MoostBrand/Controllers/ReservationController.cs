@@ -115,7 +115,6 @@ namespace MoostBrand.Controllers
                 }
             }
         }
-
         public int getCommited(int itemID)
         {
             int c = 0;
@@ -214,11 +213,27 @@ namespace MoostBrand.Controllers
                             .Select(x => new
                             {
                                 ID = x.ID,
+                                Code = x.Code,
                                 Name = x.Description,
                                 UOM = x.UnitOfMeasurement.Description
                             });
             return Json(items, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult GetItemCode(int catID, string name)
+        {
+            var items = db.Items.Where(x => x.CategoryID == catID && x.Code.Contains(name))
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Code = x.Code,
+                                Name = x.Description,
+                                UOM = x.UnitOfMeasurement.Description
+                            });
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public JsonResult getInstock(string Code)
         {
@@ -234,6 +249,7 @@ namespace MoostBrand.Controllers
             }
             return Json(total, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public JsonResult getCommit(int ItemID)
         {
@@ -245,6 +261,7 @@ namespace MoostBrand.Controllers
             }
             return Json(total, JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public JsonResult getPO(int ItemID)
         {
@@ -257,6 +274,28 @@ namespace MoostBrand.Controllers
             return Json(total, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult getCodeCommit(string Code)
+        {
+            var com = db.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.AprovalStatusID == 2);
+            var total = com.Sum(x => x.Quantity);
+            if (total == null)
+            {
+                total = 0;
+            }
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult getCodePO(string Code)
+        {
+            var pur = db.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2);
+            var total = pur.Sum(x => x.Quantity);
+            if (total == null)
+            {
+                total = 0;
+            }
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region actionresult
@@ -275,6 +314,11 @@ namespace MoostBrand.Controllers
             }
 
             ViewBag.CurrentFilter = searchString;
+
+            //int locID = Convert.ToInt32(Session["locationID"]);
+            //int UserID = Convert.ToInt32(Session["userID"]);
+
+            //var user = db.Users.FirstOrDefault(x => x.ID == UserID);
 
             var prs = db.Requisitions.Where(x => x.Status == false && x.RequisitionTypeID == 4); //active
 
@@ -295,6 +339,15 @@ namespace MoostBrand.Controllers
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
+
+            //if (user.LocationID != 10)
+            //{
+            //    prs = prs.Where(x => x.LocationID == locID);
+            //    return View(prs.ToPagedList(pageNumber, pageSize));
+            //}
+            //else
+            //    return View(prs.ToPagedList(pageNumber, pageSize));
+
             return View(prs.ToPagedList(pageNumber, pageSize));
         }
 
@@ -326,12 +379,20 @@ namespace MoostBrand.Controllers
                                 ID = s.ID,
                                 FullName = s.FirstName + " " + s.LastName
                             };
+
+            var loc = db.Locations.Where(x => x.ID != 10)
+                      .Select(x => new
+                      {
+                          ID = x.ID,
+                          Description = x.Description
+                      });
+
             ViewBag.reqType = db.RequisitionTypes.Where(model => model.ID == 4).ToList();
             ViewBag.PaymentStatusID = new SelectList(db.PaymentStatus, "ID", "Status");
             ViewBag.ReqTypeID = new SelectList(db.ReqTypes, "ID", "Type");
             ViewBag.RequisitionTypeID = new SelectList(db.RequisitionTypes, "ID", "Type");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName");
-            ViewBag.LocationID = new SelectList(db.Locations, "ID", "Description");
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description");
             ViewBag.ReservationTypeID = new SelectList(db.ReservationTypes, "ID", "Type");
             ViewBag.ShipmentTypeID = new SelectList(db.ShipmentTypes, "ID", "Type");
             ViewBag.DropShipID = new SelectList(db.DropShipTypes, "ID", "Type");
@@ -362,7 +423,7 @@ namespace MoostBrand.Controllers
 
                         //return RedirectToAction("Index");
 
-                        return RedirectToAction("Details", new { req = req.ID });
+                        return RedirectToAction("Details", new { id = req.ID });
                     }
                 }
                 catch
@@ -377,9 +438,16 @@ namespace MoostBrand.Controllers
                                 FullName = s.FirstName + " " + s.LastName
                             };
 
+            var loc = db.Locations.Where(x => x.ID != 10)
+          .Select(x => new
+          {
+              ID = x.ID,
+              Description = x.Description
+          });
+
             ViewBag.PaymentStatusID = new SelectList(db.PaymentStatus, "ID", "Status");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", req.RequestedBy);
-            ViewBag.LocationID = new SelectList(db.Locations, "ID", "Description", req.LocationID);
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description", req.LocationID);
             ViewBag.ReservationTypeID = new SelectList(db.ReservationTypes, "ID", "Type", req.ReservationTypeID);
             ViewBag.ShipmentTypeID = new SelectList(db.ShipmentTypes, "ID", "Type", req.ShipmentTypeID);
             ViewBag.DropShipID = new SelectList(db.DropShipTypes, "ID", "Type", req.DropShipID);
@@ -404,9 +472,16 @@ namespace MoostBrand.Controllers
                                     FullName = s.FirstName + " " + s.LastName
                                 };
 
-                ViewBag.PaymentStatus = new SelectList(db.PaymentStatus, "ID", "Status");
+                var loc = db.Locations.Where(x => x.ID != 10)
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Description = x.Description
+                            });
+
+                ViewBag.PaymentStatusID = new SelectList(db.PaymentStatus, "ID", "Status");
                 ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
-                ViewBag.LocationID = new SelectList(db.Locations, "ID", "Description", pr.LocationID);
+                ViewBag.LocationID = new SelectList(loc, "ID", "Description", pr.LocationID);
                 ViewBag.ReservationTypeID = new SelectList(db.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
                 ViewBag.ShipmentTypeID = new SelectList(db.ShipmentTypes, "ID", "Type", pr.ShipmentTypeID);
                 ViewBag.DropShipID = new SelectList(db.DropShipTypes, "ID", "Type", pr.DropShipID);
@@ -465,9 +540,16 @@ namespace MoostBrand.Controllers
                                 FullName = s.FirstName + " " + s.LastName
                             };
 
-            ViewBag.PaymentStatus = new SelectList(db.PaymentStatus, "ID", "Status");
+            var loc = db.Locations.Where(x => x.ID != 10)
+                        .Select(x => new
+                        {
+                          ID = x.ID,
+                          Description = x.Description
+                        });
+
+            ViewBag.PaymentStatusID = new SelectList(db.PaymentStatus, "ID", "Status");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", req.RequestedBy);
-            ViewBag.LocationID = new SelectList(db.Locations, "ID", "Description", req.LocationID);
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description", req.LocationID);
             ViewBag.ReservationTypeID = new SelectList(db.ReservationTypes, "ID", "Type", req.ReservationTypeID);
             ViewBag.ShipmentTypeID = new SelectList(db.ShipmentTypes, "ID", "Type", req.ShipmentTypeID);
             ViewBag.DropShipID = new SelectList(db.DropShipTypes, "ID", "Type", req.DropShipID);
@@ -479,6 +561,7 @@ namespace MoostBrand.Controllers
 
             return View(req);
         }
+
         [AccessChecker(Action = 3, ModuleID = 9)]
         public ActionResult Delete(int id)
         {
@@ -497,6 +580,7 @@ namespace MoostBrand.Controllers
 
             return RedirectToAction("Details", new { id = pr.ID });
         }
+
         [AccessChecker(Action = 3, ModuleID = 9)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirm(int id)
@@ -682,9 +766,6 @@ namespace MoostBrand.Controllers
             return View(items.ToPagedList(pageNumber, pageSize));
         }
 
-        // POST: PR/ApproveItem/5
-       
-
         // POST: PR/DenyItem/5
         [AccessChecker(Action = 1, ModuleID = 9)]
         public ActionResult DenyItem(int id, int itemID)
@@ -800,22 +881,22 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public ActionResult AddItemPartial(int id, RequisitionDetail rd)
         {
-            var itm = db.Items.FirstOrDefault(x => x.ID == rd.ItemID);
-            var itmID = rd.ItemID;
-            var desc = itm.Description;
+            //var itm = db.Items.FirstOrDefault(x => x.ID == rd.ItemID);
+            //var itmID = rd.ItemID;
+            //var desc = itm.Description;
             try
             {
                 // TODO: Add insert logic here
                 rd.RequisitionID = id;
                 rd.AprovalStatusID = 1; //submitted
                 
-                rd.Committed = getCommited(itmID);
+                //rd.Committed = getCommited(itmID);
 
-                rd.Ordered = getPurchaseOrder(itmID);
+                //rd.Ordered = getPurchaseOrder(itmID);
 
-                rd.InStock = getInstocked(desc);
+                //rd.InStock = getInstocked(desc);
 
-                rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                 var rd1 = db.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
 
@@ -830,7 +911,7 @@ namespace MoostBrand.Controllers
                     db.SaveChanges();
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 TempData["PartialError"] = "There's an error.";
             }
@@ -867,19 +948,19 @@ namespace MoostBrand.Controllers
                     rd.PreviousItemID = prq.ItemID;
                     rd.PreviousQuantity = prq.Quantity;
 
-                    rd.Ordered = getPurchaseOrder(rd.ItemID);
-                    rd.Committed = getCommited(rd.ItemID);
-                    rd.InStock = getInstocked(itm.Description);
+                    //rd.Ordered = getPurchaseOrder(rd.ItemID);
+                    //rd.Committed = getCommited(rd.ItemID);
+                    //rd.InStock = getInstocked(itm.Description);
 
-                    rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                    //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
                     rd.Remarks = rd.Remarks;
                 }
                 else
                 {
-                    rd.InStock = getInstocked(itm.Description);
-                    rd.Ordered = getPurchaseOrder(rd.ItemID);
-                    rd.Committed = getCommited(rd.ItemID);
-                    rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                    //rd.InStock = getInstocked(itm.Description);
+                    //rd.Ordered = getPurchaseOrder(rd.ItemID);
+                    //rd.Committed = getCommited(rd.ItemID);
+                    //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                     rd.Remarks = rd.Remarks;
                     rd.PreviousQuantity = prq.Quantity;

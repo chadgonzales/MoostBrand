@@ -42,6 +42,12 @@
                         @Html.ActionLink("Batch #", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
+                        Source
+                    </th>
+                    <th>
+                        Destination
+                    </th>
+                    <th>
                         Action
                     </th>
                 </tr>
@@ -52,6 +58,12 @@
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.BatchNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Receiving.Requisition.Location.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Receiving.Requisition.Location1.Description)
                         </td>
                         <td>
                             <div class="custom-tools">

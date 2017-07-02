@@ -44,6 +44,7 @@ namespace MoostBrand.DAL
         public virtual DbSet<ReservationType> ReservationTypes { get; set; }
         public virtual DbSet<ReturnedItem> ReturnedItems { get; set; }
         public virtual DbSet<Return> Returns { get; set; }
+        public virtual DbSet<ReturnTransactionType> ReturnTransactionTypes { get; set; }
         public virtual DbSet<ReturnType> ReturnTypes { get; set; }
         public virtual DbSet<ShipmentType> ShipmentTypes { get; set; }
         public virtual DbSet<Size> Sizes { get; set; }
@@ -66,15 +67,8 @@ namespace MoostBrand.DAL
         public virtual DbSet<UserType> UserTypes { get; set; }
         public virtual DbSet<Vendor> Vendors { get; set; }
 
-        public virtual DbSet<ReturnTransactionType> ReturnTransactionTypes { get; set; }
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<StockTransferDetail>()
-            //    .HasMany(e => e.StockTransferDirects)
-            //    .WithOptional(e => e.StockTransferDetail)
-            //    .HasForeignKey(e => e.ItemName);
-
             modelBuilder.Entity<ApprovalStatu>()
                 .HasMany(e => e.ReceivingDetails)
                 .WithOptional(e => e.ApprovalStatu)
@@ -392,6 +386,11 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.ReturnedItems)
                 .WithOptional(e => e.Return)
                 .WillCascadeOnDelete();
+
+            modelBuilder.Entity<ReturnTransactionType>()
+                .HasMany(e => e.Returns)
+                .WithOptional(e => e.ReturnTransactionType)
+                .HasForeignKey(e => e.TransactionTypeID);
 
             modelBuilder.Entity<StockAdjustment>()
                 .HasMany(e => e.StockAdjustmentDetails)

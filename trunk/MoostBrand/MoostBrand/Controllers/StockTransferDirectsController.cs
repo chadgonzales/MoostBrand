@@ -45,6 +45,10 @@ namespace MoostBrand.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
+            //int locID = Convert.ToInt32(Session["locationID"]);
+            //int UserID = Convert.ToInt32(Session["userID"]);
+
+            //var user = entity.Users.FirstOrDefault(x => x.ID == UserID);
             var prs = from g in entity.StockTransferDirects
                          select g;
 
@@ -65,6 +69,15 @@ namespace MoostBrand.Controllers
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
+
+            //if (user.LocationID != 10)
+            //{
+            //    prs = prs.Where(x => x.LocationID == locID);
+            //    return View(prs.ToPagedList(pageNumber, pageSize));
+            //}
+            //else
+            //    return View(prs.ToPagedList(pageNumber, pageSize));
+
             return View(prs.ToPagedList(pageNumber, pageSize));
         }
 
@@ -107,8 +120,16 @@ namespace MoostBrand.Controllers
                                               FullName = s.FirstName + " " + s.LastName
                                           }), "ID", "FullName");
 
+            var loc = entity.Locations.Where(x => x.ID != 10)
+            .Select(x => new
+            {
+                ID = x.ID,
+                Description = x.Description
+            });
+
+
             ViewBag.ItemName = new SelectList(items, "ID", "Description");
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description");
             ViewBag.ReceivedBy = empList;
             ViewBag.RequestedBy = empList;
             ViewBag.ApprovedBy = empList;
@@ -195,8 +216,16 @@ namespace MoostBrand.Controllers
                               FullName = s.FirstName + " " + s.LastName
                           };
 
+
+            var loc = entity.Locations.Where(x => x.ID != 10)
+            .Select(x => new
+            {
+                ID = x.ID,
+                Description = x.Description
+            });
+
             ViewBag.ItemName = new SelectList(items, "ID", "Description");
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stockTransferDirect.LocationID);
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description", stockTransferDirect.LocationID);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ReceivedBy);
             ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.RequestedBy);
             ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ApprovedBy);
@@ -243,8 +272,16 @@ namespace MoostBrand.Controllers
                                   FullName = s.FirstName + " " + s.LastName
                               };
 
+                var loc = entity.Locations.Where(x => x.ID != 10)
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Description = x.Description
+                            });
+
+
                 ViewBag.ItemName = new SelectList(items, "ID", "Description");
-                ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stockTransferDirect.LocationID);
+                ViewBag.LocationID = new SelectList(loc, "ID", "Description", stockTransferDirect.LocationID);
                 ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ReceivedBy);
                 ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.RequestedBy);
                 ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ApprovedBy);
@@ -365,8 +402,16 @@ namespace MoostBrand.Controllers
                               FullName = s.FirstName + " " + s.LastName
                           };
 
+            var loc = entity.Locations.Where(x => x.ID != 10)
+            .Select(x => new
+            {
+                ID = x.ID,
+                Description = x.Description
+            });
+
+
             ViewBag.ItemName = new SelectList(items, "ID", "Description");
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stockTransferDirect.LocationID);
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description", stockTransferDirect.LocationID);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ReceivedBy);
             ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.RequestedBy);
             ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ApprovedBy);
@@ -455,6 +500,7 @@ namespace MoostBrand.Controllers
         #endregion
 
         #region ApprovalStatus
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Approve(int id)
@@ -508,6 +554,7 @@ namespace MoostBrand.Controllers
                 return View();
             }
         }
+
         #endregion
     }
 }

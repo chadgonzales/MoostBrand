@@ -123,7 +123,7 @@
                 })
             },
             select: function (event, ui) {
-                $("#itemsearch").val(ui.item.id);
+                $("#ItemID").val(ui.item.id);
                 $("#itemcode").val(ui.item.code);
                 $("#uom").html(ui.item.uom);
             },
@@ -159,13 +159,13 @@
                                 uom: item.UOM
                             };
                         }))
-
                     }
                 })
             },
             select: function (event, ui) {
                 $("#itemsearch").val(ui.item.name);
-                $("#itemcode").val(ui.item.id);
+                $("#ItemID").val(ui.item.id);
+                $("#ItemCode").val(ui.item.id);
                 $("#uom").html(ui.item.uom);
             },
             messages: {
@@ -182,13 +182,13 @@
             }
         });
 
-        var ins = parseInt($("#InStock").val());
-        var ord = parseInt($("#Ordered").val());
-        var com = parseInt($("#Committed").val());
-        var sum = ins + ord;
-        $("#Quantity").focusout(function () {
-            $("#Available").val(sum - com);
-        });
+        //var ins = parseInt($("#InStock").val());
+        //var ord = parseInt($("#Ordered").val());
+        //var com = parseInt($("#Committed").val());
+        //var sum = ins + ord;
+        //$("#Quantity").focusout(function () {
+        //    $("#Available").val(sum - com);
+        //});
     })
 </script>
 <div class="panel-heading">

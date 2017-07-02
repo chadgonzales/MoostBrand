@@ -36,7 +36,7 @@ namespace MoostBrand.DAL
         public int LocationID { get; set; }
 
         public string ValidityOfReservation { get; set; }
-
+        
         public string DaysOfNotification { get; set; }
 
         public DateTime? DateRequired { get; set; }
@@ -90,6 +90,9 @@ namespace MoostBrand.DAL
         public bool? IsSync { get; set; }
 
         public bool? Status { get; set; }
+
+        [NotMapped]
+        public bool Proceed { get; set; }
 
         [StringLength(100)]
         public string PreviousItem { get; set; }

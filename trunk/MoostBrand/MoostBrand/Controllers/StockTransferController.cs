@@ -116,6 +116,10 @@ namespace MoostBrand.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
+            //int locID = Convert.ToInt32(Session["locationID"]);
+            //int UserID = Convert.ToInt32(Session["userID"]);
+
+            //var user = entity.Users.FirstOrDefault(x => x.ID == UserID);
             var sts = from o in entity.StockTransfers
                       select o;
 
@@ -136,6 +140,14 @@ namespace MoostBrand.Controllers
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
+
+            //if (user.LocationID != 10)
+            //{
+            //    sts = sts.Where(x => x.LocationID == locID);
+            //    return View(sts.ToPagedList(pageNumber, pageSize));
+            //}
+            //else
+            //    return View(sts.ToPagedList(pageNumber, pageSize));
 
             return View(sts.ToPagedList(pageNumber, pageSize));
         }
@@ -207,10 +219,17 @@ namespace MoostBrand.Controllers
                     });
             }
 
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                      .Select(x => new
+                      {
+                          ID = x.ID,
+                          Description = x.Description
+                      });
+
             ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name");
             ViewBag.RequisitionID = new SelectList(lstReqCustom, "ID", "RefNumber");
             ViewBag.ReceivingID = new SelectList(_receivings, "ID", "ReceivingID");
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description");
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description");
             var empList = new SelectList((from s in entity.Employees
                                           select new
                                           {
@@ -278,14 +297,22 @@ namespace MoostBrand.Controllers
                 entity.SaveChanges();
                 //return RedirectToAction("Index");
 
-                return RedirectToAction("Details", new { stocktransfer = stocktransfer.ID });
+                return RedirectToAction("Details", new { id = stocktransfer.ID });
             }
 
             #region DROPDOWNS
+
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                        .Select(x => new
+                        {
+                            ID = x.ID,
+                            Description = x.Description
+                        });
+
             ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name");
             ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID");
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees
                           select new
                           {
@@ -321,11 +348,18 @@ namespace MoostBrand.Controllers
             {
                 #region DROPDOWNS
 
+                var loc = entity.Locations.Where(x => x.ID != 10)
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Description = x.Description
+                            });
+
                 ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name");
                 ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
                 ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID", stocktransfer.ReceivingID);
                 //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
-                ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
+                ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
                 var empList = from s in entity.Employees
                               select new
                               {
@@ -440,11 +474,18 @@ namespace MoostBrand.Controllers
 
             #region DROPDOWNS
 
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                        .Select(x => new
+                        {
+                            ID = x.ID,
+                            Description = x.Description
+                        });
+
             ViewBag.StockTransferTypeID = new SelectList(entity.StockTransferTypes.ToList(), "ID", "Name");
             ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID");
             //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
-            ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", stocktransfer.LocationID);
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees
                           select new
                           {
