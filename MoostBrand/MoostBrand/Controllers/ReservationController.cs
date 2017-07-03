@@ -829,37 +829,38 @@ namespace MoostBrand.Controllers
             try
             {
                 var req = db.RequisitionDetails.Find(reqID);
-                var itm = db.Items.FirstOrDefault(x => x.ID == itemID);
-                var inventory = db.Inventories.FirstOrDefault(x => x.Description == itm.Description);
+                //var itm = db.Items.FirstOrDefault(x => x.ID == itemID);
+                //var inventory = db.Inventories.FirstOrDefault(x => x.Description == itm.Description);
 
-                var quantity = req.Quantity;
+                //var quantity = req.Quantity;
 
                 if (req != null)
                 {
                     req.AprovalStatusID = 2;
                     req.IsSync = false;
-                    if (req.Requisition.ReqTypeID != 2)
-                    {
-                        req.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
-                    }
-                    req.Committed = getCommited(itemID) + req.Quantity;
-                    int avail = (Convert.ToInt32(req.InStock) + Convert.ToInt32(req.Ordered)) - Convert.ToInt32(req.Committed);
-                    req.Available = avail;
-                    req.InStock -= req.Quantity;
+                    //if (req.Requisition.ReqTypeID != 2)
+                    //{
+                    //    req.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
+                    //}
+                    //req.Committed = getCommited(itemID) + req.Quantity;
+                    //int avail = (Convert.ToInt32(req.InStock) + Convert.ToInt32(req.Ordered)) - Convert.ToInt32(req.Committed);
+                    //req.Available = avail;
+                    //req.InStock -= req.Quantity;
                     db.Entry(req).State = EntityState.Modified;
+                    db.SaveChanges();
                 }
-                if (inventory!=null)
-                {
-                    if (req.Requisition.ReqTypeID == 1)
-                    {
-                        inventory.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
-                    }
-                    inventory.Committed = getCommited(req.ItemID) + quantity;
-                    inventory.Available = (Convert.ToInt32(inventory.InStock) + Convert.ToInt32(inventory.Ordered)) - Convert.ToInt32(inventory.Committed);
-                    inventory.InStock -= req.Quantity;
-                    db.Entry(inventory).State = EntityState.Modified;
-                }
-                db.SaveChanges();
+                //if (inventory!=null)
+                //{
+                //    if (req.Requisition.ReqTypeID == 1)
+                //    {
+                //        inventory.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
+                //    }
+                //    inventory.Committed = getCommited(req.ItemID) + quantity;
+                //    inventory.Available = (Convert.ToInt32(inventory.InStock) + Convert.ToInt32(inventory.Ordered)) - Convert.ToInt32(inventory.Committed);
+                //    inventory.InStock -= req.Quantity;
+                //    db.Entry(inventory).State = EntityState.Modified;
+                //}
+                //db.SaveChanges();
             }
             catch
             {
