@@ -324,7 +324,14 @@ namespace MoostBrand.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                prs = prs.Where(o => o.RequisitionTypeID == 4 && o.RefNumber.Contains(searchString));
+                prs = prs.Where(o => o.RequisitionTypeID == 4 && o.RefNumber.Contains(searchString) ||
+                                                                   o.ApprovalStatu.Status.Contains(searchString) ||
+                                                                   o.AuthorizedPerson.Contains(searchString) ||
+                                                                    o.Customer.Contains(searchString) ||
+                                                                    o.ReservationType.Type.Contains(searchString) ||
+                                                                    o.InvoiceNumber.Contains(searchString) ||
+                                                                    o.Location.Description.Contains(searchString) ||
+                                                                    o.Location.Description.Contains(searchString));
             }
 
             switch (sortOrder)
@@ -398,6 +405,7 @@ namespace MoostBrand.Controllers
             ViewBag.DropShipID = new SelectList(db.DropShipTypes, "ID", "Type");
             ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName");
+            ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName");
 
             return View(pr);
         }
@@ -453,6 +461,7 @@ namespace MoostBrand.Controllers
             ViewBag.DropShipID = new SelectList(db.DropShipTypes, "ID", "Type", req.DropShipID);
             ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName", req.ReservedBy);
             ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", req.ValidatedBy);
+            ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", req.AuthorizedPerson);
             ViewBag.ApprovalStatus = new SelectList(db.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
             return View(req);
         }
@@ -489,6 +498,7 @@ namespace MoostBrand.Controllers
                 ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", pr.ValidatedBy);
                 ViewBag.ApprovalStatus = new SelectList(db.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
                 ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
+                ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", pr.AuthorizedPerson);
                 #endregion
 
                 return View(pr);
@@ -557,6 +567,7 @@ namespace MoostBrand.Controllers
             ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", req.ValidatedBy);
             ViewBag.ApprovalStatus = new SelectList(db.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", req.ApprovedBy);
+            ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", req.AuthorizedPerson);
             #endregion
 
             return View(req);
@@ -829,38 +840,38 @@ namespace MoostBrand.Controllers
             try
             {
                 var req = db.RequisitionDetails.Find(reqID);
-                //var itm = db.Items.FirstOrDefault(x => x.ID == itemID);
-                //var inventory = db.Inventories.FirstOrDefault(x => x.Description == itm.Description);
+                var itm = db.Items.FirstOrDefault(x => x.ID == itemID);
+                var inventory = db.Inventories.FirstOrDefault(x => x.Description == itm.Description && x.LocationCode == req.Requisition.LocationID);
 
-                //var quantity = req.Quantity;
+                var quantity = req.Quantity;
 
                 if (req != null)
                 {
                     req.AprovalStatusID = 2;
                     req.IsSync = false;
-                    //if (req.Requisition.ReqTypeID != 2)
-                    //{
-                    //    req.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
-                    //}
-                    //req.Committed = getCommited(itemID) + req.Quantity;
-                    //int avail = (Convert.ToInt32(req.InStock) + Convert.ToInt32(req.Ordered)) - Convert.ToInt32(req.Committed);
-                    //req.Available = avail;
-                    //req.InStock -= req.Quantity;
+                    if (req.Requisition.ReqTypeID != 2)
+                    {
+                        req.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
+                    }
+                    req.Committed = getCommited(itemID) + req.Quantity;
+                    int avail = (Convert.ToInt32(req.InStock) + Convert.ToInt32(req.Ordered)) - Convert.ToInt32(req.Committed);
+                    req.Available = avail;
+                    req.InStock -= req.Quantity;
                     db.Entry(req).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-                //if (inventory!=null)
-                //{
-                //    if (req.Requisition.ReqTypeID == 1)
-                //    {
-                //        inventory.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
-                //    }
-                //    inventory.Committed = getCommited(req.ItemID) + quantity;
-                //    inventory.Available = (Convert.ToInt32(inventory.InStock) + Convert.ToInt32(inventory.Ordered)) - Convert.ToInt32(inventory.Committed);
-                //    inventory.InStock -= req.Quantity;
-                //    db.Entry(inventory).State = EntityState.Modified;
-                //}
-                //db.SaveChanges();
+                if (inventory != null)
+                {
+                    if (req.Requisition.ReqTypeID == 1)
+                    {
+                        inventory.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
+                    }
+                    inventory.Committed = getCommited(req.ItemID) + quantity;
+                    inventory.Available = (Convert.ToInt32(inventory.InStock) + Convert.ToInt32(inventory.Ordered)) - Convert.ToInt32(inventory.Committed);
+                    inventory.InStock -= req.Quantity;
+                    db.Entry(inventory).State = EntityState.Modified;
+                }
+                db.SaveChanges();
             }
             catch
             {
@@ -882,22 +893,22 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public ActionResult AddItemPartial(int id, RequisitionDetail rd)
         {
-            //var itm = db.Items.FirstOrDefault(x => x.ID == rd.ItemID);
-            //var itmID = rd.ItemID;
-            //var desc = itm.Description;
+            var itm = db.Items.FirstOrDefault(x => x.ID == rd.ItemID);
+            var itmID = rd.ItemID;
+            var desc = itm.Description;
             try
             {
                 // TODO: Add insert logic here
                 rd.RequisitionID = id;
                 rd.AprovalStatusID = 1; //submitted
-                
-                //rd.Committed = getCommited(itmID);
 
-                //rd.Ordered = getPurchaseOrder(itmID);
+                rd.Committed = getCommited(itmID);
 
-                //rd.InStock = getInstocked(desc);
+                rd.Ordered = getPurchaseOrder(itmID);
 
-                //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                rd.InStock = getInstocked(desc);
+
+                rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                 var rd1 = db.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
 
@@ -949,19 +960,19 @@ namespace MoostBrand.Controllers
                     rd.PreviousItemID = prq.ItemID;
                     rd.PreviousQuantity = prq.Quantity;
 
-                    //rd.Ordered = getPurchaseOrder(rd.ItemID);
-                    //rd.Committed = getCommited(rd.ItemID);
-                    //rd.InStock = getInstocked(itm.Description);
+                    rd.Ordered = getPurchaseOrder(rd.ItemID);
+                    rd.Committed = getCommited(rd.ItemID);
+                    rd.InStock = getInstocked(itm.Description);
 
-                    //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                    rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
                     rd.Remarks = rd.Remarks;
                 }
                 else
                 {
-                    //rd.InStock = getInstocked(itm.Description);
-                    //rd.Ordered = getPurchaseOrder(rd.ItemID);
-                    //rd.Committed = getCommited(rd.ItemID);
-                    //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                    rd.InStock = getInstocked(itm.Description);
+                    rd.Ordered = getPurchaseOrder(rd.ItemID);
+                    rd.Committed = getCommited(rd.ItemID);
+                    rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                     rd.Remarks = rd.Remarks;
                     rd.PreviousQuantity = prq.Quantity;

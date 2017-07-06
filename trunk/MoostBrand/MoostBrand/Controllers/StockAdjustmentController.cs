@@ -331,6 +331,12 @@ namespace MoostBrand.Controllers
 
         #region PARTIAL
 
+        public class StDetails
+        {
+            public int ID { get; set; }
+            public string Description { get; set; }
+        }
+
         // GET: StockAdjustment/AddItemPartial/5
         [AccessChecker(Action = 1, ModuleID = 8)]
         public ActionResult AddItemPartial(int id)
@@ -339,16 +345,82 @@ namespace MoostBrand.Controllers
 
             if (ret.TransactionTypeID == 1)
             {
-                var items = entity.StockTransferDetails
-                      .ToList()
-                      .FindAll(rd => rd.AprovalStatusID == 2 && rd.StockTransfer.Receiving.ReceivingTypeID == ret.ReturnTypeID)
-                      .Select(ed => new
-                      {
-                          ID = ed.ID,
-                          Description = ed.ReceivingDetail.RequisitionDetail.Item.Description
-                      });
-                ViewBag.StockTransferDetailID = new SelectList(items, "ID", "Description");               
-                               
+                List<StDetails> lstDetails = new List<StDetails>();
+                foreach(var _items in entity.StockTransferDetails.Where(rd => rd.AprovalStatusID == 2 && rd.StockTransfer.Receiving.ReceivingTypeID == ret.ReturnTypeID || rd.StockTransfer.Requisition.RequisitionTypeID == ret.ReturnTypeID))
+                {
+                    string description;
+                    //if (_items.StockTransfer.Receiving.ReceivingTypeID == ret.ReturnTypeID)
+                    //{
+                    //    description = _items.ReceivingDetail.RequisitionDetail.Item.Description;
+                    //}
+                    //else
+                    //{
+                    //    description = _items.RequisitionDetail.Item.Description;
+                    //}
+
+                    if (_items.StockTransfer.Requisition.RequisitionTypeID == ret.ReturnTypeID)
+                    {
+                        description = _items.RequisitionDetail.Item.Description;
+                    }
+                    else
+                    {
+                        description = _items.ReceivingDetail.RequisitionDetail.Item.Description;
+                    }
+
+                    //if (_items.StockTransfer.Receiving.ReceivingTypeID == null)
+                    //{
+
+                    //    description = _items.RequisitionDetail.Item.Description;
+                    //    //if (_items.StockTransfer.Requisition.RequisitionTypeID == ret.ReturnTypeID)
+                    //    //{
+                    //    //    description = _items.RequisitionDetail.Item.Description;
+                    //    //}
+                    //}
+                    //else
+                    //{
+                    //    description = _items.ReceivingDetail.RequisitionDetail.Item.Description;
+                    //}
+
+                    //if (_items.StockTransfer.Receiving.ReceivingTypeID == ret.ReturnTypeID)
+                    //{
+                    //    description = _items.ReceivingDetail.RequisitionDetail.Item.Description;
+                    //}
+                    //else if (_items.StockTransfer.Requisition.RequisitionTypeID == ret.ReturnTypeID)
+                    //{
+                    //    description = _items.RequisitionDetail.Item.Description;
+                    //}
+                    //else
+                    //{
+                    //    description = _items.RequisitionDetail.Item.Description;
+                    //}
+
+                    //if (_items.StockTransfer.Receiving.ReceivingTypeID == ret.ReturnTypeID)
+                    //{
+                    //    description = _items.ReceivingDetail.RequisitionDetail.Item.Description;
+                    //}
+                    //else
+                    //{
+                    //    description = _items.RequisitionDetail.Item.Description;
+                    //}
+
+                    lstDetails.Add(
+                        new StDetails
+                        {
+                            ID = _items.ID,
+                            Description = description
+                        });
+                }
+
+                    //var items = entity.StockTransferDetails
+                    //      .ToList()
+                    //      .FindAll(rd => rd.AprovalStatusID == 2 && rd.StockTransfer.Receiving.ReceivingTypeID == ret.ReturnTypeID || rd.StockTransfer.StockTransferTypeID == ret.ReturnTypeID)
+                    //      .Select(ed => new
+                    //      {
+                    //          ID = ed.ID,
+                    //          Description = ed.ReceivingDetail.RequisitionDetail.Item.Description 
+                    //      });
+
+               ViewBag.StockTransferDetailID = new SelectList(lstDetails, "ID", "Description");               
             }
             else
             {

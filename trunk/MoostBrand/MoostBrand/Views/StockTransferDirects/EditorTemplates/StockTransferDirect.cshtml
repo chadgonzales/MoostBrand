@@ -140,6 +140,14 @@
     </div>
 
     <div class="form-group">
+        @Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.DropDownList("EncodedBy", String.Empty)
+            @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
         @Html.LabelFor(model => model.PostedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
             @Html.DropDownList("PostedBy", String.Empty)
@@ -147,13 +155,6 @@
         </div>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-6">
-            @Html.DropDownList("EncodedBy", String.Empty)
-            @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
-        </div>
-    </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })

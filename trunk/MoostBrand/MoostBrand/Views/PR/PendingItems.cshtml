@@ -182,13 +182,13 @@
             }
         });
 
-        //var ins = parseInt($("#InStock").val());
-        //var ord = parseInt($("#Ordered").val());
-        //var com = parseInt($("#Committed").val());
-        //var sum = ins + ord;
-        //$("#Quantity").focusout(function () {
-        //    $("#Available").val(sum - com);
-        //});
+        var ins = parseInt($("#InStock").val());
+        var ord = parseInt($("#Ordered").val());
+        var com = parseInt($("#Committed").val());
+        var sum = ins + ord;
+        $("#Quantity").focusout(function () {
+            $("#Available").val(sum - com);
+        });
     })
 </script>
 <div class="panel-heading">
