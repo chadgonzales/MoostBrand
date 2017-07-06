@@ -155,6 +155,8 @@ namespace MoostBrand.Controllers
         public int getCommited(int itemID)
         {
             int c = 0;
+
+
             var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
@@ -840,7 +842,7 @@ namespace MoostBrand.Controllers
             try
             {
                 var item = entity.RequisitionDetails.Find(itemID);
-                var inventory = entity.Inventories.FirstOrDefault(x => x.Description == item.Item.Description);
+                var inventory = entity.Inventories.FirstOrDefault(x => x.Description == item.Item.Description && x.LocationCode == item.Requisition.LocationID);
 
                 var quantity = item.Quantity;
 
@@ -848,30 +850,30 @@ namespace MoostBrand.Controllers
                 {
                     item.AprovalStatusID = 2;
                     item.IsSync = false;
-                    //if(item.Requisition.ReqTypeID != 2)
-                    //{
-                    //    item.Committed = Convert.ToInt32(getCommited(item.ItemID) + item.Committed);
-                    //}
-                    //item.Ordered = getPurchaseOrder(itemID) + item.Quantity;
-                    //int avail = (Convert.ToInt32(item.InStock) + Convert.ToInt32(item.Ordered)) - Convert.ToInt32(item.Committed);
-                    //item.Available = avail;
-                    //item.InStock -= item.Quantity;
+                    if (item.Requisition.ReqTypeID != 2)
+                    {
+                        item.Committed = Convert.ToInt32(getCommited(item.ItemID) + item.Committed);
+                    }
+                    item.Ordered = getPurchaseOrder(itemID) + item.Quantity;
+                    int avail = (Convert.ToInt32(item.InStock) + Convert.ToInt32(item.Ordered)) - Convert.ToInt32(item.Committed);
+                    item.Available = avail;
+                    item.InStock -= item.Quantity;
                     entity.Entry(item).State = EntityState.Modified;
                     entity.SaveChanges();
                 }
-                //if(inventory != null)
-                //{
-                //    if (item.Requisition.ReqTypeID == 1)
-                //    {
-                //        inventory.Committed = Convert.ToInt32(getCommited(item.ItemID) + item.Committed);
-                //    }
-                //    inventory.Ordered = getPurchaseOrder(item.ItemID) + quantity;
-                //    int avail = (Convert.ToInt32(inventory.InStock) + Convert.ToInt32(inventory.Ordered)) - Convert.ToInt32(inventory.Committed);
-                //    inventory.Available = avail;
-                //    inventory.InStock -= item.Quantity;
-                //    entity.Entry(inventory).State = EntityState.Modified;
-                //}
-                //entity.SaveChanges();
+                if (inventory != null)
+                {
+                    if (item.Requisition.ReqTypeID == 1)
+                    {
+                        inventory.Committed = Convert.ToInt32(getCommited(item.ItemID) + item.Committed);
+                    }
+                    inventory.Ordered = getPurchaseOrder(item.ItemID) + quantity;
+                    int avail = (Convert.ToInt32(inventory.InStock) + Convert.ToInt32(inventory.Ordered)) - Convert.ToInt32(inventory.Committed);
+                    inventory.Available = avail;
+                    inventory.InStock -= item.Quantity;
+                    entity.Entry(inventory).State = EntityState.Modified;
+                }
+                entity.SaveChanges();
             }
             catch
             {
@@ -957,16 +959,16 @@ namespace MoostBrand.Controllers
         {
             try
             {
-                //var itm = entity.Items.FirstOrDefault(x => x.ID == rd.ItemID);
+                var itm = entity.Items.FirstOrDefault(x => x.ID == rd.ItemID);
                 // TODO: Add insert logic here
                 rd.RequisitionID = id;
                 rd.AprovalStatusID = 1; //submitted
 
-                //rd.Committed = getCommited(rd.ItemID);
-                //rd.Ordered = getPurchaseOrder(rd.ItemID);
-                //rd.InStock = getInstocked(itm.Description);
+                rd.Committed = getCommited(rd.ItemID);
+                rd.Ordered = getPurchaseOrder(rd.ItemID);
+                rd.InStock = getInstocked(itm.Description);
 
-                //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                 var rd1 = entity.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
 
@@ -1021,19 +1023,19 @@ namespace MoostBrand.Controllers
                     rd.PreviousItemID = prvrequiDetail.ItemID;
                     rd.PreviousQuantity = prvrequiDetail.Quantity;
 
-                    //rd.Ordered = getPurchaseOrder(rd.ItemID);
-                    //rd.Committed = getCommited(rd.ItemID);
-                    //rd.InStock = getInstocked(itm.Description);
+                    rd.Ordered = getPurchaseOrder(rd.ItemID);
+                    rd.Committed = getCommited(rd.ItemID);
+                    rd.InStock = getInstocked(itm.Description);
 
-                    //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                    rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
                     rd.Remarks = rd.Remarks;
                 }
                 else
                 {
-                    //rd.InStock = getInstocked(itm.Description);
-                    //rd.Ordered = getPurchaseOrder(rd.ItemID);
-                    //rd.Committed = getCommited(rd.ItemID);
-                    //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                    rd.InStock = getInstocked(itm.Description);
+                    rd.Ordered = getPurchaseOrder(rd.ItemID);
+                    rd.Committed = getCommited(rd.ItemID);
+                    rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                     rd.Remarks = rd.Remarks;
                     rd.PreviousQuantity = prvrequiDetail.Quantity;

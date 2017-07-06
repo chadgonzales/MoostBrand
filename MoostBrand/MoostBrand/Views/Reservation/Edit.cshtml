@@ -103,7 +103,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.AuthorizedPerson, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.EditorFor(model => model.AuthorizedPerson, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownList("AuthorizedPerson", String.Empty)
                 @Html.ValidationMessageFor(model => model.AuthorizedPerson, "", new { @class = "text-danger" })
             </div>
         </div>

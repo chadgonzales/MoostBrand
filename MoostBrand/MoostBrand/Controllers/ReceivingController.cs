@@ -229,14 +229,15 @@ namespace MoostBrand.Controllers
 
         public ActionResult DisplayComputations(int? reqID)
         {
-            var itmID = entity.RequisitionDetails.Find(reqID).ItemID;
-            var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID).Description;
-            var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID);
-            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID);
-            var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc).InStock;
+            var itmID = entity.RequisitionDetails.Find(reqID);
+            var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID.ItemID).Description;
+            var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
+            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
+            var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc && x.LocationCode == itmID.Requisition.LocationID).InStock;
+
 
             var computations = entity.RequisitionDetails
-                               .Where(x => x.ItemID == itmID && x.AprovalStatusID == 2)
+                               .Where(x => x.ItemID == itmID.ItemID && x.AprovalStatusID == 2)
                                .Select(x => new
                                {
                                    Committed = com.Sum(y => y.Quantity) ?? 0,
