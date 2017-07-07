@@ -147,9 +147,9 @@ namespace MoostBrand.Controllers
         }
         public int getCommited(int itemID)
         {
-            var loc = db.RequisitionDetails.FirstOrDefault(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
+            //var loc = db.RequisitionDetails.FirstOrDefault(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
             int c = 0;
-            var com = db.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4 && model.Requisition.LocationID == loc.Requisition.LocationID);
+            var com = db.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -160,9 +160,9 @@ namespace MoostBrand.Controllers
         }
         public int getPurchaseOrder(int itemID)
         {
-            var loc = db.RequisitionDetails.FirstOrDefault(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
+            //var loc = db.RequisitionDetails.FirstOrDefault(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
             int po = 0;
-            var pur = db.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itemID && model.Requisition.LocationID == loc.Requisition.LocationID);
+            var pur = db.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itemID);
             var porder = pur.Sum(x => x.Quantity);
             po = Convert.ToInt32(porder);
             if (porder == null)
@@ -173,10 +173,7 @@ namespace MoostBrand.Controllers
         }
         public int getInstocked(string description)
         {
-
-            //var loc = db.RequisitionDetails.FirstOrDefault(x => x.ItemCode == description);
             int getIS = 0;
-            //var query = db.Inventories.FirstOrDefault(x => x.Description == description && x.LocationCode == loc.Requisition.LocationID);
             var query = db.Inventories.FirstOrDefault(x => x.Description == description);
             if (query != null)
             {
@@ -272,11 +269,6 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getInstock(string Code)
         {
-
-            //var itmID = db.RequisitionDetails.FirstOrDefault(x => x.ItemCode == Code);
-            //var itmID = db.RequisitionDetails.Find(Code);
-            //var instock = db.Inventories.FirstOrDefault(x => x.ItemCode == Code && x.LocationCode == itmID.Requisition.LocationID);
-
             var instock = db.Inventories.FirstOrDefault(x => x.ItemCode == Code);
             int total;
             if (instock != null)
@@ -293,7 +285,6 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getCommit(int ItemID)
         {
-            //var instock = db.Inventories.Find(ItemID);
             var com = db.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2);
             var total = com.Sum(x => x.Quantity);
             if (total == null)
@@ -306,7 +297,6 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getPO(int ItemID)
         {
-            //var instock = db.Inventories.Find(ItemID);
             var pur = db.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == ItemID);
             var total = pur.Sum(x => x.Quantity);
             if (total == null)
