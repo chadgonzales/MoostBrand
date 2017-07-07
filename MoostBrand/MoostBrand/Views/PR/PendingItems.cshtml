@@ -43,7 +43,7 @@
         $("#itemcode").focusout(function () {
             var itmID = $("#ItemID").val();
             var itmCode = $("#itemcode").val();
-            alert('ROBI ALERT GINALAW KO TO'); 
+            //alert('ROBI ALERT GINALAW KO TO'); 
             $.ajax({                                    //COMMENT COMMENT
                 url: '@Url.Action("getCommit", "PR")', //dati naka getCodeCommit eh pag gnun kasi knukuha lahat ng reserve not by ITEM dapat daw by ITEM haha
                 type: "POST",
