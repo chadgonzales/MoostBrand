@@ -45,7 +45,7 @@
             var itmID = $("#ItemCode").val();
             var itmCode = $("#itemcode").val();
             $.ajax({
-                url: '@Url.Action("getCodeCommit", "Reservation")',
+                url: '@Url.Action("getCommit", "Reservation")',
                 type: "POST",
                 dataType: "json",
                 data: { Code: itmID },
@@ -54,7 +54,7 @@
                 }
             });
             $.ajax({
-                url: '@Url.Action("getCodePO", "Reservation")',
+                url: '@Url.Action("getPO", "Reservation")',
                 type: "POST",
                 dataType: "json",
                 data: { Code: itmID },
