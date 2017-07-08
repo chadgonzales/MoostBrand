@@ -16,7 +16,7 @@ namespace MoostBrand.Controllers
         int UserID = 0;
         int UserType = 0;
         int ModuleID = 3;
-        MoostBrandEntities db;
+        MoostBrandEntities entity;
         // GET: Customer
 
         #region COMMENTS
@@ -51,7 +51,7 @@ namespace MoostBrand.Controllers
         #region  method
         public ReservationController()
         {
-            db = new MoostBrandEntities();
+            entity = new MoostBrandEntities();
         }
         private string Generator(string prefix)
         {
@@ -78,7 +78,7 @@ namespace MoostBrand.Controllers
             }
 
             randomString = prefix + "-" + randomString;
-            var pr = db.Requisitions.ToList().FindAll(p => p.RefNumber == randomString);
+            var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == randomString);
             if (pr.Count() > 0)
             {
                 goto startR;
@@ -107,7 +107,7 @@ namespace MoostBrand.Controllers
         {
             int UserID = Convert.ToInt32(Session["sessionuid"]);
 
-            var access = db.UserAccesses.FirstOrDefault(u => u.EmployeeID == UserID && u.ModuleID == ModuleID);
+            var access = entity.UserAccesses.FirstOrDefault(u => u.EmployeeID == UserID && u.ModuleID == ModuleID);
 
             if (action == 1) //CanView
             {
@@ -147,9 +147,9 @@ namespace MoostBrand.Controllers
         }
         public int getCommited(int itemID)
         {
-            //var loc = db.RequisitionDetails.FirstOrDefault(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
             int c = 0;
-            var com = db.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
+            var com = entity.RequisitionDetails.Where(x => x.ItemID == itemID && x.AprovalStatusID == 2 && x.Requisition.RequisitionTypeID == 4 && x.Requisition.LocationID == requi.Requisition.LocationID);
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -160,9 +160,9 @@ namespace MoostBrand.Controllers
         }
         public int getPurchaseOrder(int itemID)
         {
-            //var loc = db.RequisitionDetails.FirstOrDefault(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
             int po = 0;
-            var pur = db.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itemID);
+            var pur = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == itemID && x.Requisition.LocationID == requi.Requisition.LocationID);
             var porder = pur.Sum(x => x.Quantity);
             po = Convert.ToInt32(porder);
             if (porder == null)
@@ -173,8 +173,9 @@ namespace MoostBrand.Controllers
         }
         public int getInstocked(string description)
         {
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2 && x.Requisition.RequisitionTypeID == 4 || x.Requisition.RequisitionTypeID == 1);
             int getIS = 0;
-            var query = db.Inventories.FirstOrDefault(x => x.Description == description);
+            var query = entity.Inventories.FirstOrDefault(x => x.Description == description && x.LocationCode == requi.Requisition.LocationID);
             if (query != null)
             {
                 getIS = Convert.ToInt32(query.InStock);
@@ -192,7 +193,7 @@ namespace MoostBrand.Controllers
             string noErrJs = "";
             bool success = false;
 
-            var lstreserved = db.Requisitions.Where(x => x.Status == false && x.RequisitionTypeID == 4);
+            var lstreserved = entity.Requisitions.Where(x => x.Status == false && x.RequisitionTypeID == 4);
 
             foreach (var reserved in lstreserved)
             {
@@ -210,8 +211,8 @@ namespace MoostBrand.Controllers
                 if (reserved.PaymentStatusID == 1 && DateTime.Now > validityDate)
                 {
                     reserved.ReservationStatus = "Cancelled";
-                    db.Entry(lstreserved).State = EntityState.Modified;
-                    db.SaveChanges();
+                    entity.Entry(lstreserved).State = EntityState.Modified;
+                    entity.SaveChanges();
                 }
                 else if (reserved.PaymentStatusID == 2 || reserved.PaymentStatusID == 3 || reserved.PaymentStatusID == 4 && DateTime.Now > expiryDateFD)
                 {
@@ -229,7 +230,7 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult GetCategories(string name)
         {
-            var categories = db.Categories.Where(x => x.Description.Contains(name))
+            var categories = entity.Categories.Where(x => x.Description.Contains(name))
                             .Select(x => new
                             {
                                 ID = x.ID,
@@ -241,7 +242,7 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult GetItems(int catID, string name)
         {
-            var items = db.Items.Where(x => x.CategoryID == catID && x.Description.Contains(name))
+            var items = entity.Items.Where(x => x.CategoryID == catID && x.Description.Contains(name))
                             .Select(x => new
                             {
                                 ID = x.ID,
@@ -255,7 +256,7 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult GetItemCode(int catID, string name)
         {
-            var items = db.Items.Where(x => x.CategoryID == catID && x.Code.Contains(name))
+            var items = entity.Items.Where(x => x.CategoryID == catID && x.Code.Contains(name))
                             .Select(x => new
                             {
                                 ID = x.ID,
@@ -269,7 +270,8 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getInstock(string Code)
         {
-            var instock = db.Inventories.FirstOrDefault(x => x.ItemCode == Code);
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.Requisition.RequisitionTypeID == 4 || x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2);
+            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == Code && x.LocationCode == requi.Requisition.LocationID);
             int total;
             if (instock != null)
             {
@@ -285,7 +287,8 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getCommit(int ItemID)
         {
-            var com = db.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2);
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
+            var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2 && x.Requisition.LocationID == requi.Requisition.LocationID);
             var total = com.Sum(x => x.Quantity);
             if (total == null)
             {
@@ -297,7 +300,8 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getPO(int ItemID)
         {
-            var pur = db.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == ItemID);
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
+            var pur = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == ItemID && x.Requisition.LocationID == requi.Requisition.LocationID);
             var total = pur.Sum(x => x.Quantity);
             if (total == null)
             {
@@ -308,6 +312,47 @@ namespace MoostBrand.Controllers
         #endregion
 
         #region actionresult
+
+        public ActionResult OrderCheckingIndex(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "reqno" : "";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            //var prs = db.Requisitions.Where(x => x.Status == false && x.RequisitionTypeID == 4); //active
+
+            var prs = entity.Requisitions.Where(x => x.Status == false && x.RequisitionTypeID == 4 && x.ApprovalStatus == 2);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                prs = prs.Where(o => o.RequisitionTypeID == 4 && o.RefNumber.Contains(searchString));
+            }
+
+            switch (sortOrder)
+            {
+                case "reqno":
+                    prs = prs.OrderByDescending(o => o.RefNumber);
+                    break;
+                default:
+                    prs = prs.OrderBy(o => o.ID);
+                    break;
+            }
+
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = (page ?? 1);
+            return View(prs.ToPagedList(pageNumber, pageSize));
+        }
+
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -329,7 +374,7 @@ namespace MoostBrand.Controllers
 
             //var user = db.Users.FirstOrDefault(x => x.ID == UserID);
 
-            var prs = db.Requisitions.Where(x => x.Status == false && x.RequisitionTypeID == 4); //active
+            var prs = entity.Requisitions.Where(x => x.Status == false && x.RequisitionTypeID == 4); //active
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -372,7 +417,7 @@ namespace MoostBrand.Controllers
         {
             //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
 
-            var pr = db.Requisitions.Find(id);
+            var pr = entity.Requisitions.Find(id);
             if (pr == null)
             {
                 return HttpNotFound();
@@ -389,29 +434,29 @@ namespace MoostBrand.Controllers
             pr.RequisitionTypeID = 4;
             pr.RefNumber = Generator("CR");
 
-            var employees = from s in db.Employees
+            var employees = from s in entity.Employees
                             select new
                             {
                                 ID = s.ID,
                                 FullName = s.FirstName + " " + s.LastName
                             };
 
-            var loc = db.Locations.Where(x => x.ID != 10)
+            var loc = entity.Locations.Where(x => x.ID != 10)
                       .Select(x => new
                       {
                           ID = x.ID,
                           Description = x.Description
                       });
 
-            ViewBag.reqType = db.RequisitionTypes.Where(model => model.ID == 4).ToList();
-            ViewBag.PaymentStatusID = new SelectList(db.PaymentStatus, "ID", "Status");
-            ViewBag.ReqTypeID = new SelectList(db.ReqTypes, "ID", "Type");
-            ViewBag.RequisitionTypeID = new SelectList(db.RequisitionTypes, "ID", "Type");
+            ViewBag.reqType = entity.RequisitionTypes.Where(model => model.ID == 4).ToList();
+            ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
+            ViewBag.ReqTypeID = new SelectList(entity.ReqTypes, "ID", "Type");
+            ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description");
-            ViewBag.ReservationTypeID = new SelectList(db.ReservationTypes, "ID", "Type");
-            ViewBag.ShipmentTypeID = new SelectList(db.ShipmentTypes, "ID", "Type");
-            ViewBag.DropShipID = new SelectList(db.DropShipTypes, "ID", "Type");
+            ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type");
+            ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type");
+            ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type");
             ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName");
@@ -435,8 +480,8 @@ namespace MoostBrand.Controllers
                     {
                         newPR.IsSync = false;
 
-                        db.Requisitions.Add(newPR);
-                        db.SaveChanges();
+                        entity.Requisitions.Add(newPR);
+                        entity.SaveChanges();
 
                         //return RedirectToAction("Index");
 
@@ -448,29 +493,29 @@ namespace MoostBrand.Controllers
                     ModelState.AddModelError("", "There's an error.");
                 }
             }
-            var employees = from s in db.Employees
+            var employees = from s in entity.Employees
                             select new
                             {
                                 ID = s.ID,
                                 FullName = s.FirstName + " " + s.LastName
                             };
 
-            var loc = db.Locations.Where(x => x.ID != 10)
+            var loc = entity.Locations.Where(x => x.ID != 10)
           .Select(x => new
           {
               ID = x.ID,
               Description = x.Description
           });
 
-            ViewBag.PaymentStatusID = new SelectList(db.PaymentStatus, "ID", "Status");
+            ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", req.RequestedBy);
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", req.LocationID);
-            ViewBag.ReservationTypeID = new SelectList(db.ReservationTypes, "ID", "Type", req.ReservationTypeID);
-            ViewBag.ShipmentTypeID = new SelectList(db.ShipmentTypes, "ID", "Type", req.ShipmentTypeID);
-            ViewBag.DropShipID = new SelectList(db.DropShipTypes, "ID", "Type", req.DropShipID);
+            ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", req.ReservationTypeID);
+            ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type", req.ShipmentTypeID);
+            ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", req.DropShipID);
             ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName", req.ReservedBy);
             ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", req.ValidatedBy);
-            ViewBag.ApprovalStatus = new SelectList(db.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
+            ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", req.AuthorizedPerson);
             return View(req);
         }
@@ -479,33 +524,33 @@ namespace MoostBrand.Controllers
         public ActionResult Edit(int id)
         {
             //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
-            var pr = db.Requisitions.FirstOrDefault(r => r.ID == id);
+            var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id);
             if (pr.ApprovalStatus == 1)
             {
                 #region DROPDOWNS
-                var employees = from s in db.Employees
+                var employees = from s in entity.Employees
                                 select new
                                 {
                                     ID = s.ID,
                                     FullName = s.FirstName + " " + s.LastName
                                 };
 
-                var loc = db.Locations.Where(x => x.ID != 10)
+                var loc = entity.Locations.Where(x => x.ID != 10)
                             .Select(x => new
                             {
                                 ID = x.ID,
                                 Description = x.Description
                             });
 
-                ViewBag.PaymentStatusID = new SelectList(db.PaymentStatus, "ID", "Status");
+                ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
                 ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
                 ViewBag.LocationID = new SelectList(loc, "ID", "Description", pr.LocationID);
-                ViewBag.ReservationTypeID = new SelectList(db.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
-                ViewBag.ShipmentTypeID = new SelectList(db.ShipmentTypes, "ID", "Type", pr.ShipmentTypeID);
-                ViewBag.DropShipID = new SelectList(db.DropShipTypes, "ID", "Type", pr.DropShipID);
+                ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
+                ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type", pr.ShipmentTypeID);
+                ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", pr.DropShipID);
                 ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName", pr.ReservedBy);
                 ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", pr.ValidatedBy);
-                ViewBag.ApprovalStatus = new SelectList(db.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
+                ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
                 ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
                 ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", pr.AuthorizedPerson);
                 #endregion
@@ -526,7 +571,7 @@ namespace MoostBrand.Controllers
                 try
                 {
                     //var r = db.Requisitions.FirstOrDefault(r1 => r1.ID == pr.ID && (r1.RequestedBy == UserID || AcctType == 1 || AcctType == 4)).ApprovalStatus;
-                    var r = db.Requisitions.FirstOrDefault(model => model.ID == req.ID);
+                    var r = entity.Requisitions.FirstOrDefault(model => model.ID == req.ID);
                     if (r.ApprovalStatus == 1)
                     {
 
@@ -534,8 +579,8 @@ namespace MoostBrand.Controllers
                         req.Status = false;
                         var newPR = setValue(req);
                         newPR.ApprovalStatus = r.ApprovalStatus;
-                        db.Entry(r).CurrentValues.SetValues(newPR);
-                        db.SaveChanges();
+                        entity.Entry(r).CurrentValues.SetValues(newPR);
+                        entity.SaveChanges();
 
                         return RedirectToAction("Index");
                     }
@@ -552,29 +597,29 @@ namespace MoostBrand.Controllers
             }
 
             #region DROPDOWNS
-            var employees = from s in db.Employees
+            var employees = from s in entity.Employees
                             select new
                             {
                                 ID = s.ID,
                                 FullName = s.FirstName + " " + s.LastName
                             };
 
-            var loc = db.Locations.Where(x => x.ID != 10)
+            var loc = entity.Locations.Where(x => x.ID != 10)
                         .Select(x => new
                         {
                           ID = x.ID,
                           Description = x.Description
                         });
 
-            ViewBag.PaymentStatusID = new SelectList(db.PaymentStatus, "ID", "Status");
+            ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", req.RequestedBy);
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", req.LocationID);
-            ViewBag.ReservationTypeID = new SelectList(db.ReservationTypes, "ID", "Type", req.ReservationTypeID);
-            ViewBag.ShipmentTypeID = new SelectList(db.ShipmentTypes, "ID", "Type", req.ShipmentTypeID);
-            ViewBag.DropShipID = new SelectList(db.DropShipTypes, "ID", "Type", req.DropShipID);
+            ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", req.ReservationTypeID);
+            ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type", req.ShipmentTypeID);
+            ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", req.DropShipID);
             ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName", req.ReservedBy);
             ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", req.ValidatedBy);
-            ViewBag.ApprovalStatus = new SelectList(db.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
+            ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", req.ApprovedBy);
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", req.AuthorizedPerson);
             #endregion
@@ -585,7 +630,7 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 3, ModuleID = 9)]
         public ActionResult Delete(int id)
         {
-            var pr = db.Requisitions.FirstOrDefault(r => r.ID == id);
+            var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id);
             if (pr == null)
             {
                 return HttpNotFound();
@@ -607,10 +652,10 @@ namespace MoostBrand.Controllers
         {
             try
             {
-                var pr = db.Requisitions.Find(id);
+                var pr = entity.Requisitions.Find(id);
                 pr.Status = true;
-                db.Entry(pr).State = EntityState.Modified;
-                db.SaveChanges();
+                entity.Entry(pr).State = EntityState.Modified;
+                entity.SaveChanges();
 
                 return RedirectToAction("Index");
             }
@@ -631,15 +676,15 @@ namespace MoostBrand.Controllers
             {
                 // TODO: Add delete logic here
                 //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
-                var pr = db.Requisitions.Find(id);
+                var pr = entity.Requisitions.Find(id);
 
                 if (pr.RequisitionDetails.Count() > 0)
                 {
                     pr.ApprovalStatus = 2;
                     pr.IsSync = false;
 
-                    db.Entry(pr).State = EntityState.Modified;
-                    db.SaveChanges();
+                    entity.Entry(pr).State = EntityState.Modified;
+                    entity.SaveChanges();
 
                     return RedirectToAction("Index");
                 }
@@ -664,15 +709,15 @@ namespace MoostBrand.Controllers
             {
                 // TODO: Add delete logic here
                 //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
-                var pr = db.Requisitions.Find(id);
+                var pr = entity.Requisitions.Find(id);
 
                 if (pr.RequisitionDetails.Count() > 0)
                 {
                     pr.ApprovalStatus = 4;
                     pr.IsSync = false;
 
-                    db.Entry(pr).State = EntityState.Modified;
-                    db.SaveChanges();
+                    entity.Entry(pr).State = EntityState.Modified;
+                    entity.SaveChanges();
 
                     return RedirectToAction("Index");
                 }
@@ -695,12 +740,12 @@ namespace MoostBrand.Controllers
             try
             {
                 // TODO: Add delete logic here
-                var pr = db.Requisitions.Find(id);
+                var pr = entity.Requisitions.Find(id);
                 pr.ApprovalStatus = 3;
                 pr.IsSync = false;
 
-                db.Entry(pr).State = EntityState.Modified;
-                db.SaveChanges();
+                entity.Entry(pr).State = EntityState.Modified;
+                entity.SaveChanges();
 
                 return RedirectToAction("Index");
             }
@@ -714,7 +759,7 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 1, ModuleID = 9)]
         public ActionResult Items(int id, int? page)
         {
-            var items = db.RequisitionDetails
+            var items = entity.RequisitionDetails
                         .ToList()
                         .FindAll(rd => rd.RequisitionID == id);
 
@@ -729,7 +774,7 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 1, ModuleID = 9)]
         public ActionResult ApprovedItems(int id, int? page)
         {
-            var items = db.RequisitionDetails
+            var items = entity.RequisitionDetails
                         .ToList()
                         .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 2);
 
@@ -747,13 +792,13 @@ namespace MoostBrand.Controllers
             int UserID = Convert.ToInt32(Session["sessionuid"]);
             int UserType = Convert.ToInt32(Session["usertype"]);
 
-            var requisition = db.Requisitions.FirstOrDefault(r => r.ID == id);
+            var requisition = entity.Requisitions.FirstOrDefault(r => r.ID == id);
             if (requisition.RequestedBy != UserID && UserType != 1 && UserType != 4)
             {
                 return RedirectToAction("Index", "Home");
             }
 
-            var items = db.RequisitionDetails
+            var items = entity.RequisitionDetails
                         .ToList()
                         .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && (rd.Requisition.RequestedBy == UserID || UserType == 1 || UserType == 4));
             //var items = db.RequisitionDetails
@@ -775,7 +820,7 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 1, ModuleID = 9)]
         public ActionResult DeniedItems(int id, int? page)
         {
-            var items = db.RequisitionDetails
+            var items = entity.RequisitionDetails
                         .ToList()
                         .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 3);
 
@@ -792,14 +837,14 @@ namespace MoostBrand.Controllers
         {
             try
             {
-                var item = db.RequisitionDetails.Find(itemID);
+                var item = entity.RequisitionDetails.Find(itemID);
                 if (item != null)
                 {
                     item.AprovalStatusID = 3;
                     item.IsSync = false;
 
-                    db.Entry(item).State = EntityState.Modified;
-                    db.SaveChanges();
+                    entity.Entry(item).State = EntityState.Modified;
+                    entity.SaveChanges();
                 }
             }
             catch
@@ -826,12 +871,12 @@ namespace MoostBrand.Controllers
             {
                 if (!String.IsNullOrEmpty(Reason))
                 {
-                    var req = db.Requisitions.Find(id);
+                    var req = entity.Requisitions.Find(id);
                     req.ApprovalStatus = 3;
                     req.Remarks = Reason;
-                    db.Entry(req).State = EntityState.Modified;
+                    entity.Entry(req).State = EntityState.Modified;
 
-                    db.SaveChanges();
+                    entity.SaveChanges();
                 }
                 else
                 {
@@ -848,9 +893,9 @@ namespace MoostBrand.Controllers
         {
             try
             {
-                var req = db.RequisitionDetails.Find(reqID);
-                var itm = db.Items.FirstOrDefault(x => x.ID == itemID);
-                var inventory = db.Inventories.FirstOrDefault(x => x.Description == itm.Description);
+                var req = entity.RequisitionDetails.Find(reqID);
+                var itm = entity.Items.FirstOrDefault(x => x.ID == itemID);
+                var inventory = entity.Inventories.FirstOrDefault(x => x.Description == itm.Description);
 
                 var quantity = req.Quantity;
 
@@ -866,7 +911,7 @@ namespace MoostBrand.Controllers
                     int avail = (Convert.ToInt32(req.InStock) + Convert.ToInt32(req.Ordered)) - Convert.ToInt32(req.Committed);
                     req.Available = avail;
                     req.InStock -= req.Quantity;
-                    db.Entry(req).State = EntityState.Modified;
+                    entity.Entry(req).State = EntityState.Modified;
                     //db.SaveChanges();
                 }
                 //if (inventory != null)
@@ -880,7 +925,7 @@ namespace MoostBrand.Controllers
                 //    inventory.InStock -= req.Quantity;
                 //    db.Entry(inventory).State = EntityState.Modified;
                 //}
-                db.SaveChanges();
+                entity.SaveChanges();
             }
             catch
             {
@@ -893,7 +938,7 @@ namespace MoostBrand.Controllers
         public ActionResult AddItemPartial(int id)
         {
             ViewBag.PRid = id;
-            ViewBag.ItemID = new SelectList(db.Items, "ID", "Description");
+            ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description");
 
             return PartialView();
         }
@@ -902,7 +947,7 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public ActionResult AddItemPartial(int id, RequisitionDetail rd)
         {
-            var itm = db.Items.FirstOrDefault(x => x.ID == rd.ItemID);
+            var itm = entity.Items.FirstOrDefault(x => x.ID == rd.ItemID);
             var itmID = rd.ItemID;
             var desc = itm.Description;
             try
@@ -919,7 +964,7 @@ namespace MoostBrand.Controllers
 
                 rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
-                var rd1 = db.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
+                var rd1 = entity.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
 
                 if (rd1.Count() > 0)
                 {
@@ -928,8 +973,8 @@ namespace MoostBrand.Controllers
                 else
                 {
                     rd.IsSync = false;
-                    db.RequisitionDetails.Add(rd);
-                    db.SaveChanges();
+                    entity.RequisitionDetails.Add(rd);
+                    entity.SaveChanges();
                 }
             }
             catch(Exception ex)
@@ -948,10 +993,10 @@ namespace MoostBrand.Controllers
         // GET: PR/EditItemPartial/5
         public ActionResult EditItemPartial(int id)
         {
-            var rd = db.RequisitionDetails.Find(id);
+            var rd = entity.RequisitionDetails.Find(id);
 
-            ViewBag.AprovalStatusID = new SelectList(db.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
-            ViewBag.ItemID = new SelectList(db.Items, "ID", "Description", rd.ItemID);
+            ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
+            ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description", rd.ItemID);
 
             return PartialView(rd);
         }
@@ -962,8 +1007,8 @@ namespace MoostBrand.Controllers
         {
             try
             {
-                var prq = db.RequisitionDetails.Find(rd.ID);
-                var itm = db.Items.Find(rd.ItemID);
+                var prq = entity.RequisitionDetails.Find(rd.ID);
+                var itm = entity.Items.Find(rd.ItemID);
                 if (prq.ItemID != rd.ItemID || prq.Quantity != rd.Quantity)
                 {
                     rd.PreviousItemID = prq.ItemID;
@@ -999,8 +1044,8 @@ namespace MoostBrand.Controllers
                 prq.PreviousQuantity = rd.PreviousQuantity;
 
                 prq.IsSync = false;
-                db.Entry(prq).CurrentValues.SetValues(rd);
-                db.SaveChanges();
+                entity.Entry(prq).CurrentValues.SetValues(rd);
+                entity.SaveChanges();
             }
             catch
             {
@@ -1019,7 +1064,7 @@ namespace MoostBrand.Controllers
         // GET: PR/DeleteItemPartial/5
         public ActionResult DeleteItemPartial(int id)
         {
-            var rd = db.RequisitionDetails.Find(id);
+            var rd = entity.RequisitionDetails.Find(id);
 
             return PartialView(rd);
         }
@@ -1028,13 +1073,13 @@ namespace MoostBrand.Controllers
         [HttpPost, ActionName("DeleteItemPartial")]
         public ActionResult DeleteItemPartialConfirm(int id)
         {
-            var rd = db.RequisitionDetails.Find(id);
+            var rd = entity.RequisitionDetails.Find(id);
 
             int? reqID = rd.RequisitionID;
             try
             {
-                db.RequisitionDetails.Remove(rd);
-                db.SaveChanges();
+                entity.RequisitionDetails.Remove(rd);
+                entity.SaveChanges();
             }
             catch
             {
@@ -1045,44 +1090,5 @@ namespace MoostBrand.Controllers
         }
         #endregion
 
-        public ActionResult OrderCheckingIndex(string sortOrder, string currentFilter, string searchString, int? page)
-        {
-            ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "reqno" : "";
-
-            if (searchString != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-            }
-
-            ViewBag.CurrentFilter = searchString;
-
-            //var prs = db.Requisitions.Where(x => x.Status == false && x.RequisitionTypeID == 4); //active
-
-            var prs = db.Requisitions.Where(x => x.Status == false && x.RequisitionTypeID == 4 && x.ApprovalStatus == 2);
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                prs = prs.Where(o => o.RequisitionTypeID == 4 && o.RefNumber.Contains(searchString));
-            }
-
-            switch (sortOrder)
-            {
-                case "reqno":
-                    prs = prs.OrderByDescending(o => o.RefNumber);
-                    break;
-                default:
-                    prs = prs.OrderBy(o => o.ID);
-                    break;
-            }
-
-            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
-            int pageNumber = (page ?? 1);
-            return View(prs.ToPagedList(pageNumber, pageSize));
-        }
     }
 }

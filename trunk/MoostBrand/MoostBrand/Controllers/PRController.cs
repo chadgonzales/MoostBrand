@@ -191,9 +191,9 @@ namespace MoostBrand.Controllers
 
         public int getCommited(int itemID)
         {
-            //var loc = entity.RequisitionDetails.FirstOrDefault(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
             int c = 0;
-            var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
+            var com = entity.RequisitionDetails.Where(x => x.ItemID == itemID && x.AprovalStatusID == 2 && x.Requisition.RequisitionTypeID == 4 && x.Requisition.LocationID == requi.Requisition.LocationID);
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -204,9 +204,9 @@ namespace MoostBrand.Controllers
         }
         public int getPurchaseOrder(int itemID)
         {
-            //var loc = entity.RequisitionDetails.FirstOrDefault(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
             int po = 0;
-            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itemID);
+            var pur = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == itemID && x.Requisition.LocationID == requi.Requisition.LocationID);
             var porder = pur.Sum(x => x.Quantity);
             po = Convert.ToInt32(porder);
             if (porder == null)
@@ -217,8 +217,9 @@ namespace MoostBrand.Controllers
         }
         public int getInstocked(string description)
         {
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2 && x.Requisition.RequisitionTypeID == 4 || x.Requisition.RequisitionTypeID == 1);
             int getIS = 0;
-            var query = entity.Inventories.FirstOrDefault(x => x.Description == description);
+            var query = entity.Inventories.FirstOrDefault(x => x.Description == description && x.LocationCode == requi.Requisition.LocationID);
             if (query != null)
             {
                 getIS = Convert.ToInt32(query.InStock);
@@ -302,7 +303,8 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getInstock(string Code)
         {
-            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == Code);
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.Requisition.RequisitionTypeID == 4 || x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2);
+            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == Code && x.LocationCode == requi.Requisition.LocationID);
             int total;
             if (instock != null)
             {
@@ -318,7 +320,8 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getCommit(int ItemID)
         {
-            var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2);
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
+            var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2 && x.Requisition.LocationID == requi.Requisition.LocationID);
             var total = com.Sum(x => x.Quantity);
             if (total == null)
             {
@@ -329,7 +332,8 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getPO(int ItemID)
         {
-            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == ItemID);
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
+            var pur = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == ItemID && x.Requisition.LocationID == requi.Requisition.LocationID);
             var total = pur.Sum(x => x.Quantity);
             if (total == null)
             {
