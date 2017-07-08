@@ -167,7 +167,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Ordered, "Total Ordered", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Ordered, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Ordered, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
                     @Html.ValidationMessageFor(model => model.Ordered, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -175,7 +175,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Committed, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Committed, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Committed, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
                     @Html.ValidationMessageFor(model => model.Committed, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -183,7 +183,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Available, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Available, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Available, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
                     @Html.ValidationMessageFor(model => model.Available, "", new { @class = "text-danger" })
                 </div>
             </div>
