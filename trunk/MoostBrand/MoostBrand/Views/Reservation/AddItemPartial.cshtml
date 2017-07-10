@@ -110,3 +110,9 @@
         </div>
     }
 </div><!-- /.modal-content -->
+<script>
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+</script>
