@@ -13,7 +13,7 @@
             var itmCode = $("#itemsearch").val();
             $.ajax({
                 url: '@Url.Action("getCommit","Reservation")',
-                type: "POST",
+                type: "GET",
                 dataType: "json",
                 data: { ItemID: itmID },
                 success: function (data)
@@ -23,7 +23,7 @@
             });
             $.ajax({
                 url: '@Url.Action("getPO", "Reservation")',
-                type: "POST",
+                type: "GET",
                 dataType: "json",
                 data: { ItemID: itmID },
                 success: function (data) {
@@ -32,7 +32,7 @@
             });
             $.ajax({
                 url: '@Url.Action("getInstock", "Reservation")',
-                type: "POST",
+                type: "GET",
                 dataType: "json",
                 data: { Code: itmCode },
                 success: function (data) {
@@ -46,25 +46,25 @@
             var itmCode = $("#itemcode").val();
             $.ajax({
                 url: '@Url.Action("getCommit", "Reservation")',
-                type: "POST",
+                type: "GET",
                 dataType: "json",
-                data: { Code: itmID },
+                data: { ItemID: itmID },
                 success: function (data) {
                     $("#Committed").val(data);
                 }
             });
             $.ajax({
                 url: '@Url.Action("getPO", "Reservation")',
-                type: "POST",
+                type: "GET",
                 dataType: "json",
-                data: { Code: itmID },
+                data: { ItemID: itmID },
                 success: function (data) {
                     $("#Ordered").val(data);
                 }
             });
             $.ajax({
                 url: '@Url.Action("getInstock", "Reservation")',
-                type: "POST",
+                type: "GET",
                 dataType: "json",
                 data: { Code: itmCode },
                 success: function (data) {
