@@ -921,7 +921,7 @@ namespace MoostBrand.Controllers
                     req.Committed = getCommited(itemID) + req.Quantity;
                     int avail = (Convert.ToInt32(req.InStock) + Convert.ToInt32(req.Ordered)) - Convert.ToInt32(req.Committed);
                     req.Available = avail;
-                    req.InStock -= req.Quantity;
+                    //req.InStock -= req.Quantity;
                     entity.Entry(req).State = EntityState.Modified;
                     //db.SaveChanges();
                 }
@@ -973,8 +973,7 @@ namespace MoostBrand.Controllers
 
                 rd.InStock = getInstocked(desc);
 
-                rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
-
+                rd.Available = rd.InStock + rd.Ordered - rd.Committed;
                 var rd1 = entity.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
 
                 if (rd1.Count() > 0)
@@ -1029,7 +1028,7 @@ namespace MoostBrand.Controllers
                     rd.Committed = getCommited(rd.ItemID);
                     rd.InStock = getInstocked(itm.Description);
 
-                    rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                    rd.Available = rd.InStock + rd.Ordered - rd.Committed;
                     rd.Remarks = rd.Remarks;
                 }
                 else
@@ -1037,8 +1036,8 @@ namespace MoostBrand.Controllers
                     rd.InStock = getInstocked(itm.Description);
                     rd.Ordered = getPurchaseOrder(rd.ItemID);
                     rd.Committed = getCommited(rd.ItemID);
-                    rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
+                    rd.Available = rd.InStock + rd.Ordered - rd.Committed;
                     rd.Remarks = rd.Remarks;
                     rd.PreviousQuantity = prq.Quantity;
                     rd.PreviousItemID = prq.PreviousItemID; 

@@ -912,7 +912,7 @@ namespace MoostBrand.Controllers
                     item.Ordered = getPurchaseOrder(itemID) + item.Quantity;
                     int avail = (Convert.ToInt32(item.InStock) + Convert.ToInt32(item.Ordered)) - Convert.ToInt32(item.Committed);
                     item.Available = avail;
-                    item.InStock -= item.Quantity;
+                    //item.InStock -= item.Quantity;
                     entity.Entry(item).State = EntityState.Modified;
                     //entity.SaveChanges();
                 }
