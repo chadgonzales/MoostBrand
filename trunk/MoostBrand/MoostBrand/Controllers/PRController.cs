@@ -15,6 +15,7 @@ namespace MoostBrand.Controllers
     public class PRController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
+        RequisitionDetailsRepository reqDetailRepo = new RequisitionDetailsRepository();
 
         int UserID = 0;
         int UserType = 0;
@@ -324,59 +325,34 @@ namespace MoostBrand.Controllers
             return Json(items, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public JsonResult getInstock(string Code)
+        [HttpGet]
+        public JsonResult getInstock(int id, string Code)
         {
-            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.Requisition.RequisitionTypeID == 4 || x.Requisition.RequisitionTypeID == 1);
-            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == Code && x.LocationCode == requi.Requisition.LocationID);
-            int total;
-            if (instock != null)
-            {
-                total = Convert.ToInt32(instock.InStock);
-            }
-            else
-            {
-                total = 0;
-            }
+            int total = reqDetailRepo.getInstocked(id, Code);
+
             return Json(total, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public JsonResult getCommit(int ItemID)
+        [HttpGet]
+        public JsonResult getCommit(int id, int ItemID)
         {
+            int total = reqDetailRepo.getCommited(id, ItemID);
+
+            return Json(total, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult getPO(int id, int ItemID)
+        {
+            var requi = entity.Requisitions.Find(id);
             //var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
-            //var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2 && x.Requisition.LocationID == requi.Requisition.LocationID);
-            //var total = com.Sum(x => x.Quantity) ?? 0;
-            //return Json(total, JsonRequestBehavior.AllowGet);
-            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
 
             int total = 0;
             if (requi != null)
             {
                 var lstReqDetail = new List<RequisitionDetail>();
 
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2 && x.Requisition.LocationID == requi.Requisition.LocationID).ToList();
-
-                total = lstReqDetail.Sum(x => x.Quantity) ?? 0;
-            }
-            return Json(total, JsonRequestBehavior.AllowGet);
-        }
-        [HttpPost]
-        public JsonResult getPO(int ItemID)
-        {
-            //var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
-            //var pur = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == ItemID && x.Requisition.LocationID == requi.Requisition.LocationID);
-            //var total = pur.Sum(x => x.Quantity) ?? 0;
-            //return Json(total, JsonRequestBehavior.AllowGet);
-
-            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
-
-            int total = 0;
-            if (requi != null)
-            {
-                var lstReqDetail = new List<RequisitionDetail>();
-
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == ItemID && x.Requisition.LocationID == requi.Requisition.LocationID).ToList();
+                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == ItemID && x.Requisition.LocationID == requi.LocationID).ToList();
 
                 total = lstReqDetail.Sum(x => x.Quantity) ?? 0;
             }

@@ -14,6 +14,8 @@ namespace MoostBrand.Controllers
     [LoginChecker]
     public class ReservationController : Controller
     {
+        RequisitionDetailsRepository reqDetailRepo = new RequisitionDetailsRepository();
+
         int UserID = 0;
         int UserType = 0;
         int ModuleID = 3;
@@ -146,21 +148,7 @@ namespace MoostBrand.Controllers
                 }
             }
         }
-        public int getCommited(int itemID)
-        {
-            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
-            int c = 0;
-            if (requi != null)
-            {
-                var lstReqDetail = new List<RequisitionDetail>();
-
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.AprovalStatusID == 2 && x.ItemID == itemID && x.Requisition.LocationID == requi.Requisition.LocationID).ToList();
-
-                c = lstReqDetail.Sum(x => x.Quantity) ?? 0;
-            }
-            return c;
-
-        }
+        
         public int getPurchaseOrder(int itemID)
         {
             var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
@@ -174,17 +162,6 @@ namespace MoostBrand.Controllers
                 po = lstReqDetail.Sum(x => x.Quantity) ?? 0;
             }
             return po;
-        }
-        public int getInstocked(string description)
-        {
-            var requi = entity.Requisitions.FirstOrDefault(x => x.RequisitionTypeID == 4 || x.RequisitionTypeID == 1).LocationID;
-            int getIS = 0;
-            var query = entity.Inventories.FirstOrDefault(x => x.Description == description && x.LocationCode == requi);
-            if (query != null)
-            {
-                getIS = Convert.ToInt32(query.InStock);
-            }
-            return getIS;
         }
 
         #endregion
@@ -271,50 +248,35 @@ namespace MoostBrand.Controllers
             return Json(items, JsonRequestBehavior.AllowGet);
         }
 
+        //NEW
         [HttpGet]
-        public JsonResult getInstock(string Code)
+        public JsonResult getInstock(int id, string Code)
         {
-            var requi = entity.Requisitions.FirstOrDefault(x => x.RequisitionTypeID == 4 || x.RequisitionTypeID == 1);
-            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == Code && x.LocationCode == requi.LocationID);
-            int total;
-            if (instock != null)
-            {
-                total = Convert.ToInt32(instock.InStock);
-            }
-            else
-            {
-                total = 0;
-            }
+            int total = reqDetailRepo.getInstocked(id, Code);
+
             return Json(total, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        public JsonResult getCommit(int ItemID)
+        public JsonResult getCommit(int id, int ItemID)
         {
-            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
+            int total = reqDetailRepo.getCommited(id, ItemID);
 
-            int total = 0;
-            if (requi != null) {
-                var lstReqDetail = new List<RequisitionDetail>();
-
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2 && x.Requisition.LocationID == requi.Requisition.LocationID).ToList();
-
-                total = lstReqDetail.Sum(x => x.Quantity) ?? 0;
-            }
             return Json(total, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]
-        public JsonResult getPO(int ItemID)
+        public JsonResult getPO(int id, int ItemID)
         {
-            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
+            var requi = entity.Requisitions.Find(id);
+            //var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
 
             int total = 0;
             if (requi != null)
             {
                 var lstReqDetail = new List<RequisitionDetail>();
 
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == ItemID && x.Requisition.LocationID == requi.Requisition.LocationID).ToList();
+                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == ItemID && x.Requisition.LocationID == requi.LocationID).ToList();
 
                 total = lstReqDetail.Sum(x => x.Quantity) ?? 0;
             }
@@ -918,7 +880,7 @@ namespace MoostBrand.Controllers
                     {
                         req.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
                     }
-                    req.Committed = getCommited(itemID) + req.Quantity;
+                    req.Committed = reqDetailRepo.getCommited(req.RequisitionID, itemID) + req.Quantity;
                     int avail = (Convert.ToInt32(req.InStock) + Convert.ToInt32(req.Ordered)) - Convert.ToInt32(req.Committed);
                     req.Available = avail;
                     //req.InStock -= req.Quantity;
@@ -967,11 +929,11 @@ namespace MoostBrand.Controllers
                 rd.RequisitionID = id;
                 rd.AprovalStatusID = 1; //submitted
 
-                rd.Committed = getCommited(itmID);
+                rd.Committed = reqDetailRepo.getCommited(id, itmID);
 
-                rd.Ordered = getPurchaseOrder(itmID);
+                rd.Ordered = reqDetailRepo.getPurchaseOrder(itmID);
 
-                rd.InStock = getInstocked(desc);
+                rd.InStock = reqDetailRepo.getInstocked(id, desc);
 
                 rd.Available = rd.InStock + rd.Ordered - rd.Committed;
                 var rd1 = entity.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
@@ -1025,17 +987,17 @@ namespace MoostBrand.Controllers
                     rd.PreviousQuantity = prq.Quantity;
 
                     rd.Ordered = getPurchaseOrder(rd.ItemID);
-                    rd.Committed = getCommited(rd.ItemID);
-                    rd.InStock = getInstocked(itm.Description);
+                    rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID);
+                    rd.InStock = reqDetailRepo.getInstocked(id, itm.Description);
 
                     rd.Available = rd.InStock + rd.Ordered - rd.Committed;
                     rd.Remarks = rd.Remarks;
                 }
                 else
                 {
-                    rd.InStock = getInstocked(itm.Description);
+                    rd.InStock = reqDetailRepo.getInstocked(id, itm.Description);
                     rd.Ordered = getPurchaseOrder(rd.ItemID);
-                    rd.Committed = getCommited(rd.ItemID);
+                    rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID);
 
                     rd.Available = rd.InStock + rd.Ordered - rd.Committed;
                     rd.Remarks = rd.Remarks;
