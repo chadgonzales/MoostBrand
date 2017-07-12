@@ -43,30 +43,33 @@
         $("#itemcode").focusout(function () {
             var itmID = $("#ItemID").val();
             var itmCode = $("#itemcode").val();
+
+            var reservationID = $('#ReservationID').val();
+            
             //alert('ROBI ALERT GINALAW KO TO'); 
             $.ajax({                                    //COMMENT COMMENT
                 url: '@Url.Action("getCommit", "PR")', //dati naka getCodeCommit eh pag gnun kasi knukuha lahat ng reserve not by ITEM dapat daw by ITEM haha
-                type: "POST",
+                type: "GET",
                 dataType: "json",
-                data: { ItemID: itmID },
+                data: { id: reservationID, ItemID: itmID },
                 success: function (data) {
                     $("#Committed").val(data);
                 }
             });
             $.ajax({
                 url: '@Url.Action("getPO", "PR")', // dati getCodePO same reason sa taas^
-                type: "POST",
+                type: "GET",
                 dataType: "json",
-                data: { ItemID: itmID },
+                data: { id: reservationID, ItemID: itmID },
                 success: function (data) {
                     $("#Ordered").val(data);
                 }
             });
             $.ajax({
                 url: '@Url.Action("getInstock", "PR")',
-                type: "POST",
+                type: "GET",
                 dataType: "json",
-                data: { Code: itmCode },
+                data: { id: reservationID, Code: itmCode },
                 success: function (data) {
                     $("#InStock").val(data);
                 }

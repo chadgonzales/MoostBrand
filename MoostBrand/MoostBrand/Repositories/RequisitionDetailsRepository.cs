@@ -8,43 +8,60 @@ namespace MoostBrand.DAL
 {
     public class RequisitionDetailsRepository
     {
-        private MoostBrandEntities db = new MoostBrandEntities();
+        private MoostBrandEntities entity = new MoostBrandEntities();
 
-        public int getCommited(int itemID)
+        public int getCommited(int reservationId, int itemID)
         {
-            int c = 0;
-            var com = db.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && model.Requisition.RequisitionTypeID == 4);
-            var committed = com.Sum(x => x.Quantity);
-            c = Convert.ToInt32(committed);
-            if (committed == null)
+            var requi = entity.Requisitions.Find(reservationId);
+            //var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
+
+            int total = 0;
+            if (requi != null)
             {
-                c = 0;
+                var lstReqDetail = new List<RequisitionDetail>();
+
+                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == itemID && x.AprovalStatusID == 2 && x.Requisition.LocationID == requi.LocationID).ToList();
+
+                total = lstReqDetail.Sum(x => x.Quantity) ?? 0;
             }
-            return c;
+
+            return total;
         }
 
         public int getPurchaseOrder(int itemID)
         {
+            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
             int po = 0;
-            var pur = db.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itemID);
-            var porder = pur.Sum(x => x.Quantity);
-            po = Convert.ToInt32(porder);
-            if (porder == null)
+            if (requi != null)
             {
-                po = 0;
+                var lstReqDetail = new List<RequisitionDetail>();
+
+                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == itemID && x.Requisition.LocationID == requi.Requisition.LocationID).ToList();
+
+                po = lstReqDetail.Sum(x => x.Quantity) ?? 0;
             }
             return po;
         }
 
-        public int getInstocked(string description)
+        public int getInstocked(int id, string code)
         {
-            int getIS = 0;
-            var query = db.Inventories.FirstOrDefault(x => x.Description == description);
-            if (query != null)
+            //4 - customer = committed
+            //1 - purchase order = ordered
+
+            var requi = entity.Requisitions.Find(id);
+
+            //var requi = entity.Requisitions.FirstOrDefault(x => x.RequisitionTypeID == 4 || x.RequisitionTypeID == 1);
+            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == code && x.LocationCode == requi.LocationID);
+            int total;
+            if (instock != null)
             {
-                getIS = Convert.ToInt32(query.InStock);
+                total = Convert.ToInt32(instock.InStock);
             }
-            return getIS;
+            else
+            {
+                total = 0;
+            }
+            return total;
         }
 
 

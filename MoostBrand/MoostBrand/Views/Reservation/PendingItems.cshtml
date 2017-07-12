@@ -8,6 +8,7 @@
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script>
     $(document).ajaxSuccess(function () {
+
         $("#itemsearch").focusout(function () {
             var itmID = $("#ItemID").val();
             var itmCode = $("#itemsearch").val();
@@ -34,7 +35,7 @@
                 url: '@Url.Action("getInstock", "Reservation")',
                 type: "GET",
                 dataType: "json",
-                data: { Code: itmCode },
+                data: { Code: itmCode},
                 success: function (data) {
                     $("#InStock").val(data);
                 }
@@ -42,13 +43,15 @@
         });
 
         $("#itemcode").focusout(function () {
+            var reservationID = $('#ReservationID').val();
+
             var itmID = $("#ItemCode").val();
             var itmCode = $("#itemcode").val();
             $.ajax({
                 url: '@Url.Action("getCommit", "Reservation")',
                 type: "GET",
                 dataType: "json",
-                data: { ItemID: itmID },
+                data: { id: reservationID, ItemID: itmID },
                 success: function (data) {
                     $("#Committed").val(data);
                 }
@@ -57,7 +60,7 @@
                 url: '@Url.Action("getPO", "Reservation")',
                 type: "GET",
                 dataType: "json",
-                data: { ItemID: itmID },
+                data: { id: reservationID, ItemID: itmID },
                 success: function (data) {
                     $("#Ordered").val(data);
                 }
@@ -66,7 +69,7 @@
                 url: '@Url.Action("getInstock", "Reservation")',
                 type: "GET",
                 dataType: "json",
-                data: { Code: itmCode },
+                data: { id: reservationID, Code: itmCode },
                 success: function (data) {
                     $("#InStock").val(data);
                 }

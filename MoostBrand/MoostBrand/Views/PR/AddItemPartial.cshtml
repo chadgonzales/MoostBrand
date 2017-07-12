@@ -11,6 +11,9 @@
         <div class="modal-body">
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <input type="hidden" value="@ViewBag.PRid" id="ReservationID" />
+
             @Html.Hidden("CategoryID")
             @Html.Hidden("ItemID")
             @Html.Hidden("ItemCode")
