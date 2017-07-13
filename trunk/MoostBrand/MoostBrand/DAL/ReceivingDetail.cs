@@ -80,7 +80,6 @@ namespace MoostBrand.DAL
             {
                 RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
                 return (reqDetailsRepo.getCommited(0, RequisitionDetail.Item.ID) - Quantity ?? 0);
-
             }
         }
         public int GetAvailable

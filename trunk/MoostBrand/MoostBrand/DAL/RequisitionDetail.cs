@@ -5,6 +5,7 @@ namespace MoostBrand.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Web;
 
     public partial class RequisitionDetail
     {
@@ -70,7 +71,7 @@ namespace MoostBrand.DAL
             }
         }
         public int GetAvailable
-        { get { return (InStock.Value + (Ordered ?? 0)) - GetCommited; } }
+        { get { return (GetInstock + (Ordered ?? 0)) - GetCommited; } }
 
         public int GetInstock
         {
@@ -79,9 +80,11 @@ namespace MoostBrand.DAL
                 MoostBrandEntities entity = new MoostBrandEntities();
                 RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
 
+                int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
+
                 Item item = entity.Items.Find(ItemID);
 
-                int total = repo.getInstocked(RequisitionID, item.Code);
+                int total = repo.getInstocked(reqId, item.Code);
 
                 return total;
             }

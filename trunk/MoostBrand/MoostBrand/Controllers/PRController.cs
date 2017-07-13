@@ -424,9 +424,12 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 1, ModuleID = 3)]
         public ActionResult Details(int id = 0)
         {
+
+            Session["requisitionId"] = id;
+
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
 
-           var pr = new ReqDetails
+            var pr = new ReqDetails
             {
                 Requisitions = entity.Requisitions.Find(id)
             };

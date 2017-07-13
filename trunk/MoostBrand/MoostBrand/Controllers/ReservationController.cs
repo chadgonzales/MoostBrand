@@ -328,6 +328,8 @@ namespace MoostBrand.Controllers
 
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+
+
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "reqno" : "";
 
@@ -388,6 +390,9 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 1, ModuleID = 9)]
         public ActionResult Details(int id = 0)
         {
+
+            Session["requisitionId"] = id;
+
             //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
 
             var pr = entity.Requisitions.Find(id);
