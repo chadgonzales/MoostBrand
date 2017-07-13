@@ -60,6 +60,7 @@ namespace MoostBrand.DAL
             return po;
         }
 
+      
         public int getInstocked(int id, string code)
         {
             //4 - customer = committed

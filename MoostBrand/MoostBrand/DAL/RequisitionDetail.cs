@@ -60,5 +60,16 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransferDetail> StockTransferDetails { get; set; }
+
+        public int GetCommited {
+            get
+            {
+                RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
+                return reqDetailsRepo.getCommited(RequisitionID, ItemID);
+
+            }
+        }
+        public int GetAvailable
+        { get { return (InStock.Value + Ordered.Value) - GetCommited; } }
     }
 }
