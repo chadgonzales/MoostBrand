@@ -70,9 +70,6 @@ namespace MoostBrand.DAL
 
             }
         }
-        public int GetAvailable
-        { get { return (GetInstock + (Ordered ?? 0)) - GetCommited; } }
-
         public int GetInstock
         {
             get
@@ -101,5 +98,9 @@ namespace MoostBrand.DAL
                 return total;
             }
         }
+
+        public int GetAvailable
+        { get { return (GetInstock + GetOrdered) - GetCommited; } }
+
     }
 }
