@@ -262,13 +262,13 @@
                             @Html.DisplayFor(modelItem => item.InStock)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Committed)
+                            @Html.DisplayFor(modelItem => item.GetCommited)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Ordered)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Available)
+                            @Html.DisplayFor(modelItem => item.GetAvailable)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ReceivingDetail1.RequisitionDetail.Item.Description)
