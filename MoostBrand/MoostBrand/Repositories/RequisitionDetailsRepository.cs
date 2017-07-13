@@ -10,22 +10,39 @@ namespace MoostBrand.DAL
     {
         private MoostBrandEntities entity = new MoostBrandEntities();
 
+        int _instock, _ordered, _committed;
+
         public int getCommited(int reservationId, int itemID)
         {
-            var requi = entity.Requisitions.Find(reservationId);
+            //var requi = entity.Requisitions.Find(reservationId);
             //var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
 
-            int total = 0;
-            if (requi != null)
+            //int total = 0;
+            //if (requi != null)
+            //{
+            //    var lstReqDetail = new List<RequisitionDetail>();
+
+            //    lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == itemID && x.AprovalStatusID == 2 && x.Requisition.LocationID == requi.LocationID).ToList();
+
+            //    total = lstReqDetail.Sum(x => x.Quantity) ?? 0;
+            //}
+
+
+            var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
+            int c = 0;
+            var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID));
+            var committed = com.Sum(x => x.Quantity);
+            c = Convert.ToInt32(committed);
+            if (committed == null)
             {
-                var lstReqDetail = new List<RequisitionDetail>();
-
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == itemID && x.AprovalStatusID == 2 && x.Requisition.LocationID == requi.LocationID).ToList();
-
-                total = lstReqDetail.Sum(x => x.Quantity) ?? 0;
+                c = 0;
             }
 
-            return total;
+            _committed = c;
+
+
+
+            return _committed;
         }
 
         public int getPurchaseOrder(int itemID)
