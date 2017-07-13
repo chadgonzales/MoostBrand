@@ -573,6 +573,9 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 2, ModuleID = 3)]
         public ActionResult Edit(int id)
         {
+            ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
+
+
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
             var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id);
             if (pr.ApprovalStatus == 1)
