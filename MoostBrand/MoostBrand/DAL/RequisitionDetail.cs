@@ -70,6 +70,6 @@ namespace MoostBrand.DAL
             }
         }
         public int GetAvailable
-        { get { return (InStock.Value + Ordered.Value) - GetCommited; } }
+        { get { return (InStock.Value + (Ordered ?? 0)) - GetCommited; } }
     }
 }
