@@ -331,16 +331,16 @@
                             @Html.DisplayFor(modelItem => item.Quantity)
                         </td>
                         <td>
-                            @*@Html.DisplayFor(modelItem => item.InStock) COMMENT COMMENT *@  @Model.getInstocked(item.Item.Description)  
+                            @Html.DisplayFor(modelItem => item.GetInstock)
                         </td>
                         <td>
-                           @*@Html.DisplayFor(modelItem => item.Committed) COMMENT COMMENT *@ @Model.getCommited(item.Item.ID)
+                           @Html.DisplayFor(modelItem => item.GetCommited)
                         </td>
                         <td>
-                            @*@Html.DisplayFor(modelItem => item.Ordered) COMMENT COMMENT *@ @Model.getPurchaseOrder(item.Item.ID)
+                            @Html.DisplayFor(modelItem => item.GetOrdered) 
                         </td>
                         <td>
-                            @*@Html.DisplayFor(modelItem => item.Available) COMMENT COMMENT *@ @Model.Available
+                            @Html.DisplayFor(modelItem => item.GetAvailable)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Item1.Description)

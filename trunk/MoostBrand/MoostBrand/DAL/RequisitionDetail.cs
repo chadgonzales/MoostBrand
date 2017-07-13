@@ -71,5 +71,29 @@ namespace MoostBrand.DAL
         }
         public int GetAvailable
         { get { return (InStock.Value + (Ordered ?? 0)) - GetCommited; } }
+
+        public int GetInstock
+        {
+            get
+            {
+                RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
+
+                int total = repo.getInstocked(RequisitionID, Item.Code);
+
+                return total;
+            }
+        }
+
+        public int GetOrdered
+        {
+            get
+            {
+                RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
+
+                int total = repo.getPurchaseOrder(ItemID);
+
+                return total;
+            }
+        }
     }
 }
