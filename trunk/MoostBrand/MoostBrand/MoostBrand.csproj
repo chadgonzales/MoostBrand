@@ -4487,11 +4487,11 @@
     <Content Include="Views\UnitOfMeasure\Create.cshtml" />
     <Content Include="Views\UnitOfMeasure\Edit.cshtml" />
     <Content Include="Views\UnitOfMeasure\Delete.cshtml" />
-    <Content Include="Views\ContainerStorage\Index.cshtml" />
-    <Content Include="Views\ContainerStorage\Details.cshtml" />
-    <Content Include="Views\ContainerStorage\Create.cshtml" />
-    <Content Include="Views\ContainerStorage\Edit.cshtml" />
-    <Content Include="Views\ContainerStorage\Delete.cshtml" />
+    <Content Include="Views\Home\ContainerStorage\Index.cshtml" />
+    <Content Include="Views\Home\ContainerStorage\Details.cshtml" />
+    <Content Include="Views\Home\ContainerStorage\Create.cshtml" />
+    <Content Include="Views\Home\ContainerStorage\Edit.cshtml" />
+    <Content Include="Views\Home\ContainerStorage\Delete.cshtml" />
     <Content Include="Views\ContainerLocation\Index.cshtml" />
     <Content Include="Views\ContainerLocation\Details.cshtml" />
     <Content Include="Views\ContainerLocation\Create.cshtml" />
