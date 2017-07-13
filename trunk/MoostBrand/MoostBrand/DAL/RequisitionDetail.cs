@@ -76,9 +76,12 @@ namespace MoostBrand.DAL
         {
             get
             {
+                MoostBrandEntities entity = new MoostBrandEntities();
                 RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
 
-                int total = repo.getInstocked(RequisitionID, Item.Code);
+                Item item = entity.Items.Find(ItemID);
+
+                int total = repo.getInstocked(RequisitionID, item.Code);
 
                 return total;
             }
