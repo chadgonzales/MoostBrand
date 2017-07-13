@@ -5,6 +5,7 @@ namespace MoostBrand.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Web;
 
     public partial class StockTransferDetail
     {
@@ -68,13 +69,47 @@ namespace MoostBrand.DAL
         {
             get
             {
+                MoostBrandEntities entity = new MoostBrandEntities();
                 RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
-                return reqDetailsRepo.getCommited(0, RequisitionDetail.Item.ID);
+
+                RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+                return (reqDetailsRepo.getCommited(0, item.ItemID) - Quantity.Value);
 
             }
         }
+        public int GetInstock
+        {
+            get
+            {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
+
+                //int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
+                RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+
+                int total = (repo.getInstocked(item.RequisitionID, item.Item.Code) - Quantity.Value);
+
+                return total;
+            }
+        }
+
+        public int GetOrdered
+        {
+            get
+            {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
+
+                RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+
+                int total = repo.getPurchaseOrder(item.ItemID);
+
+                return total;
+            }
+        }
+
         public int GetAvailable
-        { get { return (InStock.Value + (Ordered ?? 0)) - GetCommited; } }
+        { get { return (GetInstock + GetOrdered) - GetCommited; } }
 
     }
 }

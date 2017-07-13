@@ -259,13 +259,13 @@
                             @Html.DisplayFor(modelItem => item.Quantity)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.InStock)
+                            @Html.DisplayFor(modelItem => item.GetInstock)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.GetCommited)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Ordered)
+                            @Html.DisplayFor(modelItem => item.GetOrdered)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.GetAvailable)
