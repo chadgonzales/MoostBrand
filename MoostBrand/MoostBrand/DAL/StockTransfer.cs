@@ -28,9 +28,11 @@ namespace MoostBrand.DAL
         public DateTime STDAte { get; set; }
 
         [StringLength(20)]
+        [Required(ErrorMessage = "Time Started by is Required")]
         public string TimeStarted { get; set; }
 
         [StringLength(20)]
+        [Required(ErrorMessage = "Time Finish by is Required")]
         public string TimeFinish { get; set; }
 
         [StringLength(150)]
@@ -40,21 +42,27 @@ namespace MoostBrand.DAL
         public string Helper { get; set; }
 
         [StringLength(20)]
+        [Required(ErrorMessage = "Time Received by is Required")]
         public string TimeReceived { get; set; }
 
+        [Required(ErrorMessage = "Received by is Required")]
         public int ReceivedBy { get; set; }
 
+        [Required(ErrorMessage = "Requested by is Required")]
         public int RequestedBy { get; set; }
 
         public int? ApprovedBy { get; set; }
 
+        [Required(ErrorMessage = "Released by is Required")]
         public int ReleasedBy { get; set; }
 
         [StringLength(150)]
+        [Required(ErrorMessage = "Operator is Required")]
         public string Operator { get; set; }
 
         public int CounterCheckedBy { get; set; }
 
+        [Required(ErrorMessage = "Posted by is Required")]
         public int PostedBy { get; set; }
 
         public int? ApprovedStatus { get; set; }
@@ -69,7 +77,7 @@ namespace MoostBrand.DAL
         public string PlateNo { get; set; }
 
         public int? ReceivingID { get; set; }
-
+    
         public int StockTransferTypeID { get; set; }
 
         public virtual ApprovalStatu ApprovalStatu { get; set; }
