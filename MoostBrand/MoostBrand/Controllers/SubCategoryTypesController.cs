@@ -101,7 +101,7 @@ namespace MoostBrand.Controllers
                     { 
                         entity.SubCategoriesTypes.Add(subcategoriestype);
                         entity.SaveChanges();
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Create");
                     }
                 }
                 catch
