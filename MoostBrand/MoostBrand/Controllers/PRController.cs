@@ -326,9 +326,9 @@ namespace MoostBrand.Controllers
         }
 
         [HttpGet]
-        public JsonResult getInstock(int id, string Code)
+        public JsonResult getInstock(int id, string Code, int ItemID)
         {
-            int total = reqDetailRepo.getInstocked(id, Code);
+            int total = (reqDetailRepo.getInstocked(id, Code ) - reqDetailRepo.getStockTranfer(ItemID));
 
             return Json(total, JsonRequestBehavior.AllowGet);
         }

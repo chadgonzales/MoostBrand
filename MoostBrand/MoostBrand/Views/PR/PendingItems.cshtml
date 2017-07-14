@@ -69,7 +69,7 @@
                 url: '@Url.Action("getInstock", "PR")',
                 type: "GET",
                 dataType: "json",
-                data: { id: reservationID, Code: itmCode },
+                data: { id: reservationID, Code: itmCode, ItemID: itmID },
                 success: function (data) {
                     $("#InStock").val(data);
                 }

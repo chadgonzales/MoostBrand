@@ -1064,12 +1064,20 @@ namespace MoostBrand.Controllers
 
         public ActionResult DisplayComputation(int? reqID)
         {
+            var type = new int[] { 2, 3, 4 };
             var itmID = entity.RequisitionDetails.Find(reqID);
             var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID.ItemID).Description;
-            var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
+            var com = entity.RequisitionDetails.Where(model => type.Contains(model.Requisition.RequisitionTypeID) && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc && x.LocationCode == itmID.Requisition.LocationID).InStock;
             var qty = entity.RequisitionDetails.FirstOrDefault(model => model.ID == reqID).Quantity;
+
+            var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 1).Select(p => p.ID).ToList();
+            var stdetails = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == itmID.ItemID && model.AprovalStatusID == 2 && st.Contains(model.StockTransferID.Value));
+            var _out = stdetails.Sum(x => x.Quantity);
+            int _stdetails = Convert.ToInt32(_out);
+
+
 
 
             var computations = entity.RequisitionDetails
@@ -1078,7 +1086,7 @@ namespace MoostBrand.Controllers
                                {
                                    Committed = com.Sum(y => y.Quantity) ?? 0,
                                    Ordered = pur.Sum(z => z.Quantity) ?? 0,
-                                   InStock = instock,
+                                   InStock = instock - _stdetails,
                                    Quantity = qty
                                })
                                .FirstOrDefault();
