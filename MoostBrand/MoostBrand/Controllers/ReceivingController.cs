@@ -870,10 +870,15 @@ namespace MoostBrand.Controllers
                     //int avail = (Convert.ToInt32(item.InStock) + Convert.ToInt32(item.Ordered)) - Convert.ToInt32(item.Committed);
                     //item.Available = avail;
 
+                    int requisitionId = Convert.ToInt32(Session["requisitionId"]);
+                    var reqDetail = entity.RequisitionDetails.Find(item.RequisitionDetailID);
+
+                    item.InStock = reqDetailRepo.getInstocked(requisitionId, reqDetail.Item.Code) + item.Quantity;
+
                     item.AprovalStatusID = 2;
                     item.IsSync = false;
 
-                    entity.Entry(item).State = EntityState.Modified;
+                    //entity.Entry(item).State = EntityState.Modified;
                     entity.SaveChanges();
                 }
             }
