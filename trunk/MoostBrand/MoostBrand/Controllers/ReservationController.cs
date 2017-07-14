@@ -779,6 +779,8 @@ namespace MoostBrand.Controllers
             var items = entity.RequisitionDetails
                         .ToList()
                         .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && (rd.Requisition.RequestedBy == UserID || UserType == 1 || UserType == 4));
+
+
             //var items = db.RequisitionDetails
             //            .ToList()
             //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
@@ -898,10 +900,8 @@ namespace MoostBrand.Controllers
                 //    {
                 //        inventory.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
                 //    }
-                //    inventory.Committed = getCommited(req.ItemID) + quantity;
-                //    inventory.Available = (Convert.ToInt32(inventory.InStock) + Convert.ToInt32(inventory.Ordered)) - Convert.ToInt32(inventory.Committed);
-                //    inventory.InStock -= req.Quantity;
-                //    db.Entry(inventory).State = EntityState.Modified;
+                //    inventory.Committed = inventory.Committed.Value + quantity;
+                //    entity.Entry(inventory).State = EntityState.Modified;
                 //}
                 entity.SaveChanges();
             }

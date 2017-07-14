@@ -696,8 +696,17 @@ namespace MoostBrand.Controllers
                     //    entity.SaveChanges();
                     //}
                     #endregion
-
                 }
+
+                var reqDetails = entity.RequisitionDetails.Find(item.RequisitionDetailID);
+                if (reqDetails != null)
+                {
+                    reqDetails.Committed = reqDetails.Committed - item.Quantity;
+
+                    entity.Entry(reqDetails).State = EntityState.Modified;
+                    entity.SaveChanges();
+                }
+
             }
             catch
             {
