@@ -250,9 +250,9 @@ namespace MoostBrand.Controllers
 
         //NEW
         [HttpGet]
-        public JsonResult getInstock(int id, string Code)
+        public JsonResult getInstock(int id, string Code, int ItemID)
         {
-            int total = reqDetailRepo.getInstocked(id, Code);
+            int total = (reqDetailRepo.getInstocked(id, Code) - reqDetailRepo.getStockTranfer(ItemID));
 
             return Json(total, JsonRequestBehavior.AllowGet);
         }
@@ -634,11 +634,6 @@ namespace MoostBrand.Controllers
                 pr.Status = true;
                 entity.Entry(pr).State = EntityState.Modified;
                 entity.SaveChanges();
-
-                //Delete requisition details
-                entity.RequisitionDetails.RemoveRange(entity.RequisitionDetails.Where(x => x.RequisitionID == id));
-                entity.SaveChanges();
-                //==========================
 
                 return RedirectToAction("Index");
             }

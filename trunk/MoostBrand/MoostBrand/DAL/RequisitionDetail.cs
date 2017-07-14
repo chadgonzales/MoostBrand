@@ -80,8 +80,12 @@ namespace MoostBrand.DAL
                 int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
 
                 Item item = entity.Items.Find(ItemID);
+                int total = 0;
 
-                int total = (repo.getInstocked(reqId, item.Code) - repo.getStockTranfer(ItemID));
+                if (item != null)
+                {
+                    total = (repo.getInstocked(reqId, item.Code) - repo.getStockTranfer(ItemID));
+                }
 
                 return total;
             }
