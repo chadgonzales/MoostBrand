@@ -77,6 +77,35 @@ namespace MoostBrand.DAL
 
             }
         }
+
+        public int GetOrigCommited
+        {
+            get
+            {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
+
+                RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+                return reqDetailsRepo.getCommited(0, item.ItemID);
+
+            }
+        }
+
+        public int GetOrigInstock
+        {
+            get
+            {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
+
+                //int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
+                RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+
+                int total = repo.getInstocked(item.RequisitionID, item.Item.Code);
+
+                return total;
+            }
+        }
         public int GetInstock
         {
             get
