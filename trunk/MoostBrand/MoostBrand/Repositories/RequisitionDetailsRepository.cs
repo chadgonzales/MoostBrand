@@ -82,6 +82,27 @@ namespace MoostBrand.DAL
             return total;
         }
 
+        public int getStockTranfer(int itemID)
+        {
+
+            var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 1).Select(p => p.ID).ToList();
+            int c = 0;
+            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == itemID && model.AprovalStatusID == 2 && st.Contains(model.StockTransferID.Value));
+            var committed = com.Sum(x => x.Quantity);
+            c = Convert.ToInt32(committed);
+            if (committed == null)
+            {
+                c = 0;
+            }
+
+            _committed = c;
+
+
+
+            return _committed;
+        }
+
+
 
     }
 }
