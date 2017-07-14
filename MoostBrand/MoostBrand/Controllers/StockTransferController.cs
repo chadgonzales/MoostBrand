@@ -252,55 +252,8 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public ActionResult Create(StockTransfer stocktransfer)
         {
-
-            var _types = entity.StockTransferTypes.ToList();
-            var stransfer = entity.StockTransfers.Where(s => s.TransferID == stocktransfer.TransferID).ToList();
-
-            if (stransfer.Count() > 0)
-            {
-                ModelState.AddModelError("", "Stock Transfer ID already exists");
-            }
-            else
-            {
-                #region Helper
-                foreach (Helper h in stocktransfer.Helpers.ToList())
-                {
-                    try
-                    {
-                        if (h.DeletedHelper == 1)
-                        {
-                            stocktransfer.Helpers.Remove(h);
-                        }
-
-                    }
-                    catch
-                    {
-                        ModelState.AddModelError(string.Empty, "There's an error");
-                    }
-                }
-                #endregion
-                #region Operator
-                foreach (Operator o in stocktransfer.Operators.ToList())
-                {
-                    if (o.DeletedOperator == 1)
-                    {
-                        stocktransfer.Operators.Remove(o);
-                    }
-                }
-                #endregion
-
-                stocktransfer.ApprovedStatus = 1;
-                stocktransfer.ApprovedBy = Convert.ToInt32(Session["sessionuid"]);
-                stocktransfer.IsSync = false;
-
-                entity.StockTransfers.Add(stocktransfer);
-                entity.SaveChanges();
-                //return RedirectToAction("Index");
-
-                return RedirectToAction("Details", new { id = stocktransfer.ID });
-            }
-
             #region DROPDOWNS
+            var _types = entity.StockTransferTypes.ToList();
 
             var loc = entity.Locations.Where(x => x.ID != 10)
                         .Select(x => new
@@ -329,7 +282,61 @@ namespace MoostBrand.Controllers
             ViewBag.PostedBy = new SelectList(empList, "ID", "FullName", stocktransfer.PostedBy); ;
             ViewBag.ApprovedStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", stocktransfer.ApprovedStatus);
             #endregion
-            return View(stocktransfer);
+
+            if (ModelState.IsValid)
+            {
+                var stransfer = entity.StockTransfers.Where(s => s.TransferID == stocktransfer.TransferID).ToList();
+
+                if (stransfer.Count() > 0)
+                {
+                    ModelState.AddModelError("", "Stock Transfer ID already exists");
+                }
+                else
+                {
+                    #region Helper
+                    foreach (Helper h in stocktransfer.Helpers.ToList())
+                    {
+                        try
+                        {
+                            if (h.DeletedHelper == 1)
+                            {
+                                stocktransfer.Helpers.Remove(h);
+                            }
+
+                        }
+                        catch
+                        {
+                            ModelState.AddModelError(string.Empty, "There's an error");
+                        }
+                    }
+                    #endregion
+                    #region Operator
+                    foreach (Operator o in stocktransfer.Operators.ToList())
+                    {
+                        if (o.DeletedOperator == 1)
+                        {
+                            stocktransfer.Operators.Remove(o);
+                        }
+                    }
+                    #endregion
+
+                    stocktransfer.ApprovedStatus = 1;
+                    stocktransfer.ApprovedBy = Convert.ToInt32(Session["sessionuid"]);
+                    stocktransfer.IsSync = false;
+
+                    entity.StockTransfers.Add(stocktransfer);
+                    entity.SaveChanges();
+                    //return RedirectToAction("Index");
+
+                    return RedirectToAction("Details", new { id = stocktransfer.ID });
+                }
+
+                
+                return View(stocktransfer);
+            }
+            else {
+                return View(stocktransfer);
+            }
         }
 
         // GET: StockTransfer/Edit/5

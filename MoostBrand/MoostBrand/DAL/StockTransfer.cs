@@ -56,8 +56,8 @@ namespace MoostBrand.DAL
         [Required(ErrorMessage = "Released by is Required")]
         public int ReleasedBy { get; set; }
 
-        [StringLength(150)]
-        [Required(ErrorMessage = "Operator is Required")]
+        //[StringLength(150)]
+        //[Required(ErrorMessage = "Operator is Required")]
         public string Operator { get; set; }
 
         public int CounterCheckedBy { get; set; }
