@@ -159,17 +159,28 @@
                         $("#Committed").val(data.Committed);
                         $("#Ordered").val(data.Ordered);
                         $("#InStock").val(data.InStock);
+                        $("#Quantity").val(data.Quantity);
+                        $("#Hidden_Quantity").val(data.Quantity);
+                        
                     }
                 })
             });
 
             $('#Quantity').focusout(function () {
-                var ordered = parseInt($('#Ordered').val());
-                var committed = parseInt($('#Committed').val());
-                var instock = parseInt($('#InStock').val());
-                console.log(instock);
+                if ($("#Quantity").val() <= $("#Hidden_Quantity").val() && $("#Quantity").val() > 0) {
+                    var ordered = parseInt($('#Ordered').val());
+                    var committed = parseInt($('#Committed').val());
+                    var instock = parseInt($('#InStock').val());
+                    console.log(instock);
 
-                $('#Available').val((instock + ordered) - committed);
+                    $('#Available').val((instock + ordered) - committed);
+                    $('#quantitymsg').text('');
+                }
+                else
+                {
+                    $('#quantitymsg').text('invalid quantity');
+                    $("#Quantity").val($("#Hidden_Quantity").val());
+                }
             })
 
             // add class form-control to textarea and select

@@ -196,7 +196,7 @@ namespace MoostBrand.Controllers
 
             List<ReqCustom> lstReqCustom = new List<ReqCustom>();
 
-            foreach (var _req in entity.Requisitions.Where(r => r.ApprovalStatus == 2 && r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))) {
+            foreach (var _req in entity.Requisitions.Where(r => r.ApprovalStatus == 2 && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR")))) {
                 string refNumber;
 
                 if (_req.RefNumber.Contains("BR"))
@@ -1042,6 +1042,7 @@ namespace MoostBrand.Controllers
             var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc && x.LocationCode == itmID.Requisition.LocationID).InStock;
+            var qty = entity.RequisitionDetails.FirstOrDefault(model => model.ID == reqID).Quantity;
 
 
             var computations = entity.RequisitionDetails
@@ -1050,7 +1051,8 @@ namespace MoostBrand.Controllers
                                {
                                    Committed = com.Sum(y => y.Quantity) ?? 0,
                                    Ordered = pur.Sum(z => z.Quantity) ?? 0,
-                                   InStock = instock
+                                   InStock = instock,
+                                   Quantity = qty
                                })
                                .FirstOrDefault();
 
