@@ -14,6 +14,7 @@ namespace MoostBrand.Controllers
     public class StockTransferController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
+        InventoryRepository invRepo = new InventoryRepository();
 
         #region PRIVATE METHODS
         private string Generator(string prefix)
@@ -580,6 +581,24 @@ namespace MoostBrand.Controllers
                     st.IsSync = false;
 
                     entity.Entry(st).State = EntityState.Modified;
+
+                    var inv = entity.Inventories.Where(i => st.Requisition.RequisitionDetails.Select(p => p.ItemCode).Contains(i.ItemCode)).ToList();
+                    if (inv != null)
+                    {
+                        foreach (var _inv in inv)
+                        {
+                            var i = entity.Inventories.Find(_inv.ID);
+                            i.Committed = invRepo.getCommited(_inv.ItemCode);
+                            i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode);
+                            i.InStock = invRepo.getInstocked(st.RequisitionID.Value, _inv.ItemCode);
+                            i.Available = (i.InStock + i.Ordered) - i.Committed;
+
+                            entity.Entry(i).State = EntityState.Modified;
+                            entity.SaveChanges();
+                        }
+
+                    }
+
                     entity.SaveChanges();
 
                     return RedirectToAction("Index");
