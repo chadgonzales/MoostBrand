@@ -189,7 +189,7 @@ namespace MoostBrand.Controllers
             var _st = entity.StockTransfers.ToList();
 
 
-            var _receivings = entity.Receivings.Where(r => r.ApprovalStatus == 2 && !_st.Select(p=>p.RequisitionID).Contains(r.ID))
+            var _receivings = entity.Receivings.Where(r => r.ApprovalStatus == 2)
                 .Select(r => new
                 {
                     ID = r.ID,
@@ -198,7 +198,15 @@ namespace MoostBrand.Controllers
 
             List<ReqCustom> lstReqCustom = new List<ReqCustom>();
 
-            foreach (var _req in entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) &&(r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR")))) {
+            //var lstReq = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))).ToList();
+
+            var lstReq = (from r in entity.Requisitions.ToList()
+                          where r.ApprovalStatus == 2 &&
+                          !_st.Select(p => p.RequisitionID).Contains(r.ID) &&
+                          (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))
+                          select r).ToList();
+
+            foreach (var _req in lstReq) {
                 string refNumber;
 
                 if (_req.RefNumber.Contains("BR"))
@@ -679,6 +687,14 @@ namespace MoostBrand.Controllers
                     item.AprovalStatusID = 2;
                     item.IsSync = false;
 
+                    var reqDetails = entity.RequisitionDetails.Find(item.RequisitionDetailID);
+                    if (reqDetails != null)
+                    {
+                        reqDetails.Committed = reqDetails.Committed - item.Quantity;
+
+                        entity.Entry(reqDetails).State = EntityState.Modified;
+                    }
+
                     entity.Entry(item).State = EntityState.Modified;
                     entity.SaveChanges();
 
@@ -707,14 +723,7 @@ namespace MoostBrand.Controllers
                     #endregion
                 }
 
-                var reqDetails = entity.RequisitionDetails.Find(item.RequisitionDetailID);
-                if (reqDetails != null)
-                {
-                    reqDetails.Committed = reqDetails.Committed - item.Quantity;
-
-                    entity.Entry(reqDetails).State = EntityState.Modified;
-                    entity.SaveChanges();
-                }
+               
 
             }
             catch

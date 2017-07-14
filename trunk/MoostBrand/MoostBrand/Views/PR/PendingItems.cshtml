@@ -149,6 +149,7 @@
             source: function (request, response) {
                 var catID = $("#CategoryID").val();
                 $.ajax({
+                  
                     url: '@Url.Action("GetItemCode")',
                     type: "POST",
                     dataType: "json",
