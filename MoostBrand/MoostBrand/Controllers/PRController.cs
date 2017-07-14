@@ -16,6 +16,7 @@ namespace MoostBrand.Controllers
     {
         MoostBrandEntities entity = new MoostBrandEntities();
         RequisitionDetailsRepository reqDetailRepo = new RequisitionDetailsRepository();
+        InventoryRepository invRepo = new InventoryRepository();
 
         int UserID = 0;
         int UserType = 0;
@@ -725,6 +726,23 @@ namespace MoostBrand.Controllers
                     pr.IsSync = false;
 
                     entity.Entry(pr).State = EntityState.Modified;
+
+                    var inv = entity.Inventories.Where(i => pr.RequisitionDetails.Select(p => p.ItemCode).Contains(i.ItemCode)).ToList();
+                    if (inv != null)
+                    {
+                        foreach (var _inv in inv)
+                        {
+                            var i = entity.Inventories.Find(_inv.ID);
+                            i.Committed = invRepo.getCommited(_inv.ItemCode);
+                            i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode);
+                            i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
+                            i.Available = (i.InStock + i.Ordered) - i.Committed;
+
+                            entity.Entry(i).State = EntityState.Modified;
+                            entity.SaveChanges();
+                        }
+
+                    }
                     entity.SaveChanges();
 
                     return RedirectToAction("Index");
@@ -898,15 +916,15 @@ namespace MoostBrand.Controllers
                     entity.Entry(item).State = EntityState.Modified;
                     //entity.SaveChanges();
                 }
-                if (inventory != null)
-                {
-                    if (item.Requisition.ReqTypeID == 1)
-                    {
-                        inventory.Ordered = Convert.ToInt32(getPurchaseOrder(item.ItemID) + item.Ordered);
-                    }
-                    inventory.Committed = inventory.Committed.Value + quantity;
-                    entity.Entry(inventory).State = EntityState.Modified;
-                }
+                //if (inventory != null)
+                //{
+                //    if (item.Requisition.ReqTypeID == 1)
+                //    {
+                //        inventory.Ordered = Convert.ToInt32(getPurchaseOrder(item.ItemID) + item.Ordered);
+                //    }
+                //    inventory.Committed = inventory.Committed.Value + quantity;
+                //    entity.Entry(inventory).State = EntityState.Modified;
+                //}
                 entity.SaveChanges();
             }
             catch
