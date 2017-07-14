@@ -894,15 +894,15 @@ namespace MoostBrand.Controllers
                     entity.Entry(req).State = EntityState.Modified;
                     //db.SaveChanges();
                 }
-                //if (inventory != null)
-                //{
-                //    if (req.Requisition.ReqTypeID == 1)
-                //    {
-                //        inventory.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
-                //    }
-                //    inventory.Committed = inventory.Committed.Value + quantity;
-                //    entity.Entry(inventory).State = EntityState.Modified;
-                //}
+                if (inventory != null)
+                {
+                    if (req.Requisition.ReqTypeID == 1)
+                    {
+                        inventory.Ordered = Convert.ToInt32(getPurchaseOrder(req.ItemID) + req.Ordered);
+                    }
+                    inventory.Committed = inventory.Committed.Value + quantity;
+                    entity.Entry(inventory).State = EntityState.Modified;
+                }
                 entity.SaveChanges();
             }
             catch
