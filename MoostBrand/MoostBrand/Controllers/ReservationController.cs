@@ -635,6 +635,11 @@ namespace MoostBrand.Controllers
                 entity.Entry(pr).State = EntityState.Modified;
                 entity.SaveChanges();
 
+                //Delete requisition details
+                entity.RequisitionDetails.RemoveRange(entity.RequisitionDetails.Where(x => x.RequisitionID == id));
+                entity.SaveChanges();
+                //==========================
+
                 return RedirectToAction("Index");
             }
             catch
