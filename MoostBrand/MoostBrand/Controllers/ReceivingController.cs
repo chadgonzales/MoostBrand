@@ -8,6 +8,7 @@ using System.Configuration;
 using PagedList;
 using MoostBrand.Models;
 using System.IO;
+using System.Collections.Generic;
 
 namespace MoostBrand.Controllers
 {
@@ -15,6 +16,7 @@ namespace MoostBrand.Controllers
     public class ReceivingController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
+        RequisitionDetailsRepository reqDetailRepo = new RequisitionDetailsRepository();
 
         private int ID;
 
@@ -148,16 +150,20 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getInstock(string Code)
         {
-            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == Code);
-            int total;
-            if (instock != null)
-            {
-                total = Convert.ToInt32(instock.InStock);
-            }
-            else
-            {
-                total = 0;
-            }
+            //var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == Code);
+            //int total;
+            //if (instock != null)
+            //{
+            //    total = Convert.ToInt32(instock.InStock);
+            //}
+            //else
+            //{
+            //    total = 0;
+            //}
+
+            int requisitionId = Convert.ToInt32(Session["requisitionId"]);
+            int total = reqDetailRepo.getInstocked(requisitionId, Code);
+
             return Json(total, JsonRequestBehavior.AllowGet);
         }
 
@@ -165,30 +171,40 @@ namespace MoostBrand.Controllers
         public JsonResult GetCommitted(int ItemID)
         {
             //Available = In Stock + Ordered – Committed
-            var num = ItemID;
-            return Json(num, JsonRequestBehavior.AllowGet);
+
+            int requisitionId = Convert.ToInt32(Session["requisitionId"]);
+            int total = reqDetailRepo.getCommited(requisitionId, ItemID);
+
+
+            //var num = ItemID;
+            return Json(total, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult getCommit(int ItemID)
         {
-            var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == ItemID && x.AprovalStatusID == 2);
-            var total = com.Sum(x => x.Quantity);
-            if (total == null)
-            {
-                total = 0;
-            }
+            int requisitionId = Convert.ToInt32(Session["requisitionId"]);
+
+            int total = reqDetailRepo.getCommited(requisitionId, ItemID);
+
             return Json(total, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
         public JsonResult getPO(int ItemID)
         {
-            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == ItemID);
-            var total = pur.Sum(x => x.Quantity);
-            if (total == null)
+            int requisitionId = Convert.ToInt32(Session["requisitionId"]);
+
+            var requi = entity.Requisitions.Find(requisitionId);
+
+            int total = 0;
+            if (requi != null)
             {
-                total = 0;
+                var lstReqDetail = new List<RequisitionDetail>();
+
+                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == ItemID && x.Requisition.LocationID == requi.LocationID).ToList();
+
+                total = lstReqDetail.Sum(x => x.Quantity) ?? 0;
             }
             return Json(total, JsonRequestBehavior.AllowGet);
         }
@@ -230,18 +246,36 @@ namespace MoostBrand.Controllers
         public ActionResult DisplayComputations(int? reqID)
         {
             var itmID = entity.RequisitionDetails.Find(reqID);
+            var item = entity.Items.FirstOrDefault(p => p.ID == itmID.ItemID);
             var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID.ItemID).Description;
-            var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
-            var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
-            var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc && x.LocationCode == itmID.Requisition.LocationID).InStock;
+            //var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
+            //var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
+            //var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc && x.LocationCode == itmID.Requisition.LocationID).InStock;
 
+            int requisitionId = Convert.ToInt32(Session["requisitionId"]);
+            var requi = entity.Requisitions.Find(requisitionId);
+
+            int com = reqDetailRepo.getCommited(requisitionId, item.ID);
+            int pur = 0;
+            if (requi != null)
+            {
+                var lstReqDetail = new List<RequisitionDetail>();
+
+                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == item.ID && x.Requisition.LocationID == requi.LocationID).ToList();
+
+                pur = lstReqDetail.Sum(x => x.Quantity) ?? 0;
+            }
+            int instock = reqDetailRepo.getInstocked(requisitionId, item.Code);
 
             var computations = entity.RequisitionDetails
                                .Where(x => x.ItemID == itmID.ItemID && x.AprovalStatusID == 2)
                                .Select(x => new
                                {
-                                   Committed = com.Sum(y => y.Quantity) ?? 0,
-                                   Ordered = pur.Sum(z => z.Quantity) ?? 0,
+                                   //Committed = com.Sum(y => y.Quantity) ?? 0,
+                                   //Ordered = pur.Sum(z => z.Quantity) ?? 0,
+                                   //InStock = instock
+                                   Committed = com,
+                                   Ordered = pur,
                                    InStock = instock
                                })
                                .FirstOrDefault();
@@ -372,6 +406,9 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult Details(int id = 0)
         {
+            Receiving receiving = entity.Receivings.Find(id);
+            Session["requisitionId"] = receiving.RequisitionID;
+
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
             var r = entity.Receivings.Find(id);
             if (r == null)
@@ -923,13 +960,16 @@ namespace MoostBrand.Controllers
 
                 var rd1 = entity.ReceivingDetails.Where(s => s.ReceivingID == rd.ReceivingID && s.RequisitionDetailID == rd.RequisitionDetailID).ToList();
 
-                //int com = getCommited(Convert.ToInt32(rd.RequisitionDetailID));
-                //rd.Committed = com;
+                RequisitionDetailsRepository reqRepo = new RequisitionDetailsRepository();
+
+                //int com = reqRepo.getCommited(rd.RequisitionDetail.RequisitionID, rd.RequisitionDetail.ItemID); //getCommited(Convert.ToInt32(rd.RequisitionDetailID));
+
+                rd.Committed = reqRepo.getCommited(rd.RequisitionDetail.RequisitionID, rd.RequisitionDetail.ItemID);
 
                 //int por = getPurchaseOrder(Convert.ToInt32(rd.RequisitionDetailID));
-                //rd.Ordered = por;
+                rd.Ordered = reqRepo.getPurchaseOrder(rd.RequisitionDetail.ItemID);
 
-                //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                 if (rd1.Count() > 0)
                 {
