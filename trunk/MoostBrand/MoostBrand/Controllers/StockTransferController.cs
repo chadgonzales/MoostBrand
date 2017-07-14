@@ -186,8 +186,10 @@ namespace MoostBrand.Controllers
             
             #region DROPDOWNS
             var _types = entity.StockTransferTypes.ToList();
+            var _st = entity.StockTransfers.ToList();
 
-            var _receivings = entity.Receivings.Where(r => r.ApprovalStatus == 2)
+
+            var _receivings = entity.Receivings.Where(r => r.ApprovalStatus == 2 && !_st.Select(p=>p.RequisitionID).Contains(r.ID))
                 .Select(r => new
                 {
                     ID = r.ID,
@@ -196,7 +198,7 @@ namespace MoostBrand.Controllers
 
             List<ReqCustom> lstReqCustom = new List<ReqCustom>();
 
-            foreach (var _req in entity.Requisitions.Where(r => r.ApprovalStatus == 2 && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR")))) {
+            foreach (var _req in entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) &&(r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR")))) {
                 string refNumber;
 
                 if (_req.RefNumber.Contains("BR"))
