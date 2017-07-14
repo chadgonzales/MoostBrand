@@ -101,11 +101,13 @@ namespace MoostBrand.DAL
                 //int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
                 RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
 
-                int total = repo.getInstocked(item.RequisitionID, item.Item.Code);
+                int total = (repo.getInstocked(item.RequisitionID, item.Item.Code) - repo.getStockTranfer(item.ItemID));
 
                 return total;
             }
         }
+
+      
         public int GetInstock
         {
             get
@@ -138,7 +140,7 @@ namespace MoostBrand.DAL
         }
 
         public int GetAvailable
-        { get { return (GetInstock + GetOrdered) - GetCommited; } }
+        { get { return (GetOrigInstock + GetOrdered) - GetOrigCommited; } }
 
     }
 }

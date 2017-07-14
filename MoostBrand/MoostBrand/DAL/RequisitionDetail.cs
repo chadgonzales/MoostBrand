@@ -81,7 +81,7 @@ namespace MoostBrand.DAL
 
                 Item item = entity.Items.Find(ItemID);
 
-                int total = repo.getInstocked(reqId, item.Code);
+                int total = (repo.getInstocked(reqId, item.Code) - repo.getStockTranfer(ItemID));
 
                 return total;
             }

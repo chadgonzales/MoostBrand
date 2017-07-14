@@ -690,7 +690,7 @@ namespace MoostBrand.Controllers
                     var reqDetails = entity.RequisitionDetails.Find(item.RequisitionDetailID);
                     if (reqDetails != null)
                     {
-                        reqDetails.Committed = reqDetails.Committed - item.Quantity;
+                        reqDetails.Quantity = reqDetails.Quantity - item.Quantity;
 
                         entity.Entry(reqDetails).State = EntityState.Modified;
                     }
