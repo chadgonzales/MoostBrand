@@ -5,6 +5,7 @@ namespace MoostBrand.DAL
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Web;
 
     public partial class ReceivingDetail
     {
@@ -78,12 +79,62 @@ namespace MoostBrand.DAL
         {
             get
             {
+                MoostBrandEntities entity = new MoostBrandEntities();
+
+                //int requisitionId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
+
+                RequisitionDetail reqDetail = entity.RequisitionDetails.Find(RequisitionDetailID);
+                //var item = entity.Items.Find(req.req);
+
+
+                //reqDetailsRepo.getCommited(requisitionId, )
+
+                //RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
+                //return reqDetailsRepo.getCommited(requisitionId, RequisitionDetail);
+
                 RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
-                return (reqDetailsRepo.getCommited(0, RequisitionDetail.Item.ID) - Quantity ?? 0);
+                //return (reqDetailsRepo.getCommited(0, RequisitionDetail.Item.ID) - Quantity ?? 0);
+                return (reqDetailsRepo.getCommited(reqDetail.RequisitionID, reqDetail.ItemID));
             }
         }
         public int GetAvailable
         { get { return (InStock.Value + (Ordered ?? 0)) - GetCommited; } }
+
+
+        public int GetInstock
+        {
+            get
+            {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
+
+                //int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
+                RequisitionDetail reqDetail = entity.RequisitionDetails.Find(RequisitionDetailID);
+
+
+                Item item = entity.Items.Find(reqDetail.ItemID);
+
+                int total = (repo.getInstocked(reqDetail.RequisitionID, item.Code) - repo.getStockTranfer(reqDetail.ItemID));
+
+                return total;
+            }
+        }
+
+        public int GetOrdered
+        {
+            get
+            {
+                MoostBrandEntities entity = new MoostBrandEntities();
+
+                RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
+
+                RequisitionDetail reqDetail = entity.RequisitionDetails.Find(RequisitionDetailID);
+
+                int total = repo.getPurchaseOrder(reqDetail.ItemID);
+
+                return total;
+            }
+        }
     }
 }
 

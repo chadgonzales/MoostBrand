@@ -964,10 +964,11 @@ namespace MoostBrand.Controllers
 
                 //int com = reqRepo.getCommited(rd.RequisitionDetail.RequisitionID, rd.RequisitionDetail.ItemID); //getCommited(Convert.ToInt32(rd.RequisitionDetailID));
 
-                rd.Committed = reqRepo.getCommited(rd.RequisitionDetail.RequisitionID, rd.RequisitionDetail.ItemID);
+                var requisitionDetail = entity.RequisitionDetails.Find(rd.RequisitionDetailID);
+                rd.Committed = reqRepo.getCommited(requisitionDetail.RequisitionID, requisitionDetail.ItemID);
 
                 //int por = getPurchaseOrder(Convert.ToInt32(rd.RequisitionDetailID));
-                rd.Ordered = reqRepo.getPurchaseOrder(rd.RequisitionDetail.ItemID);
+                rd.Ordered = reqRepo.getPurchaseOrder(requisitionDetail.ItemID);
 
                 rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
@@ -983,7 +984,7 @@ namespace MoostBrand.Controllers
                     entity.SaveChanges();
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 //throw;
                 TempData["PartialError"] = "There's an error.";
