@@ -726,15 +726,15 @@ namespace MoostBrand.Controllers
 
                     entity.Entry(receving).State = EntityState.Modified;
                     var rd = receving.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
-                    var inv = entity.Inventories.Where(i => rd.Contains(i.ItemCode)).ToList();
+                    var inv = entity.Inventories.Where(i => rd.Contains(i.ItemCode) && i.LocationCode == receving.Requisition.Destination).ToList();
                     if (inv != null)
                     {
                         foreach (var _inv in inv)
                         {
                             var i = entity.Inventories.Find(_inv.ID);
-                            i.Committed = invRepo.getCommited(_inv.ItemCode);
-                            i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode);
-                            i.InStock = invRepo.getInstocked(receving.RequisitionID, _inv.ItemCode);
+                            i.Committed = invRepo.getCommitedReceiving(receving.Requisition.Destination.Value,_inv.ItemCode);
+                            i.Ordered = invRepo.getPurchaseOrderReceiving(receving.Requisition.Destination.Value,_inv.ItemCode);
+                            i.InStock = invRepo.getInstockedReceiving(receving.RequisitionID, _inv.ItemCode);
                             i.Available = (i.InStock + i.Ordered) - i.Committed;
 
                             entity.Entry(i).State = EntityState.Modified;
@@ -891,7 +891,7 @@ namespace MoostBrand.Controllers
                     int requisitionId = Convert.ToInt32(Session["requisitionId"]);
                     var reqDetail = entity.RequisitionDetails.Find(item.RequisitionDetailID);
 
-                    item.InStock = reqDetailRepo.getInstocked(requisitionId, reqDetail.Item.Code) + item.Quantity;
+                    item.InStock = reqDetailRepo.getInstockedReceiving(requisitionId, reqDetail.Item.Code) + item.Quantity;
 
                     item.AprovalStatusID = 2;
                     item.IsSync = false;
