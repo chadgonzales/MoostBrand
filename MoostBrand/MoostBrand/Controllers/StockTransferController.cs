@@ -581,8 +581,8 @@ namespace MoostBrand.Controllers
                     st.IsSync = false;
 
                     entity.Entry(st).State = EntityState.Modified;
-
-                    var inv = entity.Inventories.Where(i => st.Requisition.RequisitionDetails.Select(p => p.ItemCode).Contains(i.ItemCode)).ToList();
+                    var rd = st.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
+                    var inv = entity.Inventories.Where(i => rd.Contains(i.ItemCode)).ToList();
                     if (inv != null)
                     {
                         foreach (var _inv in inv)
