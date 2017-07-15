@@ -663,8 +663,8 @@ namespace MoostBrand.Controllers
                     pr.IsSync = false;
 
                     entity.Entry(pr).State = EntityState.Modified;
-
-                    var inv = entity.Inventories.Where(i => pr.RequisitionDetails.Select(p => p.ItemCode).Contains(i.ItemCode)).ToList();
+                    var rd = pr.RequisitionDetails.Select(p => p.ItemCode).ToList();
+                    var inv = entity.Inventories.Where(i => rd.Contains(i.ItemCode)).ToList();
                     if (inv != null)
                     {
                         foreach (var _inv in inv)
