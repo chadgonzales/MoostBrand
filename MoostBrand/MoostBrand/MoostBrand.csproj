@@ -267,6 +267,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Custom\Custom.cs" />
+    <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\RequisitionDetailsRepository.cs" />
     <Compile Include="DAL\ApprovalStatu.cs" />
     <Compile Include="DAL\Brand.cs" />
