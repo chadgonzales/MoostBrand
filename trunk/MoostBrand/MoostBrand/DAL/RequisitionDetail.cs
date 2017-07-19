@@ -97,7 +97,7 @@ namespace MoostBrand.DAL
             {
                 RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
 
-                int total = repo.getPurchaseOrder(ItemID);
+                int total = repo.getPurchaseOrder(Requisition.LocationID,ItemID);
 
                 return total;
             }

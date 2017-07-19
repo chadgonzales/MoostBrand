@@ -256,7 +256,7 @@ namespace MoostBrand.Controllers
             int requisitionId = Convert.ToInt32(Session["requisitionId"]);
             var requi = entity.Requisitions.Find(requisitionId);
 
-            int com = reqDetailRepo.getCommited(requisitionId, item.ID);
+            int com = reqDetailRepo.getReceivingCommited(requi.Destination.Value, item.ID);
             int pur = 0;
             if (requi != null)
             {
@@ -266,7 +266,7 @@ namespace MoostBrand.Controllers
 
                 pur = lstReqDetail.Sum(x => x.Quantity) ?? 0;
             }
-            int instock = reqDetailRepo.getInstocked(requisitionId, item.Code);
+            int instock = reqDetailRepo.getInstockedReceiving(requisitionId, item.Code);
 
             var computations = entity.RequisitionDetails
                                .Where(x => x.ItemID == itmID.ItemID && x.AprovalStatusID == 2)
@@ -988,10 +988,10 @@ namespace MoostBrand.Controllers
                 //int com = reqRepo.getCommited(rd.RequisitionDetail.RequisitionID, rd.RequisitionDetail.ItemID); //getCommited(Convert.ToInt32(rd.RequisitionDetailID));
 
                 var requisitionDetail = entity.RequisitionDetails.Find(rd.RequisitionDetailID);
-                rd.Committed = reqRepo.getCommited(requisitionDetail.RequisitionID, requisitionDetail.ItemID);
+                rd.Committed = reqRepo.getReceivingCommited(requisitionDetail.Requisition.Destination.Value, requisitionDetail.ItemID);
 
                 //int por = getPurchaseOrder(Convert.ToInt32(rd.RequisitionDetailID));
-                rd.Ordered = reqRepo.getPurchaseOrder(requisitionDetail.ItemID);
+                rd.Ordered = reqRepo.getPurchaseOrder(requisitionDetail.Requisition.LocationID,requisitionDetail.ItemID);
 
                 rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 

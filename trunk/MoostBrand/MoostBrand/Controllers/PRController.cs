@@ -1025,7 +1025,7 @@ namespace MoostBrand.Controllers
                 
                 rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID); //getCommited(rd.ItemID);
                 
-                rd.Ordered = reqDetailRepo.getPurchaseOrder(rd.ItemID); //getPurchaseOrder(rd.ItemID); // di ko gets msyado ordered so ikaw na bahala haha
+                rd.Ordered = reqDetailRepo.getPurchaseOrder(rd.Requisition.LocationID,rd.ItemID); //getPurchaseOrder(rd.ItemID); // di ko gets msyado ordered so ikaw na bahala haha
 
                 rd.InStock = reqDetailRepo.getInstocked(id, desc); //getInstocked(desc);
 
