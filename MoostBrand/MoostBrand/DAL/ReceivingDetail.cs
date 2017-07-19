@@ -94,12 +94,9 @@ namespace MoostBrand.DAL
 
                 RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
                 //return (reqDetailsRepo.getCommited(0, RequisitionDetail.Item.ID) - Quantity ?? 0);
-                return (reqDetailsRepo.getCommited(reqDetail.RequisitionID, reqDetail.ItemID));
+                return (reqDetailsRepo.getReceivingCommited(reqDetail.Requisition.Destination.Value, reqDetail.ItemID));
             }
         }
-        public int GetAvailable
-        { get { return (InStock.Value + (Ordered ?? 0)) - GetCommited; } }
-
 
         public int GetInstock
         {
@@ -107,6 +104,7 @@ namespace MoostBrand.DAL
             {
                 MoostBrandEntities entity = new MoostBrandEntities();
                 RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
+                ReceivingRepository recRepo = new ReceivingRepository();
 
                 //int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
                 RequisitionDetail reqDetail = entity.RequisitionDetails.Find(RequisitionDetailID);
@@ -114,7 +112,7 @@ namespace MoostBrand.DAL
 
                 Item item = entity.Items.Find(reqDetail.ItemID);
 
-                int total = (repo.getInstocked(reqDetail.RequisitionID, item.Code) - repo.getStockTranfer(reqDetail.ItemID));
+                int total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID) ) - repo.getStockTranferReceiving(reqDetail.Requisition.Destination.Value,reqDetail.ItemID));
 
                 return total;
             }
@@ -130,11 +128,16 @@ namespace MoostBrand.DAL
 
                 RequisitionDetail reqDetail = entity.RequisitionDetails.Find(RequisitionDetailID);
 
-                int total = repo.getPurchaseOrder(reqDetail.ItemID);
+                int total = repo.getPurchaseOrder(reqDetail.Requisition.LocationID,reqDetail.ItemID);
 
                 return total;
             }
         }
+        public int GetAvailable
+        { get { return (InStock.Value + (Ordered ?? 0)) - GetCommited; } }
+
+
+     
     }
 }
 

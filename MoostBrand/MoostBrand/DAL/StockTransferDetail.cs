@@ -133,7 +133,7 @@ namespace MoostBrand.DAL
 
                 RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
 
-                int total = repo.getPurchaseOrder(item.ItemID);
+                int total = repo.getPurchaseOrder(item.Requisition.LocationID,item.ItemID);
 
                 return total;
             }

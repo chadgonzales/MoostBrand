@@ -30,7 +30,7 @@ namespace MoostBrand.DAL
 
             var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
             int c = 0;
-            var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID));
+            var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID) && model.Requisition.Status == false);
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -45,19 +45,46 @@ namespace MoostBrand.DAL
             return _committed;
         }
 
-        public int getPurchaseOrder(int itemID)
+        public int getReceivingCommited(int locationid, int itemID)
         {
-            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
-            int po = 0;
-            if (requi != null)
+            var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
+            int c = 0;
+            var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 
+                                                                                      && type.Contains(model.Requisition.RequisitionTypeID) 
+                                                                                      && model.Requisition.LocationID == locationid
+                                                                                      && model.Requisition.Status == false);
+
+
+            var committed = com.Sum(x => x.Quantity);
+            c = Convert.ToInt32(committed);
+            if (committed == null)
             {
-                var lstReqDetail = new List<RequisitionDetail>();
-
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == itemID && x.Requisition.LocationID == requi.Requisition.LocationID).ToList();
-
-                po = lstReqDetail.Sum(x => x.Quantity) ?? 0;
+                c = 0;
             }
-            return po;
+
+            _committed = c;
+
+
+
+            return _committed;
+        }
+
+        public int getPurchaseOrder(int locationid, int itemID)
+        {
+            var requi = entity.RequisitionDetails.Where(x => x.AprovalStatusID == 2 && x.Requisition.ReqTypeID == 1 
+                                                                                    && x.Requisition.RequisitionTypeID == 1
+                                                                                    && x.Requisition.LocationID == locationid
+                                                                                    && x.Requisition.Status == false
+                                                                                    && x.ItemID == itemID);
+            int po = 0;
+            var ordered = requi.Sum(x => x.Quantity);
+            po = Convert.ToInt32(ordered);
+            if (ordered == null)
+            {
+                po = 0;
+            }
+            _ordered = po;
+            return _ordered;
         }
 
       
@@ -104,16 +131,34 @@ namespace MoostBrand.DAL
         }
 
 
-
-
-
-
         public int getStockTranfer(int itemID)
         {
 
             var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 1).Select(p => p.ID).ToList();
             int c = 0;
-            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == itemID && model.AprovalStatusID == 2 && st.Contains(model.StockTransferID.Value));
+            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == itemID && model.AprovalStatusID == 2 
+                                                                                                          && st.Contains(model.StockTransferID.Value)
+                                                                                                          && model.RequisitionDetail.Requisition.Status == false);
+            var committed = com.Sum(x => x.Quantity);
+            c = Convert.ToInt32(committed);
+            if (committed == null)
+            {
+                c = 0;
+            }
+
+            _committed = c;
+            return _committed;
+        }
+
+        public int getStockTranferReceiving(int locationID, int itemID)
+        {
+
+            var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 1).Select(p => p.ID).ToList();
+            int c = 0;
+            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == itemID && model.AprovalStatusID == 2 
+                                                                                                          && st.Contains(model.StockTransferID.Value)
+                                                                                                          && model.StockTransfer.LocationID == locationID
+                                                                                                          && model.RequisitionDetail.Requisition.Status == false);
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -123,11 +168,11 @@ namespace MoostBrand.DAL
 
             _committed = c;
 
-
-
             return _committed;
         }
 
+
+       
 
 
     }
