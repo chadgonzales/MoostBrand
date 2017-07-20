@@ -95,9 +95,14 @@ namespace MoostBrand.DAL
         {
             get
             {
+                MoostBrandEntities entity = new MoostBrandEntities();
                 RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
 
-                int total = repo.getPurchaseOrder(Requisition.LocationID,ItemID);
+                int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
+
+                var rq = entity.Requisitions.Find(reqId);
+
+                int total = repo.getPurchaseOrder(rq.LocationID,ItemID);
 
                 return total;
             }

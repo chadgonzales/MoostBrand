@@ -506,8 +506,14 @@ namespace MoostBrand.Controllers
                     {
                         var newPR = SetNull(pr);
 
-                        //if (pr.Proceed == false)
-                        //{
+                        if (pr.LocationID == pr.Destination)
+                        {
+                            ModelState.AddModelError("", "Source location should not be the same with the destination.");
+                        }
+                        else
+                        {
+                            //if (pr.Proceed == false)
+                            //{
                             if (newPR != null)
                             {
                                 newPR.IsSync = false;
@@ -521,7 +527,8 @@ namespace MoostBrand.Controllers
 
                                 return RedirectToAction("Details", new { id = pr.ID });
                             }
-                        //}
+                            //}
+                        }
                     }
                 }
                 catch
@@ -1025,7 +1032,7 @@ namespace MoostBrand.Controllers
                 
                 rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID); //getCommited(rd.ItemID);
                 
-                rd.Ordered = reqDetailRepo.getPurchaseOrder(rd.Requisition.LocationID,rd.ItemID); //getPurchaseOrder(rd.ItemID); // di ko gets msyado ordered so ikaw na bahala haha
+                rd.Ordered = reqDetailRepo.getPurchaseOrder(req.LocationID,rd.ItemID); //getPurchaseOrder(rd.ItemID); // di ko gets msyado ordered so ikaw na bahala haha
 
                 rd.InStock = reqDetailRepo.getInstocked(id, desc); //getInstocked(desc);
 

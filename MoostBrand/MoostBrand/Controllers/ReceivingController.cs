@@ -256,7 +256,16 @@ namespace MoostBrand.Controllers
             int requisitionId = Convert.ToInt32(Session["requisitionId"]);
             var requi = entity.Requisitions.Find(requisitionId);
 
-            int com = reqDetailRepo.getReceivingCommited(requi.Destination.Value, item.ID);
+            int loc = 0;
+            if (requi.Destination == null)
+            {
+                loc = requi.LocationID;
+            }
+            else
+            {
+                loc = requi.Destination.Value;
+            }
+            int com = reqDetailRepo.getReceivingCommited(loc, item.ID);
             int pur = 0;
             if (requi != null)
             {
@@ -480,7 +489,7 @@ namespace MoostBrand.Controllers
                     if (rec == null)
                     {
                         var newR = SetNull(receiving);
-
+                    
                         if (newR != null)
                         {
                             newR.ApprovalStatus = 1;
@@ -726,14 +735,25 @@ namespace MoostBrand.Controllers
 
                     entity.Entry(receving).State = EntityState.Modified;
                     var rd = receving.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
-                    var inv = entity.Inventories.Where(i => rd.Contains(i.ItemCode) && i.LocationCode == receving.Requisition.Destination).ToList();
+
+                    int loc = 0;
+                    if (receving.Requisition.Destination == null)
+                    {
+                        loc = receving.Requisition.LocationID;
+                    }
+                    else
+                    {
+                        loc = receving.Requisition.Destination.Value;
+                    }
+
+                    var inv = entity.Inventories.Where(i => rd.Contains(i.ItemCode) && i.LocationCode == loc).ToList();
                     if (inv != null)
                     {
                         foreach (var _inv in inv)
                         {
                             var i = entity.Inventories.Find(_inv.ID);
-                            i.Committed = invRepo.getCommitedReceiving(receving.Requisition.Destination.Value,_inv.ItemCode);
-                            i.Ordered = invRepo.getPurchaseOrderReceiving(receving.Requisition.Destination.Value,_inv.ItemCode);
+                            i.Committed = invRepo.getCommitedReceiving(loc,_inv.ItemCode);
+                            i.Ordered = invRepo.getPurchaseOrderReceiving(loc,_inv.ItemCode);
                             i.InStock = invRepo.getInstockedReceiving(receving.RequisitionID, _inv.ItemCode);
                             i.Available = (i.InStock + i.Ordered) - i.Committed;
 
@@ -889,7 +909,14 @@ namespace MoostBrand.Controllers
                     //item.Available = avail;
 
                     int requisitionId = Convert.ToInt32(Session["requisitionId"]);
+
                     var reqDetail = entity.RequisitionDetails.Find(item.RequisitionDetailID);
+                    if (reqDetail != null)
+                    {
+                        reqDetail.Quantity = reqDetail.Quantity - item.Quantity;
+
+                        entity.Entry(reqDetail).State = EntityState.Modified;
+                    }
 
                     item.InStock = reqDetailRepo.getInstockedReceiving(requisitionId, reqDetail.Item.Code) + item.Quantity;
 
@@ -985,13 +1012,23 @@ namespace MoostBrand.Controllers
 
                 RequisitionDetailsRepository reqRepo = new RequisitionDetailsRepository();
 
-                //int com = reqRepo.getCommited(rd.RequisitionDetail.RequisitionID, rd.RequisitionDetail.ItemID); //getCommited(Convert.ToInt32(rd.RequisitionDetailID));
+             
 
                 var requisitionDetail = entity.RequisitionDetails.Find(rd.RequisitionDetailID);
-                rd.Committed = reqRepo.getReceivingCommited(requisitionDetail.Requisition.Destination.Value, requisitionDetail.ItemID);
 
-                //int por = getPurchaseOrder(Convert.ToInt32(rd.RequisitionDetailID));
-                rd.Ordered = reqRepo.getPurchaseOrder(requisitionDetail.Requisition.LocationID,requisitionDetail.ItemID);
+                int loc = 0;
+                if (requisitionDetail.Requisition.Destination == null)
+                {
+                    loc = requisitionDetail.Requisition.LocationID;
+                }
+                else
+                {
+                    loc = requisitionDetail.Requisition.Destination.Value;
+                }
+
+                rd.Committed = reqRepo.getReceivingCommited(loc, requisitionDetail.ItemID);
+
+                rd.Ordered = reqRepo.getPurchaseOrder(loc,requisitionDetail.ItemID);
 
                 rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 

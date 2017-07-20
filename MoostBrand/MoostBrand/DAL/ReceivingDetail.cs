@@ -81,20 +81,24 @@ namespace MoostBrand.DAL
             {
                 MoostBrandEntities entity = new MoostBrandEntities();
 
-                //int requisitionId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
-
+              
                 RequisitionDetail reqDetail = entity.RequisitionDetails.Find(RequisitionDetailID);
-                //var item = entity.Items.Find(req.req);
-
-
-                //reqDetailsRepo.getCommited(requisitionId, )
-
-                //RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
-                //return reqDetailsRepo.getCommited(requisitionId, RequisitionDetail);
+              
 
                 RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
-                //return (reqDetailsRepo.getCommited(0, RequisitionDetail.Item.ID) - Quantity ?? 0);
-                return (reqDetailsRepo.getReceivingCommited(reqDetail.Requisition.Destination.Value, reqDetail.ItemID));
+
+                int loc = 0;
+                if (reqDetail.Requisition.Destination == null)
+                {
+                    loc = reqDetail.Requisition.LocationID;
+                }
+                else
+                {
+                    loc = reqDetail.Requisition.Destination.Value;
+                }
+
+
+                return (reqDetailsRepo.getReceivingCommited(loc, reqDetail.ItemID));
             }
         }
 
@@ -112,7 +116,17 @@ namespace MoostBrand.DAL
 
                 Item item = entity.Items.Find(reqDetail.ItemID);
 
-                int total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID) ) - repo.getStockTranferReceiving(reqDetail.Requisition.Destination.Value,reqDetail.ItemID));
+                int loc = 0;
+                if (reqDetail.Requisition.Destination == null)
+                {
+                    loc = reqDetail.Requisition.LocationID;
+                }
+                else
+                {
+                    loc = reqDetail.Requisition.Destination.Value;
+                }
+
+                int total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID) ) - repo.getStockTranferReceiving(loc,reqDetail.ItemID));
 
                 return total;
             }
@@ -134,7 +148,7 @@ namespace MoostBrand.DAL
             }
         }
         public int GetAvailable
-        { get { return (InStock.Value + (Ordered ?? 0)) - GetCommited; } }
+        { get { return (InStock.Value + GetOrdered) - GetCommited; } }
 
 
      

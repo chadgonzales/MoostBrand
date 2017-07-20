@@ -116,8 +116,18 @@ namespace MoostBrand.DAL
 
             var requi = entity.Requisitions.Find(id);
 
+            int loc = 0;
+            if (requi.Destination == null)
+            {
+                loc = requi.LocationID;
+            }
+            else
+            {
+                loc = requi.Destination.Value;
+            }
+
             //var requi = entity.Requisitions.FirstOrDefault(x => x.RequisitionTypeID == 4 || x.RequisitionTypeID == 1);
-            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == code && x.LocationCode == requi.Destination);
+            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == code && x.LocationCode == loc);
             int total;
             if (instock != null)
             {
