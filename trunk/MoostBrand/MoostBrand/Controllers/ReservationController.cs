@@ -454,17 +454,23 @@ namespace MoostBrand.Controllers
                     req.Status = false;
 
                     var newPR = setValue(req);
-
-                    if (newPR != null)
+                    if (req.LocationID == req.Destination)
                     {
-                        newPR.IsSync = false;
+                        ModelState.AddModelError("", "Source location should not be the same with the destination.");
+                    }
+                    else
+                    {
+                        if (newPR != null)
+                        {
+                            newPR.IsSync = false;
 
-                        entity.Requisitions.Add(newPR);
-                        entity.SaveChanges();
+                            entity.Requisitions.Add(newPR);
+                            entity.SaveChanges();
 
-                        //return RedirectToAction("Index");
+                            //return RedirectToAction("Index");
 
-                        return RedirectToAction("Details", new { id = req.ID });
+                            return RedirectToAction("Details", new { id = req.ID });
+                        }
                     }
                 }
                 catch
@@ -948,6 +954,8 @@ namespace MoostBrand.Controllers
             var itm = entity.Items.FirstOrDefault(x => x.ID == rd.ItemID);
             var itmID = rd.ItemID;
             var desc = itm.Description;
+
+            var rq = entity.Requisitions.Find(id);
             try
             {
                 // TODO: Add insert logic here
@@ -956,7 +964,7 @@ namespace MoostBrand.Controllers
 
                 rd.Committed = reqDetailRepo.getCommited(id, itmID);
 
-                rd.Ordered = reqDetailRepo.getPurchaseOrder(rd.Requisition.LocationID,itmID);
+                rd.Ordered = reqDetailRepo.getPurchaseOrder(rq.LocationID,itmID);
 
                 rd.InStock = reqDetailRepo.getInstocked(id, desc);
 

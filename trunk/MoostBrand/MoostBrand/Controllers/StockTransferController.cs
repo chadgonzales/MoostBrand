@@ -582,7 +582,7 @@ namespace MoostBrand.Controllers
 
                     entity.Entry(st).State = EntityState.Modified;
                     var rd = st.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
-                    var inv = entity.Inventories.Where(i => rd.Contains(i.ItemCode)).ToList();
+                    var inv = entity.Inventories.Where(i => rd.Contains(i.ItemCode) && i.LocationCode == st.Requisition.LocationID).ToList();
                     if (inv != null)
                     {
                         foreach (var _inv in inv)

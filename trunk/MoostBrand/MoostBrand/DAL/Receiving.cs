@@ -84,6 +84,23 @@ namespace MoostBrand.DAL
 
         public int RequisitionID { get; set; }
 
+        public int GetRequisitionID
+        {
+            get
+            {
+                int req = 0;
+                MoostBrandEntities entity = new MoostBrandEntities();
+                var st = entity.StockTransfers.FirstOrDefault(s => s.ApprovedStatus == 2 & s.RequisitionID == RequisitionID);
+
+                if (st != null)
+                {
+                    req = RequisitionID;
+                }
+
+                return req;      
+            }
+        }
+
         public int? StockTransferID { get; set; }
 
         public virtual ApprovalStatu ApprovalStatu { get; set; }

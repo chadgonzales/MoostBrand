@@ -66,19 +66,23 @@ namespace MoostBrand.DAL
             }
             return po;
         }
-        public int getPurchaseOrderReceiving(int location ,string code) // mali to
+        public int getPurchaseOrderReceiving(int location ,string code) 
         {
-            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2 );
+
+            var requi = entity.RequisitionDetails.Where(x => x.AprovalStatusID == 2 && x.Requisition.ReqTypeID == 1
+                                                                                    && x.Requisition.RequisitionTypeID == 1
+                                                                                    && x.Requisition.LocationID == location
+                                                                                    && x.Requisition.Status == false
+                                                                                    && x.ItemCode == code);
             int po = 0;
-            if (requi != null)
+            var ordered = requi.Sum(x => x.Quantity);
+            po = Convert.ToInt32(ordered);
+            if (ordered == null)
             {
-                var lstReqDetail = new List<RequisitionDetail>();
-
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemCode == code && x.Requisition.LocationID == requi.Requisition.LocationID).ToList();
-
-                po = lstReqDetail.Sum(x => x.Quantity) ?? 0;
+                po = 0;
             }
-            return po;
+            _ordered = po;
+            return _ordered;
         }
 
 
@@ -106,13 +110,20 @@ namespace MoostBrand.DAL
 
         public int getInstockedReceiving(int id, string code)
         {
-            //4 - customer = committed
-            //1 - purchase order = ordered
-
+           
             var requi = entity.Requisitions.Find(id);
 
-            //var requi = entity.Requisitions.FirstOrDefault(x => x.RequisitionTypeID == 4 || x.RequisitionTypeID == 1);
-            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == code && x.LocationCode == requi.Destination);
+            int loc = 0;
+            if (requi.Destination == null)
+            {
+                loc = requi.LocationID;
+            }
+            else
+            {
+                loc = requi.Destination.Value;
+            }
+
+            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == code && x.LocationCode == loc);
             int total;
             if (instock != null)
             {
