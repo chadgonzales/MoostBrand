@@ -245,7 +245,7 @@ namespace MoostBrand.Controllers
                     return RedirectToAction("Index");
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     ModelState.AddModelError("", "There's an error!");
                 }
