@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace ItemsEncoder
             List<ItemDTO> lstItemDTO = new List<ItemDTO>();
             
             const Int32 BufferSize = 128;
-            using (var fileStream = File.OpenRead(@"C:\mb_inventory.csv"))
+            using (var fileStream = File.OpenRead(@"C:\mb_inventory_1.csv"))
             using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
             {
                 String line;
@@ -80,6 +81,7 @@ namespace ItemsEncoder
                             item.Barcode = Convert.ToString(strLine[1]);
                             item.Code = Convert.ToString(strLine[2]);
                             item.Description = Convert.ToString(strLine[3]);
+                            item.DescriptionPurchase = Convert.ToString(strLine[4]);
 
                             item.BrandID = brand.ID;
 
@@ -115,7 +117,31 @@ namespace ItemsEncoder
                 }
             }
 
-            entity.Items.AddRange(lstItemDTO.Select(p => p.item));
+            //  entity.Items.AddRange(lstItemDTO.Select(p => p.item));
+
+
+
+            foreach (var _item in lstItemDTO.Select(p=>p.item))
+            {
+                bool exist = entity.Items.Count(p => p.Barcode == _item.Barcode) == 1;
+
+                if (exist)
+                {
+                    int i = entity.Items.FirstOrDefault(p => p.Barcode == _item.Barcode).ID;
+                    Item item = entity.Items.Find(i);
+                    item.DescriptionPurchase = _item.DescriptionPurchase;
+                    entity.Entry(item).State = EntityState.Modified;
+                    entity.SaveChanges();
+                }
+                else
+                {
+                    entity.Items.Add(_item);
+                    entity.SaveChanges();
+                }
+
+            }
+
+
             entity.SaveChanges();
 
             Console.WriteLine("Done!");
