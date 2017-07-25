@@ -31,11 +31,13 @@ namespace MoostBrand.DAL
         public string Barcode { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Description for Sales")]
+        [Display(Name = "Description")]
+        [Required]
         public string Description { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Description for Purchase")]
+        [Display(Name = "Sales Description")]
+        [Required]
         public string DescriptionPurchase { get; set; }
 
         public int? CategoryID { get; set; }

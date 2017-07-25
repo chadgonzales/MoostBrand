@@ -736,6 +736,7 @@ namespace MoostBrand.Controllers
                     receving.IsSync = false;
 
                     entity.Entry(receving).State = EntityState.Modified;
+                    entity.SaveChanges();
                     var rd = receving.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
                     var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
 
@@ -757,7 +758,8 @@ namespace MoostBrand.Controllers
                             var i = entity.Inventories.Find(_inv.ID);
                             i.Committed = invRepo.getCommitedReceiving(loc,_inv.ItemCode);
                             i.Ordered = invRepo.getPurchaseOrderReceiving(loc,_inv.ItemCode);
-                            i.InStock = invRepo.getInstockedReceiving(receving.RequisitionID, _inv.ItemCode);
+                            int _item = entity.Items.FirstOrDefault(t=>t.Code == _inv.ItemCode).ID;
+                            i.InStock = invRepo.getInstockedReceiving(receving.RequisitionID, _inv.ItemCode) + receving.ReceivingDetails.FirstOrDefault(p=>p.RequisitionDetail.ItemID == _item).Quantity;
                             i.Available = (i.InStock + i.Ordered) - i.Committed;
 
                             entity.Entry(i).State = EntityState.Modified;
@@ -765,7 +767,7 @@ namespace MoostBrand.Controllers
                         }
 
                     }
-                    entity.SaveChanges();
+                   
 
                     return RedirectToAction("Index");
                 }
