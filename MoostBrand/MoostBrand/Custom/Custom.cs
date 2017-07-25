@@ -19,7 +19,7 @@ namespace MoostBrand.DAL
         {
             var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
             int c = 0;
-            var com = db.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && type.Contains( model.Requisition.RequisitionTypeID) );
+            var com = db.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && type.Contains( model.Requisition.RequisitionTypeID.Value) );
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)

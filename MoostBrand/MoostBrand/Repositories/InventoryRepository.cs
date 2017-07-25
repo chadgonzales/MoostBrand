@@ -17,7 +17,7 @@ namespace MoostBrand.DAL
             var r = entity.Requisitions.Where(p => p.ApprovalStatus == 2).Select(p => p.ID).ToList();
             var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
             int c = 0;
-            var com = entity.RequisitionDetails.Where(model => model.ItemCode == code && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID) && r.Contains(model.RequisitionID));
+            var com = entity.RequisitionDetails.Where(model => model.ItemCode == code && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID.Value) && r.Contains(model.RequisitionID));
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -37,7 +37,7 @@ namespace MoostBrand.DAL
             var r = entity.Requisitions.Where(p => p.ApprovalStatus == 2 && p.LocationID == location).Select(p => p.ID).ToList();
             var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
             int c = 0;
-            var com = entity.RequisitionDetails.Where(model => model.ItemCode == code && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID) && r.Contains(model.RequisitionID));
+            var com = entity.RequisitionDetails.Where(model => model.ItemCode == code && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID.Value) && r.Contains(model.RequisitionID));
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -116,7 +116,7 @@ namespace MoostBrand.DAL
             int loc = 0;
             if (requi.Destination == null)
             {
-                loc = requi.LocationID;
+                loc = requi.LocationID.Value;
             }
             else
             {

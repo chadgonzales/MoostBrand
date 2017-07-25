@@ -10,36 +10,31 @@ namespace MoostBrand.DAL
     {
         private MoostBrandEntities entity = new MoostBrandEntities();
 
-        int _instock, _ordered, _committed;
+        int _instock, _ordered, _committed = 0;
 
         public int getCommited(int reservationId, int itemID)
         {
-            //var requi = entity.Requisitions.Find(reservationId);
-            //var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
-
-            //int total = 0;
-            //if (requi != null)
-            //{
-            //    var lstReqDetail = new List<RequisitionDetail>();
-
-            //    lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.ItemID == itemID && x.AprovalStatusID == 2 && x.Requisition.LocationID == requi.LocationID).ToList();
-
-            //    total = lstReqDetail.Sum(x => x.Quantity) ?? 0;
-            //}
-
-
-            var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
-            int c = 0;
-            var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID) && model.Requisition.Status == false);
-            var committed = com.Sum(x => x.Quantity);
-            c = Convert.ToInt32(committed);
-            if (committed == null)
+            try
             {
-                c = 0;
+                var requi = entity.Requisitions.Find(reservationId);
+
+
+                var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
+                int c = 0;
+                var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2
+                                                                                          && type.Contains(model.Requisition.RequisitionTypeID.Value)
+                                                                                          && model.Requisition.Status == false
+                                                                                          && model.Requisition.LocationID == requi.LocationID);
+                var committed = com.Sum(x => x.Quantity);
+                c = Convert.ToInt32(committed);
+                if (committed == null)
+                {
+                    c = 0;
+                }
+
+                _committed = c;
             }
-
-            _committed = c;
-
+            catch { }
 
 
             return _committed;
@@ -50,7 +45,7 @@ namespace MoostBrand.DAL
             var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
             int c = 0;
             var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 
-                                                                                      && type.Contains(model.Requisition.RequisitionTypeID) 
+                                                                                      && type.Contains(model.Requisition.RequisitionTypeID.Value) 
                                                                                       && model.Requisition.LocationID == locationid
                                                                                       && model.Requisition.Status == false);
 
@@ -119,7 +114,7 @@ namespace MoostBrand.DAL
             int loc = 0;
             if (requi.Destination == null)
             {
-                loc = requi.LocationID;
+                loc = requi.LocationID.Value;
             }
             else
             {

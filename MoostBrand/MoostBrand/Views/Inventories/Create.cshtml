@@ -25,11 +25,14 @@
                                 uom: item.UOM,
                                 year: item.Year,
                                 cat: item.Categories
+
+                               
                             };
                         }));
                     });
                 },
                 change: function (event, ui) {
+                  
                     $("#ItemCode").val(ui.item.value)
                     $("#InventoryUoM").val(ui.item.uom)
                     $("#Year").val(ui.item.year)
@@ -45,7 +48,51 @@
                     $("#Category").val(ui.item.cat)
                     $("#Description").val(ui.item.desc)
                 },
-                delay: 300
+                delay: 100
+            });
+
+
+        });
+
+        $(function () {
+            var select = [];
+            var itemdesc = $("#Description");
+            var action = "@Url.Action("GetItemsDesc")";
+            itemdesc.autocomplete({
+                source: function (request, response) {
+                    $.get(action, { name: request.term }, function (results) {
+                        response($.map(results, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Name,
+                                value: item.Name,
+                                code:item.Code,
+                                desc: item.Name,
+                                barcode: item.BarCode,
+                                uom: item.UOM,
+                                year: item.Year,
+                                cat: item.Categories
+                            };
+                        }));
+                    });
+                },
+                change: function (event, ui) {
+                    $("#itemcode").val(ui.item.code)
+                    $("#InventoryUoM").val(ui.item.uom)
+                    $("#Year").val(ui.item.year)
+                    $("#POSBarCode").val(ui.item.barcode)
+                    $("#Category").val(ui.item.cat)
+                    $("#Description").val(ui.item.desc)
+                },
+                select: function (event, ui) {
+                    $("#itemcode").val(ui.item.code)
+                    $("#InventoryUoM").val(ui.item.uom)
+                    $("#Year").val(ui.item.year)
+                    $("#POSBarCode").val(ui.item.barcode)
+                    $("#Category").val(ui.item.cat)
+                    $("#Description").val(ui.item.desc)
+                },
+                delay: 100
             });
 
 
@@ -87,11 +134,19 @@
                     @Html.ValidationMessageFor(model => model.POSBarCode, "", new { @class = "text-danger" })
                 </div>
             </div>
+            
 
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.TextBox("itemdesc", ViewBag.Description as string, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
             <div class="form-group">
                 @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                 </div>
             </div>

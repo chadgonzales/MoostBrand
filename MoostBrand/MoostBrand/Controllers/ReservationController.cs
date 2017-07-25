@@ -670,7 +670,8 @@ namespace MoostBrand.Controllers
 
                     entity.Entry(pr).State = EntityState.Modified;
                     var rd = pr.RequisitionDetails.Select(p => p.ItemCode).ToList();
-                    var inv = entity.Inventories.Where(i => rd.Contains(i.ItemCode)).ToList();
+                    var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
+                    var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
                     if (inv != null)
                     {
                         foreach (var _inv in inv)
@@ -964,7 +965,7 @@ namespace MoostBrand.Controllers
 
                 rd.Committed = reqDetailRepo.getCommited(id, itmID);
 
-                rd.Ordered = reqDetailRepo.getPurchaseOrder(rq.LocationID,itmID);
+                rd.Ordered = reqDetailRepo.getPurchaseOrder(rq.LocationID.Value,itmID);
 
                 rd.InStock = reqDetailRepo.getInstocked(id, desc);
 

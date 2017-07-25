@@ -249,6 +249,7 @@ namespace MoostBrand.Controllers
             var itmID = entity.RequisitionDetails.Find(reqID);
             var item = entity.Items.FirstOrDefault(p => p.ID == itmID.ItemID);
             var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID.ItemID).Description;
+            var qty = entity.RequisitionDetails.FirstOrDefault(model => model.ID == reqID).Quantity;
             //var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             //var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             //var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc && x.LocationCode == itmID.Requisition.LocationID).InStock;
@@ -259,7 +260,7 @@ namespace MoostBrand.Controllers
             int loc = 0;
             if (requi.Destination == null)
             {
-                loc = requi.LocationID;
+                loc = requi.LocationID.Value;
             }
             else
             {
@@ -286,7 +287,8 @@ namespace MoostBrand.Controllers
                                    //InStock = instock
                                    Committed = com,
                                    Ordered = pur,
-                                   InStock = instock
+                                   InStock = instock,
+                                   Quantity = qty
                                })
                                .FirstOrDefault();
 
@@ -735,18 +737,19 @@ namespace MoostBrand.Controllers
 
                     entity.Entry(receving).State = EntityState.Modified;
                     var rd = receving.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
+                    var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
 
                     int loc = 0;
                     if (receving.Requisition.Destination == null)
                     {
-                        loc = receving.Requisition.LocationID;
+                        loc = receving.Requisition.LocationID.Value;
                     }
                     else
                     {
                         loc = receving.Requisition.Destination.Value;
                     }
 
-                    var inv = entity.Inventories.Where(i => rd.Contains(i.ItemCode) && i.LocationCode == loc).ToList();
+                    var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == loc).ToList();
                     if (inv != null)
                     {
                         foreach (var _inv in inv)
@@ -1019,7 +1022,7 @@ namespace MoostBrand.Controllers
                 int loc = 0;
                 if (requisitionDetail.Requisition.Destination == null)
                 {
-                    loc = requisitionDetail.Requisition.LocationID;
+                    loc = requisitionDetail.Requisition.LocationID.Value;
                 }
                 else
                 {

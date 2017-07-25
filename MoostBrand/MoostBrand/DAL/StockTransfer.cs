@@ -42,7 +42,6 @@ namespace MoostBrand.DAL
         public string Helper { get; set; }
 
         [StringLength(20)]
-        [Required(ErrorMessage = "Time Received by is Required")]
         public string TimeReceived { get; set; }
 
         [Required(ErrorMessage = "Received by is Required")]

@@ -190,7 +190,7 @@ namespace MoostBrand.Controllers
             var _st = entity.StockTransfers.ToList();
 
 
-            var _receivings = entity.Receivings.Where(r => r.ApprovalStatus == 2)
+            var _receivings = entity.Receivings.Where(r => r.ApprovalStatus == 2 && !_st.Select(p=>p.ID).Contains(r.StockTransferID.Value))
                 .Select(r => new
                 {
                     ID = r.ID,
@@ -580,9 +580,10 @@ namespace MoostBrand.Controllers
                     st.ApprovedStatus = 2;
                     st.IsSync = false;
 
-                    entity.Entry(st).State = EntityState.Modified;
+                    entity.Entry(st).State = EntityState.Modified;               
                     var rd = st.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
-                    var inv = entity.Inventories.Where(i => rd.Contains(i.ItemCode) && i.LocationCode == st.Requisition.LocationID).ToList();
+                    var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
+                    var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == st.Requisition.LocationID).ToList();
                     if (inv != null)
                     {
                         foreach (var _inv in inv)
@@ -1086,7 +1087,7 @@ namespace MoostBrand.Controllers
             var type = new int[] { 2, 3, 4 };
             var itmID = entity.RequisitionDetails.Find(reqID);
             var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID.ItemID).Description;
-            var com = entity.RequisitionDetails.Where(model => type.Contains(model.Requisition.RequisitionTypeID) && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
+            var com = entity.RequisitionDetails.Where(model => type.Contains(model.Requisition.RequisitionTypeID.Value) && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc && x.LocationCode == itmID.Requisition.LocationID).InStock;
             var qty = entity.RequisitionDetails.FirstOrDefault(model => model.ID == reqID).Quantity;

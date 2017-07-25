@@ -24,16 +24,16 @@ namespace MoostBrand.DAL
 
         public int? ReqTypeID { get; set; }
 
-        public int RequisitionTypeID { get; set; }
+        public int? RequisitionTypeID { get; set; }
 
         [Display(Name = "Sales Person")]
-        public int RequestedBy { get; set; }
+        public int? RequestedBy { get; set; }
 
         public DateTime RequestedDate { get; set; }
 
         public string ReservationStatus { get; set; }
 
-        public int LocationID { get; set; }
+        public int? LocationID { get; set; }
 
         public string ValidityOfReservation { get; set; }
         
