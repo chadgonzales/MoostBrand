@@ -734,6 +734,7 @@ namespace MoostBrand.Controllers
                     pr.IsSync = false;
 
                     entity.Entry(pr).State = EntityState.Modified;
+                    entity.SaveChanges();
                     var rd = pr.RequisitionDetails.Select(p => p.ItemCode).ToList();
                     var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i=>i.Code);
                     var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
@@ -752,7 +753,7 @@ namespace MoostBrand.Controllers
                         }
 
                     }
-                    entity.SaveChanges();
+                   
 
                     return RedirectToAction("Index");
                 }

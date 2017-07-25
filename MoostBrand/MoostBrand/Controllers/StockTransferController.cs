@@ -580,7 +580,8 @@ namespace MoostBrand.Controllers
                     st.ApprovedStatus = 2;
                     st.IsSync = false;
 
-                    entity.Entry(st).State = EntityState.Modified;               
+                    entity.Entry(st).State = EntityState.Modified;
+                    entity.SaveChanges();
                     var rd = st.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
                     var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
                     var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == st.Requisition.LocationID).ToList();
@@ -600,7 +601,7 @@ namespace MoostBrand.Controllers
 
                     }
 
-                    entity.SaveChanges();
+                   
 
                     return RedirectToAction("Index");
                 }
@@ -1067,6 +1068,7 @@ namespace MoostBrand.Controllers
             var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID.RequisitionDetail.ItemID);
             var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID.RequisitionDetail.ItemID);
             var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc && x.LocationCode == itmID.Receiving.LocationID).InStock;
+            var qty = entity.ReceivingDetails.FirstOrDefault(model => model.ID == recID).Quantity;
 
 
             var computations = entity.RequisitionDetails
@@ -1075,7 +1077,8 @@ namespace MoostBrand.Controllers
                                {
                                    Committed = com.Sum(y => y.Quantity) ?? 0,
                                    Ordered = pur.Sum(z => z.Quantity) ?? 0,
-                                   InStock = instock
+                                   InStock = instock,
+                                   Quantity = qty
                                })
                                .FirstOrDefault();
 
