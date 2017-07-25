@@ -531,8 +531,9 @@ namespace MoostBrand.Controllers
                         }
                     }
                 }
-                catch
+                catch(Exception e)
                 {
+                    e.ToString();
                     ModelState.AddModelError("", "There's an error.");
                 }
             }
@@ -734,7 +735,8 @@ namespace MoostBrand.Controllers
 
                     entity.Entry(pr).State = EntityState.Modified;
                     var rd = pr.RequisitionDetails.Select(p => p.ItemCode).ToList();
-                    var inv = entity.Inventories.Where(i => rd.Contains(i.ItemCode)).ToList();
+                    var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i=>i.Code);
+                    var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
                     if (inv != null)
                     {
                         foreach (var _inv in inv)
@@ -1032,7 +1034,7 @@ namespace MoostBrand.Controllers
                 
                 rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID); //getCommited(rd.ItemID);
                 
-                rd.Ordered = reqDetailRepo.getPurchaseOrder(req.LocationID,rd.ItemID); //getPurchaseOrder(rd.ItemID); // di ko gets msyado ordered so ikaw na bahala haha
+                rd.Ordered = reqDetailRepo.getPurchaseOrder(req.LocationID.Value,rd.ItemID); //getPurchaseOrder(rd.ItemID); // di ko gets msyado ordered so ikaw na bahala haha
 
                 rd.InStock = reqDetailRepo.getInstocked(id, desc); //getInstocked(desc);
 

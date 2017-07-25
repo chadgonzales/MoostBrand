@@ -73,7 +73,7 @@ namespace MoostBrand.DAL
                 RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
 
                 RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
-                return (reqDetailsRepo.getCommited(0, item.ItemID) - Quantity.Value);
+                return (reqDetailsRepo.getCommited(item.RequisitionID, item.ItemID) - Quantity.Value);
 
             }
         }
@@ -86,7 +86,7 @@ namespace MoostBrand.DAL
                 RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
 
                 RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
-                return reqDetailsRepo.getCommited(0, item.ItemID);
+                return reqDetailsRepo.getCommited(item.RequisitionID, item.ItemID);
 
             }
         }
@@ -133,7 +133,7 @@ namespace MoostBrand.DAL
 
                 RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
 
-                int total = repo.getPurchaseOrder(item.Requisition.LocationID,item.ItemID);
+                int total = repo.getPurchaseOrder(item.Requisition.LocationID.Value,item.ItemID);
 
                 return total;
             }

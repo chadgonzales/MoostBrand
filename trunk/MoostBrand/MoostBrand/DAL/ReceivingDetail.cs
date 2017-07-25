@@ -90,7 +90,7 @@ namespace MoostBrand.DAL
                 int loc = 0;
                 if (reqDetail.Requisition.Destination == null)
                 {
-                    loc = reqDetail.Requisition.LocationID;
+                    loc = reqDetail.Requisition.LocationID.Value;
                 }
                 else
                 {
@@ -119,7 +119,7 @@ namespace MoostBrand.DAL
                 int loc = 0;
                 if (reqDetail.Requisition.Destination == null)
                 {
-                    loc = reqDetail.Requisition.LocationID;
+                    loc = reqDetail.Requisition.LocationID.Value;
                 }
                 else
                 {
@@ -142,7 +142,7 @@ namespace MoostBrand.DAL
 
                 RequisitionDetail reqDetail = entity.RequisitionDetails.Find(RequisitionDetailID);
 
-                int total = repo.getPurchaseOrder(reqDetail.Requisition.LocationID,reqDetail.ItemID);
+                int total = repo.getPurchaseOrder(reqDetail.Requisition.LocationID.Value,reqDetail.ItemID);
 
                 return total;
             }

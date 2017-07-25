@@ -35,6 +35,22 @@ namespace MoostBrand.Controllers
             return Json(items, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetItemsDesc(string name)
+        {
+            var items = entity.Items.Where(x => x.Description.Contains(name))
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Code = x.Code,
+                                Name = x.Description,
+                                UOM = x.UnitOfMeasurement.Description,
+                                BarCode = x.Barcode,
+                                Year = x.Year,
+                                Categories = x.Category.Description
+                            });
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
 
         // GET: Inventories
@@ -148,6 +164,7 @@ namespace MoostBrand.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Inventory inventory)
         {
+           
             if (ModelState.IsValid)
             {
                 var invnt = entity.Inventories.Where(x => x.ItemCode == inventory.ItemCode && x.Description == inventory.Description && x.LocationCode == inventory.LocationCode).ToList();
