@@ -75,6 +75,7 @@ namespace MoostBrand.DAL
         [StringLength(50)]
         public string PlateNo { get; set; }
 
+       
         public int? ReceivingID { get; set; }
     
         public int StockTransferTypeID { get; set; }

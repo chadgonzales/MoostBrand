@@ -85,22 +85,26 @@ namespace MoostBrand.DAL
       
         public int getInstocked(int id, string code)
         {
-            //4 - customer = committed
-            //1 - purchase order = ordered
+            int total=0;
 
-            var requi = entity.Requisitions.Find(id);
+            try
+            {
+                var requi = entity.Requisitions.Find(id);
 
-            //var requi = entity.Requisitions.FirstOrDefault(x => x.RequisitionTypeID == 4 || x.RequisitionTypeID == 1);
-            var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == code && x.LocationCode == requi.LocationID);
-            int total;
-            if (instock != null)
-            {
-                total = Convert.ToInt32(instock.InStock);
+                //var requi = entity.Requisitions.FirstOrDefault(x => x.RequisitionTypeID == 4 || x.RequisitionTypeID == 1);
+                var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == code && x.LocationCode == requi.LocationID);
+
+                if (instock != null)
+                {
+                    total = Convert.ToInt32(instock.InStock);
+                }
+                else
+                {
+                    total = 0;
+
+                }
             }
-            else
-            {
-                total = 0;
-            }
+            catch { }
             return total;
         }
 
