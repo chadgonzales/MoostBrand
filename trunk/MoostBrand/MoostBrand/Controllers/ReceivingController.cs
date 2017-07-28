@@ -131,17 +131,17 @@ namespace MoostBrand.Controllers
             var req = entity.Requisitions
                 .Where(r => r.ID == id)
                 .Select(r => new
-                {
-                    RefNumber = r.RefNumber,
-                    RequestedBy = r.Employee1.FirstName + " " + r.Employee1.LastName,
-                    Destination = r.Location1.Description,
-                    SourceLoc = r.Location.Description,
-                    Vendor = r.Vendor.Name,
-                    VendorCode = r.Vendor.Code,
-                    VendorContact = r.Vendor.Attn,
-                    CustName = r.Customer,
-                    ShipmentType = r.ShipmentType.Type,
-                    Invoice = r.InvoiceNumber
+                 { 
+                    RefNumber = r != null ? r.RefNumber : " ",
+                    RequestedBy = " ",
+                    Destination  = r != null ? r.Location1.Description : " ",
+                    SourceLoc   = r != null ? r.Location.Description : " ",
+                    Vendor  =  " ",
+                    VendorCode = " ",
+                    VendorContact  = " ",
+                    CustName   = " ",
+                    ShipmentType = r.ShipmentType.Type ,
+                     Invoice  = " "
                 })
                 .FirstOrDefault();
 
@@ -250,6 +250,10 @@ namespace MoostBrand.Controllers
             var item = entity.Items.FirstOrDefault(p => p.ID == itmID.ItemID);
             var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID.ItemID).Description;
             var qty = entity.RequisitionDetails.FirstOrDefault(model => model.ID == reqID).Quantity;
+            if (qty == 0)
+            {
+                qty = entity.StockTransferDetails.FirstOrDefault(model => model.RequisitionDetailID == reqID).Quantity;
+            }
             //var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             //var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             //var instock = entity.Inventories.FirstOrDefault(x => x.Description == itmsDesc && x.LocationCode == itmID.Requisition.LocationID).InStock;
@@ -727,50 +731,69 @@ namespace MoostBrand.Controllers
         {
             try
             {
+                int approve = 0;
                 // TODO: Add delete logic here
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var receving = entity.Receivings.Find(id);
                 if (receving.ReceivingDetails.Count() > 0)
                 {
-                    receving.ApprovalStatus = 2;
-                    receving.IsSync = false;
-
-                    entity.Entry(receving).State = EntityState.Modified;
-                    entity.SaveChanges();
-                    var rd = receving.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
-                    var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
-
-                    int loc = 0;
-                    if (receving.Requisition.Destination == null)
+                    foreach (var _details in receving.ReceivingDetails)
                     {
-                        loc = receving.Requisition.LocationID.Value;
-                    }
-                    else
-                    {
-                        loc = receving.Requisition.Destination.Value;
-                    }
-
-                    var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == loc).ToList();
-                    if (inv != null)
-                    {
-                        foreach (var _inv in inv)
+                        if (_details.AprovalStatusID == 2)
                         {
-                            var i = entity.Inventories.Find(_inv.ID);
-                            i.Committed = invRepo.getCommitedReceiving(loc,_inv.ItemCode);
-                            i.Ordered = invRepo.getPurchaseOrderReceiving(loc,_inv.ItemCode);
-                            int _item = entity.Items.FirstOrDefault(t=>t.Code == _inv.ItemCode).ID;
-                            i.InStock = invRepo.getInstockedReceiving(receving.RequisitionID, _inv.ItemCode) + receving.ReceivingDetails.FirstOrDefault(p=>p.RequisitionDetail.ItemID == _item).Quantity;
-                            i.Available = (i.InStock + i.Ordered) - i.Committed;
+                            approve++;
+                        }
+                    }
 
-                            entity.Entry(i).State = EntityState.Modified;
-                            entity.SaveChanges();
+                    if (approve == receving.ReceivingDetails.Count())
+                    {
+
+                        receving.ApprovalStatus = 2;
+                        receving.IsSync = false;
+
+                        entity.Entry(receving).State = EntityState.Modified;
+                        entity.SaveChanges();
+                        var rd = receving.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
+                        var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
+
+                        int loc = 0;
+                        if (receving.Requisition.Destination == null)
+                        {
+                            loc = receving.Requisition.LocationID.Value;
+                        }
+                        else
+                        {
+                            loc = receving.Requisition.Destination.Value;
                         }
 
-                    }
-                   
+                        var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == loc).ToList();
+                        if (inv != null)
+                        {
+                            foreach (var _inv in inv)
+                            {
+                                var i = entity.Inventories.Find(_inv.ID);
+                                i.Committed = invRepo.getCommitedReceiving(loc, _inv.ItemCode);
+                                i.Ordered = invRepo.getPurchaseOrderReceiving(loc, _inv.ItemCode);
+                                int _item = entity.Items.FirstOrDefault(t => t.Code == _inv.ItemCode).ID;
+                                i.InStock = invRepo.getInstockedReceiving(receving.RequisitionID, _inv.ItemCode) + receving.ReceivingDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _item).Quantity;
+                                i.Available = (i.InStock + i.Ordered) - i.Committed;
 
-                    return RedirectToAction("Index");
+                                entity.Entry(i).State = EntityState.Modified;
+                                entity.SaveChanges();
+                            }
+
+                        }
+
+
+                        return RedirectToAction("Index");
+                    }
+
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Not all items are approved");
+                    }
                 }
+
             }
             catch
             {
@@ -991,7 +1014,7 @@ namespace MoostBrand.Controllers
                         .Select(ed => new
                         {
                             ID = ed.ID,
-                            Description = ed.Item.Description
+                            Description = ed.Item.DescriptionPurchase
                         });
 
             ViewBag.STid = id;

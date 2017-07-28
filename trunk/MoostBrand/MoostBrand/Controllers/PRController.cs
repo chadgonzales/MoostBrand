@@ -306,7 +306,7 @@ namespace MoostBrand.Controllers
                             {
                                 ID = x.ID,
                                 Code = x.Code,
-                                Name = x.Description,
+                                Name = x.DescriptionPurchase,
                                 UOM = x.UnitOfMeasurement.Description
                             });
             return Json(items, JsonRequestBehavior.AllowGet);
@@ -476,7 +476,7 @@ namespace MoostBrand.Controllers
             ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type");
             ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName");
-            ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description");
+            ViewBag.Destination = new SelectList(loc, "ID", "Description");
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status");
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
             #endregion
@@ -724,38 +724,57 @@ namespace MoostBrand.Controllers
         {
             try
             {
+                int approve = 0;
                 // TODO: Add delete logic here
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var pr = entity.Requisitions.Find(id);
 
                 if(pr.RequisitionDetails.Count() > 0)
                 {
-                    pr.ApprovalStatus = 2;
-                    pr.IsSync = false;
-
-                    entity.Entry(pr).State = EntityState.Modified;
-                    entity.SaveChanges();
-                    var rd = pr.RequisitionDetails.Select(p => p.ItemCode).ToList();
-                    var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i=>i.Code);
-                    var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
-                    if (inv != null)
+                    foreach ( var _details in pr.RequisitionDetails)
                     {
-                        foreach (var _inv in inv)
+                        if (_details.AprovalStatusID == 2)
                         {
-                            var i = entity.Inventories.Find(_inv.ID);
-                            i.Committed = invRepo.getCommited(_inv.ItemCode);
-                            i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode);
-                            i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
-                            i.Available = (i.InStock + i.Ordered) - i.Committed;
+                            approve++;
+                        }
+                    }
 
-                            entity.Entry(i).State = EntityState.Modified;
-                            entity.SaveChanges();
+                    if (approve == pr.RequisitionDetails.Count())
+                    {
+
+                        pr.ApprovalStatus = 2;
+                        pr.IsSync = false;
+
+                        entity.Entry(pr).State = EntityState.Modified;
+                        entity.SaveChanges();
+                        var rd = pr.RequisitionDetails.Select(p => p.ItemCode).ToList();
+                        var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
+                        var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
+                        if (inv != null)
+                        {
+                            foreach (var _inv in inv)
+                            {
+                                var i = entity.Inventories.Find(_inv.ID);
+                                i.Committed = invRepo.getCommited(_inv.ItemCode);
+                                i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode);
+                                i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
+                                i.Available = (i.InStock + i.Ordered) - i.Committed;
+
+                                entity.Entry(i).State = EntityState.Modified;
+                                entity.SaveChanges();
+                            }
+
                         }
 
-                    }
-                   
 
-                    return RedirectToAction("Index");
+                        return RedirectToAction("Index");
+                    }
+
+                    else
+                    {
+                        TempData["Error"] = "Not all items are approved";
+                        //ModelState.AddModelError(string.Empty, "Not all items are approved");
+                    }
                 }
                 else
                 {
@@ -1088,24 +1107,24 @@ namespace MoostBrand.Controllers
                 //rd.IsSync = false;
                 //Robi
                 var prvrequiDetail = entity.RequisitionDetails.Find(rd.ID);
-                var itm = entity.Items.Find(rd.Item);
+                var itm = entity.Items.Find(rd.ItemID);
                 if (prvrequiDetail.ItemID != rd.ItemID || prvrequiDetail.Quantity != rd.Quantity)
                 {
                     rd.PreviousItemID = prvrequiDetail.ItemID;
                     rd.PreviousQuantity = prvrequiDetail.Quantity;
 
-                    rd.Ordered = getPurchaseOrder(rd.ItemID);
-                    rd.Committed = getCommited(rd.ItemID);
-                    rd.InStock = getInstocked(itm.Description);
+                    rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID);
+                    rd.Ordered = reqDetailRepo.getPurchaseOrder(prvrequiDetail.Requisition.LocationID.Value, rd.ItemID);
+                    rd.InStock = reqDetailRepo.getInstocked(id, itm.Description);
 
                     rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
                     rd.Remarks = rd.Remarks;
                 }
                 else
                 {
-                    rd.InStock = getInstocked(itm.Description);
-                    rd.Ordered = getPurchaseOrder(rd.ItemID);
-                    rd.Committed = getCommited(rd.ItemID);
+                    rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID);
+                    rd.Ordered = reqDetailRepo.getPurchaseOrder(prvrequiDetail.Requisition.LocationID.Value, rd.ItemID);
+                    rd.InStock = reqDetailRepo.getInstocked(id, itm.Description);
                     rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                     rd.Remarks = rd.Remarks;

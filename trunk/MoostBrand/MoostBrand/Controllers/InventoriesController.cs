@@ -26,7 +26,7 @@ namespace MoostBrand.Controllers
                             {
                                 ID = x.ID,
                                 Code = x.Code,
-                                Name = x.Description,
+                                Name = x.DescriptionPurchase,
                                 UOM = x.UnitOfMeasurement.Description,
                                 BarCode = x.Barcode,
                                 Year = x.Year,
@@ -42,7 +42,7 @@ namespace MoostBrand.Controllers
                             {
                                 ID = x.ID,
                                 Code = x.Code,
-                                Name = x.Description,
+                                Name = x.DescriptionPurchase,
                                 UOM = x.UnitOfMeasurement.Description,
                                 BarCode = x.Barcode,
                                 Year = x.Year,
