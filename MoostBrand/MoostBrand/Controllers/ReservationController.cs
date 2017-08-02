@@ -243,7 +243,7 @@ namespace MoostBrand.Controllers
                             {
                                 ID = x.ID,
                                 Code = x.Code,
-                                Name = x.Description,
+                                Name = x.DescriptionPurchase,
                                 UOM = x.UnitOfMeasurement.Description
                             });
             return Json(items, JsonRequestBehavior.AllowGet);
@@ -903,6 +903,23 @@ namespace MoostBrand.Controllers
                     entity.Entry(req).State = EntityState.Modified;
 
                     entity.SaveChanges();
+
+                    var reqdetails = entity.RequisitionDetails.Where(i => i.RequisitionID == id).ToList();
+                    if (reqdetails != null)
+                    {
+                        foreach (var _rd in reqdetails)
+                        {
+                            var rd = entity.RequisitionDetails.Find(_rd.ID);
+                            rd.AprovalStatusID = 3;
+
+                            entity.Entry(rd).State = EntityState.Modified;
+                            entity.SaveChanges();
+                        }
+
+                    }
+
+
+               
                 }
                 else
                 {

@@ -15,6 +15,7 @@ namespace MoostBrand.Controllers
     {
         MoostBrandEntities entity = new MoostBrandEntities();
         InventoryRepository invRepo = new InventoryRepository();
+        StockTransferRepository stRepo = new StockTransferRepository();
 
         #region PRIVATE METHODS
         private string Generator(string prefix)
@@ -181,7 +182,7 @@ namespace MoostBrand.Controllers
         public class RecCustom
         {
             public int ID { get; set; }
-            public string RefNumber { get; set; }
+            public string ReceivingID { get; set; }
         }
 
         // GET: StockTransfer/Create/
@@ -227,7 +228,7 @@ namespace MoostBrand.Controllers
                     new RecCustom
                     {
                         ID = _rec.ID,
-                        RefNumber = refNumber
+                        ReceivingID = refNumber
                     });
             }
 
@@ -651,10 +652,11 @@ namespace MoostBrand.Controllers
                         {
                             foreach (var _inv in inv)
                             {
+                                int _itemid = entity.Items.FirstOrDefault(p => p.Code == _inv.ItemCode).ID;
                                 var i = entity.Inventories.Find(_inv.ID);
                                 i.Committed = invRepo.getCommited(_inv.ItemCode);
                                 i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode);
-                                i.InStock = invRepo.getInstocked(st.RequisitionID.Value, _inv.ItemCode) - qty;
+                                i.InStock = invRepo.getInstocked(st.RequisitionID.Value, _inv.ItemCode) - stRepo.getStockTranfer(_itemid,id);
                                 i.Available = (i.InStock + i.Ordered) - i.Committed;
 
                                 entity.Entry(i).State = EntityState.Modified;
@@ -693,6 +695,20 @@ namespace MoostBrand.Controllers
 
                 entity.Entry(st).State = EntityState.Modified;
                 entity.SaveChanges();
+
+
+                var stdetails = entity.StockTransferDetails.Where(s => s.StockTransferID == id).ToList();
+
+                foreach (var _details in stdetails)
+                {
+                    var _stdetails = entity.StockTransferDetails.Find(_details.ID);
+                    _stdetails.AprovalStatusID = 3;
+                    _stdetails.IsSync = false;
+
+                    entity.Entry(_stdetails).State = EntityState.Modified;
+                    entity.SaveChanges();
+                }
+
 
                 return RedirectToAction("Index");
             }

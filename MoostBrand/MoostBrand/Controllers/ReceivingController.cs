@@ -133,7 +133,7 @@ namespace MoostBrand.Controllers
                 .Select(r => new
                  { 
                     RefNumber = r != null ? r.RefNumber : " ",
-                    RequestedBy = " ",
+                    RequestedBy = r != null ? r.Employee1.LastName + ", " + r.Employee1.FirstName : " ",
                     Destination  = r != null ? r.Location1.Description : " ",
                     SourceLoc   = r != null ? r.Location.Description : " ",
                     Vendor  =  " ",
@@ -302,14 +302,40 @@ namespace MoostBrand.Controllers
         public ActionResult getRequiLoc(int id)
         {
             var loc = entity.Locations.Find(id);
-            var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && r.LocationID == loc.ID)
+
+
+            //var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && r.LocationID == loc.ID)
+            //        .Select(r => new
+            //        {
+            //            ID = r.ID,
+            //            RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
+            //        });
+
+           
+
+            var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 & s.Requisition.LocationID== loc.ID  & !entity.Receivings.Select(p=>p.StockTransferID).Contains(s.ID))
+                     .Select(r => new
+                      {
+                          ID = r.ID,
+                          RefNumber = (r.Requisition.RefNumber.Contains("PR")) ? "PO" + r.Requisition.RefNumber.Substring(2) : r.Requisition.RefNumber
+                      });
+
+           
+                var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 & r.ReqTypeID == 1 && r.LocationID == loc.ID & !entity.Receivings.Select(p => p.RequisitionID).Contains(r.ID))
                     .Select(r => new
                     {
                         ID = r.ID,
                         RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
                     });
 
-            return Json(_requisitions, JsonRequestBehavior.AllowGet);
+
+            var result = (from p in st select p).Union(from q in _requisitions select q);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+            
+
+
+            
         }
 
         #endregion
@@ -775,13 +801,38 @@ namespace MoostBrand.Controllers
                                 i.Committed = invRepo.getCommitedReceiving(loc, _inv.ItemCode);
                                 i.Ordered = invRepo.getPurchaseOrderReceiving(loc, _inv.ItemCode);
                                 int _item = entity.Items.FirstOrDefault(t => t.Code == _inv.ItemCode).ID;
-                                i.InStock = invRepo.getInstockedReceiving(receving.RequisitionID, _inv.ItemCode) + receving.ReceivingDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _item).Quantity;
+                                i.InStock = invRepo.getInstockedReceiving(receving.RequisitionID, _inv.ItemCode) + receving.ReceivingDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _item && p.ReceivingID == id).Quantity;
                                 i.Available = (i.InStock + i.Ordered) - i.Committed;
 
                                 entity.Entry(i).State = EntityState.Modified;
                                 entity.SaveChanges();
                             }
 
+                        }
+
+                        foreach (var _item in entity.Items.Where(i => rd.Contains(i.ID.ToString())).ToList())
+                        {
+                            var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == loc).ToList();
+                            if (inv1.Count == 0)
+                            {
+                                Inventory inventory = new Inventory();
+                                inventory.Year = _item.Year;
+                                inventory.ItemCode = _item.Code;
+                                inventory.POSBarCode = _item.Barcode;
+                                inventory.Description = _item.DescriptionPurchase;
+                                inventory.Category = _item.Category.Description;
+                                inventory.InventoryUoM =  ""; //_item.UnitOfMeasurement.Description
+                                inventory.InventoryStatus = 2;
+                                inventory.LocationCode = loc;
+                                inventory.Committed = invRepo.getCommitedReceiving(loc, _item.Code);
+                                inventory.Ordered = invRepo.getPurchaseOrderReceiving(loc, _item.Code);
+                                inventory.InStock =  receving.ReceivingDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _item.ID && p.ReceivingID == id).Quantity;
+                                inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
+
+
+                                entity.Inventories.Add(inventory);
+                                entity.SaveChanges();
+                            }
                         }
 
 
@@ -795,8 +846,9 @@ namespace MoostBrand.Controllers
                 }
 
             }
-            catch
+            catch (Exception e)
             {
+                e.ToString();
             }
             return View();
         }
@@ -815,6 +867,19 @@ namespace MoostBrand.Controllers
 
                 entity.Entry(receiving).State = EntityState.Modified;
                 entity.SaveChanges();
+
+                foreach (var _details in entity.ReceivingDetails.Where(r => r.ReceivingID == id).ToList())
+                {
+                    var item = entity.ReceivingDetails.Find(_details.ID);
+                    if (item != null)
+                    {
+                        item.AprovalStatusID = 3;
+                        item.IsSync = false;
+
+                        entity.Entry(item).State = EntityState.Modified;
+                        entity.SaveChanges();
+                    }
+                }
 
                 return RedirectToAction("Index");
             }
@@ -1093,6 +1158,13 @@ namespace MoostBrand.Controllers
             var rd = entity.ReceivingDetails.Find(id);
 
             ViewBag.AprovalStatusID = new SelectList(entity.ApprovalStatus, "ID", "Status", rd.AprovalStatusID);
+
+            try
+            {
+                ViewBag.Qty = entity.RequisitionDetails.FirstOrDefault(model => model.ID == rd.RequisitionDetailID.Value).Quantity;
+            }
+            catch
+            { ViewBag.Qty = entity.StockTransferDetails.FirstOrDefault(model => model.ID == rd.StockTransferDetailID.Value).Quantity; }
 
             return PartialView(rd);
         }

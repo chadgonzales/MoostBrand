@@ -40,6 +40,7 @@ namespace MoostBrand.DAL
             return _committed;
         }
 
+      
         public int getReceivingCommited(int locationid, int itemID)
         {
             var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse

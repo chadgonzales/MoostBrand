@@ -307,6 +307,7 @@ namespace MoostBrand.Controllers
                                 ID = x.ID,
                                 Code = x.Code,
                                 Name = x.DescriptionPurchase,
+                                PURName = x.Description,
                                 UOM = x.UnitOfMeasurement.Description
                             });
             return Json(items, JsonRequestBehavior.AllowGet);
@@ -320,7 +321,8 @@ namespace MoostBrand.Controllers
                             {
                                 ID = x.ID,
                                 Code = x.Code,
-                                Name = x.Description,
+                                Name = x.DescriptionPurchase,
+                                PURName = x.Description,
                                 UOM = x.UnitOfMeasurement.Description
                             });
             return Json(items, JsonRequestBehavior.AllowGet);
@@ -438,8 +440,8 @@ namespace MoostBrand.Controllers
             {
                 return HttpNotFound();
             }
-                                        
 
+            ViewBag.ReqTypeID = pr.Requisitions.ReqTypeID.ToString();
             return View(pr);
         }
 
@@ -1016,6 +1018,22 @@ namespace MoostBrand.Controllers
                     entity.Entry(req).State = EntityState.Modified;
 
                     entity.SaveChanges();
+
+
+                    var reqdetails = entity.RequisitionDetails.Where(i => i.RequisitionID == id).ToList();
+                    if (reqdetails != null)
+                    {
+                        foreach (var _rd in reqdetails)
+                        {
+                            var rd = entity.RequisitionDetails.Find(_rd.ID);
+                            rd.AprovalStatusID = 3;
+
+                            entity.Entry(rd).State = EntityState.Modified;
+                            entity.SaveChanges();
+                        }
+
+                    }
+
                 }
                 else
                 {
@@ -1031,8 +1049,12 @@ namespace MoostBrand.Controllers
         // GET: PR/AddItemPartial/5
         public ActionResult AddItemPartial(int id)
         {
+            var _rd = entity.Requisitions.Find(id);
+
+            ViewBag.ReqTypeID = _rd.ReqTypeID.Value.ToString();
             ViewBag.PRid = id;
             ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description");
+
 
             return PartialView();
         }

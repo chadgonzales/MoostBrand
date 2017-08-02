@@ -136,47 +136,49 @@
 
     </div>
 </div>
+
+<div id="DenyWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div id="ShowDialogDeny" class="modal-dialog" role="document">
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script type="text/javascript">
     function ReloadFunction() {
         location.reload();
     }
 
-    $(function(){
+    $(function () {
         //var form = $("#goodissueform");
         //form.submit(function (e) {
         //    e.preventDefault();
-            var data = $(this).serialize();
-            var action = "@Url.Action("GetExp" , "Reservation")";
-            $.post(action, data, function (data) {
-                var noErr = data.noErrJs == "true" ? true : false;
-                var message = data.message;
+        var data = $(this).serialize();
+        var action = "@Url.Action("GetExp" , "Reservation")";
+        $.post(action, data, function (data) {
+            var noErr = data.noErrJs == "true" ? true : false;
+            var message = data.message;
 
-                $('body,html').animate({
-                    scrollTop: 0
-                }, 500);
+            $('body,html').animate({
+                scrollTop: 0
+            }, 500);
 
-                if (data.success == true)
-                {
+            if (data.success == true) {
+                $('#alerts').html('<div class="alert-check / wow / fadeOut" data-wow-duration="6s"><i class="fa fa-check"></i><span>"' + message + '" </span></div>');
+
+                var delay = 1000; //Your delay in milliseconds
+                setTimeout(function () { window.location = "/Reservation/Index"; }, delay);
+
+            }
+
+            else {
+                if (noErr) {
                     $('#alerts').html('<div class="alert-check / wow / fadeOut" data-wow-duration="6s"><i class="fa fa-check"></i><span>"' + message + '" </span></div>');
-
-                    var delay = 1000; //Your delay in milliseconds
-                    setTimeout(function () { window.location = "/Reservation/Index"; }, delay);
-
                 }
-
-                else
-                {
-                    if(noErr)
-                    {
-                        $('#alerts').html('<div class="alert-check / wow / fadeOut" data-wow-duration="6s"><i class="fa fa-check"></i><span>"' + message + '" </span></div>');
-                    }
-                    else
-                    {
-                        $('#alerts').html('<div class="alert-error / wow / fadeOut" data-wow-duration="6s" style=" top: 29px;left: 48%; margin-left: -100px;"><i class="fa fa-exclamation"></i><span>"' + message + '"</span></div>');
-                    }
+                else {
+                    $('#alerts').html('<div class="alert-error / wow / fadeOut" data-wow-duration="6s" style=" top: 29px;left: 48%; margin-left: -100px;"><i class="fa fa-exclamation"></i><span>"' + message + '"</span></div>');
                 }
+            }
 
-            });
+        });
         //});
     })
 
@@ -207,7 +209,7 @@
 
     function ShowDeny(id) {
         var url = '@Url.Action("DenyItemPartial", "Reservation")';
-        $.get(url, {id: id}, function (data) {
+        $.get(url, { id: id }, function (data) {
             $('#ShowDialogDeny').html(data);
 
             $('#DenyWindow').modal('show');

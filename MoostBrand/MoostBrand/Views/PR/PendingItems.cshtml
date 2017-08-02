@@ -40,6 +40,44 @@
             });
         });
 
+
+        // for PUR
+
+        $("#itemsearchSalesDesc").focusout(function () {
+            var itmID = $("#ItemID").val();
+            var itmCode = $("#itemsearchSalesDesc").val();
+            $.ajax({
+                url: '@Url.Action("getCommit","PR")',
+                type: "POST",
+                dataType: "json",
+                data: { ItemID: itmID },
+                success: function (data) {
+                    $("#Committed").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getPO", "PR")',
+                type: "POST",
+                dataType: "json",
+                data: { ItemID: itmID },
+                success: function (data) {
+                    $("#Ordered").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getInstock", "PR")',
+                type: "POST",
+                dataType: "json",
+                data: { Code: itmCode },
+                success: function (data) {
+                    $("#InStock").val(data);
+                }
+            });
+        });
+
+
+        //////  --- for PUR
+
         $("#itemcode").focusout(function () {
             var itmID = $("#ItemID").val();
             var itmCode = $("#itemcode").val();
@@ -145,11 +183,64 @@
             }
         });
 
-        $("#itemcode").autocomplete({
+        //--------------------- for PUR
+
+        $("#catsearch").autocomplete("option", "appendTo", "#modalCat");
+        $("#itemsearchSalesDesc").autocomplete({
+   
             source: function (request, response) {
                 var catID = $("#CategoryID").val();
                 $.ajax({
-                  
+                    url: '@Url.Action("GetItems")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { catID: catID, name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.PURName,
+                                value: item.PURName,
+                                code: item.Code,
+                                uom: item.UOM
+                                
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#ItemID").val(ui.item.id);
+                $("#itemcode").val(ui.item.code);
+                $("#uom").html(ui.item.uom);
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#itemsearchSalesDesc").autocomplete("option", "appendTo", "#modalItem");
+        $("#itemsearchSalesDesc").keyup(function () {
+            if (!this.value) {
+                $('#ItemID').removeAttr('value');
+                $('#ItemCode').html('');
+                $("#uom").html('');
+            }
+        });
+
+
+
+
+
+        ///// item code
+
+        $("#itemcode").autocomplete({
+
+            source: function (request, response) {
+                var catID = $("#CategoryID").val();
+                $.ajax({
+               
                     url: '@Url.Action("GetItemCode")',
                     type: "POST",
                     dataType: "json",
@@ -161,6 +252,7 @@
                                 label: item.Code,
                                 value: item.Code,
                                 name: item.Name,
+                                purname: item.PURName,
                                 uom: item.UOM
                             };
                         }))
@@ -169,6 +261,7 @@
             },
             select: function (event, ui) {
                 $("#itemsearch").val(ui.item.name);
+                $("#itemsearchSalesDesc").val(ui.item.purname);
                 $("#ItemID").val(ui.item.id);
                 $("#ItemCode").val(ui.item.id);
                 $("#uom").html(ui.item.uom);
