@@ -29,8 +29,10 @@ namespace MoostBrand.DAL
         [StringLength(50)]
         public string ApprovalNumber { get; set; }
 
-        [StringLength(150)]
-        public string InspectedBy { get; set; }
+        [Display(Name = "Source Location")]
+        public int SourceLocationID { get; set; }
+
+        public int InspectedBy { get; set; }
 
         public string Remarks { get; set; }
 
@@ -41,6 +43,7 @@ namespace MoostBrand.DAL
         public virtual Employee Employee { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<ReturnedItem> ReturnedItems { get; set; }
         public virtual ICollection<ReturnedItem> ReturnedItems { get; set; }
 
         public virtual ReturnType ReturnType { get; set; }

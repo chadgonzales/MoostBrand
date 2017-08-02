@@ -35,15 +35,31 @@
                     </div>
                 </div>
             </div>
+
+            @if (ViewBag.ReqTypeID == "1")
+            {
             <div class="form-horizontal" id="modalItem">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Item, "Item Description", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.TextBox("itemsearch", ViewBag.ItemName as string, new { @class = "form-control" })
+                        @Html.TextBox("itemsearchSalesDesc", ViewBag.ItemName as string, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ItemID, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
+            }
+            else
+            {
+                <div class="form-horizontal" id="modalItem">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Item, "Item Description", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-8">
+                            @Html.TextBox("itemsearch", ViewBag.ItemName as string, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ItemID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            }
             <div class="form-horizontal" id="modalItem">
                 <div class="form-group">
                     <label class="control-label col-md-2">Unit of Measurement</label>

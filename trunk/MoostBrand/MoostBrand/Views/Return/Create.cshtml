@@ -16,7 +16,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.TransactionTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.DropDownList("TransactionTypeID", String.Empty)
+                    @Html.DropDownList("TransactionTypeID",String.Empty)
                     @Html.ValidationMessageFor(model => model.TransactionTypeID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -38,12 +38,28 @@
             </div>
 
             <div class="form-group">
+                @Html.LabelFor(model => model.SourceLocationID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownList("SourceLocationID", String.Empty)
+                    @Html.ValidationMessageFor(model => model.SourceLocationID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.InspectedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownList("InspectedBy", String.Empty)
+                    @Html.ValidationMessageFor(model => model.InspectedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
                 @Html.LabelFor(model => model.InspectedBy, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.InspectedBy, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.InspectedBy, "", new { @class = "text-danger" })
                 </div>
-            </div>
+            </div>*@
             
             <div class="form-group">
                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })

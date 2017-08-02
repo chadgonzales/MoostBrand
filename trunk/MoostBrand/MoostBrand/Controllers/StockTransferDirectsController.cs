@@ -104,13 +104,13 @@ namespace MoostBrand.Controllers
             stDirect.TransferID = "STR " + Generator(id);
 
             #region DROPDOWNS
-            var items = entity.StockTransferDetails
+            var items = entity.StockTransferDetails.Where(r => r.RequisitionDetailID != null )
                 .ToList()
                 .FindAll(r => r.AprovalStatusID == 2)
                 .Select(rd => new
                 {
-                    ID = rd.ID,
-                    Description = rd.RequisitionDetail.Item.Description
+                    ID = rd.RequisitionDetail.Item.DescriptionPurchase, //rd.ID,
+                    Description = rd.RequisitionDetail.Item.DescriptionPurchase
                 });
 
             var empList = new SelectList((from s in entity.Employees
@@ -200,14 +200,14 @@ namespace MoostBrand.Controllers
             }
 
             #region DROPDOWNS
-            var items = entity.StockTransferDetails
-                .ToList()
-                .FindAll(r => r.AprovalStatusID == 2)
-                .Select(rd => new
-                {
-                    ID = rd.ID,
-                    Description = rd.RequisitionDetail.Item.Description
-                });
+            var items = entity.StockTransferDetails.Where(r => r.RequisitionDetailID != null)
+              .ToList()
+              .FindAll(r => r.AprovalStatusID == 2)
+              .Select(rd => new
+              {
+                    ID = rd.RequisitionDetail.Item.DescriptionPurchase, //rd.ID,
+                    Description = rd.RequisitionDetail.Item.DescriptionPurchase
+              });
 
             var empList = from s in entity.Employees
                           select new

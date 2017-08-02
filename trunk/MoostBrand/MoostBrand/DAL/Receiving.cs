@@ -90,11 +90,25 @@ namespace MoostBrand.DAL
             {
                 int req = 0;
                 MoostBrandEntities entity = new MoostBrandEntities();
-                var st = entity.StockTransfers.FirstOrDefault(s => s.ApprovedStatus == 2 & s.RequisitionID == RequisitionID);
 
-                if (st != null)
+                var _receiving = entity.Receivings.Where(p => p.RequisitionID == RequisitionID);
+
+                if (_receiving.Count() == 0)
                 {
-                    req = RequisitionID;
+                    var st = entity.StockTransfers.FirstOrDefault(s => s.ApprovedStatus == 2 & s.RequisitionID == RequisitionID);
+
+                    if (st != null)
+                    {
+                        req = RequisitionID;
+                    }
+                    else
+                    {
+                        var pur = entity.Requisitions.FirstOrDefault(p => p.ApprovalStatus == 2 & p.ReqTypeID == 1 & p.ID == RequisitionID);
+                        if (pur != null)
+                        {
+                            req = RequisitionID;
+                        }
+                    }
                 }
 
                 return req;      

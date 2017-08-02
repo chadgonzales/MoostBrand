@@ -148,7 +148,7 @@ namespace MoostBrand.DAL
             }
         }
         public int GetAvailable
-        { get { return (InStock.Value + GetOrdered) - GetCommited; } }
+        { get { return (GetInstock + GetOrdered) - GetCommited; } }
 
 
      

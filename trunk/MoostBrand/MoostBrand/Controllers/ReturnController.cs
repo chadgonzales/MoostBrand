@@ -14,6 +14,8 @@ namespace MoostBrand.Controllers
     public class ReturnController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
+        InventoryRepository invRepo = new InventoryRepository();
+        StockTransferRepository stRepo = new StockTransferRepository();
 
         #region PRIVATE METHODS
 
@@ -155,8 +157,25 @@ namespace MoostBrand.Controllers
             #region DROPDOWNS
             //var TransacType = entity.TransactionTypes.Where(x => x.ID != 3).ToList();
 
-            ViewBag.TransactionTypeID = new SelectList(entity.ReturnTransactionTypes, "ID", "Type");
+            var employees = from s in entity.Employees
+                            select new
+                            {
+                                ID = s.ID,
+                                FullName = s.FirstName + " " + s.LastName
+                            };
+
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                        .Select(x => new
+                        {
+                            ID = x.ID,
+                            Description = x.Description
+                        });
+
+
+            ViewBag.TransactionTypeID = new SelectList(entity.ReturnTransactionTypes.Where(r=>r.ID ==1), "ID", "Type");
             ViewBag.ReturnTypeID = new SelectList(entity.ReturnTypes, "ID", "Type");
+            ViewBag.InspectedBy = new SelectList(employees, "ID", "FullName");
+            ViewBag.SourceLocationID = new SelectList(loc, "ID", "Description");
             #endregion
 
             return View(retrn);
@@ -308,6 +327,55 @@ namespace MoostBrand.Controllers
                     entity.Entry(retrn).State = EntityState.Modified;
                     entity.SaveChanges();
 
+                    var items = retrn.ReturnedItems.ToList();
+
+                    if (items != null)
+                    {        
+                            foreach (var _inv in items)
+                            {
+                                var _st = entity.StockTransferDetails.Find(_inv.StockTransferDetailID);
+
+                                var st = entity.StockTransfers.Find(_st.StockTransferID);
+
+                            
+                                var rd = st.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
+
+                                    if (rd == null)
+                                    {
+                                        rd = st.Receiving.ReceivingDetails.Select(p => p.RequisitionDetail.ItemCode).ToList();
+                                    }
+
+
+                                    var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
+                                    var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == retrn.SourceLocationID).ToList();
+                                    if (inv != null)
+                                    {
+                                        foreach (var _inv1 in inv)
+                                        {
+                                            int _itemid = entity.Items.FirstOrDefault(p => p.Code == _inv1.ItemCode).ID;
+                                            var i = entity.Inventories.Find(_inv.ID);
+                                            i.Committed = invRepo.getCommited(_inv1.ItemCode);
+                                            i.Ordered = invRepo.getPurchaseOrder(_inv1.ItemCode);
+                                            i.InStock = invRepo.getInstocked(st.RequisitionID.Value, _inv1.ItemCode) - stRepo.getStockTranfer(_itemid, _st.StockTransferID.Value);
+                                            i.Available = (i.InStock + i.Ordered) - i.Committed;
+
+                                            entity.Entry(i).State = EntityState.Modified;
+                                            entity.SaveChanges();
+                                        }
+
+                                    }
+
+
+                                }
+
+
+                            }
+
+                    else
+                    {
+                        //no items yet
+                    }
+
                     return RedirectToAction("Index");
                 }
             }
@@ -360,7 +428,18 @@ namespace MoostBrand.Controllers
         }
 
         #region PARTIAL
-
+        public ActionResult DisplayQuantity(int? ID)
+        {
+            var itmID = entity.StockTransferDetails.Find(ID);
+           
+            int _qty = 0;
+            if (itmID != null)
+            {
+                _qty = itmID.Quantity.Value;
+            }
+        
+            return Json(_qty, JsonRequestBehavior.AllowGet);
+        }
         // GET: Return/AddItemPartial/5
         [AccessChecker(Action = 1, ModuleID = 7)]
         public ActionResult AddItemPartial(int id)
@@ -369,17 +448,24 @@ namespace MoostBrand.Controllers
             
             if (ret.TransactionTypeID == 1)
             {
-                var items = entity.StockTransferDetails
-                        .ToList()
-                        .FindAll(rd => rd.AprovalStatusID == 2 && rd.StockTransfer.Receiving.ReceivingTypeID == ret.ReturnTypeID)
-                        .Select(ed => new
-                        {
-                            ID = ed.ID,
-                            Description = ed.ReceivingDetail.RequisitionDetail.Item.Description
-                        });
+                try
+                {
+                    var items = entity.StockTransferDetails.Where(rd=>rd.AprovalStatusID == 2 && rd.StockTransfer.ReceivingID != null && !ret.ReturnedItems.Select(p=>p.StockTransferDetailID).Contains(rd.ID))
+                            .ToList()
+                            .FindAll(rd => rd.StockTransfer.Receiving.ReceivingTypeID == ret.ReturnTypeID)
+                            .Select(ed => new
+                            {
+                                ID = ed.ID,
+                                Description = ed.ReceivingDetail.RequisitionDetail.Item.Description
+                            });
 
 
-                ViewBag.StockTransferDetailID = new SelectList(items, "ID", "Description");
+                    ViewBag.StockTransferDetailID = new SelectList(items, "ID", "Description");
+                }
+                catch (Exception e)
+                {
+                    e.ToString();
+                }
             }
             else
             {
