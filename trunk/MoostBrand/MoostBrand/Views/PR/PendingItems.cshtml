@@ -327,7 +327,14 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Item.DescriptionPurchase)
+                        @if (ViewBag.ReqTypeID == "1")
+                        {
+                            @Html.DisplayFor(modelItem => item.Item.Description)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.Item.DescriptionPurchase)
+                        }
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Quantity)
