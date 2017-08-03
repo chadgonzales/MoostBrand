@@ -316,7 +316,7 @@ namespace MoostBrand.Controllers
             var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 & s.Requisition.LocationID== loc.ID  & !entity.Receivings.Select(p=>p.StockTransferID).Contains(s.ID))
                      .Select(r => new
                       {
-                          ID = r.ID,
+                          ID = r.RequisitionID.Value,
                           RefNumber = (r.Requisition.RefNumber.Contains("PR")) ? "PO" + r.Requisition.RefNumber.Substring(2) : r.Requisition.RefNumber
                       });
 
@@ -553,7 +553,7 @@ namespace MoostBrand.Controllers
                 }
                 catch(Exception e)
                 {
-                    ModelState.AddModelError("", "There's an error.");
+                    ModelState.AddModelError("",e.ToString());
                 }
             }
             else
@@ -810,7 +810,9 @@ namespace MoostBrand.Controllers
 
                         }
 
-                        foreach (var _item in entity.Items.Where(i => rd.Contains(i.ID.ToString())).ToList())
+                        var invitems = entity.Items.Where(i => rd.Contains(i.ID.ToString())).ToList();
+
+                        foreach (var _item in invitems)
                         {
                             var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == loc).ToList();
                             if (inv1.Count == 0)

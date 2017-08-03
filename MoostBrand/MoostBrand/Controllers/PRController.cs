@@ -440,7 +440,7 @@ namespace MoostBrand.Controllers
             {
                 return HttpNotFound();
             }
-
+            Session["ReqTypeID"] = pr.Requisitions.ReqTypeID.ToString();
             ViewBag.ReqTypeID = pr.Requisitions.ReqTypeID.ToString();
             return View(pr);
         }
@@ -884,6 +884,7 @@ namespace MoostBrand.Controllers
         {
             int UserID = Convert.ToInt32(Session["sessionuid"]);
             int UserType = Convert.ToInt32(Session["usertype"]);
+            ViewBag.ReqTypeID =Session["ReqTypeID"].ToString();
 
             var requisition = entity.Requisitions.FirstOrDefault(r => r.ID == id);
             if(requisition.RequestedBy != UserID && UserType != 1 && UserType != 4)
