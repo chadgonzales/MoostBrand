@@ -27,6 +27,7 @@ namespace MoostBrand.DAL
         public int? RequisitionTypeID { get; set; }
 
         [Display(Name = "Sales Person")]
+        [Required(ErrorMessage = "Sales Person is required")]
         public int? RequestedBy { get; set; }
 
         public DateTime RequestedDate { get; set; }
@@ -39,6 +40,7 @@ namespace MoostBrand.DAL
         
         public string DaysOfNotification { get; set; }
 
+        [Required(ErrorMessage = "Date Required is required")]
         public DateTime? DateRequired { get; set; }
 
         public int? VendorID { get; set; }
@@ -83,6 +85,7 @@ namespace MoostBrand.DAL
 
         public int? ApprovalStatus { get; set; }
 
+      
         public int? ApprovedBy { get; set; }
 
         public string Remarks { get; set; }

@@ -832,7 +832,8 @@ namespace MoostBrand.Controllers
             //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
 
             ViewBag.PRid = id;
-            ViewBag.RequestedBy =
+            ViewBag.Approved = requisition.ApprovalStatus.ToString();
+           // ViewBag.RequestedBy =
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;
             ViewBag.IsApproved = requisition.ApprovalStatus;
@@ -978,11 +979,13 @@ namespace MoostBrand.Controllers
         // GET: PR/AddItemPartial/5
         public ActionResult AddItemPartial(int id)
         {
-            ViewBag.PRid = id;
-            ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description");
+            int approved = entity.Requisitions.Find(id).ApprovalStatus.Value;
+           
+                ViewBag.PRid = id;
+                ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description");
 
-            return PartialView();
-        }
+                return PartialView();
+            }
         
         // POST: PR/AddItemPartial/5
         [HttpPost]

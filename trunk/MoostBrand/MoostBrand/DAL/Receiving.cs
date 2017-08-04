@@ -82,6 +82,7 @@ namespace MoostBrand.DAL
         [StringLength(50)]
         public string InvoiceReference { get; set; }
 
+        [Required(ErrorMessage = "RequisitionID is required")]
         public int RequisitionID { get; set; }
 
         public int GetRequisitionID

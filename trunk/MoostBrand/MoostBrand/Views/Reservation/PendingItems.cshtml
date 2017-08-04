@@ -315,7 +315,10 @@
             $.get(url, function (data) {
                 $('#ShowDialogAdd').html(data);
 
-                $('#AddItemWindow').modal('show');
+                if(@ViewBag.Approved != "2")
+                { 
+                    $('#AddItemWindow').modal('show');
+                }
 
                 // add class form-control to textarea and select
                 $("input[disabled]").addClass("form-control");
@@ -331,7 +334,10 @@
         $.get(url, function (data) {
             $('#ShowDialogAdd').html(data);
 
-            $('#AddItemWindow').modal('show');
+            if(@ViewBag.Approved != "2")
+            {
+                $('#AddItemWindow').modal('show');
+            }
 
             // add class form-control to textarea and select
             $("input[disabled]").addClass("form-control");

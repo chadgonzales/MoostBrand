@@ -740,6 +740,7 @@ namespace MoostBrand.Controllers
             int UserID = Convert.ToInt32(Session["sessionuid"]);
             int UserType = Convert.ToInt32(Session["usertype"]);
 
+            var stocktransfer = entity.StockTransfers.FirstOrDefault(r => r.ID == id);
             var RequestedBy = entity.StockTransfers.FirstOrDefault(r => r.ID == id).RequestedBy;
             if (RequestedBy != UserID && UserType != 1 && UserType != 4)
             {
@@ -755,7 +756,8 @@ namespace MoostBrand.Controllers
             //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
 
             ViewBag.STid = id;
-            ViewBag.RequestedBy =
+            ViewBag.Approved = stocktransfer.ApprovedStatus.ToString();
+            // ViewBag.RequestedBy =
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;
 
@@ -940,19 +942,39 @@ namespace MoostBrand.Controllers
                 //stocktransferdetail.Available = (stocktransferdetail.InStock + stocktransferdetail.Ordered) - stocktransferdetail.Committed;
                 #endregion
 
-                var st = entity.StockTransferDetails.Where(s => s.StockTransferID == stocktransferdetail.StockTransferID && s.ReceivingDetailID == stocktransferdetail.ReceivingDetailID).ToList();
-                
-                if (st.Count() > 0)
-                {
-                    TempData["PartialError"] = "Item is already in the list.";
-                }
-                else
-                {
-                    stocktransferdetail.IsSync = false;
+                var st1 = entity.StockTransferDetails.Where(s => s.StockTransferID == stocktransferdetail.StockTransferID && s.ReceivingDetailID == stocktransferdetail.ReceivingDetailID).ToList();
 
-                    entity.StockTransferDetails.Add(stocktransferdetail);
-                    entity.SaveChanges();
+                var st2 = entity.StockTransferDetails.Where(s => s.StockTransferID == stocktransferdetail.StockTransferID && s.RequisitionDetailID == stocktransferdetail.RequisitionDetailID).ToList();
+
+                if (stocktransferdetail.ReceivingDetailID != null)
+                {
+                    if (st1.Count() >= 1)
+                    {
+                        TempData["PartialError"] = "Item is already in the list.";
+                    }
+                    else
+                    {
+                        stocktransferdetail.IsSync = false;
+
+                        entity.StockTransferDetails.Add(stocktransferdetail);
+                        entity.SaveChanges();
+                    }
                 }
+                else if (stocktransferdetail.RequisitionDetailID != null)
+                {
+                    if (st2.Count() >= 1)
+                    {
+                        TempData["PartialError"] = "Item is already in the list.";
+                    }
+                    else
+                    {
+                        stocktransferdetail.IsSync = false;
+
+                        entity.StockTransferDetails.Add(stocktransferdetail);
+                        entity.SaveChanges();
+                    }
+                }
+               
             }
             catch (Exception ex)
             {

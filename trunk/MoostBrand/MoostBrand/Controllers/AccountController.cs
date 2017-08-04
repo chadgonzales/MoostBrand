@@ -54,7 +54,7 @@ namespace MoostBrand.Controllers
                         ModelState.AddModelError(string.Empty, "Invalid username or password");
                     }
                 }
-                catch
+                catch (Exception e)
                 {
                     ModelState.AddModelError(string.Empty, "There's an error");
                 }

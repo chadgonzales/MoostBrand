@@ -389,8 +389,10 @@
         Back to Details
     </a>
 
+  
     <div id="AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.PRid })">
         <div id="ShowDialogAdd" class="modal-dialog" role="document">
+    
 
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
@@ -414,9 +416,10 @@
         var url = $('#AddItemWindow').data('url');
         $.get(url, function (data) {
             $('#ShowDialogAdd').html(data);
-
-            $('#AddItemWindow').modal('show');
-
+            if(@ViewBag.Approved != "2")
+            { 
+                $('#AddItemWindow').modal('show');
+            }
             // add class form-control to textarea and select
             $("input[disabled]").addClass("form-control");
             $("textarea").addClass("form-control");
@@ -430,8 +433,11 @@
         var url = $('#AddItemWindow').data('url');
         $.get(url, function (data) {
             $('#ShowDialogAdd').html(data);
-
-            $('#AddItemWindow').modal('show');
+         
+            if(@ViewBag.Approved != "2")
+            { 
+                $('#AddItemWindow').modal('show');
+            }
 
             // add class form-control to textarea and select
             $("input[disabled]").addClass("form-control");
