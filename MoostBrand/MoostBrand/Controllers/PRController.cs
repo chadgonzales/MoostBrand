@@ -900,7 +900,8 @@ namespace MoostBrand.Controllers
             //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
 
             ViewBag.PRid = id;
-            ViewBag.RequestedBy = 
+            ViewBag.Approved = requisition.ApprovalStatus.ToString();
+            // ViewBag.RequestedBy = 
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;
             ViewBag.IsApproved = requisition.ApprovalStatus;

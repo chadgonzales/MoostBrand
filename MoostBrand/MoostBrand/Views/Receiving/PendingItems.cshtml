@@ -132,7 +132,10 @@
                     return true;
                 });
 
-                $('#AddItemWindow').modal('show');
+                if(@ViewBag.Approved != "2")
+                {
+                    $('#AddItemWindow').modal('show');
+                }
 
                 $("#RequisitionDetailID").change(function () {
                     var val = $("#RequisitionDetailID option:selected").val();
@@ -197,7 +200,10 @@
         $.get(url, function (data) {
             $('#ShowDialogAdd').html(data);
 
-            $('#AddItemWindow').modal('show');
+            if(@ViewBag.Approved != "2")
+            { 
+                $('#AddItemWindow').modal('show');
+            }
 
             // add class form-control to textarea and select
             $("input[disabled]").addClass("form-control");

@@ -276,7 +276,11 @@ namespace MoostBrand.Controllers
             {
                 var lstReqDetail = new List<RequisitionDetail>();
 
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == item.ID && x.Requisition.LocationID == requi.LocationID).ToList();
+                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.Requisition.ReqTypeID == 1
+                                                                                                         && x.Requisition.RequisitionTypeID == 1
+                                                                                                         && x.Requisition.LocationID == loc
+                                                                                                         && x.Requisition.Status == false
+                                                                                                         && x.ItemID == itmID.ItemID).ToList();
 
                 pur = lstReqDetail.Sum(x => x.Quantity) ?? 0;
             }
@@ -512,6 +516,7 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public ActionResult Create(Receiving receiving)
         {
+
             if (ModelState.IsValid)
             {
                 try
@@ -538,8 +543,10 @@ namespace MoostBrand.Controllers
                                 newR.Image = baseUrl + imagePath + "/ID" + receiving.ReceivingID + ".jpg";
                             }
 
-                            entity.Receivings.Add(newR);
-                            entity.SaveChanges();
+                                entity.Receivings.Add(newR);
+                                entity.SaveChanges();
+                            
+                           
 
                             //return RedirectToAction("Index");
 
@@ -553,7 +560,15 @@ namespace MoostBrand.Controllers
                 }
                 catch(Exception e)
                 {
-                    ModelState.AddModelError("",e.ToString());
+
+                    if (receiving.RequisitionID == 0)
+                    {
+                        ModelState.AddModelError("", "Requisition ID is Required.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", e.ToString());
+                    }
                 }
             }
             else
@@ -944,6 +959,7 @@ namespace MoostBrand.Controllers
             int UserID = Convert.ToInt32(Session["sessionuid"]);
             int UserType = Convert.ToInt32(Session["usertype"]);
 
+            var receiving = entity.Receivings.FirstOrDefault(r => r.ID == id);
             var ReceivedBy = entity.Receivings.FirstOrDefault(r => r.ID == id).ReceivedBy;
             if (ReceivedBy != UserID && UserType != 1 && UserType != 4)
             {
@@ -958,7 +974,8 @@ namespace MoostBrand.Controllers
             //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
 
             ViewBag.Rid = id;
-            ViewBag.ReceivedBy =
+            // ViewBag.ReceivedBy =
+            ViewBag.Approved = receiving.ApprovalStatus.ToString();
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;
 
