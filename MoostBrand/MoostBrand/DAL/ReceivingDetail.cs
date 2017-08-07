@@ -125,8 +125,15 @@ namespace MoostBrand.DAL
                 {
                     loc = reqDetail.Requisition.Destination.Value;
                 }
-
-                int total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID) ) - repo.getStockTranferReceiving(loc,reqDetail.ItemID));
+                int total = 0;
+                if (Receiving.ApprovalStatus == 2)
+                {
+                    total = repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code);
+                }
+                else
+                {
+                    total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID)) - repo.getStockTranferReceiving(loc, reqDetail.ItemID));
+                }
 
                 return total;
             }
