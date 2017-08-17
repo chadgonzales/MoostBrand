@@ -5,9 +5,9 @@
     ViewBag.Title = "Pending Items";
 }
 
-@{
+@*@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
+}*@
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -378,16 +378,22 @@
 
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-    @Html.PagedListPager(Model, page => Url.Action("PendingItems",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    @*@Html.PagedListPager(Model, page => Url.Action("PendingItems",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
 
+
+    @Html.PagedListPager(Model, page => Url.Action("Details",
+      new { page, id = ViewBag.PRid  }))
+
+  
+  
     <br /><br />
     @if (ViewBag.IsApproved == 1)
     {
-        if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
-        {
+        //if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
+       
             <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
-        }
+        
     }
 
     <a href='@Url.Action("Index", new { id = ViewBag.PRid })' class="btn btn-light-orange">
@@ -414,6 +420,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
+
 <script>
     window.onload = function () {
         //$('#ShowPopop').click(function () {
@@ -439,10 +446,10 @@
         $.get(url, function (data) {
             $('#ShowDialogAdd').html(data);
          
-            if(@ViewBag.Approved != "2")
-            { 
+        //    if(@ViewBag.Approved != "2")
+          //  { 
                 $('#AddItemWindow').modal('show');
-            }
+            //}
 
             // add class form-control to textarea and select
             $("input[disabled]").addClass("form-control");

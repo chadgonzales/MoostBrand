@@ -149,5 +149,8 @@ namespace MoostBrand.DAL
                 UserAccesses.Add(new UserAccess(module.ID, module.Name));
             }
         }
+
+     
     }
+
 }

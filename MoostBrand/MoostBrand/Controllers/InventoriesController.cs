@@ -224,7 +224,7 @@ namespace MoostBrand.Controllers
                       });
 
             ViewBag.InventoryStatus = new SelectList(entity.InventoryStatus, "ID", "Status");
-            ViewBag.LocationCode = new SelectList(loc, "ID", "Description");
+            ViewBag.LocationCode = new SelectList(loc, "ID", "Description",inventory.LocationCode);
             #endregion
 
             return View(inventory);

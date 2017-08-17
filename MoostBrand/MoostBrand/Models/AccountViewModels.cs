@@ -165,7 +165,10 @@ namespace MoostBrand.Models
                     int UserID = System.Convert.ToInt32(Session["sessionuid"]);
 
                     var access = entity.UserAccesses.FirstOrDefault(u => u.EmployeeID == UserID && u.ModuleID == ModuleID);
-                    entity.Entry(access).Reload();
+                    try
+                    {
+                        entity.Entry(access).Reload();
+                   
 
                     switch (Action)
                     {
@@ -238,7 +241,18 @@ namespace MoostBrand.Models
                                     });
                             break;
                     }
-                    
+                    }
+                    catch
+                    {
+                        filterContext.Result = new RedirectToRouteResult(
+                                    new RouteValueDictionary
+                                    {
+                                    { "controller", "Home" },
+                                    { "action", "Denied" }
+                                    });
+
+                    }
+
                 }
 
             }

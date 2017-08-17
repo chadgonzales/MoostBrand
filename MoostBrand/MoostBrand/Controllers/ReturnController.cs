@@ -354,8 +354,8 @@ namespace MoostBrand.Controllers
                                         {
                                             int _itemid = entity.Items.FirstOrDefault(p => p.Code == _inv1.ItemCode).ID;
                                             var i = entity.Inventories.Find(_inv.ID);
-                                            i.Committed = invRepo.getCommited(_inv1.ItemCode);
-                                            i.Ordered = invRepo.getPurchaseOrder(_inv1.ItemCode);
+                                            i.Committed = invRepo.getCommited(_inv1.ItemCode, retrn.SourceLocationID);
+                                            i.Ordered = invRepo.getPurchaseOrder(_inv1.ItemCode, retrn.SourceLocationID);
                                             i.InStock = invRepo.getInstocked(st.RequisitionID.Value, _inv1.ItemCode) - stRepo.getStockTranfer(_itemid, _st.StockTransferID.Value);
                                             i.Available = (i.InStock + i.Ordered) - i.Committed;
 

@@ -156,7 +156,7 @@ namespace MoostBrand.Controllers
 
         // GET: StockTransfer/Details/5
         [AccessChecker(Action = 1, ModuleID = 4)]
-        public ActionResult Details(int id = 0)
+        public ActionResult Details(int? page, int id = 0)
         {
             var stocktransfer = entity.StockTransfers.Find(id);
 
@@ -164,7 +164,7 @@ namespace MoostBrand.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.Page = page;
             return View(stocktransfer);
         }
 
@@ -654,8 +654,8 @@ namespace MoostBrand.Controllers
                             {
                                 int _itemid = entity.Items.FirstOrDefault(p => p.Code == _inv.ItemCode).ID;
                                 var i = entity.Inventories.Find(_inv.ID);
-                                i.Committed = invRepo.getCommited(_inv.ItemCode);
-                                i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode);
+                                i.Committed = invRepo.getCommited(_inv.ItemCode, st.LocationID);
+                                i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, st.LocationID);
                                 i.InStock = invRepo.getInstocked(st.RequisitionID.Value, _inv.ItemCode) - stRepo.getStockTranfer(_itemid,id);
                                 i.Available = (i.InStock + i.Ordered) - i.Committed;
 
@@ -664,8 +664,6 @@ namespace MoostBrand.Controllers
                             }
 
                         }
-
-
 
                         return RedirectToAction("Index");
                     }
@@ -741,22 +739,27 @@ namespace MoostBrand.Controllers
             int UserType = Convert.ToInt32(Session["usertype"]);
 
             var stocktransfer = entity.StockTransfers.FirstOrDefault(r => r.ID == id);
-            var RequestedBy = entity.StockTransfers.FirstOrDefault(r => r.ID == id).RequestedBy;
-            if (RequestedBy != UserID && UserType != 1 && UserType != 4)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            //var RequestedBy = entity.StockTransfers.FirstOrDefault(r => r.ID == id).RequestedBy;
+            //if (RequestedBy != UserID && UserType != 1 && UserType != 4)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
 
             var items = entity.StockTransferDetails
                         .ToList()
                         .FindAll(rd => rd.StockTransferID == id && rd.AprovalStatusID == 1 && (rd.StockTransfer.RequestedBy == UserID || UserType == 1 || UserType == 4));
 
+            var stdetails = entity.StockTransferDetails.FirstOrDefault(rd => rd.StockTransferID == id && rd.AprovalStatusID == 2);
             //var items = entity.RequisitionDetails
             //            .ToList()
             //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
 
             ViewBag.STid = id;
-            ViewBag.Approved = stocktransfer.ApprovedStatus.ToString();
+            try
+            {
+                ViewBag.Approved = stdetails.AprovalStatusID.ToString();
+            }
+            catch { ViewBag.Approved = 1; }
             // ViewBag.RequestedBy =
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;
@@ -870,10 +873,11 @@ namespace MoostBrand.Controllers
         {
 
             var recID = entity.StockTransfers.Find(id);
+            var _stdetails = entity.StockTransferDetails.Where(s=>s.StockTransferID == id).Select(s=>s.ReceivingDetailID);
             int recIDs = Convert.ToInt32(recID.ReceivingID);
             var items = entity.ReceivingDetails
                         .ToList()
-                        .FindAll(rd => rd.ReceivingID == recIDs && rd.AprovalStatusID == 2)
+                        .FindAll(rd => rd.ReceivingID == recIDs && rd.AprovalStatusID == 2 && !_stdetails.Contains(rd.ID))
                         .Select(ed => new
                         {
                             ID = ed.ID,
@@ -882,9 +886,10 @@ namespace MoostBrand.Controllers
 
             var reqID = entity.StockTransfers.Find(id);
             int reqIDs = Convert.ToInt32(reqID.RequisitionID);
+            var _stdetails1 = entity.StockTransferDetails.Where(s => s.StockTransferID == id).Select(s => s.RequisitionDetailID);
             var _items = entity.RequisitionDetails
                         .ToList()
-                        .FindAll(rd => rd.RequisitionID == reqIDs && rd.AprovalStatusID == 2)
+                        .FindAll(rd => rd.RequisitionID == reqIDs && rd.AprovalStatusID == 2 && !_stdetails1.Contains(rd.ID))
                         .Select(ed => new
                         {
                             ID = ed.ID,

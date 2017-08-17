@@ -82,14 +82,20 @@
 
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-    @Html.PagedListPager(Model, page => Url.Action("PendingItems",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    @*@Html.PagedListPager(Model, page => Url.Action("PendingItems",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+
+  
+    @Html.PagedListPager(Model, page => Url.Action("Details",
+      new { page, id = ViewBag.Rid }))
 
     <br /><br />
-    @if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
+    @*@if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
     {
-        <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
-    }
+        
+    }*@
+
+    <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
 
     <a href='@Url.Action("Details", new { id = ViewBag.Rid })' class="btn btn-light-orange">
         Back to List
@@ -200,10 +206,10 @@
         $.get(url, function (data) {
             $('#ShowDialogAdd').html(data);
 
-            if(@ViewBag.Approved != "2")
-            { 
+            @*if(@ViewBag.Approved != "2")
+            {*@ 
                 $('#AddItemWindow').modal('show');
-            }
+           // }
 
             // add class form-control to textarea and select
             $("input[disabled]").addClass("form-control");

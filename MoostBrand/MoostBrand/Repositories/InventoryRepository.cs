@@ -12,13 +12,15 @@ namespace MoostBrand.DAL
 
         int _instock, _ordered, _committed;
 
-        public int getCommited(string code)
+        public int getCommited(string code, int location)
         {
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
             var r = entity.Requisitions.Where(p => p.ApprovalStatus == 2).Select(p => p.ID).ToList();
             var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
             int c = 0;
-            var com = entity.RequisitionDetails.Where(model => model.ItemCode == item.ToString() && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID.Value) && r.Contains(model.RequisitionID));
+            var com = entity.RequisitionDetails.Where(model => model.ItemID == item && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID.Value) 
+                                                                                    && r.Contains(model.RequisitionID)
+                                                                                    && model.Requisition.LocationID == location);
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -39,7 +41,8 @@ namespace MoostBrand.DAL
             var r = entity.Requisitions.Where(p => p.ApprovalStatus == 2 && p.LocationID == location).Select(p => p.ID).ToList();
             var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
             int c = 0;
-            var com = entity.RequisitionDetails.Where(model => model.ItemCode == item.ToString() && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID.Value) && r.Contains(model.RequisitionID));
+            var com = entity.RequisitionDetails.Where(model => model.ItemID == item && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID.Value) 
+                                                && r.Contains(model.RequisitionID));
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -54,16 +57,19 @@ namespace MoostBrand.DAL
             return _committed;
         }
 
-        public int getPurchaseOrder(string code)
+        public int getPurchaseOrder(string code, int location)
         {
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
-            var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
+           
+            var requi = entity.Requisitions.Where(p => p.ApprovalStatus == 2).Select(p => p.ID).ToList();
             int po = 0;
             if (requi != null)
             {
                 var lstReqDetail = new List<RequisitionDetail>();
 
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemCode == item.ToString() && x.Requisition.LocationID == requi.Requisition.LocationID).ToList();
+                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == item  
+                                                        && requi.Contains(x.RequisitionID) 
+                                                        && x.Requisition.LocationID == location).ToList();
 
                 po = lstReqDetail.Sum(x => x.Quantity) ?? 0;
             }
@@ -77,7 +83,7 @@ namespace MoostBrand.DAL
                                                                                     && x.Requisition.RequisitionTypeID == 1
                                                                                     && x.Requisition.LocationID == location
                                                                                     && x.Requisition.Status == false
-                                                                                    && x.ItemCode == item.ToString());
+                                                                                    && x.ItemID == item);
             int po = 0;
             var ordered = requi.Sum(x => x.Quantity);
             po = Convert.ToInt32(ordered);
@@ -145,7 +151,7 @@ namespace MoostBrand.DAL
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
             var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 2).Select(p => p.ID).ToList();
             int c = 0;
-            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemCode == item.ToString() && model.AprovalStatusID == 2 && st.Contains(model.StockTransferID.Value));
+            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == item && model.AprovalStatusID == 2 && st.Contains(model.StockTransferID.Value));
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -165,7 +171,7 @@ namespace MoostBrand.DAL
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
             var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 2).Select(p => p.ID).ToList();
             int c = 0;
-            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemCode == item.ToString() && model.AprovalStatusID == 2 && st.Contains(model.StockTransferID.Value));
+            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == item && model.AprovalStatusID == 2 && st.Contains(model.StockTransferID.Value));
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)

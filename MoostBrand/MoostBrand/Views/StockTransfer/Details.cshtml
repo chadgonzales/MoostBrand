@@ -176,8 +176,8 @@
        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-6">
-                @if (Convert.ToInt32(Session["sessionuid"]) == Model.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
-                {
+                @*@if (Convert.ToInt32(Session["sessionuid"]) == Model.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                {*@
                     @*<a href='@Url.Action("PendingItems", new { id = Model.ID })' class="btn btn-dark-yellow">
                         Pending Items
                     </a>*@
@@ -193,7 +193,7 @@
                     <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
                         Edit
                     </a>
-                }
+                @*}*@
 
                 <a href='@Url.Action("Index")' class="btn btn-light-orange">
                     Back to List
@@ -201,11 +201,12 @@
             </div>
         </div>
 
-        @if (Convert.ToInt32(Session["sessionuid"]) == Model.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+        @*@if (Convert.ToInt32(Session["sessionuid"]) == Model.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
         {
-            @Html.Action("PendingItems", "StockTransfer")
-        }
-
+          
+            
+        }*@
+        @Html.Action("PendingItems", "StockTransfer", new { page = ViewBag.Page })
         <div class="panel-heading">
             <h4 class="panel-title">History</h4>
             <hr />

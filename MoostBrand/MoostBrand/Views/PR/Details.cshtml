@@ -1,4 +1,5 @@
-﻿@model MoostBrand.DAL.ReqDetails
+﻿@*@model MoostBrand.DAL.ReqDetails*@
+@model MoostBrand.Helpers.requsitionModel
 @{
     ViewBag.Title = "Details";
 }
@@ -8,7 +9,7 @@
 </div>
 <div class="panel-body">
     <div class="form-horizontal">
-        @Html.HiddenFor(model => model.Requisitions.RequisitionTypeID)
+        @Html.HiddenFor(model => model.requisition.Requisitions.RequisitionTypeID)
 
         <div class="row">
             <div class="col-sm-6">
@@ -17,7 +18,7 @@
                     <label class="control-label col-md-4">Reference #</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.Requisitions.RefNumber)
+                            @Html.DisplayFor(model => model.requisition.Requisitions.RefNumber)
                         </label>
                     </div>
                 </div>
@@ -25,7 +26,7 @@
                     <label class="control-label col-md-4">Type</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.Requisitions.RequisitionType.Type)
+                            @Html.DisplayFor(model => model.requisition.Requisitions.RequisitionType.Type)
                         </label>
                     </div>
                 </div>
@@ -33,7 +34,7 @@
                     <label class="control-label col-md-4">Requested Date</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.Requisitions.RequestedDate)
+                            @Html.DisplayFor(model => model.requisition.Requisitions.RequestedDate)
                         </label>
                     </div>
                 </div>
@@ -41,8 +42,8 @@
                     <label class="control-label col-md-4">Requested By</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.Requisitions.Employee1.LastName),
-                            @Html.DisplayFor(model => model.Requisitions.Employee1.FirstName)
+                            @Html.DisplayFor(model => model.requisition.Requisitions.Employee1.LastName),
+                            @Html.DisplayFor(model => model.requisition.Requisitions.Employee1.FirstName)
                         </label>
                     </div>
                 </div>
@@ -50,7 +51,7 @@
                     <label class="control-label col-md-4">Location</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.Requisitions.Location.Description)
+                            @Html.DisplayFor(model => model.requisition.Requisitions.Location.Description)
                         </label>
                     </div>
                 </div>
@@ -60,7 +61,7 @@
                     <label class="control-label col-md-4">Date Required</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.Requisitions.DateRequired)
+                            @Html.DisplayFor(model => model.requisition.Requisitions.DateRequired)
                         </label>
                     </div>
                 </div>
@@ -69,7 +70,7 @@
                     <label class="control-label col-md-4">Approval Status</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.Requisitions.ApprovalStatu.Status)
+                            @Html.DisplayFor(model => model.requisition.Requisitions.ApprovalStatu.Status)
                         </label>
                     </div>
                 </div>
@@ -78,8 +79,8 @@
                     <label class="control-label col-md-4">Approved By</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.Requisitions.Employee.LastName),
-                            @Html.DisplayFor(model => model.Requisitions.Employee.FirstName)
+                            @Html.DisplayFor(model => model.requisition.Requisitions.Employee.LastName),
+                            @Html.DisplayFor(model => model.requisition.Requisitions.Employee.FirstName)
                         </label>
                     </div>
                 </div>
@@ -89,7 +90,7 @@
                         <label class="control-label col-md-4">Vendor</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.Vendor.Name)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.Vendor.Name)
                             </label>
                         </div>
                     </div>
@@ -100,7 +101,7 @@
                         <label class="control-label col-md-4">Driver</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.Driver)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.Driver)
                             </label>
                         </div>
                     </div>
@@ -110,7 +111,7 @@
                     <label class="control-label col-md-4">Remarks</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.Requisitions.Remarks)
+                            @Html.DisplayFor(model => model.requisition.Requisitions.Remarks)
                         </label>
                     </div>
                 </div>
@@ -124,7 +125,7 @@
                         <label class="control-label col-md-4">Project/Customer</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.Customer)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.Customer)
                             </label>
                         </div>
                     </div>
@@ -132,7 +133,7 @@
                         <label class="control-label col-md-4">Reservation Type</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.ReservationType.Type)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.ReservationType.Type)
                             </label>
                         </div>
                     </div>
@@ -140,8 +141,8 @@
                         <label class="control-label col-md-4">Reserved By</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.Employee2.LastName),
-                                @Html.DisplayFor(model => model.Requisitions.Employee2.FirstName)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.Employee2.LastName),
+                                @Html.DisplayFor(model => model.requisition.Requisitions.Employee2.FirstName)
                             </label>
                         </div>
                     </div>
@@ -149,7 +150,7 @@
                         <label class="control-label col-md-4">Payment Status</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.PaymentStatu.Status)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.PaymentStatu.Status)
                             </label>
                         </div>
                     </div>
@@ -157,7 +158,7 @@
                         <label class="control-label col-md-4">Invoice #</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.InvoiceNumber)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.InvoiceNumber)
                             </label>
                         </div>
                     </div>
@@ -165,7 +166,7 @@
                         <label class="control-label col-md-4">Authorized Person</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.AuthorizedPerson)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.AuthorizedPerson)
                             </label>
                         </div>
                     </div>
@@ -173,8 +174,8 @@
                         <label class="control-label col-md-4">Validated By</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.Employee3.LastName),
-                                @Html.DisplayFor(model => model.Requisitions.Employee3.FirstName)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.Employee3.LastName),
+                                @Html.DisplayFor(model => model.requisition.Requisitions.Employee3.FirstName)
                             </label>
                         </div>
                     </div>
@@ -182,7 +183,7 @@
                         <label class="control-label col-md-4">Shipment Type</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.ShipmentType)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.ShipmentType)
                             </label>
                         </div>
                     </div>
@@ -190,7 +191,7 @@
                         <label class="control-label col-md-4">Drop Ship Type</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.DropShipType.Type)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.DropShipType.Type)
                             </label>
                         </div>
                     </div>
@@ -201,7 +202,7 @@
                         <label class="control-label col-md-4">Destination</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.Location1.Description)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.Location1.Description)
                             </label>
                         </div>
                     </div>
@@ -209,7 +210,7 @@
                         <label class="control-label col-md-4">Plate Number</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.PlateNumber)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.PlateNumber)
                             </label>
                         </div>
                     </div>
@@ -217,7 +218,7 @@
                         <label class="control-label col-md-4">Other</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.Others)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.Others)
                             </label>
                         </div>
                     </div>
@@ -225,7 +226,7 @@
                         <label class="control-label col-md-4">Time Departed</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.TimeDeparted)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.TimeDeparted)
                             </label>
                         </div>
                     </div>
@@ -233,7 +234,7 @@
                         <label class="control-label col-md-4">Time Arrive</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisitions.TimeArrived)
+                                @Html.DisplayFor(model => model.requisition.Requisitions.TimeArrived)
                             </label>
                         </div>
                     </div>
@@ -247,24 +248,24 @@
        
         <div class="form-group">
             <div class="col-md-offset-2 col-md-6">
-                @if (Convert.ToInt32(Session["sessionuid"]) == Model.Requisitions.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
-                {
+                @*@if (Convert.ToInt32(Session["sessionuid"]) == Model.requisition.Requisitions.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                {*@
                     @*<a href='@Url.Action("PendingItems", new { id = Model.ID })' class="btn btn-dark-yellow">
                         Pending Items
                     </a>*@
-                    <a href='@Url.Action("ApprovedItems", new { id = Model.Requisitions.ID })' class="btn btn-dark-green">
+                    <a href='@Url.Action("ApprovedItems", new { id = Model.requisition.Requisitions.ID })' class="btn btn-dark-green">
                         Approved Items
                     </a>
-                    <a href='@Url.Action("DeniedItems", new { id = Model.Requisitions.ID })' class="btn btn-dark-red">
+                    <a href='@Url.Action("DeniedItems", new { id = Model.requisition.Requisitions.ID })' class="btn btn-dark-red">
                         Denied Items
                     </a>
 
                     <br /><br />
 
-                    <a href='@Url.Action("Edit", new { id = Model.Requisitions.ID })' class="btn btn-green">
+                    <a href='@Url.Action("Edit", new { id = Model.requisition.Requisitions.ID })' class="btn btn-green">
                         Edit
                     </a>
-                }
+                   @*}*@
                 
                 <a href='@Url.Action("Index")' class="btn btn-light-orange">
                     Back to List
@@ -274,11 +275,11 @@
 
 
 
-@if (Convert.ToInt32(Session["sessionuid"]) == Model.Requisitions.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+@*@if (Convert.ToInt32(Session["sessionuid"]) == Model.requisition.Requisitions.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
 {
-    @Html.Action("PendingItems", "PR")
-}
-
+  
+}*@
+        @Html.Action("PendingItems", "PR", new { page = ViewBag.Page })
         @*@Html.Action("ViewHistoryPartial", "PR")*@
         <div class="panel-heading">
             <h4 class="panel-title">History</h4>
@@ -317,8 +318,9 @@
                 </tr>
             </thead>
 
-            @foreach (var item in Model.Requisitions.RequisitionDetails)
+            @foreach (var item in Model.requisitiondetails.Select(p=>p.RequisitionDetails))
             {
+                
                 <tbody>
                     <tr>
                         <td>
@@ -357,10 +359,52 @@
                         </td>
                     </tr>
                 </tbody>
-            }
+                    
+                }
             </table>
 
+        <!-- pager -->
+        @if (Model.Pager.EndPage > 1)
+        {
+            <div class="col-sm-9 no-padding col-sm-offset-3">
 
+                <ul class="pagination pull-right">
+                    @if (Model.Pager.CurrentPage > 1)
+                    {
+                        <li>
+                            @Html.ActionLink("First", "Details", new { id = Model.requisition.Requisitions.ID , sortOrder = ViewBag.EMNoSortParm})
+                        </li>
+                        <li>
+                            @Html.ActionLink("Previous", "Details", new { id = Model.requisition.Requisitions.ID, page = (Model.Pager.CurrentPage - 1) })
+                        </li>
+                    }
+
+                    @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                    {
+                        <li class="@(page == Model.Pager.CurrentPage ? " active" : "" )">
+                            @Html.ActionLink(page.ToString(), "Details", new
+                       {
+                                               id = Model.requisition.Requisitions.ID,
+                                               page = @page
+                       })
+                        </li>
+                    }
+
+                    @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                    {
+                        <li>
+                            @Html.ActionLink("Next", "Details", new { id = Model.requisition.Requisitions.ID , page = (Model.Pager.CurrentPage + 1) })
+                        </li>
+                        <li>
+                            @Html.ActionLink("Last", "Details", new { id = Model.requisition.Requisitions.ID , page = (Model.Pager.TotalPages)})
+                        </li>
+                    }
+                </ul>
+
+                <div class="clearfix"></div>
+
+            </div>
+        }
 </div>
 </div>
 

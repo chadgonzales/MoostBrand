@@ -389,7 +389,7 @@ namespace MoostBrand.Controllers
         }
 
         [AccessChecker(Action = 1, ModuleID = 9)]
-        public ActionResult Details(int id = 0)
+        public ActionResult Details(int? page, int id = 0)
         {
 
             Session["requisitionId"] = id;
@@ -402,6 +402,7 @@ namespace MoostBrand.Controllers
                 return HttpNotFound();
             }
 
+            ViewBag.Page = page;
             return View(pr);
         }
 
@@ -691,8 +692,8 @@ namespace MoostBrand.Controllers
                             foreach (var _inv in inv)
                             {
                                 var i = entity.Inventories.Find(_inv.ID);
-                                i.Committed = invRepo.getCommited(_inv.ItemCode);
-                                i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode);
+                                i.Committed = invRepo.getCommited(_inv.ItemCode, pr.LocationID.Value);
+                                i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
                                 i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
                                 i.Available = (i.InStock + i.Ordered) - i.Committed;
 
@@ -817,22 +818,26 @@ namespace MoostBrand.Controllers
             int UserType = Convert.ToInt32(Session["usertype"]);
 
             var requisition = entity.Requisitions.FirstOrDefault(r => r.ID == id);
-            if (requisition.RequestedBy != UserID && UserType != 1 && UserType != 4)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            //if (requisition.RequestedBy != UserID && UserType != 1 && UserType != 4)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
 
             var items = entity.RequisitionDetails
                         .ToList()
                         .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && (rd.Requisition.RequestedBy == UserID || UserType == 1 || UserType == 4));
 
-
+            var reqdetails = entity.RequisitionDetails.FirstOrDefault(p => p.RequisitionID == id && p.AprovalStatusID == 2);
             //var items = db.RequisitionDetails
             //            .ToList()
             //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
 
             ViewBag.PRid = id;
-            ViewBag.Approved = requisition.ApprovalStatus.ToString();
+            try
+            {
+                ViewBag.Approved = reqdetails.AprovalStatusID.ToString();
+            }
+            catch { ViewBag.Approved = 1; }
            // ViewBag.RequestedBy =
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;

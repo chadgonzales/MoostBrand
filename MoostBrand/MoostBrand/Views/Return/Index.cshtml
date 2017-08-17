@@ -70,8 +70,8 @@
                                 </a>
                                 @if (item.ApprovalStatus == 1)
                                 {
-                                    if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
-                                    {
+                                    //if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                    //{
                                         <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
                                             <i class="fa fa-edit"></i>
                                         </a>
@@ -85,7 +85,7 @@
                                         <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
                                             <i class="fa fa-thumbs-down"></i>
                                         </a>
-                                    }
+                                    //}
                                 }
                             </div>
 
