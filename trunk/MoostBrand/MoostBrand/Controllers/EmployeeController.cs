@@ -15,7 +15,7 @@ namespace MoostBrand.Controllers
     {
         MoostBrandEntities entity = new MoostBrandEntities();
 
-        [AccessChecker(Action = 1, ModuleID = 1)]
+        [AccessChecker(Action = 1, ModuleID = 18)]
         // GET: Employee
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -58,7 +58,7 @@ namespace MoostBrand.Controllers
             return View(employees.ToPagedList(pageNumber, pageSize));
         }
 
-        [AccessChecker(Action = 1, ModuleID = 1)]
+       [AccessChecker(Action = 1, ModuleID = 18)]
         // GET: Employee/Details/5
         public ActionResult Details(int id)
         {
@@ -67,20 +67,32 @@ namespace MoostBrand.Controllers
             return View(employee);
         }
 
-        [AccessChecker(Action = 2, ModuleID = 1)]
+       [AccessChecker(Action = 2, ModuleID = 18)]
         // GET: Employee/Create
-        public ActionResult Create()
+        public ActionResult Create(string module)
         {
-            var modules = entity.Modules.ToList();
+            ViewBag.Action = 1;
+            var modules = entity.Modules.Where(p => p.ID <= 10).ToList();
+            var managementmodules = entity.Modules.Where(p => p.ID > 10).ToList();
             var employee = new Employee();
-            employee.CreateUserAccess(modules);
+            //employee.CreateUserAccess(modules);
+            if (module == "Transaction Module" || module == null)
+            {
+                //lagyan if wala makukuha
+                employee.CreateUserAccess(modules);
+            }
+            else
+            {
+                //lagyan if wala makukuha
+                employee.CreateUserAccess(managementmodules);
+            }
             return View(employee);
         }
 
-        [AccessChecker(Action = 2, ModuleID = 1)]
+       [AccessChecker(Action = 2, ModuleID = 18)]
         // POST: Employee/Create
         [HttpPost]
-        public ActionResult Create(Employee employee)
+        public ActionResult Create(Employee employee, string module)
         {
             try
             {
@@ -90,7 +102,7 @@ namespace MoostBrand.Controllers
                     entity.Employees.Add(employee);
                     entity.SaveChanges();
 
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Edit", new {id=employee.ID, module =module });
                 }
                 else
                 {
@@ -101,25 +113,54 @@ namespace MoostBrand.Controllers
             {
             }
 
-            var modules = entity.Modules.ToList();
-            employee.CreateUserAccess(modules);
+            var modules = entity.Modules.Where(p => p.ID <= 10).ToList();
+            var managementmodules = entity.Modules.Where(p => p.ID > 10).ToList();
+            if (module == "Transaction Module" || module == null)
+            {
+                employee.CreateUserAccess(modules);
+            }
+            else
+            {
+                employee.CreateUserAccess(managementmodules);
+            }
+
 
             return View(employee);
         }
-
-        [AccessChecker(Action = 2, ModuleID = 1)]
+      
+        [AccessChecker(Action = 2, ModuleID = 18)]
         // GET: Employee/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id, string module)
         {
+            ViewBag.Action = 2;
             var employee = entity.Employees.Find(id);
+            if (module == "Transaction Module" || module == null)
+            {
+                employee.UserAccesses = employee.UserAccesses.Where(p => p.ModuleID <= 10 && p.EmployeeID == employee.ID).ToList();
+                if (employee.UserAccesses.Count==0)
+                {
+                    var modules = entity.Modules.Where(p => p.ID <= 10).ToList();
+                    employee.CreateUserAccess(modules);
+                }
+            }
+            else
+            {      
+                employee.UserAccesses = employee.UserAccesses.Where(p => p.ModuleID > 10 && p.EmployeeID == employee.ID).ToList();
+                if (employee.UserAccesses.Count == 0)
+                {
+                    var managementmodules = entity.Modules.Where(p => p.ID > 10).ToList();
+                    employee.CreateUserAccess(managementmodules);
+
+                }
+            }
 
             return View(employee);
         }
 
-        [AccessChecker(Action = 2, ModuleID = 1)]
+        [AccessChecker(Action = 2, ModuleID = 18)]
         // POST: Employee/Edit/5
         [HttpPost]
-        public ActionResult Edit(Employee employee)
+        public ActionResult Edit(Employee employee, string module)
         {
             if (ModelState.IsValid)
             {
@@ -129,23 +170,54 @@ namespace MoostBrand.Controllers
                     {
                         foreach(UserAccess ua in employee.UserAccesses)
                         {
-                            entity.Entry(ua).State = EntityState.Modified;
+                            if (ua.EmployeeID == null)
+                            {
+                                ua.EmployeeID = employee.ID;
+                                entity.UserAccesses.Add(ua);
+                                entity.SaveChanges();
+                            }
+                           
+                                entity.Entry(ua).State = EntityState.Modified;
+                            
                         }
 
                         entity.Entry(employee).State = EntityState.Modified;
                         entity.SaveChanges();
 
-                        return RedirectToAction("Index");
+                       // return RedirectToAction("Index");
                     }
                     
                 }
-                catch { }
+                catch (Exception E)
+                {
+                    E.ToString();
+                }
+            }
+            if (module == "Transaction Module" || module == null)
+            {
+                return RedirectToAction("Edit", new { id = employee.ID, module = module });
+            }
+            else
+            {
+                foreach (var a in entity.Modules.Where(p => p.ID > 10).ToList())
+                {
+                    if (entity.UserAccesses.Where(p => p.EmployeeID == employee.ID && p.ModuleID == a.ID).Count() == 0)
+                    {
+                        UserAccess ua = new UserAccess();
+                        ua.EmployeeID = employee.ID;
+                        ua.ModuleID = a.ID;
+                        entity.UserAccesses.Add(ua);
+                        entity.SaveChanges();
+                    }
+                }
+
+                return RedirectToAction("Edit", new { id = employee.ID, module = module });
             }
 
-            return View(employee);
+           // return View(employee);
         }
 
-        [AccessChecker(Action = 3, ModuleID = 1)]
+       [AccessChecker(Action = 3, ModuleID = 18)]
         // GET: Employee/Delete/5
         public ActionResult Delete(int id)
         {
@@ -153,7 +225,7 @@ namespace MoostBrand.Controllers
             return View(employee);
         }
 
-        [AccessChecker(Action = 3, ModuleID = 1)]
+        [AccessChecker(Action = 3, ModuleID = 18)]
         // POST: Employee/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)

@@ -117,7 +117,7 @@ namespace MoostBrand.Controllers
 
         #endregion
 
-        [AccessChecker(Action = 1, ModuleID = 1)]
+        [AccessChecker(Action = 1, ModuleID = 11)]
         // GET: Items
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -165,7 +165,7 @@ namespace MoostBrand.Controllers
             return View(items.ToPagedList(pageNumber, pageSize));
         }
 
-        [AccessChecker(Action = 1, ModuleID = 1)]
+        [AccessChecker(Action = 1, ModuleID = 11)]
         // GET: Item/Details/5
         public ActionResult Details(int id)
         {
@@ -173,7 +173,7 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
-        [AccessChecker(Action = 2, ModuleID = 1)]
+        [AccessChecker(Action = 2, ModuleID = 11)]
         // GET: Item/Create
         public ActionResult Create()
         {
@@ -190,7 +190,7 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
-        [AccessChecker(Action = 2, ModuleID = 1)]
+        [AccessChecker(Action = 2, ModuleID = 11)]
         // POST: Item/Create
         [HttpPost]
         public ActionResult Create(int? selectedSubCatID, int? selectedSubCatTypeID, Item item)
@@ -261,7 +261,7 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
-        [AccessChecker(Action = 2, ModuleID = 1)]
+        [AccessChecker(Action = 2, ModuleID = 11)]
         public ActionResult Edit(int id)
         {
             ViewBag.Categories = entity.Categories.ToList();
@@ -274,7 +274,7 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
-        [AccessChecker(Action = 2, ModuleID = 1)]
+        [AccessChecker(Action = 2, ModuleID = 11)]
         // POST: Item/Edit/5
         [HttpPost]
         public ActionResult Edit(Item item)
@@ -310,7 +310,7 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
-        [AccessChecker(Action = 3, ModuleID = 1)]
+        [AccessChecker(Action = 3, ModuleID = 11)]
         // GET: Item/Delete/5
         public ActionResult Delete(int id = 0)
         {
@@ -318,7 +318,7 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
-        [AccessChecker(Action = 3, ModuleID = 1)]
+        [AccessChecker(Action = 3, ModuleID = 11)]
         // POST: Item/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id = 0)

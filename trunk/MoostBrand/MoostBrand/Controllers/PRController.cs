@@ -8,6 +8,7 @@ using System.Configuration;
 using MoostBrand.Models;
 using System.Web.Routing;
 using System.Collections.Generic;
+using MoostBrand.Helpers;
 
 namespace MoostBrand.Controllers
 {
@@ -425,24 +426,44 @@ namespace MoostBrand.Controllers
 
         // GET: PR/Details/5
         [AccessChecker(Action = 1, ModuleID = 3)]
-        public ActionResult Details(int id = 0)
+        public ActionResult Details(int? id,int? page)
         {
 
             Session["requisitionId"] = id;
 
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
 
-            var pr = new ReqDetails
+            var req = new Req
             {
                 Requisitions = entity.Requisitions.Find(id)
-            };
-            if (pr == null)
+            }; 
+
+            var reqdetails = entity.RequisitionDetails
+                     .Where(e => e.RequisitionID == id)
+                     .Select(x => new ReqDetails
+                     {
+                         RequisitionDetails = x
+                     }).ToList();
+
+            if (req == null)
             {
                 return HttpNotFound();
             }
-            Session["ReqTypeID"] = pr.Requisitions.ReqTypeID.ToString();
-            ViewBag.ReqTypeID = pr.Requisitions.ReqTypeID.ToString();
-            return View(pr);
+
+            ViewBag.Page = page;
+            Session["ReqTypeID"] = req.Requisitions.ReqTypeID.ToString();
+            ViewBag.ReqTypeID =   req.Requisitions.ReqTypeID.ToString();
+
+            var pager = new Pager(reqdetails.Count(),page);
+
+            var viewModel = new requsitionModel
+            {
+                requisition = req,
+                requisitiondetails = reqdetails.Skip((pager.CurrentPage - 1) * pager.PageSize).Take(pager.PageSize),
+                Pager = pager
+            };
+
+            return View(viewModel);
         }
 
         // GET: PR/Create
@@ -757,8 +778,8 @@ namespace MoostBrand.Controllers
                             foreach (var _inv in inv)
                             {
                                 var i = entity.Inventories.Find(_inv.ID);
-                                i.Committed = invRepo.getCommited(_inv.ItemCode);
-                                i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode);
+                                i.Committed = invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
                                 i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
                                 i.Available = (i.InStock + i.Ordered) - i.Committed;
 
@@ -887,20 +908,26 @@ namespace MoostBrand.Controllers
             ViewBag.ReqTypeID =Session["ReqTypeID"].ToString();
 
             var requisition = entity.Requisitions.FirstOrDefault(r => r.ID == id);
-            if(requisition.RequestedBy != UserID && UserType != 1 && UserType != 4)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            //if(requisition.RequestedBy != UserID && UserType != 1 && UserType != 4)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
 
             var items = entity.RequisitionDetails
                         .ToList()
                         .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && (rd.Requisition.RequestedBy == UserID || UserType == 1 || UserType == 4));
+
+            var reqdetails = entity.RequisitionDetails.FirstOrDefault(p => p.RequisitionID == id && p.AprovalStatusID == 2);
             //var items = entity.RequisitionDetails
             //            .ToList()
             //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
 
             ViewBag.PRid = id;
-            ViewBag.Approved = requisition.ApprovalStatus.ToString();
+            try
+            {
+                ViewBag.Approved = reqdetails.AprovalStatusID.ToString();
+            }
+            catch { ViewBag.Approved = 1; }
             // ViewBag.RequestedBy = 
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;

@@ -79,7 +79,8 @@
                                 </a>
                                 @if (item.ApprovalStatus == 1)
                                 {
-                                    if (Convert.ToInt32(Session["sessionuid"]) == item.EncodedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                    if (Convert.ToInt32(Session["sessionuid"]) == item.EncodedBy)
+                                    //if (Convert.ToInt32(Session["sessionuid"]) == item.EncodedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                                     {
                                         <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
                                             <i class="fa fa-edit"></i>
@@ -88,15 +89,15 @@
                                             <i class="fa fa-times fa fa-white"></i>
                                         </a>
                                     }
-                                    if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
-                                    {
+                                    //if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                    //{
                                         <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
                                             <i class="fa fa-thumbs-up"></i>
                                         </a>
                                         <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
                                             <i class="fa fa-thumbs-down"></i>
                                         </a>
-                                    }
+                                   // }
                                 }
                             </div>
 

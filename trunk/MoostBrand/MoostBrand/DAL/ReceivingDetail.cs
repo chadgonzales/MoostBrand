@@ -14,7 +14,6 @@ namespace MoostBrand.DAL
         public ReceivingDetail()
         {
             ReturnedItems = new HashSet<ReturnedItem>();
-            StockAdjustmentDetails = new HashSet<StockAdjustmentDetail>();
             StockAllocationDetails = new HashSet<StockAllocationDetail>();
             StockTransferDetails = new HashSet<StockTransferDetail>();
             StockTransferDetails1 = new HashSet<StockTransferDetail>();
@@ -60,8 +59,6 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReturnedItem> ReturnedItems { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StockAdjustmentDetail> StockAdjustmentDetails { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAllocationDetail> StockAllocationDetails { get; set; }
@@ -126,14 +123,18 @@ namespace MoostBrand.DAL
                     loc = reqDetail.Requisition.Destination.Value;
                 }
                 int total = 0;
-                if (Receiving.ApprovalStatus == 2)
+                try
                 {
-                    total = repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code);
+                    if (Receiving.ApprovalStatus == 2)
+                    {
+                        total = repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code);
+                    }
+                    else
+                    {
+                        total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID)) - repo.getStockTranferReceiving(loc, reqDetail.ItemID));
+                    }
                 }
-                else
-                {
-                    total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID)) - repo.getStockTranferReceiving(loc, reqDetail.ItemID));
-                }
+                catch { total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID)) - repo.getStockTranferReceiving(loc, reqDetail.ItemID)); }
 
                 return total;
             }

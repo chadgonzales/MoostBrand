@@ -17,16 +17,16 @@
                     Item Name
                 </th>
                 <th>
-                    Reference #
+                    Notes
                 </th>
                 <th>
-                    Reason
+                    Old Quantity
                 </th>
                 <th>
-                    Quantity Ordered
+                   New Quantity
                 </th>
                 <th>
-                    Quantity Received
+                   Variance
                 </th>
                 <th>
                     Action
@@ -36,36 +36,21 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    @if (item.StockTransferDetailID != null)
-                    {
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StockTransferDetail.ReceivingDetail.RequisitionDetail.Item.Description)
-                            @Html.DisplayFor(modelItem => item.StockTransferDetail.RequisitionDetail.Item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StockTransferDetail.StockTransfer.TransferID)
-                        </td>
-                    }
-                    else
-                    {
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ReceivingDetail.RequisitionDetail.Item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ReceivingDetail.Receiving.ReceivingID)
-                        </td>
-
-                    }
+                <tr>       
+                     <td>
+                        @Html.DisplayFor(modelItem => item.GetItem)
+                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ReasonForAdjustment.Reason)
+                        @Html.DisplayFor(modelItem => item.Notes)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.QuantityOrdered)
+                        @Html.DisplayFor(modelItem => item.OldQuantity)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.QuantityReceived)
+                        @Html.DisplayFor(modelItem => item.NewQuantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Variance)
                     </td>
                     <td>
                         <div class="custom-tools">

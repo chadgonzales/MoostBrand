@@ -136,9 +136,9 @@ namespace MoostBrand.Controllers
                     RequestedBy = r != null ? r.Employee1.LastName + ", " + r.Employee1.FirstName : " ",
                     Destination  = r != null ? r.Location1.Description : " ",
                     SourceLoc   = r != null ? r.Location.Description : " ",
-                    Vendor  =  " ",
-                    VendorCode = " ",
-                    VendorContact  = " ",
+                    Vendor = r != null ? r.Vendor.Name : " ",
+                    VendorCode = r != null ? r.Vendor.Code : " ",
+                    VendorContact = r != null ? r.Vendor.ContactPerson : " ",
                     CustName   = " ",
                     ShipmentType = r.ShipmentType.Type ,
                      Invoice  = " "
@@ -450,7 +450,7 @@ namespace MoostBrand.Controllers
 
         // GET: Receiving/Details/5
         [AccessChecker(Action = 1, ModuleID = 5)]
-        public ActionResult Details(int id = 0)
+        public ActionResult Details(int? page, int id = 0)
         {
             Receiving receiving = entity.Receivings.Find(id);
             Session["requisitionId"] = receiving.RequisitionID;
@@ -461,7 +461,7 @@ namespace MoostBrand.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.Page = page;
             return View(r);
         }
 
@@ -960,22 +960,28 @@ namespace MoostBrand.Controllers
             int UserType = Convert.ToInt32(Session["usertype"]);
 
             var receiving = entity.Receivings.FirstOrDefault(r => r.ID == id);
-            var ReceivedBy = entity.Receivings.FirstOrDefault(r => r.ID == id).ReceivedBy;
-            if (ReceivedBy != UserID && UserType != 1 && UserType != 4)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            //var ReceivedBy = entity.Receivings.FirstOrDefault(r => r.ID == id).ReceivedBy;
+            //if (ReceivedBy != UserID && UserType != 1 && UserType != 4)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
 
             var items = entity.ReceivingDetails
                         .ToList()
                         .FindAll(rd => rd.ReceivingID == id && rd.AprovalStatusID == 1 && (rd.Receiving.ReceivedBy == UserID || UserType == 1 || UserType == 4));
+
+            var recdetails = entity.ReceivingDetails.FirstOrDefault(rd => rd.ReceivingID == id && rd.AprovalStatusID == 2);
             //var items = entity.RequisitionDetails
             //            .ToList()
             //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
 
             ViewBag.Rid = id;
             // ViewBag.ReceivedBy =
-            ViewBag.Approved = receiving.ApprovalStatus.ToString();
+            try
+            {
+                ViewBag.Approved = recdetails.AprovalStatusID.ToString();
+            }
+            catch { ViewBag.Approved = 1; }
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;
 
@@ -1092,9 +1098,10 @@ namespace MoostBrand.Controllers
 
 
             int reqID = entity.Receivings.Find(id).RequisitionID;
+            var _details = entity.ReceivingDetails.Where(p => p.ReceivingID == id).Select(p => p.RequisitionDetailID);
             var items = entity.RequisitionDetails
                         .ToList()
-                        .FindAll(rd => rd.RequisitionID == reqID && rd.AprovalStatusID == 2)
+                        .FindAll(rd => rd.RequisitionID == reqID && rd.AprovalStatusID == 2 && !_details.Contains(rd.ID))
                         .Select(ed => new
                         {
                             ID = ed.ID,

@@ -4,6 +4,10 @@
     ViewBag.Title = "Edit";
 }
 
+@if (TempData["message"] != null)
+{
+    <h2>@TempData["message"]</h2>
+}
 
 @using (Html.BeginForm())
 {
@@ -24,7 +28,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
-                    <input type="submit" value="Save" class="btn btn-green" />
+                    <input type="submit" value="Save" class="btn btn-green" id="btnUpdate" />
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
                     </a>

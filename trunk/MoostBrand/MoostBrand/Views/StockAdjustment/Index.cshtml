@@ -37,7 +37,7 @@
                         @Html.ActionLink("Transaction Type", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
-                        @Html.ActionLink("Return Type", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                        @Html.ActionLink("No", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
                         Status
@@ -55,7 +55,7 @@
                             @Html.DisplayFor(modelItem => item.TransactionType.Type)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ReturnType.Type)
+                            @Html.DisplayFor(modelItem => item.No)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ApprovalStatu.Status)
@@ -70,8 +70,8 @@
                                 </a>
                                 @if (item.ApprovalStatus == 1)
                                 {
-                                    if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
-                                    {
+                                    //if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                    //{
                                         <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
                                             <i class="fa fa-edit"></i>
                                         </a>
@@ -85,7 +85,7 @@
                                         <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
                                             <i class="fa fa-thumbs-down"></i>
                                         </a>
-                                    }
+                                    //}
                                 }
                             </div>
 

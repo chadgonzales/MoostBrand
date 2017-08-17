@@ -12,26 +12,32 @@ namespace MoostBrand.DAL
 
         public int? StockAdjustmentID { get; set; }
 
-        public int? ReceivingDetailID { get; set; }
+        public int ItemID { get; set; }
 
-        public int? StockTransferDetailID { get; set; }
+        public int? OldQuantity { get; set; }
 
-        public int? ReasonForAdjustmentID { get; set; }
+        public int? NewQuantity { get; set; }
 
-        public int? QuantityOrdered { get; set; }
+        public int? Variance { get; set; }
 
-        public int? QuantityReceived { get; set; }
-
-        public string Remarks { get; set; }
+        public string Notes { get; set; }
 
         public bool? IsSync { get; set; }
 
-        public virtual ReasonForAdjustment ReasonForAdjustment { get; set; }
-
-        public virtual ReceivingDetail ReceivingDetail { get; set; }
-
+      
         public virtual StockAdjustment StockAdjustment { get; set; }
 
-        public virtual StockTransferDetail StockTransferDetail { get; set; }
+        public string GetItem
+        {
+            get
+            {
+                StockAdjustmentRepository stockadRepo = new StockAdjustmentRepository();
+
+                return stockadRepo.GetInventoryDescription(ItemID);
+
+            }
+        }
+
+
     }
 }
