@@ -302,14 +302,15 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult GetItems(int catID, string name)
         {
-            var items = entity.Items.Where(x => x.CategoryID == catID && x.Description.Contains(name))
+            var items = entity.Items.Where(x => x.CategoryID == catID || x.Description.Contains(name))
                             .Select(x => new
                             {
                                 ID = x.ID,
                                 Code = x.Code,
                                 Name = x.DescriptionPurchase,
                                 PURName = x.Description,
-                                UOM = x.UnitOfMeasurement.Description
+                                UOM = x.UnitOfMeasurement.Description,
+                                Category = x.Category.Description
                             });
             return Json(items, JsonRequestBehavior.AllowGet);
         }
@@ -317,14 +318,15 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult GetItemCode(int catID, string name)
         {
-            var items = entity.Items.Where(x => x.CategoryID == catID && x.Code.Contains(name))
+            var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name))
                             .Select(x => new
                             {
                                 ID = x.ID,
                                 Code = x.Code,
                                 Name = x.DescriptionPurchase,
                                 PURName = x.Description,
-                                UOM = x.UnitOfMeasurement.Description
+                                UOM = x.UnitOfMeasurement.Description,
+                                Category = x.Category.Description
                             });
             return Json(items, JsonRequestBehavior.AllowGet);
         }
@@ -349,17 +351,10 @@ namespace MoostBrand.Controllers
         public JsonResult getPO(int id, int ItemID)
         {
             var requi = entity.Requisitions.Find(id);
-            //var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
+            
 
-            int total = 0;
-            if (requi != null)
-            {
-                var lstReqDetail = new List<RequisitionDetail>();
-
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == ItemID && x.Requisition.LocationID == requi.LocationID).ToList();
-
-                total = lstReqDetail.Sum(x => x.Quantity) ?? 0;
-            }
+            int total = reqDetailRepo.getPurchaseOrder(requi.LocationID.Value,ItemID);
+          
             return Json(total, JsonRequestBehavior.AllowGet);
         }
 
@@ -770,8 +765,8 @@ namespace MoostBrand.Controllers
 
                         entity.Entry(pr).State = EntityState.Modified;
                         entity.SaveChanges();
-                        var rd = pr.RequisitionDetails.Select(p => p.ItemCode).ToList();
-                        var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
+                        var rd = pr.RequisitionDetails.Select(p => p.ItemID).ToList();
+                        var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
                         var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
                         if (inv != null)
                         {
@@ -789,7 +784,32 @@ namespace MoostBrand.Controllers
 
                         }
 
+                        var invitems = entity.Items.Where(i => rd.Contains(i.ID)).ToList();
 
+                        foreach (var _item in invitems)
+                        {
+                            var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == pr.LocationID).ToList();
+                            if (inv1.Count == 0)
+                            {
+                                Inventory inventory = new Inventory();
+                                inventory.Year = _item.Year;
+                                inventory.ItemCode = _item.Code;
+                                inventory.POSBarCode = _item.Barcode;
+                                inventory.Description = _item.DescriptionPurchase;
+                                inventory.Category = _item.Category.Description;
+                                inventory.InventoryUoM = ""; //_item.UnitOfMeasurement.Description
+                                inventory.InventoryStatus = 2;
+                                inventory.LocationCode = pr.LocationID;
+                                inventory.Committed = invRepo.getCommitedReceiving(pr.LocationID.Value, _item.Code);
+                                inventory.Ordered = invRepo.getPurchaseOrderReceiving(pr.LocationID.Value, _item.Code);
+                                inventory.InStock = 0;
+                                inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
+
+
+                                entity.Inventories.Add(inventory);
+                                entity.SaveChanges();
+                            }
+                        }
                         return RedirectToAction("Index");
                     }
 

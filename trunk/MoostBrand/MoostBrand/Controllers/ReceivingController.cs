@@ -794,8 +794,8 @@ namespace MoostBrand.Controllers
 
                         entity.Entry(receving).State = EntityState.Modified;
                         entity.SaveChanges();
-                        var rd = receving.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
-                        var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
+                        var rd = receving.Requisition.RequisitionDetails.Select(p => p.ItemID).ToList();
+                        var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
 
                         int loc = 0;
                         if (receving.Requisition.Destination == null)
@@ -825,7 +825,7 @@ namespace MoostBrand.Controllers
 
                         }
 
-                        var invitems = entity.Items.Where(i => rd.Contains(i.ID.ToString())).ToList();
+                        var invitems = entity.Items.Where(i => rd.Contains(i.ID)).ToList();
 
                         foreach (var _item in invitems)
                         {

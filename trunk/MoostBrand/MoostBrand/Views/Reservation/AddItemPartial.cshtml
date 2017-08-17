@@ -19,14 +19,7 @@
             @Html.Hidden("ItemCode")
 
             @*@Html.HiddenFor(model => model.RequisitionID, new { htmlAttributes = new { @class = "form-control", @Value = ViewBag.PRid } })*@
-            <div class="form-horizontal" id="modalCat">
-                <div class="form-group">
-                    <label class="control-label col-md-2">Category</label>
-                    <div class="col-md-8">
-                        @Html.TextBox("catsearch", ViewBag.CatName as string, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
+         
             <div class="form-horizontal" id="modalItem">
                 <div class="form-group">
                     @Html.LabelFor(model => model.ItemCode, "Item Code", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -42,6 +35,14 @@
                     <div class="col-md-8">
                         @Html.TextBox("itemsearch", ViewBag.ItemName as string, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ItemID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal" id="modalCat">
+                <div class="form-group">
+                    <label class="control-label col-md-2">Category</label>
+                    <div class="col-md-8">
+                        @Html.TextBox("catsearch", ViewBag.CatName as string, new { @class = "form-control" })
                     </div>
                 </div>
             </div>

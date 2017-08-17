@@ -150,6 +150,10 @@
         $("#itemsearch").autocomplete({
             source: function (request, response) {
                 var catID = $("#CategoryID").val();
+                if(catID == '')
+                {
+                    catID = 0;
+                }
                 $.ajax({
                     url: '@Url.Action("GetItems")',
                     type: "POST",
@@ -162,7 +166,8 @@
                                 label: item.Name,
                                 value: item.Name,
                                 code: item.Code,
-                                uom: item.UOM
+                                uom: item.UOM,
+                                category: item.Category
                             };
                         }))
 
@@ -173,6 +178,9 @@
                 $("#ItemID").val(ui.item.id);
                 $("#itemcode").val(ui.item.code);
                 $("#uom").html(ui.item.uom);
+                $("#catsearch").val(ui.item.category);
+                Get();
+
             },
             messages: {
                 noResults: "", results: ""
@@ -185,6 +193,7 @@
                 $('#ItemID').removeAttr('value');
                 $('#ItemCode').html('');
                 $("#uom").html('');
+
             }
         });
 
@@ -195,6 +204,10 @@
    
             source: function (request, response) {
                 var catID = $("#CategoryID").val();
+                if(catID == '')
+                {
+                    catID = 0;
+                }
                 $.ajax({
                     url: '@Url.Action("GetItems")',
                     type: "POST",
@@ -207,7 +220,8 @@
                                 label: item.PURName,
                                 value: item.PURName,
                                 code: item.Code,
-                                uom: item.UOM
+                                uom: item.UOM,
+                                category: item.Category
                                 
                             };
                         }))
@@ -219,6 +233,8 @@
                 $("#ItemID").val(ui.item.id);
                 $("#itemcode").val(ui.item.code);
                 $("#uom").html(ui.item.uom);
+                $("#catsearch").val(ui.item.category);
+                Get();
             },
             messages: {
                 noResults: "", results: ""
@@ -240,10 +256,53 @@
 
         ///// item code
 
+        function Get() {
+          
+            var itmID = $("#ItemID").val();
+            var itmCode = $("#itemcode").val();
+
+            var reservationID = $('#ReservationID').val();
+            
+            //alert('ROBI ALERT GINALAW KO TO'); 
+            $.ajax({                                    //COMMENT COMMENT
+                url: '@Url.Action("getCommit", "PR")', //dati naka getCodeCommit eh pag gnun kasi knukuha lahat ng reserve not by ITEM dapat daw by ITEM haha
+                type: "GET",
+                dataType: "json",
+                data: { id: reservationID, ItemID: itmID },
+                success: function (data) {
+                    $("#Committed").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getPO", "PR")', // dati getCodePO same reason sa taas^
+                type: "GET",
+                dataType: "json",
+                data: { id: reservationID, ItemID: itmID },
+                success: function (data) {
+                    $("#Ordered").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getInstock", "PR")',
+                type: "GET",
+                dataType: "json",
+                data: { id: reservationID, Code: itmCode, ItemID: itmID },
+                success: function (data) {
+                    $("#InStock").val(data);
+                }
+            });
+
+        }
+
         $("#itemcode").autocomplete({
 
             source: function (request, response) {
                 var catID = $("#CategoryID").val();
+                if(catID == '')
+                {
+                    catID = 0;
+                }
+
                 $.ajax({
                
                     url: '@Url.Action("GetItemCode")',
@@ -258,7 +317,8 @@
                                 value: item.Code,
                                 name: item.Name,
                                 purname: item.PURName,
-                                uom: item.UOM
+                                uom: item.UOM,
+                                category: item.Category
                             };
                         }))
                     }
@@ -270,6 +330,8 @@
                 $("#ItemID").val(ui.item.id);
                 $("#ItemCode").val(ui.item.id);
                 $("#uom").html(ui.item.uom);
+                $("#catsearch").val(ui.item.category);
+                Get();
             },
             messages: {
                 noResults: "", results: ""
