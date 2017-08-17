@@ -76,6 +76,44 @@
             });
         });
 
+
+        function Get()
+        {
+            var reservationID = $('#RequisitionID').val();
+
+            var itmID = $("#ItemCode").val();
+            var itmCode = $("#itemcode").val();
+            $.ajax({
+                url: '@Url.Action("getCommit", "Reservation")',
+                type: "GET",
+                dataType: "json",
+                data: { id: reservationID, ItemID: itmID },
+                success: function (data) {
+                    $("#Committed").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getPO", "Reservation")',
+                type: "GET",
+                dataType: "json",
+                data: { id: reservationID, ItemID: itmID },
+                success: function (data) {
+                    $("#Ordered").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getInstock", "Reservation")',
+                type: "GET",
+                dataType: "json",
+                data: { id: reservationID, Code: itmCode, ItemID: itmID },
+                success: function (data) {
+                    $("#InStock").val(data);
+                }
+            });
+        
+        }
+
+
         $("#catsearch").autocomplete({
             source: function (request, response) {
                 $.ajax({
@@ -108,6 +146,10 @@
         $("#itemsearch").autocomplete({
             source: function (request, response) {
                 var catID = $("#CategoryID").val();
+                if(catID == '')
+                {
+                    catID = 0;
+                }
                 $.ajax({
                     url: '@Url.Action("GetItems")',
                     type: "POST",
@@ -120,7 +162,8 @@
                                 label: item.Name,
                                 value: item.Name,
                                 code: item.Code,
-                                uom: item.UOM
+                                uom: item.UOM,
+                                category: item.Category
                             };
                         }))
 
@@ -131,6 +174,9 @@
                 $("#ItemID").val(ui.item.id);
                 $("#itemcode").val(ui.item.code);
                 $("#uom").html(ui.item.uom);
+                $("#catsearch").val(ui.item.category);
+                Get();
+
             },
             messages: {
                 noResults: "", results: ""
@@ -149,6 +195,11 @@
         $("#itemcode").autocomplete({
             source: function (request, response) {
                 var catID = $("#CategoryID").val();
+                if(catID == '')
+                {
+                    catID = 0;
+                }
+               
                 $.ajax({
                     url: '@Url.Action("GetItemCode")',
                     type: "POST",
@@ -161,7 +212,8 @@
                                 label: item.Code,
                                 value: item.Code,
                                 name: item.Name,
-                                uom: item.UOM
+                                uom: item.UOM,
+                                category: item.Category
                             };
                         }))
                     }
@@ -172,6 +224,8 @@
                 $("#ItemID").val(ui.item.id);
                 $("#ItemCode").val(ui.item.id);
                 $("#uom").html(ui.item.uom);
+                $("#catsearch").val(ui.item.category);
+                Get();
             },
             messages: {
                 noResults: "", results: ""
