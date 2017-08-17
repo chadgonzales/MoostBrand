@@ -22,7 +22,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.RefNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.RefNumber, new { @readonly = "readonly", htmlAttributes = new { @class = "form-control" } })
+                    @Html.TextBoxFor(model => model.RefNumber, new { @readonly = "readonly", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -37,7 +37,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.RequestedDate, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.RequestedDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.RequestedDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
                     @Html.ValidationMessageFor(model => model.RequestedDate, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -263,5 +263,9 @@
             $("#dropship").hide();
         }
     })
+
+
+    $("select").addClass("form-control");
+
 
 </script>
