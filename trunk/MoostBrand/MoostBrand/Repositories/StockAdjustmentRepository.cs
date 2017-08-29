@@ -28,7 +28,7 @@ namespace MoostBrand.DAL
             }
 
        
-            string Number = lastId.ToString().PadLeft(4, '0');
+            string Number = "SA-"+lastId.ToString().PadLeft(10, '0');
 
             bool poExist = entity.StockAdjustments.Count(p => p.No == Number) > 0;
 

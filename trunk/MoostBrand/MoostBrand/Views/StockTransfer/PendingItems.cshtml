@@ -160,8 +160,9 @@
             });
 
             $("#RequisitionDetailID").change(function () {
+                alert('a');
                 var val = $("#RequisitionDetailID option:selected").val();
-
+              
                 $.ajax({
                     url: '@Url.Action("DisplayComputation", "StockTransfer")',
                     data: { reqID: val },

@@ -747,7 +747,7 @@ namespace MoostBrand.Controllers
 
             var items = entity.StockTransferDetails
                         .ToList()
-                        .FindAll(rd => rd.StockTransferID == id && rd.AprovalStatusID == 1 && (rd.StockTransfer.RequestedBy == UserID || UserType == 1 || UserType == 4));
+                        .FindAll(rd => rd.StockTransferID == id && rd.AprovalStatusID == 1);
 
             var stdetails = entity.StockTransferDetails.FirstOrDefault(rd => rd.StockTransferID == id && rd.AprovalStatusID == 2);
             //var items = entity.RequisitionDetails

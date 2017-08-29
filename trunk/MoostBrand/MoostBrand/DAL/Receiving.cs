@@ -26,6 +26,7 @@ namespace MoostBrand.DAL
 
         [Required]
         [StringLength(50)]
+        [Display(Name = "RR Number")]
         public string ReceivingID { get; set; }
 
         public DateTime ReceivingDate { get; set; }
@@ -128,6 +129,7 @@ namespace MoostBrand.DAL
 
         public virtual Employee Employee3 { get; set; }
 
+        [Display(Name = "Source Location")]
         public virtual Location Location { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
