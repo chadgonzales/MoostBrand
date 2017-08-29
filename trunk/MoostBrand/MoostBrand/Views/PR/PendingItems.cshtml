@@ -450,67 +450,70 @@
   
   
     <br /><br />
-    @if (ViewBag.Is
-        d == 1)
+  @if (ViewBag.IsApproved == 1)
+            
     {
         //if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
-       
-            <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
-        
+
+            <a href = "#" id = "ShowPopop" class="btn btn-green">Add Item</a>
+
+
     }
 
-    <a href='@Url.Action("Index", new { id = ViewBag.PRid })' class="btn btn-light-orange">
+    <a href = '@Url.Action("Index", new { id = ViewBag.PRid })' class="btn btn-light-orange">
         Back to Details
     </a>
 
-  
-    <div id="AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.PRid })">
-        <div id="ShowDialogAdd" class="modal-dialog" role="document">
-    
+
+    <div id = "AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.PRid })">
+        <div id = "ShowDialogAdd" class="modal-dialog" role="document">
+
 
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div id="EditItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
-        <div id="ShowDialogEdit" class="modal-dialog" role="document">
+    <div id = "EditItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <div id = "ShowDialogEdit" class="modal-dialog" role="document">
 
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <div id="DeleteItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
-        <div id="ShowDialogDelete" class="modal-dialog" role="document">
+    <div id = "DeleteItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <div id = "ShowDialogDelete" class="modal-dialog" role="document">
 
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
 
 <script>
-    window.onload = function () {
-        //$('#ShowPopop').click(function () {
+    window.onload = function()
+  {
+      //$('#ShowPopop').click(function () {
 
-        var url = $('#AddItemWindow').data('url');
-        $.get(url, function (data) {
+      var url = $('#AddItemWindow').data('url');
+        $.get(url, function(data) {
             $('#ShowDialogAdd').html(data);
-            if(@ViewBag.Approved != "2")
-            { 
+          if (@ViewBag.Approved != "2")
+          {
                 $('#AddItemWindow').modal('show');
-            }
+          }
             // add class form-control to textarea and select
             $("input[disabled]").addClass("form-control");
             $("textarea").addClass("form-control");
             $("select").addClass("form-control");
-        });
-        //});
-    }
+      });
+      //});
+  }
 
-    $('#ShowPopop').click(function () {
+    $('#ShowPopop').click(function ()
+  {
 
-        var url = $('#AddItemWindow').data('url');
-        $.get(url, function (data) {
+      var url = $('#AddItemWindow').data('url');
+        $.get(url, function(data) {
             $('#ShowDialogAdd').html(data);
-         
+
         //    if(@ViewBag.Approved != "2")
-          //  { 
+          //  {
                 $('#AddItemWindow').modal('show');
             //}
 
@@ -518,8 +521,8 @@
             $("input[disabled]").addClass("form-control");
             $("textarea").addClass("form-control");
             $("select").addClass("form-control");
-        });
-    });
+      });
+  });
 
     function ShowEdit(id) {
         var url = '@Url.Action("EditItemPartial", "PR")/' + id;

@@ -126,7 +126,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group pnumber">
                 @Html.LabelFor(model => model.PONumber, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "form-control" } })
@@ -173,7 +173,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group vcontact">
                     <label class="control-label col-md-2">Vendor Contact Person</label>
                     <div class="col-md-6">
                         @Html.Editor("VendorContact", new { htmlAttributes = new { @class = "form-control" } })
@@ -305,6 +305,17 @@
             $("#ShipmentType").val(data.ShipmentType);
             $("#Invoice").val(data.Invoice);
         });
+
+        var val = $("#ReceivingTypeID").val();
+        if (val == 2 || val == 3) {
+            $('.pnumber').hide();
+            $('.vcontact').hide();
+        }
+        else {
+            $('.pnumber').show();
+            $('.vcontact').show();
+        }
+
     })
 </script>
 

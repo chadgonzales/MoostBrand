@@ -118,7 +118,7 @@
                 @Html.LabelFor(model => model.InventoryStatus, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
                     @*@Html.DropDownListFor(model => model.InventoryStatus, new { htmlAttributes = new { @class = "form-control" } })*@
-                    @Html.DropDownList("InventoryStatus", String.Empty)
+                    @Html.DropDownList("InventoryStatus")
                     @Html.ValidationMessageFor(model => model.InventoryStatus, "", new { @class = "text-danger" })
                 </div>
             </div>
