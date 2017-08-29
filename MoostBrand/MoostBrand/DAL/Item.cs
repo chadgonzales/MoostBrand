@@ -73,6 +73,7 @@ namespace MoostBrand.DAL
 
         public decimal? WeightedAverageCost { get; set; }
 
+        [Display(Name = "Vendor General Name")]
         public int? VendorCoding { get; set; }
         public string Year { get; set; }
         public string Image { get; set; }

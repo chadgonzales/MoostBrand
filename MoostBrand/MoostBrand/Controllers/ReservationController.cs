@@ -844,7 +844,7 @@ namespace MoostBrand.Controllers
 
             var items = entity.RequisitionDetails
                         .ToList()
-                        .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && (rd.Requisition.RequestedBy == UserID || UserType == 1 || UserType == 4));
+                        .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 );
 
             var reqdetails = entity.RequisitionDetails.FirstOrDefault(p => p.RequisitionID == id && p.AprovalStatusID == 2);
             //var items = db.RequisitionDetails

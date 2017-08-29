@@ -94,12 +94,12 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                @*<div class="form-group">
                     <label class="control-label col-md-2">Source Location</label>
                     <div class="col-md-6">
                         @Html.Editor("SourceLoc", new { htmlAttributes = new { @class = "form-control" } })
                     </div>
-                </div>
+                </div>*@
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -288,6 +288,25 @@
         </div>
     </div>
 }
+
+<script>
+
+    $(document).ready(function () {
+        $.get("@Url.Action("GetRequisition", "Receiving")/" + $("#RequisitionID").val(), null, function (data) {
+            //$("#RequisitionID").val(data.ID);
+            $("#RefNumber").val(data.RefNumber);
+            $("#RequestedBy").val(data.RequestedBy);
+            $("#Destination").val(data.Destination);
+            $("#SourceLoc").val(data.SourceLoc);
+            $("#Vendor").val(data.Vendor);
+            $("#VendorCode").val(data.VendorCode);
+            $("#VendorContact").val(data.VendorContact);
+            $("#CustName").val(data.CustName);
+            $("#ShipmentType").val(data.ShipmentType);
+            $("#Invoice").val(data.Invoice);
+        });
+    })
+</script>
 
 <script language="javascript">
     $(function () {

@@ -95,6 +95,18 @@ namespace MoostBrand.Controllers
                 JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult GetVendors(string name)
+        {
+            //x.Name.Contains(name) ||
+            var vendors = entity.Vendors.Where(x => x.GeneralName.Contains(name))
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Name = x.GeneralName
+                            });
+            return Json(vendors, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region COMMENTS
@@ -236,10 +248,28 @@ namespace MoostBrand.Controllers
                         item.Image = baseUrl + imagePath + "/ID" + item.ItemID + ".jpg";
                     }
 
-                    item.Quantity = 0;
+                    //item.Quantity = 0;
                     item.LastUnitCost = 0;
                     item.WeightedAverageCost = 0;
                     item.Price = 0;
+                    if (item.CategoryID == null || item.CategoryID == 0)
+                        item.CategoryID = entity.Categories.FirstOrDefault(p => p.Description == "Not Available").ID;
+
+                    if (item.SubCategoryID == null || item.SubCategoryID == 0)
+                        item.SubCategoryID = entity.SubCategories.FirstOrDefault(p => p.Description == "Not Available").ID;
+
+                    if (item.SubCategoriesTypesID == null || item.SubCategoriesTypesID == 0)
+                        item.SubCategoriesTypesID = entity.SubCategoriesTypes.FirstOrDefault(p => p.Description == "Not Available").ID;
+
+                    item.Category = entity.Categories.Find(item.CategoryID);
+                    item.SubCategory = entity.SubCategories.Find(item.SubCategoryID);
+                    item.SubCategoriesType = entity.SubCategoriesTypes.Find(item.SubCategoriesTypesID);
+                    item.Brand = entity.Brands.Find(item.BrandID);
+                    item.UnitOfMeasurement = entity.UnitOfMeasurements.Find(item.UnitOfMeasurementID);
+                    item.Size = entity.Sizes.Find(item.SizeID);
+                    item.Color = entity.Colors.Find(item.ColorID);
+
+
 
                     entity.Items.Add(item);
                     entity.SaveChanges();
@@ -257,6 +287,11 @@ namespace MoostBrand.Controllers
             ViewBag.Sizes = entity.Sizes.ToList();
             ViewBag.UOMS = entity.UnitOfMeasurements.ToList();
             ViewBag.Brands = entity.Brands.ToList();
+
+            if (item.VendorCoding != null)
+            {
+                ViewBag.VendorName = entity.Vendors.FirstOrDefault(x => x.ID == item.VendorCoding).Name;
+            }
 
             return View(item);
         }

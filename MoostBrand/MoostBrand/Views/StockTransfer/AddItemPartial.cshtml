@@ -97,3 +97,42 @@
             </div>
     }
 </div><!-- /.modal-content -->
+
+<script>
+
+    $("#RequisitionDetailID").change(function () {
+       
+        var val = $("#RequisitionDetailID option:selected").val();
+
+        $.ajax({
+            url: '@Url.Action("DisplayComputation", "StockTransfer")',
+            data: { reqID: val },
+            type: 'get',
+            success: function (data) {
+                $("#Committed").val(data.Committed);
+                $("#Ordered").val(data.Ordered);
+                $("#InStock").val(data.InStock);
+                $("#Quantity").val(data.Quantity);
+                $("#Hidden_Quantity").val(data.Quantity);
+
+            }
+        })
+    });
+
+    $("#ReceivingDetailID").change(function () {
+        var val = $("#ReceivingDetailID option:selected").val();
+
+        $.ajax({
+            url: '@Url.Action("DisplayComputations", "StockTransfer")',
+            data: { recID: val },
+            type: 'get',
+            success: function (data) {
+                $("#Committed").val(data.Committed);
+                $("#Ordered").val(data.Ordered);
+                $("#InStock").val(data.InStock);
+                $("#Quantity").val(data.Quantity);
+                $("#Hidden_Quantity").val(data.Quantity);
+            }
+        })
+    });
+</script>

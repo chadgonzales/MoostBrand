@@ -32,6 +32,10 @@ namespace MoostBrand.DAL
 
         public DateTime RequestedDate { get; set; }
 
+        public string _RequestedDate
+        {
+            get {return RequestedDate.ToString("MM/dd/yyyy"); }
+        }
         public string ReservationStatus { get; set; }
 
         public int? LocationID { get; set; }

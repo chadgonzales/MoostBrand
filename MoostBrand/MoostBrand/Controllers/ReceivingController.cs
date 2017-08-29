@@ -968,7 +968,7 @@ namespace MoostBrand.Controllers
 
             var items = entity.ReceivingDetails
                         .ToList()
-                        .FindAll(rd => rd.ReceivingID == id && rd.AprovalStatusID == 1 && (rd.Receiving.ReceivedBy == UserID || UserType == 1 || UserType == 4));
+                        .FindAll(rd => rd.ReceivingID == id && rd.AprovalStatusID == 1);
 
             var recdetails = entity.ReceivingDetails.FirstOrDefault(rd => rd.ReceivingID == id && rd.AprovalStatusID == 2);
             //var items = entity.RequisitionDetails

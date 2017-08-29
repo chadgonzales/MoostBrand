@@ -9,102 +9,39 @@
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
-<script language="javascript" type="text/javascript">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
     $(document).ready(function () {
-        //alert('test');
-        var param = GetURLParameter();
 
-        var url = "/Item/GetItemById/";
+        $("#VendorCoding").autocomplete({
 
-        $.ajax({
-            url: url,
-            data: { itemID: param },
-            cache: false,
-            type: "POST",
-            success: function (data) {
+            source: function (request, response) {
                 $.ajax({
-                    url: "/Item/GetSubCategory/",
-                    data: { categoryID: data.Category },
-                    cache: false,
+                    url: '@Url.Action("GetVendors")',
                     type: "POST",
-                    success: function (result) {
-                        var markup = "<option value='0'>Select SubCategory</option>";
-                        for (var x = 0; x < result.length; x++) {
-                            markup += "<option value=" + result[x].ID + ">" + result[x].Description + "</option>";
-                        }
-                        $("#ddlsubcat").html(markup).show();
-
-                        $("#ddlsubcat").val(data.SubCategory);
-                    },
-                    error: function (reponse) {
-                        alert("error : " + reponse);
+                    dataType: "json",
+                    data: { name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Name,
+                                value: item.Name
+                            };
+                        }))
                     }
-                });
+                })
             },
-            error: function (reponse) {
-                alert("error : " + reponse);
-            }
-        });
-    });
-
-    function GetURLParameter() {
-        var sPageURL = window.location.href;
-        var indexOfLastSlash = sPageURL.lastIndexOf("/");
-
-        if (indexOfLastSlash > 0 && sPageURL.length - 1 != indexOfLastSlash)
-            return sPageURL.substring(indexOfLastSlash + 1);
-        else
-            return 0;
-    }
-
-    function GetSubCategory(_categoryID) {
-        var procemessage = "<option value='0'> Please wait...</option>";
-        $("#ddlsubcat").html(procemessage).show();
-        var url = "/Item/GetSubCategory/";
-
-        $.ajax({
-            url: url,
-            data: { categoryID: _categoryID },
-            cache: false,
-            type: "POST",
-            success: function (data) {
-                var markup = "<option value='0'>Select SubCategory</option>";
-                for (var x = 0; x < data.length; x++) {
-                    markup += "<option value=" + data[x].ID + ">" + data[x].Description + "</option>";
-                }
-                $("#ddlsubcat").html(markup).show();
+            select: function (event, ui) {
+                $("#VendorCoding").val(ui.item.id);
             },
-            error: function (reponse) {
-                alert("error : " + reponse);
-            }
-        });
-
-    }
-
-    function GetSubCategoriesTypes(_subcategoryID) {
-        var procemessage = "<option value='0'> Please wait...</option>";
-        $("#ddlsubcattypes").html(procemessage).show();
-        var url = "/Item/GetSubCategoriesTypes/";
-
-        $.ajax({
-            url: url,
-            data: { subcategoryID: _subcategoryID },
-            cache: false,
-            type: "POST",
-            success: function (data) {
-                var markup = "<option value='0'>Select SubCategoryTypes</option>";
-                for (var x = 0; x < data.length; x++) {
-                    markup += "<option value=" + data[x].ID + ">" + data[x].Description + "</option>";
-                }
-                $("#ddlsubcattypes").html(markup).show();
+            messages: {
+                noResults: "", results: ""
             },
-            error: function (reponse) {
-                alert("error : " + reponse);
-            }
+
         });
-    }
-
-
+    })
 </script>
 
 @using (Html.BeginForm("Edit", "Item", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -299,6 +236,14 @@
             </div>
 
             <div class="form-group">
+                @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
                 @Html.LabelFor(model => model.Img, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
                     @Html.TextBoxFor(model => model.Img, new { type = "file", htmlAttributes = new { @class = "form-control" } })
@@ -324,6 +269,103 @@
     @Scripts.Render("~/bundles/jqueryval")
 }
 
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        //alert('test');
+        var param = GetURLParameter();
+
+        var url = "/Item/GetItemById/";
+
+        $.ajax({
+            url: url,
+            data: { itemID: param },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                $.ajax({
+                    url: "/Item/GetSubCategory/",
+                    data: { categoryID: data.Category },
+                    cache: false,
+                    type: "POST",
+                    success: function (result) {
+                        var markup = "<option value='0'>Select SubCategory</option>";
+                        for (var x = 0; x < result.length; x++) {
+                            markup += "<option value=" + result[x].ID + ">" + result[x].Description + "</option>";
+                        }
+                        $("#ddlsubcat").html(markup).show();
+
+                        $("#ddlsubcat").val(data.SubCategory);
+                    },
+                    error: function (reponse) {
+                        alert("error : " + reponse);
+                    }
+                });
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    });
+
+    function GetURLParameter() {
+        var sPageURL = window.location.href;
+        var indexOfLastSlash = sPageURL.lastIndexOf("/");
+
+        if (indexOfLastSlash > 0 && sPageURL.length - 1 != indexOfLastSlash)
+            return sPageURL.substring(indexOfLastSlash + 1);
+        else
+            return 0;
+    }
+
+    function GetSubCategory(_categoryID) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlsubcat").html(procemessage).show();
+        var url = "/Item/GetSubCategory/";
+
+        $.ajax({
+            url: url,
+            data: { categoryID: _categoryID },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Select SubCategory</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].ID + ">" + data[x].Description + "</option>";
+                }
+                $("#ddlsubcat").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+
+    }
+
+    function GetSubCategoriesTypes(_subcategoryID) {
+        var procemessage = "<option value='0'> Please wait...</option>";
+        $("#ddlsubcattypes").html(procemessage).show();
+        var url = "/Item/GetSubCategoriesTypes/";
+
+        $.ajax({
+            url: url,
+            data: { subcategoryID: _subcategoryID },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'>Select SubCategoryTypes</option>";
+                for (var x = 0; x < data.length; x++) {
+                    markup += "<option value=" + data[x].ID + ">" + data[x].Description + "</option>";
+                }
+                $("#ddlsubcattypes").html(markup).show();
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+
+
+</script>
 <script language="javascript">
     $(function () {
 

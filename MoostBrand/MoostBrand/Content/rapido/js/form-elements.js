@@ -92,6 +92,11 @@ var FormElements = function() {"use strict";
 			autoclose: true
 		});
 	};
+
+	$('.date-picker').datepicker({
+	    autoclose: true
+	});
+
 	//function to initiate bootstrap-timepicker
 	var runTimePicker = function() {
 		$('.time-picker').timepicker();
