@@ -305,38 +305,38 @@
         $("select").addClass("form-control");
     });
 
-    function BindData(data) {
-        $("#RefNumber").val(data);
-    }
+    //function BindData(data) {
+    //    $("#RefNumber").val(data);
+    //}
 
     function HideOrShow() {
         var val = $("#RequisitionTypeID").val();
         if (val == 1) { //PR
-            $.get("@Url.Action("GenerateRefNumber", "PR")/PUR", null, BindData);
+            @*$.get("@Url.Action("GenerateRefNumber", "PR")/PUR", null, BindData);*@
             $("#br").hide();
             $("#pr").show();
             $("#cr").hide();
             $("#brcr").hide();
         } else if (val == 2) { //BR
-            $.get("@Url.Action("GenerateRefNumber", "PR")/BR", null, BindData);
+            @*$.get("@Url.Action("GenerateRefNumber", "PR")/BR", null, BindData);*@
             $("#br").show();
             $("#brcr").show();
             $("#pr").hide();
             $("#cr").hide();
         } else if (val == 3) { //WR
-            $.get("@Url.Action("GenerateRefNumber", "PR")/WR", null, BindData);
+            @*$.get("@Url.Action("GenerateRefNumber", "PR")/WR", null, BindData);*@
             $("#br").show();
             $("#pr").hide();
             $("#cr").hide();
             $("#brcr").show();
         } else if (val == 5) { //OR
-            $.get("@Url.Action("GenerateRefNumber", "PR")/OR", null, BindData);
+            @*$.get("@Url.Action("GenerateRefNumber", "PR")/OR", null, BindData);*@
             $("#br").show();
             $("#pr").hide();
             $("#cr").hide();
             $("#brcr").show();
         } else if (val == 4) { //CR
-            $.get("@Url.Action("GenerateRefNumber", "PR")/CR", null, BindData);
+            @*$.get("@Url.Action("GenerateRefNumber", "PR")/CR", null, BindData);*@
             $("#br").hide();
             $("#pr").hide();
             $("#cr").show();

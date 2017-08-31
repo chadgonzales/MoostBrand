@@ -262,7 +262,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
-                        @Html.DropDownList("ApprovedBy", String.Empty)
+                        @Html.DropDownList("ApprovedBy")
                         @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
                     </div>
                 </div>

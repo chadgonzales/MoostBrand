@@ -664,7 +664,6 @@ namespace MoostBrand.Controllers
                 catch
                 {
                     ModelState.AddModelError("", "There's an error.");
-                    throw;
                 }
             }
 

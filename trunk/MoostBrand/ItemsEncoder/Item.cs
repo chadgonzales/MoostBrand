@@ -44,5 +44,6 @@ namespace ItemsEncoder
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }
         public virtual SubCategory SubCategory { get; set; }
+        public virtual UnitOfMeasurement UnitOfMeasurement { get; set; }
     }
 }

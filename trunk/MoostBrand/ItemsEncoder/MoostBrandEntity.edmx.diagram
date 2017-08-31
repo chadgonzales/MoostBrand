@@ -13,6 +13,12 @@
         <AssociationConnector Association="MoostBrandModel.FK_Items_Categories" ManuallyRouted="false" />
         <AssociationConnector Association="MoostBrandModel.FK_SubCategories_Categories" ManuallyRouted="false" />
         <AssociationConnector Association="MoostBrandModel.FK_Items_SubCategories" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MoostBrandModel.UnitOfMeasurement" Width="1.5" PointX="7.375" PointY="0.875" />
+        <AssociationConnector Association="MoostBrandModel.FK_Items_UnitOfMeasurements" />
+        <EntityTypeShape EntityType="MoostBrandModel.Inventory" Width="1.5" PointX="7.375" PointY="3.75" />
+        <EntityTypeShape EntityType="MoostBrandModel.Location" Width="1.5" PointX="5.125" PointY="0.75" />
+        <AssociationConnector Association="MoostBrandModel.FK_Inventory_Locations" />
+        <EntityTypeShape EntityType="MoostBrandModel.Vendor" Width="1.5" PointX="0.75" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

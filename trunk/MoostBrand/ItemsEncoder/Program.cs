@@ -16,100 +16,198 @@ namespace ItemsEncoder
             public Item item { get; set; }
         }
 
+        public class VendorDTO
+        {
+            public Vendor vendor { get; set; }
+        }
+
+        public class InventoryDTO
+        {
+            public Inventory inventory { get; set; }
+        }
+
         static void Main(string[] args)
         {
             MoostBrandEntities entity = new MoostBrandEntities();
 
             List<ItemDTO> lstItemDTO = new List<ItemDTO>();
-            
+
+            List<InventoryDTO> lstInventoryDTO = new List<InventoryDTO>();
+
+            List<VendorDTO> lstVendorDTO = new List<VendorDTO>();
+
             const Int32 BufferSize = 128;
-            using (var fileStream = File.OpenRead(@"C:\mb_inventory_1.csv"))
+            using (var fileStream = File.OpenRead(@"C:\_inv_08232017_133PM.csv"))
             using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true, BufferSize))
             {
                 String line;
                 int lineCnt = 1;
                 while ((line = streamReader.ReadLine()) != null)
                 {
-                    if (lineCnt > 3)
+                    if (lineCnt >= 1)
                     {
                         string[] strLine = line.Split(',');
 
                         if (true) {
-                            Item item = new Item();
+                            //Item item = new Item();
+                            Inventory inventory = new Inventory();
+                            //Vendor vendor = new Vendor();
 
-                            string txtBrand = Convert.ToString(strLine[5]);
-                            Brand brand = entity.Brands.FirstOrDefault(p => p.Code == txtBrand);
-                            if (brand == null)
+                            //string txtBrand = Convert.ToString(strLine[5]);
+                            //Brand brand = entity.Brands.FirstOrDefault(p => p.Code == txtBrand);
+                            //if (brand == null)
+                            //{
+                            //    brand = new Brand
+                            //    {
+                            //        Code = txtBrand,
+                            //        Description = txtBrand
+                            //    };
+                            //    entity.Brands.Add(brand);
+                            //    entity.SaveChanges();
+                            //}
+
+                            //string txtCategory = Convert.ToString(strLine[5]);
+                            //Category category = entity.Categories.FirstOrDefault(p => p.Code == txtCategory);
+                            //if (category == null)
+                            //{
+                            //    category = new Category
+                            //    {
+                            //        Code = txtCategory,
+                            //        Description = txtCategory
+                            //    };
+                            //    entity.Categories.Add(category);
+                            //    entity.SaveChanges();
+                            //}
+
+
+
+                            //string txtSubCategory = Convert.ToString(strLine[8]);
+                            //SubCategory subCategory = entity.SubCategories.FirstOrDefault(p => p.Code == txtSubCategory);
+                            //if (subCategory == null)
+                            //{
+                            //    subCategory = new SubCategory
+                            //    {
+                            //        Code = txtSubCategory,
+                            //        Description = txtSubCategory
+                            //    };
+                            //    entity.SubCategories.Add(subCategory);
+                            //    entity.SaveChanges();
+                            //}
+
+                            //string txtUOM = Convert.ToString(strLine[5]);
+                            //UnitOfMeasurement uom = entity.UnitOfMeasurements.FirstOrDefault(p => p.Description == txtUOM);
+                            //if (uom == null)
+                            //{
+                            //    uom = new UnitOfMeasurement
+                            //    {
+                            //        Code = txtUOM,
+                            //        Description = txtUOM
+                            //    };
+                            //    entity.UnitOfMeasurements.Add(uom);
+                            //    entity.SaveChanges();
+                            //}
+
+                            int locid = 0;
+                            string txtLocation = Convert.ToString(strLine[2]);
+                            Location location = entity.Locations.FirstOrDefault(p => p.Description.Trim() == txtLocation.Trim());
+                            if (location != null)
                             {
-                                brand = new Brand
-                                {
-                                    Code = txtBrand,
-                                    Description = txtBrand
-                                };
-                                entity.Brands.Add(brand);
-                                entity.SaveChanges();
+                                locid = location.ID;
                             }
 
-                            string txtCategory = Convert.ToString(strLine[7]);
-                            Category category = entity.Categories.FirstOrDefault(p => p.Code == txtCategory);
-                            if (category == null)
+
+                            string dec = Convert.ToString(strLine[1]);
+                            if (dec == "")
                             {
-                                category = new Category
-                                {
-                                    Code = txtCategory,
-                                    Description = txtCategory
-                                };
-                                entity.Categories.Add(category);
-                                entity.SaveChanges();
+                                dec = "0";
+                            }
+                            decimal d = Convert.ToDecimal(dec); ;
+                            int wholenumber = (int)Math.Floor(d);
+
+                            decimal _decimal = d - wholenumber;
+
+                            string txtItemCode = Convert.ToString(strLine[0]);
+                            Item item = entity.Items.FirstOrDefault(p => p.Code.Trim() == txtItemCode.Trim());
+
+                            if (item != null && item.UnitOfMeasurementID != null && item.Quantity != null && locid != 0)
+                            {
+
+                                inventory.ItemCode = item.Code;
+                                inventory.InventoryUoM = item.UnitOfMeasurement.Description;
+                                inventory.Description = item.DescriptionPurchase;
+                                inventory.LocationCode = locid;
+                                inventory.InventoryStatus = 2;
+                                inventory.POSBarCode = item.Barcode;
+                                inventory.Year = item.Year;
+                                inventory.Category = item.Category.Description;
+
+                                //if (item.UnitOfMeasurementID == 6)
+                                //{
+                                //    inventory.InStock = (int)((wholenumber * item.Quantity) + (_decimal * item.Quantity));
+                                //}
+                                //else if (item.UnitOfMeasurementID == 4)
+                                //{
+                                //    inventory.InStock = wholenumber;
+                                //}
+
+                                inventory.InStock = wholenumber;
+
+                            }
+                            else
+                            {
+                                Console.WriteLine(txtItemCode);
                             }
 
 
-                            string txtSubCategory = Convert.ToString(strLine[8]);
-                            SubCategory subCategory = entity.SubCategories.FirstOrDefault(p => p.Code == txtSubCategory);
-                            if (subCategory == null)
-                            {
-                                subCategory = new SubCategory
-                                {
-                                    Code = txtSubCategory,
-                                    Description = txtSubCategory
-                                };
-                                entity.SubCategories.Add(subCategory);
-                                entity.SaveChanges();
-                            }
+                            //item.Year ="2017";
+                            //item.Barcode = Convert.ToString(strLine[0]);
+                            //item.Code = Convert.ToString(strLine[1]);
+                            //item.Description = Convert.ToString(strLine[2]);
+                            //item.DescriptionPurchase = Convert.ToString(strLine[3]);
+                            //  item.Quantity = Convert.ToInt32(strLine[5]);
 
-                            item.Year = Convert.ToString(strLine[0]).Trim();
-                            item.Barcode = Convert.ToString(strLine[1]);
-                            item.Code = Convert.ToString(strLine[2]);
-                            item.Description = Convert.ToString(strLine[3]);
-                            item.DescriptionPurchase = Convert.ToString(strLine[4]);
 
-                            item.BrandID = brand.ID;
+                          //  item.UnitOfMeasurementID = 6;//uom.ID;
+                            //item.BrandID = brand.ID;
 
-                            //status
+                            //////statusu
 
-                            item.CategoryID = category.ID;
-                            item.SubCategoryID = subCategory.ID;
+                           // item.CategoryID = category.ID;
+                            //item.SubCategoryID = subCategory.ID;
 
-                            string txtLeadTime = Convert.ToString(strLine[19]).Trim();
-                            item.LeadTime = txtLeadTime != "" ? Convert.ToInt32(txtLeadTime) : 0;
+                            //string txtLeadTime = Convert.ToString(strLine[19]).Trim();
+                            //item.LeadTime = txtLeadTime != "" ? Convert.ToInt32(txtLeadTime) : 0;
 
-                            //item.Status
-                            string pcs = Convert.ToString(strLine[21]);
-                            try
-                            {
-                                item.Quantity = pcs != "" ? Convert.ToInt32(pcs) : 0;
+                            ////item.Status
+                            //string pcs = Convert.ToString(strLine[4]);
+                            //try
+                            //{
+                            //    item.Quantity = pcs != "" ? Convert.ToInt32(pcs) : 0;
 
-                            }
-                            catch (Exception)
-                            {
-                                item.Quantity = 0;
-                            }
-                            
+                            //}
+                            //catch (Exception)
+                            //{
+                            //    item.Quantity = 0;
+                            //}
 
-                            ItemDTO itemDTO = new ItemDTO();
-                            itemDTO.item = item;
+                            //vendor.Code = Convert.ToString(strLine[0]).Trim();
+                            //vendor.Name = Convert.ToString(strLine[1]);
+                            //vendor.GeneralName = Convert.ToString(strLine[2]);
 
-                            lstItemDTO.Add(itemDTO);
+                            //ItemDTO itemDTO = new ItemDTO();
+                            //itemDTO.item = item;
+
+                            //lstItemDTO.Add(itemDTO);
+
+                            InventoryDTO invDTO = new InventoryDTO();
+                            invDTO.inventory = inventory;
+
+                            lstInventoryDTO.Add(invDTO);
+
+                            //VendorDTO venDTO = new VendorDTO();
+                            //venDTO.vendor = vendor;
+
+                            //lstVendorDTO.Add(venDTO);
                         }
                     }
 
@@ -119,34 +217,75 @@ namespace ItemsEncoder
 
             //  entity.Items.AddRange(lstItemDTO.Select(p => p.item));
 
+            //entity.Inventories.AddRange(lstInventoryDTO.Select(p => p.inventory));
 
+            //entity.Vendors.AddRange(lstVendorDTO.Select(p => p.vendor));
 
-            foreach (var _item in lstItemDTO.Select(p=>p.item))
+            //foreach (var _item in lstItemDTO.Select(p => p.item))
+            //{
+            //    bool exist = entity.Items.Count(p => p.Code == _item.Code) > 0;
+
+            //    try
+            //    {
+            //        if (exist)
+            //        {
+            //            int i = entity.Items.FirstOrDefault(p => p.Code == _item.Code).ID;
+            //            Item item = entity.Items.Find(i);
+            //            item.DescriptionPurchase = _item.DescriptionPurchase;
+            //            item.Quantity = _item.Quantity;
+            //            item.UnitOfMeasurementID = _item.UnitOfMeasurementID;
+
+            //        }
+            //        else
+            //        {
+            //            entity.Items.Add(_item);
+
+            //        }
+            //        entity.SaveChanges();
+            //    }
+            //    catch (Exception e) { e.ToString(); }
+            //}
+
+            foreach (var _item in lstInventoryDTO.Select(p => p.inventory))
             {
-                bool exist = entity.Items.Count(p => p.Barcode == _item.Barcode) == 1;
+                bool exist = entity.Inventories.Count(p => p.Description.Trim() == _item.Description.Trim()
+                                                         && p.LocationCode == _item.LocationCode
+                                                         && p.ItemCode.Trim() == _item.ItemCode.Trim()) > 0;
 
-                if (exist)
+
+                try
                 {
-                    int i = entity.Items.FirstOrDefault(p => p.Barcode == _item.Barcode).ID;
-                    Item item = entity.Items.Find(i);
-                    item.DescriptionPurchase = _item.DescriptionPurchase;
-                    entity.Entry(item).State = EntityState.Modified;
+                    if (exist)
+                    {
+                        int i = entity.Inventories.FirstOrDefault(p => p.Description.Trim() == _item.Description.Trim()
+                                                         && p.LocationCode == _item.LocationCode
+                                                         && p.ItemCode == _item.ItemCode).ID;
+
+                        Inventory inventory = entity.Inventories.Find(i);
+                        //item.DescriptionPurchase = _item.DescriptionPurchase;
+                        inventory.InStock = _item.InStock;
+                      //  inventory.Category = _item.Category;
+                        // item.UnitOfMeasurementID = _item.UnitOfMeasurementID;
+
+
+                    }
+                    else
+                    {
+                        entity.Inventories.Add(_item);
+
+                    }
                     entity.SaveChanges();
                 }
-                else
-                {
-                    entity.Items.Add(_item);
-                    entity.SaveChanges();
-                }
+                catch (Exception e) { e.ToString(); }
 
             }
 
 
             entity.SaveChanges();
 
-            Console.WriteLine("Done!");
+                Console.WriteLine("Done!");
 
-            Console.ReadLine();
-        }
+                Console.ReadLine();
+            }
     }
 }
