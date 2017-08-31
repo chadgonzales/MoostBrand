@@ -117,6 +117,24 @@ namespace MoostBrand.DAL
             }
         }
 
+
+        public string GetLocation
+        {
+            get
+            {
+                string location = "";
+                if (Requisition.Location1.Description == null)
+                {
+                    location = Requisition.Location.Description;
+                }
+                else
+                {
+                    location = Requisition.Location1.Description;
+                }
+
+                return location;
+            }
+        }
         public int? StockTransferID { get; set; }
 
         public virtual ApprovalStatu ApprovalStatu { get; set; }

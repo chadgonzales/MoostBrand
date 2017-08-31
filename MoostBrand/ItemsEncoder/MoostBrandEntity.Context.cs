@@ -29,5 +29,9 @@ namespace ItemsEncoder
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<SubCategory> SubCategories { get; set; }
+        public virtual DbSet<UnitOfMeasurement> UnitOfMeasurements { get; set; }
+        public virtual DbSet<Inventory> Inventories { get; set; }
+        public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<Vendor> Vendors { get; set; }
     }
 }
