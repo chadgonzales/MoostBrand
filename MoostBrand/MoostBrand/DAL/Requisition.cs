@@ -44,8 +44,11 @@ namespace MoostBrand.DAL
         
         public string DaysOfNotification { get; set; }
 
-        [Required(ErrorMessage = "Date Required is required")]
+        //[Required(ErrorMessage = "Date Required is required")]
         public DateTime? DateRequired { get; set; }
+
+        //[Required(ErrorMessage = "Date Required is required")]
+        //public string DateRequired { get; set; }
 
         public int? VendorID { get; set; }
 
