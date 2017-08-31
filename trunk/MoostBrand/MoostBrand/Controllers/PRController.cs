@@ -9,6 +9,7 @@ using MoostBrand.Models;
 using System.Web.Routing;
 using System.Collections.Generic;
 using MoostBrand.Helpers;
+using System.Data.Entity.Validation;
 
 namespace MoostBrand.Controllers
 {
@@ -600,7 +601,7 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 2, ModuleID = 3)]
         public ActionResult Edit(int id)
         {
-            ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
+            //ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
 
 
             //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
@@ -608,6 +609,9 @@ namespace MoostBrand.Controllers
             if (pr.ApprovalStatus == 1)
             {
                 #region DROPDOWNS
+
+                //ViewBag.DateRequired = pr.DateRequired.Value.ToString("dd/MM/yyyy");
+
                 var employees = from s in entity.Employees
                                 select new
                                 {
@@ -626,6 +630,7 @@ namespace MoostBrand.Controllers
                 ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description", pr.Destination);
                 ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
                 ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
+                ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status", pr.PaymentStatusID);
                 #endregion
 
                 return View(pr);
@@ -661,9 +666,21 @@ namespace MoostBrand.Controllers
                         return RedirectToAction("Details", new { id = pr.ID });
                     }
                 }
-                catch
+                catch (DbEntityValidationException ex)
                 {
-                    ModelState.AddModelError("", "There's an error.");
+                    // Retrieve the error messages as a list of strings.
+                    var errorMessages = ex.EntityValidationErrors
+                            .SelectMany(x => x.ValidationErrors)
+                            .Select(x => x.ErrorMessage);
+
+                    // Join the list to a single string.
+                    var fullErrorMessage = string.Join("; ", errorMessages);
+
+                    // Combine the original exception message with the new one.
+                    var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+
+                    // Throw a new DbEntityValidationException with the improved exception message.
+                    throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
                 }
             }
 
@@ -674,6 +691,8 @@ namespace MoostBrand.Controllers
                                 ID = s.ID,
                                 FullName = s.FirstName + " " + s.LastName
                             };
+
+            //ViewBag.DateRequired = pr.DateRequired.Value.ToString("dd/MM/yyyy");
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
@@ -686,6 +705,7 @@ namespace MoostBrand.Controllers
             ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description", pr.Destination);
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
+            ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status", pr.PaymentStatusID);
             #endregion
 
             return View(pr);

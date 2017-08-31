@@ -267,6 +267,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\VendorController.cs" />
     <Compile Include="Custom\Custom.cs" />
+    <Compile Include="Helpers\PaginationClass.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\ReceivingRepository.cs" />
     <Compile Include="Repositories\RequisitionDetailsRepository.cs" />
@@ -337,6 +338,8 @@
     <Compile Include="Models\R.cs" />
     <Compile Include="Models\Repo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\StockAdjustmentRepository.cs" />
+    <Compile Include="Repositories\StockTransferRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -4629,6 +4632,11 @@
     <Content Include="Views\StockTransferDirects\EditorTemplates\StockTransferOperator.cshtml" />
     <Content Include="Views\StockTransferDirects\EditorTemplates\StockTransferDirect.cshtml" />
     <Content Include="Views\Reservation\OrderCheckingIndex.cshtml" />
+    <Content Include="Views\ContainerStorage\Create.cshtml" />
+    <Content Include="Views\ContainerStorage\Delete.cshtml" />
+    <Content Include="Views\ContainerStorage\Details.cshtml" />
+    <Content Include="Views\ContainerStorage\Edit.cshtml" />
+    <Content Include="Views\ContainerStorage\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
