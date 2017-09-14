@@ -113,6 +113,7 @@ namespace MoostBrand.DAL
 
         public virtual StockTransferType StockTransferType { get; set; }
 
+        //public int? _ReservationID { get; set; }
         internal void CreateHelpers(int count = 1)
         {
             for (int i = 0; i < count; i++)

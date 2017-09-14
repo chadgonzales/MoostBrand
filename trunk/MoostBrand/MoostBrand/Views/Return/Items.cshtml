@@ -5,6 +5,169 @@
     ViewBag.Title = "Items";
 }
 <div class="panel-heading">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+    $(document).ajaxSuccess(function () {
+
+
+        $("#catsearch").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetCategories")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Name,
+                                value: item.Name
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#CategoryID").val(ui.item.id);
+                $("#itemcode").val('');
+                $("#itemsearch").val('');
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#catsearch").autocomplete("option", "appendTo", "#modalCat");
+
+        $("#itemsearch").autocomplete({
+            source: function (request, response) {
+                var catID = $("#CategoryID").val();
+                if(catID == '')
+                {
+                    catID = '';
+                }
+                $.ajax({
+                    url: '@Url.Action("GetItems")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { catID: catID, name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Name,
+                                value: item.Name,
+                                code: item.Code,
+                                category: item.Category
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#ItemID").val(ui.item.id);
+                $("#itemcode").val(ui.item.code);
+                $("#catsearch").val(ui.item.category);
+                Get();
+
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#itemsearch").autocomplete("option", "appendTo", "#modalItem");
+        $("#itemsearch").keyup(function () {
+            if (!this.value) {
+                $('#ItemID').removeAttr('value');
+                $('#ItemCode').html('');
+
+            }
+        });
+
+        //--------------------- for PUR
+
+        $("#catsearch").autocomplete("option", "appendTo", "#modalCat");
+
+
+
+        function Get() {
+
+            var itmID = $("#ItemID").val();
+            var itmCode = $("#itemcode").val();
+
+            $.ajax({
+                url: "/StockAdjustment/GetOldQuantity",
+                type: "POST",
+                data: "{'ItemID' : '" + itmID + "'}",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#OldQuantity").val(data);
+                    $("#Hidden_Quantity").val(data);
+
+                }
+
+            });
+
+
+        }
+
+        $("#itemcode").autocomplete({
+
+            source: function (request, response) {
+                var catID = $("#CategoryID").val();
+                if(catID == '')
+                {
+                    catID = '';
+                }
+
+                $.ajax({
+
+                    url: '@Url.Action("GetItemCode")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { catID: catID, name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Code,
+                                value: item.Code,
+                                name: item.Name,
+                                category: item.Category
+                            };
+                        }))
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#itemsearch").val(ui.item.name);
+                $("#ItemID").val(ui.item.id);
+                $("#ItemCode").val(ui.item.id);
+                $("#catsearch").val(ui.item.category);
+                Get();
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#itemcode").autocomplete("option", "appendTo", "#modalItem");
+        $("#itemcode").keyup(function () {
+            if (!this.value) {
+                $('#ItemID').html('');
+                $('#ItemCode').removeAttr('value');
+            }
+        });
+
+
+    })
+    </script>
     <h4 class="panel-title">Return Items</h4>
     <hr />
 </div>
@@ -17,10 +180,16 @@
                     Item Name
                 </th>
                 <th>
-                    Reference #
+                    Reference
                 </th>
                 <th>
-                    Quantity
+                     Old Quantity
+                </th>
+                <th>
+                    New Quantity
+                </th>
+                <th>
+                    Pullout
                 </th>
                 <th>
                     Action
@@ -31,40 +200,23 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    @if (item.ReceivingDetailID != null)
-                    {
-                        @*<td>
-                            @Html.DisplayFor(modelItem => item.StockTransferDetail.RequisitionDetail.Item.Description)
+                    
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GetItem)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.StockTransferDetail.StockTransfer.TransferID)
-                        </td>*@
+                            @Html.DisplayFor(modelItem => item.Return.ReturnType.Type)
+                        </td>
 
                         <td>
-                            @Html.DisplayFor(modelItem => item.ReceivingDetail.RequisitionDetail.Item.Description)
+                            @Html.DisplayFor(modelItem => item.OldQuantity)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.ReceivingDetail.Receiving.ReceivingID)
+                            @Html.DisplayFor(modelItem => item.NewQuantity)
                         </td>
-                    }
-                    else
-                    {
-                        @*<td>
-                            @Html.DisplayFor(modelItem => item.ReceivingDetail.StockTransferDetail.RequisitionDetail.Item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ReceivingDetail.Receiving.ReceivingID)
-                        </td>*@
-
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StockTransferDetail.ReceivingDetail.RequisitionDetail.Item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.StockTransferDetail.StockTransfer.TransferID)
-                        </td>
-                    }
+                    
                     <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
+                        @Html.DisplayFor(modelItem => item.Pullout)
                     </td>
                     <td>
                         <div class="custom-tools">

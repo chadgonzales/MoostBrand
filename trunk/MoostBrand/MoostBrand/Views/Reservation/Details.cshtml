@@ -30,6 +30,7 @@
                         </label>
                     </div>
                 </div>
+                
                 <div class="form-group">
                     <label class="control-label col-md-4">Requested Date</label>
                     <div class="col-md-8">
@@ -39,7 +40,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-4">Requested By</label>
+                    <label class="control-label col-md-4">Sales Person</label>
                     <div class="col-md-8">
                         <label class="custom-label">
                             @Html.DisplayFor(model => model.Employee1.LastName),
@@ -48,7 +49,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-4">Location</label>
+                    <label class="control-label col-md-4">Location of Reservation</label>
                     <div class="col-md-8">
                         <label class="custom-label">
                             @Html.DisplayFor(model => model.Location.Description)
@@ -92,14 +93,14 @@
 
 
                 <div id="brcr">
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label class="control-label col-md-4">Driver</label>
                         <div class="col-md-8">
                             <label class="custom-label">
                                 @Html.DisplayFor(model => model.Driver)
                             </label>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
             <div class="col-sm-6">
@@ -170,14 +171,14 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label class="control-label col-md-4">Drop Ship Type</label>
                         <div class="col-md-8">
                             <label class="custom-label">
                                 @Html.DisplayFor(model => model.DropShipType.Type)
                             </label>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
 
 

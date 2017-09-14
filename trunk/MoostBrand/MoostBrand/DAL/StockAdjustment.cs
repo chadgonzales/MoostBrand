@@ -26,6 +26,11 @@ namespace MoostBrand.DAL
         [Display(Name = "Error Date")]
         public DateTime ErrorDate { get; set; }
 
+        public string _ErrorDate
+        {
+            get { return ErrorDate.ToString("MM/dd/yyyy");  }
+        }
+
         [Required(ErrorMessage = "Location is Required")]
         public int LocationID { get; set; }
 

@@ -128,20 +128,30 @@ namespace MoostBrand.Controllers
 
         public ActionResult GetRequisition(int id) //returns Json
         {
+            string _date = "";
+
+            if (entity.Requisitions.Find(id).RequestedDate != null)
+            {
+                _date = entity.Requisitions.Find(id).RequestedDate.ToString("MM/dd/yyyy");
+
+            }
+
             var req = entity.Requisitions
                 .Where(r => r.ID == id)
                 .Select(r => new
                  { 
-                    RefNumber = r != null ? r.RefNumber : " ",
-                    RequestedBy = r != null ? r.Employee1.LastName + ", " + r.Employee1.FirstName : " ",
-                    Destination  = r != null ? r.Location1.Description : " ",
-                    SourceLoc   = r != null ? r.Location.Description : " ",
-                    Vendor = r != null ? r.Vendor.Name : " ",
-                    VendorCode = r != null ? r.Vendor.Code : " ",
-                    VendorContact = r != null ? r.Vendor.ContactPerson : " ",
+                    RefNumber = r.RefNumber != null ? r.RefNumber : " ",
+                    RequestedBy =r.Employee1 != null ? r.Employee1.LastName + ", " + r.Employee1.FirstName : " ",
+                    Destination = r.Location1.Description != null ? r.Location1.Description : " ",
+                    SourceLoc = r.Location.Description != null ? r.Location.Description : " ",
+                    Vendor = r.Vendor.Name != null ? r.Vendor.Name : " ",
+                    VendorCode = r.Vendor.Code != null ? r.Vendor.Code : " ",
+                    VendorContact = r.Vendor.ContactPerson != null ? r.Vendor.ContactPerson : " ",
                     CustName   = " ",
                     ShipmentType = r.ShipmentType.Type ,
-                     Invoice  = " "
+                    PONumber = r.PONumber != null ? r.PONumber : " ",
+                    Invoice = r.InvoiceNumber != null ? r.InvoiceNumber : " ",
+                    strDate = _date
                 })
                 .FirstOrDefault();
 
@@ -249,10 +259,14 @@ namespace MoostBrand.Controllers
             var itmID = entity.RequisitionDetails.Find(reqID);
             var item = entity.Items.FirstOrDefault(p => p.ID == itmID.ItemID);
             var itmsDesc = entity.Items.FirstOrDefault(x => x.ID == itmID.ItemID).Description;
-            var qty = entity.RequisitionDetails.FirstOrDefault(model => model.ID == reqID).Quantity;
-            if (qty == 0)
+            var qty = 0;
+            if (itmID.Requisition.RequisitionTypeID == 1)
             {
-                qty = entity.StockTransferDetails.FirstOrDefault(model => model.RequisitionDetailID == reqID).Quantity;
+                qty = itmID.Quantity.Value;
+            }
+           else
+            {
+                 qty = entity.StockTransferDetails.FirstOrDefault(model => model.RequisitionDetailID == reqID).Quantity.Value;
             }
             //var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             //var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
@@ -317,7 +331,7 @@ namespace MoostBrand.Controllers
 
            
 
-            var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 & s.Requisition.LocationID== loc.ID  & !entity.Receivings.Select(p=>p.StockTransferID).Contains(s.ID))
+            var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 & s.Requisition.LocationID== loc.ID  & !entity.Receivings.Select(p=>p.RequisitionID).Contains(s.RequisitionID.Value))
                      .Select(r => new
                       {
                           ID = r.RequisitionID.Value,

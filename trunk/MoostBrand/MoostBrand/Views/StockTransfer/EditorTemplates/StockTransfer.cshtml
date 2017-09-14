@@ -34,6 +34,15 @@
             </div>
         </div>
     </div>
+    <div id="res">
+        <div class="form-group">
+            @Html.LabelFor(model => model.RequisitionID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownList("ReservationID", String.Empty)
+                @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
 
     <div class="form-group">
         <label class="control-label col-md-2">Destination</label>
@@ -113,7 +122,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.RequestedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("RequestedBy", String.Empty)
+            @Html.DropDownList("RequestedBy")
             @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -121,7 +130,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.ReceivedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("ReceivedBy", String.Empty)
+            @Html.DropDownList("ReceivedBy")
             @Html.ValidationMessageFor(model => model.ReceivedBy, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -129,7 +138,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.ReleasedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("ReleasedBy", String.Empty)
+            @Html.DropDownList("ReleasedBy")
             @Html.ValidationMessageFor(model => model.ReleasedBy, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -147,7 +156,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.CounterCheckedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("CounterCheckedBy", String.Empty)
+            @Html.DropDownList("CounterCheckedBy")
             @Html.ValidationMessageFor(model => model.CounterCheckedBy, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -155,7 +164,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("EncodedBy", String.Empty)
+            @Html.DropDownList("EncodedBy")
             @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -163,7 +172,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.PostedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("PostedBy", String.Empty)
+            @Html.DropDownList("PostedBy")
             @Html.ValidationMessageFor(model => model.PostedBy, "", new { @class = "text-danger" })
         </div>
     </div>

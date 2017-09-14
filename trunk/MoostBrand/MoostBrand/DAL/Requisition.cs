@@ -22,6 +22,10 @@ namespace MoostBrand.DAL
         [StringLength(50)]
         public string RefNumber { get; set; }
 
+      
+        [StringLength(50)]
+        public string PONumber { get; set; }
+
         public int? ReqTypeID { get; set; }
 
         public int? RequisitionTypeID { get; set; }
@@ -45,7 +49,13 @@ namespace MoostBrand.DAL
         public string DaysOfNotification { get; set; }
 
         //[Required(ErrorMessage = "Date Required is required")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime? DateRequired { get; set; }
+
+        public string _DateRequired
+        {
+            get { return DateRequired.Value.ToString("MM/dd/yyyy"); }
+        }
 
         //[Required(ErrorMessage = "Date Required is required")]
         //public string DateRequired { get; set; }
@@ -55,12 +65,16 @@ namespace MoostBrand.DAL
         [StringLength(150)]
         public string Customer { get; set; }
 
+        [Display(Name = "Reservation Type")]
         public int? ReservationTypeID { get; set; }
 
+        [Display(Name = "Shipment Type")]
         public int? ShipmentTypeID { get; set; }
 
+        [Display(Name = "Drop Ship")]
         public int? DropShipID { get; set; }
 
+        [Display(Name = "Payment Status")]
         public int? PaymentStatusID { get; set; }
 
         [StringLength(50)]

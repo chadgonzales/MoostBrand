@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-4">Requested Date</label>
+                    <label class="control-label col-md-4 _date"></label>
                     <div class="col-md-8">
                         <label class="custom-label">
                             @Html.DisplayFor(model => model.requisition.Requisitions._RequestedDate)
@@ -91,6 +91,14 @@
                         <div class="col-md-8">
                             <label class="custom-label">
                                 @Html.DisplayFor(model => model.requisition.Requisitions.Vendor.Name)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">PO Number</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.requisition.Requisitions.PONumber)
                             </label>
                         </div>
                     </div>
@@ -414,29 +422,35 @@
         if (val == 1) { //PR
             $("#br").hide();
             $("#pr").show();
+            $('._date').html("PO Date");
             $("#cr").hide();
             $("#brcr").hide();
         } else if (val == 2) { //BR
+            $('._date').html("Requested Date");
             $("#br").show();
             $("#brcr").show();
             $("#pr").hide();
             $("#cr").hide();
         } else if (val == 3) { //WR
+            $('._date').html("Requested Date");
             $("#br").show();
             $("#pr").hide();
             $("#cr").hide();
             $("#brcr").show();
         } else if (val == 5) { //OR
+            $('._date').html("Requested Date");
             $("#br").show();
             $("#pr").hide();
             $("#cr").hide();
             $("#brcr").show();
         } else if (val == 4) { //CR
+            $('._date').html("Requested Date");
             $("#br").hide();
             $("#pr").hide();
             $("#cr").show();
             $("#brcr").show();
         } else {
+            $('._date').html("Requested Date");
             $("#br").hide();
             $("#pr").hide();
             $("#cr").hide();

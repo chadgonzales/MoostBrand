@@ -20,14 +20,7 @@
                 </label>
             </div>
         </div>
-        <div class="form-group">
-            <label class="control-label col-md-2">Return Type</label>
-            <div class="col-md-6">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.ReturnType.Type)
-                </label>
-            </div>
-        </div>
+    
         <div class="form-group">
             <label class="control-label col-md-2">Date</label>
             <div class="col-md-6">
@@ -111,6 +104,9 @@
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
                     <input type="submit" value="Delete" class="btn btn-dark-red" />
+                    <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                        Back to List
+                    </a>
                 </div>
             </div>
         }

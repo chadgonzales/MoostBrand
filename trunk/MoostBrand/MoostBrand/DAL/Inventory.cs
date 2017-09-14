@@ -22,6 +22,7 @@
 
         [StringLength(100)]
         public string Description { get; set; }
+        public string SalesDescription { get; set; }
 
         [StringLength(100)]
         public string Category { get; set; }

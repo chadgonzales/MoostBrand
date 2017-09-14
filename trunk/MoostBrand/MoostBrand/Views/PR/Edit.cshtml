@@ -4,6 +4,43 @@
     ViewBag.Title = "Edit Requisitions";
 }
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $("#VendorID").val(@ViewBag.VendorID);
+        $("#vendorsearch").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetVendors")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Name,
+                                value: item.Name
+                            };
+
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#VendorID").val(ui.item.id);
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+    })
+</script>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -41,15 +78,16 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.RequestedBy, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.DropDownList("RequestedBy", String.Empty)
+                    @Html.DropDownList("RequestedBy")
                     @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.RequestedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <label class="control-label col-md-2 _date"></label>
+                @*@Html.LabelFor(model => model.RequestedDate, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model._RequestedDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
+                    @Html.EditorFor(model => model.RequestedDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
                     @Html.ValidationMessageFor(model => model.RequestedDate, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -57,7 +95,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.DropDownList("LocationID", String.Empty)
+                    @Html.DropDownList("LocationID")
                     @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -78,15 +116,25 @@
                 </div>
             </div>*@
 
-            <div id="pr">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Vendor, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.DropDownList("VendorID", String.Empty)
-                        @Html.ValidationMessageFor(model => model.VendorID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
+            <<div id="pr">
+    @Html.Hidden("VendorID")
+    <div class="form-group">
+        @Html.LabelFor(model => model.Vendor, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.TextBox("vendorsearch", ViewBag.VendorName as string, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.VendorID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PONumber, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.TextBoxFor(model => model.PONumber, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PONumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+</div>
 
             <div id="cr">
                 <div class="form-group">
@@ -108,7 +156,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ReservedBy, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
-                        @Html.DropDownList("ReservedBy", String.Empty)
+                        @Html.DropDownList("ReservedBy")
                         @Html.ValidationMessageFor(model => model.ReservedBy, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -117,7 +165,7 @@
                     @Html.LabelFor(model => model.PaymentStatusID, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
                         @*@Html.EditorFor(model => model.PaymentStatus, new { htmlAttributes = new { @class = "form-control" } })*@
-                        @Html.DropDownList("PaymentStatusID", String.Empty)
+                        @Html.DropDownList("PaymentStatusID")
                         @Html.ValidationMessageFor(model => model.PaymentStatusID, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -141,7 +189,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ValidatedBy, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
-                        @Html.DropDownList("ValidatedBy", String.Empty)
+                        @Html.DropDownList("ValidatedBy")
                         @Html.ValidationMessageFor(model => model.ValidatedBy, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -149,7 +197,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ShipmentType, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
-                        @Html.DropDownList("ShipmentTypeID", String.Empty)
+                        @Html.DropDownList("ShipmentTypeID")
                         @Html.ValidationMessageFor(model => model.ShipmentTypeID, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -158,7 +206,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.DropShipType, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-6">
-                            @Html.DropDownList("DropShipID", String.Empty)
+                            @Html.DropDownList("DropShipID")
                             @Html.ValidationMessageFor(model => model.DropShipID, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -169,18 +217,18 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Destination, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
-                        @Html.DropDownList("Destination", String.Empty)
+                        @Html.DropDownList("Destination")
                         @Html.ValidationMessageFor(model => model.Destination, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group">
+                @*<div class="form-group">
                     @Html.LabelFor(model => model.PlateNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
                         @Html.EditorFor(model => model.PlateNumber, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.PlateNumber, "", new { @class = "text-danger" })
                     </div>
-                </div>
+                </div>*@
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Others, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -190,7 +238,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                @*<div class="form-group">
                     @Html.LabelFor(model => model.TimeDeparted, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
                         @Html.EditorFor(model => model.TimeDeparted, new { htmlAttributes = new { @class = "form-control" } })
@@ -204,10 +252,10 @@
                         @Html.EditorFor(model => model.TimeArrived, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.TimeArrived, "", new { @class = "text-danger" })
                     </div>
-                </div>
+                </div>*@
             </div>
 
-            <div id="brcr">
+            @*<div id="brcr">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Driver, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
@@ -215,7 +263,7 @@
                         @Html.ValidationMessageFor(model => model.Driver, "", new { @class = "text-danger" })
                     </div>
                 </div>
-            </div>
+            </div>*@
 
             @*<div class="form-group">
                     @Html.LabelFor(model => model.ApprovalStatus, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -223,7 +271,7 @@
                         @Html.DropDownList("ApprovalStatus", String.Empty)
                         @Html.ValidationMessageFor(model => model.ApprovalStatus, "", new { @class = "text-danger" })
                     </div>
-                </div>
+                </div>*@
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -231,7 +279,7 @@
                         @Html.DropDownList("ApprovedBy", String.Empty)
                         @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
                     </div>
-                </div>*@
+                </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -322,35 +370,41 @@
         var val = $("#RequisitionTypeID").val();
         if (val == 1) { //PR
             @*$.get("@Url.Action("GenerateRefNumber", "PR")/PUR", null, BindData);*@
+            $('._date').html('PO Date');
             $("#br").hide();
             $("#pr").show();
             $("#cr").hide();
             $("#brcr").hide();
         } else if (val == 2) { //BR
             @*$.get("@Url.Action("GenerateRefNumber", "PR")/BR", null, BindData);*@
+            $('._date').html('Requested Date');
             $("#br").show();
             $("#brcr").show();
             $("#pr").hide();
             $("#cr").hide();
         } else if (val == 3) { //WR
             @*$.get("@Url.Action("GenerateRefNumber", "PR")/WR", null, BindData);*@
+            $('._date').html('Requested Date');
             $("#br").show();
             $("#pr").hide();
             $("#cr").hide();
             $("#brcr").show();
         } else if (val == 5) { //OR
             @*$.get("@Url.Action("GenerateRefNumber", "PR")/OR", null, BindData);*@
+            $('._date').html('Requested Date');
             $("#br").show();
             $("#pr").hide();
             $("#cr").hide();
             $("#brcr").show();
         } else if (val == 4) { //CR
             @*$.get("@Url.Action("GenerateRefNumber", "PR")/CR", null, BindData);*@
+            $('._date').html('Requested Date');
             $("#br").hide();
             $("#pr").hide();
             $("#cr").show();
             $("#brcr").show();
         } else {
+            $('._date').html('Requested Date');
             $("#RefNumber").val("");
             $("#br").hide();
             $("#pr").hide();

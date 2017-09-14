@@ -13,7 +13,7 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ReceivingDetail()
         {
-            ReturnedItems = new HashSet<ReturnedItem>();
+            //ReturnedItems = new HashSet<ReturnedItem>();
             StockAllocationDetails = new HashSet<StockAllocationDetail>();
             StockTransferDetails = new HashSet<StockTransferDetail>();
             StockTransferDetails1 = new HashSet<StockTransferDetail>();
@@ -56,8 +56,8 @@ namespace MoostBrand.DAL
 
         public virtual RequisitionDetail RequisitionDetail1 { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReturnedItem> ReturnedItems { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<ReturnedItem> ReturnedItems { get; set; }
 
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -12,6 +12,18 @@ namespace MoostBrand.DAL
 
         int _instock, _ordered, _committed;
 
+        public IQueryable<Inventory> List()
+        {
+            return entity.Inventories;
+        }
+
+        public string getItemSalesDesc(string itemcode)
+        {
+            string item = entity.Items.FirstOrDefault(i => i.Code == itemcode).Description;
+         
+            return item;
+        }
+
         public int getCommited(string code, int location)
         {
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
@@ -166,6 +178,45 @@ namespace MoostBrand.DAL
             return _committed;
         }
 
+        public int getTotalStockTranfer(string code, int locationID)
+        {
+            int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
+            var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 2 && p.LocationID == locationID).Select(p => p.ID).ToList();
+            int c = 0;
+            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == item && model.AprovalStatusID == 2 && st.Contains(model.StockTransferID.Value));
+            var committed = com.Sum(x => x.Quantity);
+            c = Convert.ToInt32(committed);
+            if (committed == null)
+            {
+                c = 0;
+            }
+
+            _committed = c;
+
+
+
+            return _committed;
+        }
+
+        public int getTotalVariance(int invID, int locationID)
+        {
+          
+            var st = entity.StockAdjustments.Where(p => p.ApprovalStatus == 2 && p.LocationID == locationID).Select(p => p.ID).ToList();
+            int c = 0;
+            var com = entity.StockAdjustmentDetails.Where(model => model.ItemID == invID  && st.Contains(model.StockAdjustmentID.Value));
+            var committed = com.Sum(x => x.Variance);
+            c = Convert.ToInt32(committed);
+            if (committed == null)
+            {
+                c = 0;
+            }
+
+            _committed = c;
+
+
+
+            return _committed;
+        }
         public int getStockTranferReceiving(string code)
         {
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;

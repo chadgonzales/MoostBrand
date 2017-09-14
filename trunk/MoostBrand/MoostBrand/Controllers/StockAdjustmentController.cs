@@ -116,8 +116,16 @@ namespace MoostBrand.Controllers
         {
             if (ModelState.IsValid)
             {
+                string _type = "";
+                if (adjust.TransactionTypeID == 1)
+                    _type = "s";
+                else if (adjust.TransactionTypeID == 2)
+                    _type = "r";
+                else if (adjust.TransactionTypeID == 3)
+                    _type = "v";
+
                 try
-                {   adjust.No = stockadRepo.GeneratePoNumber();
+                {   adjust.No = stockadRepo.GeneratePoNumber(_type);
                     adjust.ApprovalStatus = 1;
                     adjust.IsSync = false;
                     adjust.ErrorDate = DateTime.Now;
@@ -232,11 +240,23 @@ namespace MoostBrand.Controllers
                                 ID = s.ID,
                                 FullName = s.FirstName + " " + s.LastName
                             };
+
+
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                        .Select(x => new
+                        {
+                            ID = x.ID,
+                            Description = x.Description
+                        });
+
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description");
             ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName", adjust.PreparedBy);
             ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName", adjust.AdjustedBy);
             ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", adjust.TransactionTypeID);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", adjust.ApprovedBy);
             ViewBag.PostedBy = new SelectList(employees, "ID", "FullName", adjust.PostedBy);
+            ViewBag.Date = DateTime.Now.ToString("MMM/dd/yyyy");
+            ViewBag.PostedDate = DateTime.Now.ToString("MMM/dd/yyyy");
             #endregion
 
             return View(adjust);
@@ -295,7 +315,7 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var adjust = entity.StockAdjustments.Find(id);
-                if(adjust.StockAdjustmentDetails.Count > 0)
+                if (adjust.StockAdjustmentDetails.Count > 0)
                 {
                     adjust.ApprovalStatus = 2;
                     adjust.IsSync = false;
@@ -309,19 +329,26 @@ namespace MoostBrand.Controllers
                     {
                         foreach (var _inv in inv)
                         {
-                            var i = entity.Inventories.Find(_inv.ItemID);                        
+                            var i = entity.Inventories.Find(_inv.ItemID);
                             i.InStock = _inv.NewQuantity;
                             entity.Entry(i).State = EntityState.Modified;
                             entity.SaveChanges();
-                       }
+                        }
 
                     }
 
                     return RedirectToAction("Index");
                 }
+                else
+                {
+                    TempData["Error"] = "No Items to Approve";
+                    return RedirectToAction("Index");
+                }
             }
             catch
             {
+                TempData["Error"] = "No Items to Approve";
+                return RedirectToAction("Index");
             }
 
             return View();
@@ -365,6 +392,12 @@ namespace MoostBrand.Controllers
 
             ViewBag.STTAid = id;
 
+            
+            try
+            {
+                Session["locationID"] = entity.StockAdjustments.Find(id).LocationID;
+            }
+            catch { }
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
             return View(items.ToPagedList(pageNumber, pageSize));
@@ -407,6 +440,7 @@ namespace MoostBrand.Controllers
         {
             //try
             //{
+           
                 var found = false;
 
                 var adj = entity.StockAdjustments.Find(id);
@@ -417,7 +451,8 @@ namespace MoostBrand.Controllers
                 {
                     rd.ID = 0;
                     rd.OldQuantity = stockadRepo.GetInventoryQuantity(rd.ItemID);
-                    rd.Variance = rd.NewQuantity - rd.OldQuantity;
+                    //rd.Variance = rd.Variance;//rd.NewQuantity - rd.OldQuantity;
+                    rd.NewQuantity = rd.OldQuantity + rd.Variance;
                     rd.IsSync = false;
                     rd.StockAdjustmentID = id;
                  
@@ -456,7 +491,8 @@ namespace MoostBrand.Controllers
             try
             {
                 rd.OldQuantity = stockadRepo.GetInventoryQuantity(rd.ItemID);
-                rd.Variance = rd.NewQuantity - rd.OldQuantity;
+                rd.NewQuantity = rd.OldQuantity + rd.Variance;
+                // rd.Variance = rd.NewQuantity - rd.OldQuantity;
                 rd.IsSync = false;
 
                 entity.Entry(rd).State = EntityState.Modified;
@@ -500,10 +536,17 @@ namespace MoostBrand.Controllers
             return RedirectToAction("Items", new { id = reqID });
         }
 
-        public JsonResult GetNumber()
+        public JsonResult GetNumber(int? TransType)
         {
+            string _type = "";
+            if (TransType == 1)
+                _type = "s";
+            else if (TransType == 2)
+                _type = "r";
+            else if (TransType == 3)
+                _type = "v";
 
-            string number = stockadRepo.GeneratePoNumber();
+            string number = stockadRepo.GeneratePoNumber(_type);
 
             return Json(number);
         }
@@ -516,8 +559,52 @@ namespace MoostBrand.Controllers
             return Json(number);
         }
 
+        [HttpPost]
+        public JsonResult GetCategories(string name)
+        {
+            var categories = entity.Categories.Where(x => x.Description.Contains(name))
+                            .Select(x => new
+                            {
+                                ID = x.Description,
+                                Name = x.Description
+                            });
+            return Json(categories, JsonRequestBehavior.AllowGet);
+        }
 
-        
+        [HttpPost]
+        public JsonResult GetItems(string catID, string name)
+        {
+            int loc = Convert.ToInt32(Session["locationID"]);
+            var items = entity.Inventories.Where(x => x.LocationCode == loc 
+                                                      && (x.Category == catID || x.Description.Contains(name)))
+                        .Select(x => new
+                        {
+                            ID = x.ID,
+                            Code = x.ItemCode,
+                            Name = x.Description,
+                            Category = x.Category
+                        });
+
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetItemCode(string catID, string name)
+        {
+            int loc = Convert.ToInt32(Session["locationID"]);
+            var items = entity.Inventories.Where(x => x.LocationCode == loc
+                                                      && (x.Category == catID || x.ItemCode.Contains(name)))
+                        .Select(x => new
+                        {
+                            ID = x.ID,
+                            Code = x.ItemCode,
+                            Name = x.Description,
+                            Category = x.Category
+                        });
+
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }

@@ -16,19 +16,19 @@ namespace MoostBrand.DAL
         }
 
 
-        public string GeneratePoNumber()
+        public string GeneratePoNumber(string type)
         {
           
             //get last id
             int lastId = 1;
-            int cnt = List().Count();
+            int cnt = List().Where(p=>p.No.Contains(type)).Count();
             if (cnt > 0)
             {
                 lastId = cnt + 1;
             }
 
        
-            string Number = "SA-"+lastId.ToString().PadLeft(10, '0');
+            string Number = type+"-" +lastId.ToString().PadLeft(10, '0');
 
             bool poExist = entity.StockAdjustments.Count(p => p.No == Number) > 0;
 
@@ -37,7 +37,7 @@ namespace MoostBrand.DAL
                 if (cnt > 0)
                 {
                     lastId = lastId + 1;
-                    Number = lastId.ToString().PadLeft(4, '0');
+                    Number = type + "-"+lastId.ToString().PadLeft(4, '0');
                     poExist = entity.StockAdjustments.Count(p => p.No == Number) > 0;
                 }
 
