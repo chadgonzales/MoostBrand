@@ -179,6 +179,7 @@ namespace MoostBrand.Controllers
 
             foreach (var reserved in lstreserved)
             {
+                Requisition _req = entity.Requisitions.Find(reserved.ID);
                 DateTime startedDate = reserved.RequestedDate;
                 DateTime validityDate = Convert.ToDateTime(reserved.ValidityOfReservation);
                 DateTime notif = Convert.ToDateTime(reserved.DaysOfNotification);
@@ -192,9 +193,9 @@ namespace MoostBrand.Controllers
                 }
                 if (reserved.PaymentStatusID == 1 && DateTime.Now > validityDate)
                 {
-                    reserved.ReservationStatus = "Cancelled";
-                    entity.Entry(lstreserved).State = EntityState.Modified;
-                    entity.SaveChanges();
+                    _req.ReservationStatus = "Cancelled";
+                    entity.Entry(reserved).State = EntityState.Modified;
+                   // entity.SaveChanges();
                 }
                 else if (reserved.PaymentStatusID == 2 || reserved.PaymentStatusID == 3 || reserved.PaymentStatusID == 4 && DateTime.Now > expiryDateFD)
                 {
@@ -434,6 +435,8 @@ namespace MoostBrand.Controllers
             ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName");
+            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
+            ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status");
 
             return View(pr);
         }
@@ -497,6 +500,7 @@ namespace MoostBrand.Controllers
             ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", req.ValidatedBy);
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", req.AuthorizedPerson);
+            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
             return View(req);
         }
 
@@ -522,7 +526,7 @@ namespace MoostBrand.Controllers
                                 Description = x.Description
                             });
 
-                ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
+                ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status",pr.PaymentStatusID);
                 ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
                 ViewBag.LocationID = new SelectList(loc, "ID", "Description", pr.LocationID);
                 ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
@@ -591,7 +595,7 @@ namespace MoostBrand.Controllers
                           Description = x.Description
                         });
 
-            ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
+            ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status",req.PaymentStatusID);
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", req.RequestedBy);
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", req.LocationID);
             ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", req.ReservationTypeID);

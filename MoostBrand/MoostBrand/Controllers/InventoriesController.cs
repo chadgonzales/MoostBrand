@@ -17,6 +17,7 @@ namespace MoostBrand.Controllers
     public class InventoriesController : Controller
     {
         private MoostBrandEntities entity = new MoostBrandEntities();
+        InventoryRepository invRepo = new InventoryRepository();
 
         #region JSON
         public JsonResult GetItems(string name)
@@ -177,6 +178,7 @@ namespace MoostBrand.Controllers
                 {
                     var reOrder = inventory.DailyAverageUsage * inventory.LeadTime;
                     inventory.ReOrder = reOrder;
+                    inventory.SalesDescription = invRepo.getItemSalesDesc(inventory.ItemCode);
 
                     entity.Inventories.Add(inventory);
                     entity.SaveChanges();
@@ -238,6 +240,7 @@ namespace MoostBrand.Controllers
         {
             if (ModelState.IsValid)
             {
+                inventory.SalesDescription = invRepo.getItemSalesDesc(inventory.ItemCode);
                 entity.Entry(inventory).State = EntityState.Modified;
                 entity.SaveChanges();
                 return RedirectToAction("Index");

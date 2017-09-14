@@ -265,6 +265,37 @@ namespace MoostBrand.Controllers
                     });
             }
 
+            List<ReqCustom> _lstReqCustom = new List<ReqCustom>();
+
+            //var lstReq = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))).ToList();
+
+            var _lstReq = (from r in entity.Requisitions.ToList()
+                          where r.ApprovalStatus == 2 &&
+                          !_st.Select(p => p.RequisitionID).Contains(r.ID) &&
+                          (r.RefNumber.Contains("CR"))
+                          select r).ToList();
+
+            foreach (var _req in _lstReq)
+            {
+                string refNumber;
+
+                if (_req.RefNumber.Contains("CR"))
+                {
+                    refNumber = "CR" + _req.RefNumber.Substring(2);
+                }
+                else
+                {
+                    refNumber = _req.RefNumber;
+                }
+
+                _lstReqCustom.Add(
+                    new ReqCustom
+                    {
+                        ID = _req.ID,
+                        RefNumber = refNumber
+                    });
+            }
+
             var loc = entity.Locations.Where(x => x.ID != 10)
                       .Select(x => new
                       {
@@ -274,6 +305,7 @@ namespace MoostBrand.Controllers
 
             ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name");
             ViewBag.RequisitionID = new SelectList(lstReqCustom, "ID", "RefNumber");
+            ViewBag.ReservationID = new SelectList(_lstReqCustom, "ID", "RefNumber");
             ViewBag.ReceivingID = new SelectList(lstRecCustom, "ID", "ReceivingID");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description");
             var empList = new SelectList((from s in entity.Employees
@@ -366,6 +398,10 @@ namespace MoostBrand.Controllers
                     }
                     #endregion
 
+                    if(stocktransfer.StockTransferTypeID == 3)
+                    {
+                      stocktransfer.RequisitionID = Convert.ToInt32(Session["ReqID"]);
+                    }
                     stocktransfer.ApprovedStatus = 1;
                     stocktransfer.ApprovedBy = Convert.ToInt32(Session["sessionuid"]);
                     stocktransfer.IsSync = false;
@@ -1156,6 +1192,13 @@ namespace MoostBrand.Controllers
 
             return Json(code, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult ReqID(int reqID)
+        {
+            Session["ReqID"] = reqID;
+            return Json(reqID, JsonRequestBehavior.AllowGet);
+        }
+     
 
         [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult GetRequisitionDetail(int id)

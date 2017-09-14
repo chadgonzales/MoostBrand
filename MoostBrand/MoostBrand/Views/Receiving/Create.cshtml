@@ -132,6 +132,15 @@
                 </div>
             </div>
 
+            <div id="_PODate">
+            <div class="form-group pnumber">
+                <label class="control-label col-md-2">PO Date</label>
+                <div class="col-md-6">
+                    <input type="text" id="PODate" hidden="hidden" />
+                </div>
+            </div>
+                </div>
+
             <div class="form-group">
                 @Html.LabelFor(model => model.DRNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
@@ -259,6 +268,14 @@
                             @Html.Editor("Invoice", new { htmlAttributes = new { @class = "form-control" } })
                         </div>
                     </div>*@
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownList("ApprovedBy")
+                    @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
+                </div>
             </div>
 
             <div class="form-group">
@@ -416,6 +433,8 @@
             $("#CustName").val(data.CustName);
             $("#ShipmentType").val(data.ShipmentType);
             $("#Invoice").val(data.Invoice);
+            $("#PONumber").val(data.PONumber);
+            $("#PODate").val(data.strDate);
         });
     }
 
@@ -449,33 +468,39 @@
         var val = $("#ReceivingTypeID").val();
         GetStockTransfers(val);
         if (val == 1) { //PO
+            $("#_PODate").show();
             $("#br").hide();
             $("#po").show();
             $("#cr").hide();
             $("#pos").hide();
         } else if (val == 2) { //BR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RRBR", null, BindData);
+            $("#_PODate").hide();
             $("#br").show();
             $("#po").hide();
             $("#cr").hide();
         } else if (val == 3) { //WR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RRWR", null, BindData);
+            $("#_PODate").hide();
             $("#br").show();
             $("#po").hide();
             $("#cr").hide();
             $("#loc").show();
         } else if (val == 5) { //OR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RROR", null, BindData);
+            $("#_PODate").hide();
             $("#br").show();
             $("#po").hide();
             $("#cr").hide();
         } else if (val == 4) { //CR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RRCR", null, BindData);
+            $("#_PODate").hide();
             $("#br").hide();
             $("#po").hide();
             $("#cr").show();
         } else {
             $("#RefNumber").val("");
+            $("#_PODate").hide();
             $("#br").hide();
             $("#po").hide();
             $("#cr").hide();

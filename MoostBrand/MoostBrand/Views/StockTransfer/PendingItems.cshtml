@@ -160,7 +160,7 @@
             });
 
             $("#RequisitionDetailID").change(function () {
-                alert('a');
+              
                 var val = $("#RequisitionDetailID option:selected").val();
               
                 $.ajax({
@@ -179,7 +179,7 @@
             });
 
             $('#Quantity').focusout(function () {
-                if ($("#Quantity").val() <= $("#Hidden_Quantity").val() && $("#Quantity").val() > 0) {
+                if (parseInt($("#Quantity").val()) <= parseInt($("#Hidden_Quantity").val()) && parseInt($("#Quantity").val()) > 0) {
                     var ordered = parseInt($('#Ordered').val());
                     var committed = parseInt($('#Committed').val());
                     var instock = parseInt($('#InStock').val());

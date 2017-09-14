@@ -536,7 +536,7 @@ namespace MoostBrand.Controllers
                             if (newPR != null)
                             {
                                 newPR.IsSync = false;
-                                newPR.RequestedDate = DateTime.Now;
+                                //newPR.RequestedDate = DateTime.Now;
                                 //ViewBag.Error = "Would you like to proceed?";
 
                                 entity.Requisitions.Add(newPR);
@@ -621,7 +621,7 @@ namespace MoostBrand.Controllers
                 ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
                 ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
                 ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
-                ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name", pr.VendorID);
+                ViewBag.VendorID = pr.VendorID;
                 ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
                 ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type", pr.ShipmentTypeID);
                 ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", pr.DropShipID);
@@ -631,6 +631,10 @@ namespace MoostBrand.Controllers
                 ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
                 ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
                 ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status", pr.PaymentStatusID);
+                if (pr.VendorID != null)
+                {
+                    ViewBag.VendorName = entity.Vendors.FirstOrDefault(x => x.ID == pr.VendorID).Name;
+                }
                 #endregion
 
                 return View(pr);
@@ -644,6 +648,10 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public ActionResult Edit(Requisition pr)
         {
+            if (pr.VendorID == null)
+            {
+                pr.VendorID = entity.Requisitions.Find(pr.ID).VendorID;
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -656,6 +664,7 @@ namespace MoostBrand.Controllers
                         pr.Status = false;
                         var newPR = SetNull(pr);
                         newPR.ApprovalStatus = r.ApprovalStatus;
+                      //  newPR.RequestedDate = r.RequestedDate;
                         entity.Entry(r).CurrentValues.SetValues(newPR);
                         entity.SaveChanges();
 
@@ -696,7 +705,7 @@ namespace MoostBrand.Controllers
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
-            ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name", pr.VendorID);
+            ViewBag.VendorID = pr.VendorID;
             ViewBag.ReservationTypeID = new SelectList(entity.ReservationTypes, "ID", "Type", pr.ReservationTypeID);
             ViewBag.ShipmentTypeID = new SelectList(entity.ShipmentTypes, "ID", "Type", pr.ShipmentTypeID);
             ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", pr.DropShipID);
@@ -706,6 +715,10 @@ namespace MoostBrand.Controllers
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
             ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status", pr.PaymentStatusID);
+            if (pr.VendorID != null)
+            {
+                ViewBag.VendorName = entity.Vendors.FirstOrDefault(x => x.ID == pr.VendorID).Name;
+            }
             #endregion
 
             return View(pr);
@@ -816,7 +829,7 @@ namespace MoostBrand.Controllers
                                 inventory.POSBarCode = _item.Barcode;
                                 inventory.Description = _item.DescriptionPurchase;
                                 inventory.Category = _item.Category.Description;
-                                inventory.InventoryUoM = ""; //_item.UnitOfMeasurement.Description
+                                inventory.InventoryUoM =  _item.UnitOfMeasurement.Description;
                                 inventory.InventoryStatus = 2;
                                 inventory.LocationCode = pr.LocationID;
                                 inventory.Committed = invRepo.getCommitedReceiving(pr.LocationID.Value, _item.Code);

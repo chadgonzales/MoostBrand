@@ -16,6 +16,7 @@ namespace MoostBrand.Controllers
         MoostBrandEntities entity = new MoostBrandEntities();
         InventoryRepository invRepo = new InventoryRepository();
         StockTransferRepository stRepo = new StockTransferRepository();
+        StockAdjustmentRepository stockadRepo = new StockAdjustmentRepository();
 
         #region PRIVATE METHODS
 
@@ -327,49 +328,20 @@ namespace MoostBrand.Controllers
                     entity.Entry(retrn).State = EntityState.Modified;
                     entity.SaveChanges();
 
-                    var items = retrn.ReturnedItems.ToList();
+                    var items = retrn.ReturnedItems.Where(p=>p.ReturnID == id).ToList();
 
                     if (items != null)
-                    {        
+                    {
+                       
                             foreach (var _inv in items)
                             {
-                                var _st = entity.StockTransferDetails.Find(_inv.StockTransferDetailID);
+                                var i = entity.Inventories.Find(_inv.ItemID);
+                                i.InStock = _inv.NewQuantity;
+                                entity.Entry(i).State = EntityState.Modified;
+                                entity.SaveChanges();
+                            }        
 
-                                var st = entity.StockTransfers.Find(_st.StockTransferID);
-
-                            
-                                var rd = st.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
-
-                                    if (rd == null)
-                                    {
-                                        rd = st.Receiving.ReceivingDetails.Select(p => p.RequisitionDetail.ItemCode).ToList();
-                                    }
-
-
-                                    var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
-                                    var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == retrn.SourceLocationID).ToList();
-                                    if (inv != null)
-                                    {
-                                        foreach (var _inv1 in inv)
-                                        {
-                                            int _itemid = entity.Items.FirstOrDefault(p => p.Code == _inv1.ItemCode).ID;
-                                            var i = entity.Inventories.Find(_inv.ID);
-                                            i.Committed = invRepo.getCommited(_inv1.ItemCode, retrn.SourceLocationID);
-                                            i.Ordered = invRepo.getPurchaseOrder(_inv1.ItemCode, retrn.SourceLocationID);
-                                            i.InStock = invRepo.getInstocked(st.RequisitionID.Value, _inv1.ItemCode) - stRepo.getStockTranfer(_itemid, _st.StockTransferID.Value);
-                                            i.Available = (i.InStock + i.Ordered) - i.Committed;
-
-                                            entity.Entry(i).State = EntityState.Modified;
-                                            entity.SaveChanges();
-                                        }
-
-                                    }
-
-
-                                }
-
-
-                            }
+                    }
 
                     else
                     {
@@ -417,10 +389,17 @@ namespace MoostBrand.Controllers
             int UserType = Convert.ToInt32(Session["usertype"]);
 
             var items = entity.ReturnedItems
-                        .ToList()
-                        .FindAll(rd => rd.ReturnID == id);
+                        .Where(rd=>rd.ReturnID == id)
+                        .ToList();
+                        //.FindAll(rd => rd.ReturnID == id);
 
             ViewBag.RTid = id;
+
+            try
+            {
+                Session["locationID"] = entity.Returns.Find(id).SourceLocationID;
+            }
+            catch { }
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
@@ -446,40 +425,7 @@ namespace MoostBrand.Controllers
         {
             var ret = entity.Returns.Find(id);
             
-            if (ret.TransactionTypeID == 1)
-            {
-                try
-                {
-                    var items = entity.StockTransferDetails.Where(rd=>rd.AprovalStatusID == 2 && rd.StockTransfer.ReceivingID != null && !ret.ReturnedItems.Select(p=>p.StockTransferDetailID).Contains(rd.ID))
-                            .ToList()
-                            .FindAll(rd => rd.StockTransfer.Receiving.ReceivingTypeID == ret.ReturnTypeID)
-                            .Select(ed => new
-                            {
-                                ID = ed.ID,
-                                Description = ed.ReceivingDetail.RequisitionDetail.Item.Description
-                            });
-
-
-                    ViewBag.StockTransferDetailID = new SelectList(items, "ID", "Description");
-                }
-                catch (Exception e)
-                {
-                    e.ToString();
-                }
-            }
-            else
-            {
-                var items = entity.ReceivingDetails
-                        .ToList()
-                        .FindAll(rd => rd.AprovalStatusID == 2 && rd.Receiving.ReceivingTypeID == ret.ReturnTypeID)
-                        .Select(ed => new
-                        {
-                            ID = ed.ID,
-                            Description = ed.RequisitionDetail.Item.Description
-                        });
-                ViewBag.ReceivingDetailID = new SelectList(items, "ID", "Description");
-            }
-
+         
             ViewBag.RTid = id;
 
             ViewBag.TransType = ret.TransactionTypeID;
@@ -500,31 +446,33 @@ namespace MoostBrand.Controllers
 
                 rd.ReturnID = id;
 
-                if (ret.TransactionTypeID == 1)
-                {
-                    var rd1 = entity.ReturnedItems.Where(r => r.ReturnID == rd.ReturnID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
+                //if (ret.TransactionTypeID == 1)
+                //{
+                //    var rd1 = entity.ReturnedItems.Where(r => r.ReturnID == rd.ReturnID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
 
-                    if (rd1.Count() > 0)
-                    {
-                        TempData["PartialError"] = "Item is already in the list.";
-                        found = true;
-                    }
-                }
-                else
-                {
-                    var rd1 = entity.ReturnedItems.Where(r => r.ReturnID == rd.ReturnID && r.ReceivingDetailID == rd.ReceivingDetailID).ToList();
+                //    if (rd1.Count() > 0)
+                //    {
+                //        TempData["PartialError"] = "Item is already in the list.";
+                //        found = true;
+                //    }
+                //}
+                //else
+                //{
+                //    var rd1 = entity.ReturnedItems.Where(r => r.ReturnID == rd.ReturnID && r.ReceivingDetailID == rd.ReceivingDetailID).ToList();
 
-                    if (rd1.Count() > 0)
-                    {
-                        TempData["PartialError"] = "Item is already in the list.";
-                        found = true;
-                    }
-                }
+                //    if (rd1.Count() > 0)
+                //    {
+                //        TempData["PartialError"] = "Item is already in the list.";
+                //        found = true;
+                //    }
+                //}
                 
                 if (!found)
                 {
+                    rd.OldQuantity = stockadRepo.GetInventoryQuantity(rd.ItemID.Value);
                     rd.IsSync = false;
-
+                    rd.NewQuantity = rd.OldQuantity - rd.Pullout;
+                    rd.ReturnID = id;
                     entity.ReturnedItems.Add(rd);
                     entity.SaveChanges();
                 }
@@ -599,6 +547,62 @@ namespace MoostBrand.Controllers
 
             return RedirectToAction("Items", new { id = reqID });
         }
+
+
+        //public JsonResult GetOldQuantity(int ItemID)
+        //{
+
+        //    int number = stockadRepo.GetInventoryQuantity(ItemID);
+
+        //    return Json(number);
+        //}
+
+        [HttpPost]
+        public JsonResult GetCategories(string name)
+        {
+            var categories = entity.Categories.Where(x => x.Description.Contains(name))
+                            .Select(x => new
+                            {
+                                ID = x.Description,
+                                Name = x.Description
+                            });
+            return Json(categories, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetItems(string catID, string name)
+        {
+            int loc = Convert.ToInt32(Session["locationID"]);
+            var items = entity.Inventories.Where(x => x.LocationCode == loc
+                                                      && (x.Category == catID || x.Description.Contains(name)))
+                        .Select(x => new
+                        {
+                            ID = x.ID,
+                            Code = x.ItemCode,
+                            Name = x.Description,
+                            Category = x.Category
+                        });
+
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult GetItemCode(string catID, string name)
+        {
+            int loc = Convert.ToInt32(Session["locationID"]);
+            var items = entity.Inventories.Where(x => x.LocationCode == loc
+                                                      && (x.Category == catID || x.ItemCode.Contains(name)))
+                        .Select(x => new
+                        {
+                            ID = x.ID,
+                            Code = x.ItemCode,
+                            Name = x.Description,
+                            Category = x.Category
+                        });
+
+            return Json(items, JsonRequestBehavior.AllowGet);
+        }
+
         #endregion
     }
 }

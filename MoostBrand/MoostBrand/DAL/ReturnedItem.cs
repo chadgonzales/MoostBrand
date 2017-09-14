@@ -12,11 +12,12 @@ namespace MoostBrand.DAL
 
         public int? ReturnID { get; set; }
 
-        public int? ReceivingDetailID { get; set; }
+        public int? ItemID { get; set; }
 
-        public int? StockTransferDetailID { get; set; }
+        public int? OldQuantity { get; set; }
 
-        public int? Quantity { get; set; }
+        public int? NewQuantity { get; set; }
+        public int? Pullout { get; set; }
 
         public string Image { get; set; }
 
@@ -24,10 +25,18 @@ namespace MoostBrand.DAL
 
         public bool? IsSync { get; set; }
 
-        public virtual ReceivingDetail ReceivingDetail { get; set; }
-
         public virtual Return Return { get; set; }
 
-        public virtual StockTransferDetail StockTransferDetail { get; set; }
+        public string GetItem
+        {
+            get
+            {
+                StockAdjustmentRepository stockadRepo = new StockAdjustmentRepository();
+
+                return stockadRepo.GetInventoryDescription(ItemID.Value);
+
+            }
+        }
+
     }
 }

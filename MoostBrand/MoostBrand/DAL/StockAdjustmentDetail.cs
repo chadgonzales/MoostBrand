@@ -16,8 +16,10 @@ namespace MoostBrand.DAL
 
         public int? OldQuantity { get; set; }
 
+        [Required(ErrorMessage = "New Quantity is Required")]
         public int? NewQuantity { get; set; }
 
+        [Required(ErrorMessage = "Variance is Required")]
         public int? Variance { get; set; }
 
         public string Notes { get; set; }

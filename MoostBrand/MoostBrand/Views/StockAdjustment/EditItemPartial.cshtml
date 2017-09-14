@@ -38,7 +38,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.NewQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.NewQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.NewQuantity, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                         @Html.ValidationMessageFor(model => model.NewQuantity, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Variance, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.Variance, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                        @Html.EditorFor(model => model.Variance, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Variance, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -74,12 +74,12 @@
 
 <script>
 
-    $('#NewQuantity').focusout(function () {
+    $('#Variance').keyup(function () {
 
         var oldQty = parseInt($('#OldQuantity').val());
-        var newQty = parseInt($('#NewQuantity').val());
+        var newQty = parseInt($('#Variance').val());
 
-        $('#Variance').val(newQty - oldQty);
+        $('#NewQuantity').val(oldQty + newQty);
 
     })
 </script>
