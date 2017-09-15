@@ -853,7 +853,8 @@ namespace MoostBrand.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "There's no item");
+                    TempData["Error"] = "There's no item";
+                    //ModelState.AddModelError(string.Empty, "There's no item");
                 }
             }
             catch (Exception e)

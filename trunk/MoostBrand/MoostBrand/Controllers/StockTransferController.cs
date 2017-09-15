@@ -343,6 +343,7 @@ namespace MoostBrand.Controllers
             ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name");
             ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID");
+            ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees
                           select new
@@ -447,6 +448,7 @@ namespace MoostBrand.Controllers
                 ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name");
                 ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
                 ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID", stocktransfer.ReceivingID);
+                ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
                 //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
                 ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
                 var empList = from s in entity.Employees
@@ -573,6 +575,7 @@ namespace MoostBrand.Controllers
             ViewBag.StockTransferTypeID = new SelectList(entity.StockTransferTypes.ToList(), "ID", "Name");
             ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID");
+            ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees

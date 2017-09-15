@@ -341,14 +341,12 @@ namespace MoostBrand.Controllers
                 }
                 else
                 {
-                    TempData["Error"] = "No Items to Approve";
-                    return RedirectToAction("Index");
+                     TempData["Error"] = "No Items to Approve";
                 }
             }
             catch
             {
                 TempData["Error"] = "No Items to Approve";
-                return RedirectToAction("Index");
             }
 
             return View();

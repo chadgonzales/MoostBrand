@@ -128,6 +128,7 @@ namespace MoostBrand.Controllers
 
         public ActionResult GetRequisition(int id) //returns Json
         {
+            Session["ReqID"] = id;
             string _date = "";
 
             if (entity.Requisitions.Find(id).RequestedDate != null)
@@ -356,6 +357,45 @@ namespace MoostBrand.Controllers
             
         }
 
+
+        public ActionResult getRequisitionID(int id)
+        {
+            var loc = entity.Locations.Find(id);
+
+            
+            //var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && r.LocationID == loc.ID)
+            //        .Select(r => new
+            //        {
+            //            ID = r.ID,
+            //            RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
+            //        });
+
+
+
+            var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 & s.Requisition.LocationID == loc.ID & s.RequisitionID == Convert.ToInt32(Session["ReqID"]))
+                     .Select(r => new
+                     {
+                         ID = r.RequisitionID.Value,
+                         RefNumber = (r.Requisition.RefNumber.Contains("PR")) ? "PO" + r.Requisition.RefNumber.Substring(2) : r.Requisition.RefNumber
+                     });
+
+
+            var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 & r.ReqTypeID == 1 && r.LocationID == loc.ID & r.ID == Convert.ToInt32(Session["ReqID"]))
+                .Select(r => new
+                {
+                    ID = r.ID,
+                    RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
+                });
+
+
+            var result = (from p in st select p).Union(from q in _requisitions select q);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+
+
+
+        }
         #endregion
 
         #region COMMENTS
