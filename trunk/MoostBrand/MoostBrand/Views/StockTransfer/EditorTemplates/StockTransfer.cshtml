@@ -10,7 +10,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.StockTransferTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("StockTransferTypeID", String.Empty)
+            @Html.DropDownList("StockTransferTypeID")
             @Html.ValidationMessageFor(model => model.StockTransferTypeID, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -19,7 +19,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ReceivingID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.DropDownList("ReceivingID", String.Empty)
+                @Html.DropDownList("ReceivingID")
                 @Html.ValidationMessageFor(model => model.ReceivingID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -29,7 +29,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.RequisitionID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.DropDownList("RequisitionID", String.Empty)
+                @Html.DropDownList("RequisitionID")
                 @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -38,7 +38,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.RequisitionID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-6">
-                @Html.DropDownList("ReservationID", String.Empty)
+                @Html.DropDownList("ReservationID")
                 @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -48,7 +48,7 @@
         <label class="control-label col-md-2">Destination</label>
         @*@Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })*@
         <div class="col-md-6">
-            @Html.DropDownList("LocationID", String.Empty)
+            @Html.DropDownList("LocationID")
             @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
         </div>
     </div>

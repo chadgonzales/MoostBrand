@@ -112,8 +112,9 @@
         var url = '@Url.Action("Approve", "StockAdjustment")/' + prID;
 
         var frm = $("#action_form").serialize();
-
-        $.post(url, frm, ReloadFunction);
+       
+        $.post(url, frm);
+        location.reload();
     }
 
     function Deny() {

@@ -156,8 +156,9 @@
         var url = '@Url.Action("Approve", "PR")/' + prID;
 
         var frm = $("#action_form").serialize();
-
-        $.post(url, frm, ReloadFunction);
+     
+        $.post(url, frm);
+        location.reload();
     }
 
     function Revise() {
