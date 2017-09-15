@@ -74,7 +74,7 @@
                                     <i class="fa fa-times fa fa-files-o"></i>
                                 </a>
                                 @if (Convert.ToInt32(Session["sessionuid"]) == item.Receiving.ReceivedBy)
-                                @*@if (Convert.ToInt32(Session["sessionuid"]) == item.Receiving.ReceivedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)*@
+                             
                                 {
                                     <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
                                         <i class="fa fa-edit"></i>

@@ -81,7 +81,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.ReceivingDate, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.ReceivingDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.ReceivingDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
                     @Html.ValidationMessageFor(model => model.ReceivingDate, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -182,12 +182,12 @@
                     </div>
                 </div>
 
-                <div class="form-group vcontact">
+                @*<div class="form-group vcontact">
                     <label class="control-label col-md-2">Vendor Contact Person</label>
                     <div class="col-md-6">
                         @Html.Editor("VendorContact", new { htmlAttributes = new { @class = "form-control" } })
                     </div>
-                </div>
+                </div>*@
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.VesselNumber, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -321,6 +321,23 @@
             $("#ShipmentType").val(data.ShipmentType);
             $("#Invoice").val(data.Invoice);
         });
+
+
+
+        var val = $("#LocationID option:selected").val();
+
+        $.ajax({
+            url: '@Url.Action("getRequisitionID", "Receiving")',
+            data: { id: val },
+            type: 'get',
+            success: function (data) {
+              //  var markup = "<option value='0'>Select Requisition</option>";
+                for (var x = 0; x < data.length; x++) {
+                 var  markup = "<option value=" + data[x].ID + ">" + data[x].RefNumber + "</option>";
+                }
+                $("#RequisitionID").html(markup).show();
+            }
+        })
 
         var val = $("#ReceivingTypeID").val();
         if (val == 2 || val == 3) {

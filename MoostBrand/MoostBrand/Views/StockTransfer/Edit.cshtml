@@ -113,15 +113,24 @@ $(function () {
         if (val == "") {
             $("#rc").hide();
             $("#rq").hide();
+            $("#res").hide();
         } else if (val == 1) {
             $("#rc").hide();
+            $("#res").hide();
             $("#rq").show();
         } else if (val == 2) {
             $("#rc").show();
             $("#rq").hide();
-        } else {
+            $("#res").hide();
+        } else if (val == 3) {
+            $("#res").show();
+            $("#rq").hide();
+            $("#rc").hide();
+        }
+        else {
             $("#rc").hide();
             $("#rq").hide();
+            $("#res").hide();
         }
     }
 
