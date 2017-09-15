@@ -362,7 +362,7 @@ namespace MoostBrand.Controllers
         {
             var loc = entity.Locations.Find(id);
 
-            
+
             //var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && r.LocationID == loc.ID)
             //        .Select(r => new
             //        {
@@ -371,8 +371,8 @@ namespace MoostBrand.Controllers
             //        });
 
 
-
-            var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 & s.Requisition.LocationID == loc.ID & s.RequisitionID == Convert.ToInt32(Session["ReqID"]))
+            int _ReqID = Convert.ToInt32(Session["ReqID"]);
+            var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 & s.Requisition.LocationID == loc.ID & s.RequisitionID == _ReqID)
                      .Select(r => new
                      {
                          ID = r.RequisitionID.Value,
@@ -380,7 +380,7 @@ namespace MoostBrand.Controllers
                      });
 
 
-            var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 & r.ReqTypeID == 1 && r.LocationID == loc.ID & r.ID == Convert.ToInt32(Session["ReqID"]))
+            var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 & r.ReqTypeID == 1 && r.LocationID == loc.ID & r.ID == _ReqID)
                 .Select(r => new
                 {
                     ID = r.ID,
