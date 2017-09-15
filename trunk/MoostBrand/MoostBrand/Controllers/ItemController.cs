@@ -354,6 +354,7 @@ namespace MoostBrand.Controllers
                     foreach( var i in _inv)
                     {
                         Inventory inv = entity.Inventories.Find(i.ID);
+                        inv.SalesDescription = item.Description;
                         inv.Category = item.Category.Description;
                         inv.InventoryUoM = item.UnitOfMeasurement.Description;
                         entity.SaveChanges();

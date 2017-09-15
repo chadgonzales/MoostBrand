@@ -16,6 +16,7 @@
     </div>
     <div class="panel-body">
 
+        fields with * are required @*maam resian*@ 
         <div class="form-horizontal">
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -95,7 +96,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ValidityOfReservation , "Validity Of Reservation", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
-                        @Html.EditorFor(model => model.ValidityOfReservation, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.ValidityOfReservation, new { htmlAttributes = new { @class = "form-control date-picker" } })
                         @Html.ValidationMessageFor(model => model.ValidityOfReservation, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -167,7 +168,7 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" }) @*not required*@ 
                 <div class="col-md-6">
                     @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
@@ -176,7 +177,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="button" onclick="myModal()" value="Create" class="btn btn-green" id="save" />
+                    <input type="button" value="Create" class="btn btn-green" id="save" />
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
                     </a>
@@ -209,6 +210,94 @@
     @Scripts.Render("~/bundles/jqueryval")
 }
 <script>
+
+    $('#save').click(function (event)
+    {
+        var _variable = Validate();
+        if (_variable == "passed") {
+            myModal();
+        }
+        else { alert('kindly fill up required fields');}
+
+    });
+
+    function Validate() {
+     
+        var _passed;
+        //txtEmail
+        if ($('#RefNumber').val() == '') {
+            $('#RefNumber').css({ "border": "1px solid red" })
+            _passed = '1';
+        }
+        else if ($('#RequestedBy').val() == '') {
+            $('#RequestedBy').css({ "border": "1px solid red" })
+            _passed = '2';
+        }
+        else if ($('#RequestedDate').val() == '') {
+            $('#RequestedDate').css({ "border": "1px solid red" })
+            _passed = '3';
+        }
+        else if ($('#LocationID').val() == '') {
+            $('#LocationID').css({ "border": "1px solid red" })
+            _passed = '4';
+        }
+        else if ($('#DateRequired').val() == '') {
+            $('#DateRequired').css({ "border": "1px solid red" })
+            _passed = '5';
+        }
+        else if ($('#Customer').val() == '') {
+            $('#Customer').css({ "border": "1px solid red" })
+            _passed = '6';
+        }
+        else if ($('#ReservationTypeID').val() == '') {
+            $('#ReservationTypeID').css({ "border": "1px solid red" })
+            _passed = '7';
+        }
+        else if ($('#ReservedBy').val() == '') {
+            $('#ReservedBy').css({ "border": "1px solid red" })
+            _passed = '8';
+        }
+        else if ($('#PaymentStatusID').val() == '') {
+            $('#PaymentStatusID').css({ "border": "1px solid red" })
+            _passed = '9';
+        }
+        else if ($('#ValidityOfReservation').val() == '' && $("#PaymentStatusID").val() == 1) {
+            $('#ValidityOfReservation').css({ "border": "1px solid red" })
+            _passed = '10';
+        }
+        else if ($('#InvoiceNumber').val() == '') {
+            $('#InvoiceNumber').css({ "border": "1px solid red" })
+            _passed = '11';
+        }
+        else if ($('#AuthorizedPerson').val() == '') {
+            $('#AuthorizedPerson').css({ "border": "1px solid red" })
+            _passed = '12';
+        }
+        else if ($('#ValidatedBy').val() == '') {
+            $('#ValidatedBy').css({ "border": "1px solid red" })
+            _passed = '13';
+        }
+        else if ($('#ShipmentTypeID').val() == '') {
+            $('#ShipmentTypeID').css({ "border": "1px solid red" })
+            _passed = '14';
+        }
+        else if ($('#ApprovalStatus').val() == '') {
+            $('#ApprovalStatus').css({ "border": "1px solid red" })
+            _passed = '15';
+        }
+        else if ($('#ApprovedBy').val() == '') {
+            $('#ApprovedBy').css({ "border": "1px solid red" })
+            _passed = '16';
+        }
+        else
+            _passed = "passed";
+
+        
+        return _passed;
+
+    }
+
+
     function myModal() {
         $('#SaveWindow').modal('show');
     }
@@ -221,29 +310,54 @@
     }
 
 
-    $('#RequestedDate').keyup(function () {
+    $('#RequestedDate').change(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
-    $('#DateRequired').keyup(function () {
+    $('#DateRequired').change(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ValidityOfReservation').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#Customer').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#InvoiceNumber').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#AuthorizedPerson').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#Driver').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#Remarks').keyup(function () {
         var text = $(this).val();
@@ -256,11 +370,19 @@
     });
 
     $(function () {
-        $("#exp").hide();
+        if ($("#PaymentStatusID").val() == 1) {
+            $("#exp").show();
+        }
+        else {
+            $("#exp").hide();
+        }
     })
 
     $("#PaymentStatusID").change(function () {
         var val = this.value;
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
         if (val == 1) {
             $("#exp").show();
         }
@@ -272,6 +394,9 @@
 
     $("#ShipmentTypeID").change(function () {
         var val = this.value;
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
         if (val == 1) {
             $("#dropship").show();
         }

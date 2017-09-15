@@ -329,7 +329,7 @@
 
 <script language="javascript">
 
-    window.onload = function () {
+    $(document).ready(function () {
 
         var val = $("#LocationID option:selected").val();
 
@@ -338,14 +338,14 @@
             data: { id: val },
             type: 'get',
             success: function (data) {
-                var markup = "<option value='0'>Select Requisition</option>";
+               
                 for (var x = 0; x < data.length; x++) {
-                    markup += "<option value=" + data[x].ID + ">" + data[x].RefNumber + "</option>";
+                    var markup = "<option value=" + data[x].ID + ">" + data[x].RefNumber + "</option>";
                 }
                 $("#RequisitionID").html(markup).show();
             }
         })
-    }
+    })
 
     function myModal() {
         $('#SaveWindow').modal('show');
