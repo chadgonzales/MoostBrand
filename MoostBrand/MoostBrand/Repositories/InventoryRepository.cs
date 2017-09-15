@@ -178,10 +178,10 @@ namespace MoostBrand.DAL
             return _committed;
         }
 
-        public int getTotalStockTranfer(string code, int locationID)
+        public int getTotalStockTranfer(string code, int locationID,DateTime from, DateTime to)
         {
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
-            var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 2 && p.LocationID == locationID).Select(p => p.ID).ToList();
+            var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 2 && p.LocationID == locationID && (p.STDAte>= from && p.STDAte<= to)).Select(p => p.ID).ToList();
             int c = 0;
             var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == item && model.AprovalStatusID == 2 && st.Contains(model.StockTransferID.Value));
             var committed = com.Sum(x => x.Quantity);
@@ -198,10 +198,10 @@ namespace MoostBrand.DAL
             return _committed;
         }
 
-        public int getTotalVariance(int invID, int locationID)
+        public int getTotalVariance(int invID, int locationID, DateTime from, DateTime to)
         {
           
-            var st = entity.StockAdjustments.Where(p => p.ApprovalStatus == 2 && p.LocationID == locationID).Select(p => p.ID).ToList();
+            var st = entity.StockAdjustments.Where(p => p.ApprovalStatus == 2 && p.LocationID == locationID && (p.ErrorDate >= from && p.ErrorDate <= to)).Select(p => p.ID).ToList();
             int c = 0;
             var com = entity.StockAdjustmentDetails.Where(model => model.ItemID == invID  && st.Contains(model.StockAdjustmentID.Value));
             var committed = com.Sum(x => x.Variance);
