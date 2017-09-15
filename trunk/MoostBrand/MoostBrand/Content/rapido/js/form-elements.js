@@ -101,6 +101,9 @@ var FormElements = function() {"use strict";
 	var runTimePicker = function() {
 		$('.time-picker').timepicker();
 	};
+
+    $('.time-picker').timepicker();
+
 	//function to initiate daterangepicker
 	var runDateRangePicker = function() {
 		$('.date-range').daterangepicker();
