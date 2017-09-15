@@ -72,7 +72,11 @@
     <div class="form-group">
         @Html.LabelFor(model => model.TimeStarted, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.EditorFor(model => model.TimeStarted, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="input-group input-append bootstrap-timepicker">
+                @Html.EditorFor(model => model.TimeStarted, new { htmlAttributes = new { @class = "form-control time-picker" } })
+
+                <span class="input-group-addon add-on"><i class="fa fa-clock-o"></i></span>
+            </div>
             @Html.ValidationMessageFor(model => model.TimeStarted, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -80,7 +84,10 @@
     <div class="form-group">
         @Html.LabelFor(model => model.TimeFinish, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.EditorFor(model => model.TimeFinish, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="input-group input-append bootstrap-timepicker">
+                @Html.EditorFor(model => model.TimeFinish, new { htmlAttributes = new { @class = "form-control time-picker" } })
+                <span class="input-group-addon add-on"><i class="fa fa-clock-o"></i></span>
+            </div>
             @Html.ValidationMessageFor(model => model.TimeFinish, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -223,4 +230,9 @@
     });
 </script>
 
+<style>
+    .bootstrap-timepicker-widget.dropdown-menu.open{
+    width:50%;
+    }
+</style>
 

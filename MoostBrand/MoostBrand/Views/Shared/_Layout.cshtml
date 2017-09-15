@@ -53,6 +53,10 @@
     <link rel="stylesheet" href="@Url.Content("~/Content/rapido/plugins/DataTables/media/css/DT_bootstrap.css")">
     <link rel="stylesheet" href="@Url.Content("~/Content/rapido/plugins/bootstrap-fileupload/bootstrap-fileupload.css")">
     <link rel="stylesheet" href="@Url.Content("~/Content/rapido/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css")">
+
+    <link rel="stylesheet" href="@Url.Content("~/Content/rapido/plugins/bootstrap-timepicker/css/bootstrap-timepicker.css")">
+
+
     <!-- end: CSS REQUIRED FOR THIS SUBVIEW CONTENTS-->
     <!-- start: CSS REQUIRED FOR THIS PAGE ONLY -->
     <link rel="stylesheet" href="@Url.Content("~/Content/rapido/plugins/weather-icons/css/weather-icons.css")">
@@ -196,7 +200,7 @@
                         </li>
                         <li>
 							<a href="javascript:void(0)"><i class="fa fa-desktop"></i> <span class="title"> Management </span><i class="icon-arrow"></i> </a>
-							<ul class="sub-menu">								
+							<ul class="sub-menu">
 								<li>
 									<a href="@Url.Action("Index", "Item")">
 										Items
@@ -283,7 +287,7 @@
         <div class="main-container inner">
             <!-- start: PAGE -->
             <div class="main-content">
-               
+
                 <div class="container">
                     <!-- start: PAGE HEADER -->
                     <!-- start: TOOLBAR -->
@@ -294,7 +298,7 @@
                             </div>
                         </div>
                         <div class="col-sm-6 col-xs-12">
-                            
+
                         </div>
                     </div>
                     <!-- end: TOOLBAR -->
@@ -319,8 +323,8 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <!-- start: TEXT FIELDS PANEL -->
-                            <div class="panel panel-white">                               
-                                    
+                            <div class="panel panel-white">
+
                                     @RenderBody()
 
                             </div>
@@ -382,7 +386,7 @@
             </footer>
         </div>*@
 
-    
+
     @*@Scripts.Render("~/bundles/bootstrap")*@
     @RenderSection("scripts", required: false)
     <!-- start: MAIN JAVASCRIPTS -->
@@ -392,7 +396,7 @@
     <script type="text/javascript" src="../../Content/rapido/plugins/jQuery/jquery-1.11.1.min.js"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
-    
+
     <script src="@Url.Content("~/Content/rapido/plugins/blockUI/jquery.blockUI.js")"></script>
     <script src="@Url.Content("~/Content/rapido/plugins/iCheck/jquery.icheck.js")"></script>
     <script src="@Url.Content("~/Content/rapido/plugins/moment/min/moment.min.js")"></script>
