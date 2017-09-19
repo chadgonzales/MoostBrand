@@ -1,0 +1,136 @@
+﻿@using ReportViewerForMvc
+
+@{
+    ViewBag.Title = "InventoryReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>InventoryReport</h2>
+
+<!-- start: TOOLBAR -->
+<div class="toolbar row">
+    <div class="col-sm-6 hidden-xs">
+        <div class="page-header">
+            @*<h1>Inventory Report</h1>*@
+        </div>
+    </div>
+
+    <div class="col-sm-6 col-xs-12">
+        <div class="toolbar-tools pull-right">
+            <!-- start: TOP NAVIGATION MENU -->
+         
+        </div>
+    </div>
+</div>
+<!-- end: TOOLBAR -->
+<!-- end: PAGE HEADER -->
+<!-- start: BREADCRUMB -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="breadcrumb"></div>
+    </div>
+</div>
+<!-- end: BREADCRUMB -->
+<!-- start: PAGE CONTENT -->
+<div class="row">
+    <div class="col-md-12">
+        <!-- start: BASIC TABLE PANEL -->
+        <div class="panel panel-white">
+            @*<div class="panel-heading">
+                    <h4 class="panel-title pull-left"><span class="text-bold">Inventory Report - @ViewBag.CompanyName</span></h4>
+                    <div class="clearfix"></div>
+                </div>*@
+            <div class="panel-body">
+
+                <div class="clearfix"></div>
+
+                @using (Html.BeginForm())
+                {
+                    <div class="form-horizontal" style="margin-bottom:16px;">
+
+                      
+                        <hr>
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Date From</label>
+                                <div class="col-md-6">
+                                    <input type="text" name="DateFrom" class="date-picker form-control" value="@ViewBag.DateFrom" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 col-md-pull-1">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Date To</label>
+                                <div class="col-md-6">
+                                    <input type="text" name="DateTo" class="date-picker form-control" value="@ViewBag.DateTo" />
+                                </div>
+                            </div>
+                        </div>
+                       
+                       <div class="col-md-5 col-md-pull-1">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Brand</label>
+                                <div class="col-md-6">
+                                    @Html.DropDownList("brand",(IEnumerable<SelectListItem>)ViewBag.Brand, "all",new { @class="form-control" })
+                               </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5 col-md-pull-1">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Category</label>
+                                <div class="col-md-6">
+                                    @Html.DropDownList("category", (IEnumerable<SelectListItem>)ViewBag.Category, "all", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-5 col-md-pull-1">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Vendor</label>
+                                <div class="col-md-6">
+                                    @Html.DropDownList("vendor", (IEnumerable<SelectListItem>)ViewBag.Vendor, "all", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-5 col-md-pull-1">
+                            <div class="form-group">
+                                <label class="control-label col-md-3">Location</label>
+                                <div class="col-md-6">
+                                    @Html.DropDownList("location", (IEnumerable<SelectListItem>)ViewBag.Location, "all", new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-md-2 col-md-pull-2">
+                            <div class="form-group">
+                                <input type="submit" value="Submit" class="btn btn-dark-blue" />
+                            </div>
+                        </div>
+
+
+                        <div class="clearfix"></div>
+
+                    </div>
+                }
+
+                <!--#ReportViewer1-->
+                <div class="report-viewer">
+                    @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { @style = "border: none; width:100% !important;" })
+                </div>
+
+            </div>
+        </div>
+        <!-- end: BASIC TABLE PANEL -->
+    </div>
+
+    <div class="clearfix"></div>
+
+</div>
