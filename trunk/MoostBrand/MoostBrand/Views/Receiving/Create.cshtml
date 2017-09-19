@@ -15,7 +15,7 @@
         <hr />
     </div>
     <div class="panel-body">
-
+        fields with * are required 
         <div class="form-horizontal">
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger alert alert-danger" })
@@ -201,7 +201,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.VesselNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
-                        @Html.EditorFor(model => model.VesselNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.VesselNumber, new { htmlAttributes = new { @class = "form-control" } }) @*not required*@
                         @Html.ValidationMessageFor(model => model.VesselNumber, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -217,7 +217,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.VoyageNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
-                        @Html.EditorFor(model => model.VoyageNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.VoyageNumber, new { htmlAttributes = new { @class = "form-control" } })@*not required*@
                         @Html.ValidationMessageFor(model => model.VoyageNumber, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -241,7 +241,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.VanNumber, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
-                        @Html.EditorFor(model => model.VanNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.VanNumber, new { htmlAttributes = new { @class = "form-control" } })@*not required*@
                         @Html.ValidationMessageFor(model => model.VesselNumber, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -281,7 +281,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })@*not required*@
                     @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -289,7 +289,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Img, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.Img, new { type = "file", htmlAttributes = new { @class = "form-control", @required = "required" } })
+                    @Html.TextBoxFor(model => model.Img, new { type = "file", htmlAttributes = new { @class = "form-control"} })@*not required*@
                     @Html.ValidationMessageFor(model => model.Img)
                 </div>
             </div>
@@ -297,7 +297,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
-                    <input type="button" onclick="myModal()" value="Create" class="btn btn-green"/>
+                    <input type="button" id="save" value="Create" class="btn btn-green"/>
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
                     </a>
@@ -329,6 +329,8 @@
 
 <script language="javascript">
 
+
+
     $(document).ready(function () {
 
         var val = $("#LocationID option:selected").val();
@@ -346,6 +348,121 @@
             }
         })
     })
+
+
+    $('#save').click(function (event) {
+        var _variable = Validate();
+        if (_variable == "passed") {
+            myModal();
+        }
+        else { alert('kindly fill up required fields'); }
+
+    });
+
+    function Validate() {
+
+        var _passed;
+        //txtEmail
+        if ($('#ReceivingTypeID').val() == '') {
+            $('#ReceivingTypeID').css({ "border": "1px solid red" })
+            _passed = '1';
+        }
+        else if ($('#LocationID').val() == '') {
+            $('#LocationID').css({ "border": "1px solid red" })
+            _passed = '2';
+        }
+        else if ($('#ReceivingID').val() == '') {
+            $('#ReceivingID').css({ "border": "1px solid red" })
+            _passed = '3';
+        }
+        else if ($('#RequisitionID').val() == '') {
+            $('#RequisitionID').css({ "border": "1px solid red" })
+            _passed = '4';
+        }
+        else if ($('#RefNumber').val() == '') {
+            $('#RefNumber').css({ "border": "1px solid red" })
+            _passed = '5';
+        }
+        else if ($('#RequestedBy').val() == '') {
+            $('#RequestedBy').css({ "border": "1px solid red" })
+            _passed = '6';
+        }
+        else if ($('#ReceivingDate').val() == '') {
+            $('#ReceivingDate').css({ "border": "1px solid red" })
+            _passed = '7';
+        }
+        else if ($('#Destination').val() == '') {
+            $('#Destination').css({ "border": "1px solid red" })
+            _passed = '8';
+        }
+        else if ($('#EncodedBy').val() == '') {
+            $('#EncodedBy').css({ "border": "1px solid red" })
+            _passed = '9';
+        }
+
+        else if ($('#CheckedBy').val() == '') {
+            $('#CheckedBy').css({ "border": "1px solid red" })
+            _passed = '11';
+        }
+        else if ($('#ReceivedBy').val() == '') {
+            $('#ReceivedBy').css({ "border": "1px solid red" })
+            _passed = '12';
+        }
+        else if ($('#PONumber').val() == '') {
+            $('#PONumber').css({ "border": "1px solid red" })
+            _passed = '13';
+        }
+        else if ($('#DRNumber').val() == '') {
+            $('#DRNumber').css({ "border": "1px solid red" })
+            _passed = '14';
+        }
+        else if ($('#InvoiceReference').val() == '') {
+            $('#InvoiceReference').css({ "border": "1px solid red" })
+            _passed = '15';
+        }
+        else if ($('#Vendor').val() == '') {
+            $('#Vendor').css({ "border": "1px solid red" })
+            _passed = '16';
+        }
+        else if ($('#VendorCode').val() == '') {
+            $('#VendorCode').css({ "border": "1px solid red" })
+            _passed = '17';
+        }
+        else if ($('#WaybillNumber').val() == '') {
+            $('#WaybillNumber').css({ "border": "1px solid red" })
+            _passed = '18';
+        }
+        else if ($('#ShippingLine').val() == '') {
+            $('#ShippingLine').css({ "border": "1px solid red" })
+            _passed = '19';
+        }
+        else if ($('#Forwarder').val() == '') {
+            $('#Forwarder').css({ "border": "1px solid red" })
+            _passed = '20';
+        }
+        else if ($('#CustName').val() == '') {
+            $('#CustName').css({ "border": "1px solid red" })
+            _passed = '21';
+        }
+        else if ($('#ShipmentType').val() == '') {
+            $('#ShipmentType').css({ "border": "1px solid red" })
+            _passed = '22';
+        }
+        else if ($('#ApprovedBy').val() == '') {
+            $('#ApprovedBy').css({ "border": "1px solid red" })
+            _passed = '22';
+        }
+        else if ($('#Remarks').val() == '') {
+            $('#Remarks').css({ "border": "1px solid red" })
+            _passed = '22';
+        }
+        else
+            _passed = "passed";
+
+
+        return _passed;
+
+    }
 
     function myModal() {
         $('#SaveWindow').modal('show');
