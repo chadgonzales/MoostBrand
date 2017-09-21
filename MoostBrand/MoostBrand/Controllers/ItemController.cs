@@ -330,6 +330,7 @@ namespace MoostBrand.Controllers
                     item.LastUnitCost = 0;
                     item.WeightedAverageCost = 0;
                     item.Price = 0;
+                    item.ReOrderLevel = item.LeadTime * item.DailyAverageUsage;
                     if (item.CategoryID == null || item.CategoryID == 0)
                         item.CategoryID = entity.Categories.FirstOrDefault(p => p.Description == "Not Available").ID;
 
@@ -355,7 +356,12 @@ namespace MoostBrand.Controllers
                     {
                         Inventory inv = entity.Inventories.Find(i.ID);
                         inv.SalesDescription = item.Description;
+                        inv.Description = item.DescriptionPurchase;
                         inv.Category = item.Category.Description;
+                        inv.LeadTime = item.LeadTime;
+                        inv.DailyAverageUsage = item.DailyAverageUsage;
+                        inv.ReOrder = item.LeadTime * item.DailyAverageUsage;
+                      
                         inv.InventoryUoM = item.UnitOfMeasurement.Description;
                         entity.SaveChanges();
                     }

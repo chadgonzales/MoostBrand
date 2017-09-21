@@ -120,7 +120,7 @@
                         <span class="symbol required"></span>
                     </label>*@
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.RequestedDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
+                    @Html.EditorFor(model => model.RequestedDate, new { htmlAttributes = new { @class = "form-control date-picker",@Value = Model.RequestedDate.ToString("MM/dd/yyyy") } })
                     @Html.ValidationMessageFor(model => model.RequestedDate, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -516,10 +516,10 @@
             $('#ApprovedBy').css({ "border": "1px solid red" })
             _passed = '22';
         }
-        else if ($('#Remarks').val() == '') {
-            $('#Remarks').css({ "border": "1px solid red" })
-            _passed = '23';
-        }
+        //else if ($('#Remarks').val() == '') {
+        //    $('#Remarks').css({ "border": "1px solid red" })
+        //    _passed = '23';
+        //}
         else
             _passed = "passed";
 

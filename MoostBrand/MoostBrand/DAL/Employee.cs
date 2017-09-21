@@ -45,6 +45,10 @@ namespace MoostBrand.DAL
         public int ID { get; set; }
 
         [StringLength(50)]
+        [Required]
+        public string EmpID { get; set; }
+
+        [StringLength(50)]
         public string LastName { get; set; }
 
         [StringLength(50)]

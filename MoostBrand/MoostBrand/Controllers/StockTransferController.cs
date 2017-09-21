@@ -193,7 +193,7 @@ namespace MoostBrand.Controllers
             stocktransfer.STDAte = DateTime.Now;
             
             #region DROPDOWNS
-            var _types = entity.StockTransferTypes.ToList();
+            var _types = entity.StockTransferTypes.Where(p=>p.ID != 2).ToList();
             var _st = entity.StockTransfers.ToList();
 
 
@@ -331,7 +331,7 @@ namespace MoostBrand.Controllers
         public ActionResult Create(StockTransfer stocktransfer)
         {
             #region DROPDOWNS
-            var _types = entity.StockTransferTypes.ToList();
+            var _types = entity.StockTransferTypes.Where(p=>p.ID != 2).ToList();
 
             var loc = entity.Locations.Where(x => x.ID != 10)
                         .Select(x => new
@@ -427,7 +427,7 @@ namespace MoostBrand.Controllers
         public ActionResult Edit(int id = 0)
         {
             var stocktransfer = entity.StockTransfers.Find(id);
-            var _types = entity.StockTransferTypes.ToList();
+            var _types = entity.StockTransferTypes.Where(p=>p.ID!=2).ToList();
 
             if (stocktransfer == null)
             {
@@ -572,7 +572,7 @@ namespace MoostBrand.Controllers
                             Description = x.Description
                         });
 
-            ViewBag.StockTransferTypeID = new SelectList(entity.StockTransferTypes.ToList(), "ID", "Name");
+            ViewBag.StockTransferTypeID = new SelectList(entity.StockTransferTypes.Where(p=>p.ID != 2).ToList(), "ID", "Name");
             ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID");
             ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");

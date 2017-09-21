@@ -79,7 +79,7 @@
                                 </a>
                                 @if (item.ApprovalStatus == 1)
                                 {
-                                    if (Convert.ToInt32(Session["sessionuid"]) == item.EncodedBy)
+                                    if (item.ReceivingTypeID  == 1 || Convert.ToInt32(Session["sessionuid"]) == item.EncodedBy)
                                     //if (Convert.ToInt32(Session["sessionuid"]) == item.EncodedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                                     {
                                         <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">

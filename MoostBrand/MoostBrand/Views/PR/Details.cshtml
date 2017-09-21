@@ -10,7 +10,7 @@
 <div class="panel-body">
     <div class="form-horizontal">
         @Html.HiddenFor(model => model.requisition.Requisitions.RequisitionTypeID)
-
+        <input type="text" value="@Model.requisition.Requisitions.RequisitionTypeID" id="txtReqType" hidden="hidden" />
         <div class="row">
             <div class="col-sm-6">
 
@@ -418,7 +418,8 @@
 
 <script language="javascript">
     $(function () {
-        var val = $("#RequisitionTypeID").val();
+        var val = $("#txtReqType").val();
+        alert(val);
         if (val == 1) { //PR
             $("#br").hide();
             $("#pr").show();

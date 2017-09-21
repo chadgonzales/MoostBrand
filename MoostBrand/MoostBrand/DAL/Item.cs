@@ -63,6 +63,8 @@ namespace MoostBrand.DAL
 
         public int? LeadTime { get; set; }
 
+        public int? DailyAverageUsage { get; set; }
+
         [StringLength(50)]
         public string SubstituteItem { get; set; }
 
