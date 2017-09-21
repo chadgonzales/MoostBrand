@@ -269,6 +269,26 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+<script>
+    $('#DailyAverageUsage').keyup(function () {
+        var daily = $(this).val();
+        var leadTime = $('#LeadTime').val();
+
+        $('#ReOrderLevel').val(daily * leadTime);
+    })
+
+    $('#LeadTime').keyup(function () {
+        var leadTime = parseInt($(this).val());
+        var daily = parseInt($('#DailyAverageUsage').val());
+
+        $('#ReOrderLevel').val(daily * leadTime);
+    })
+
+
+    var lead = parseInt($("#LeadTime").val());
+    var daily = parseInt($("#DailyAverageUsage").val());
+
+</script>
 
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {

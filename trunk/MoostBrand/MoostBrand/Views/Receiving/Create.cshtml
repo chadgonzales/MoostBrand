@@ -187,11 +187,11 @@
                 <div class="form-group pnumber">
                     <label class="control-label col-md-2">
                         PO Date
-                        <span class="symbol required"></span>
+                        @*<span class="symbol required"></span>*@
                     </label>
                     <div class="col-md-6">
                         <div class="col-md-6">
-                            <input type="text" id="PODate" hidden="hidden" />
+                            <input type="text" id="PODate" disabled="disabled" />
                         </div>
                     </div>
             </div>
@@ -495,12 +495,12 @@
             $('#Destination').css({ "border": "1px solid red" })
             _passed = '8';
         }
-        else if ($('#EncodedBy').val() == '') {
+        else if ($('#EncodedBy').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
             $('#EncodedBy').css({ "border": "1px solid red" })
             _passed = '9';
         }
 
-        else if ($('#CheckedBy').val() == '') {
+        else if ($('#CheckedBy').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
             $('#CheckedBy').css({ "border": "1px solid red" })
             _passed = '11';
         }
@@ -520,7 +520,7 @@
             $('#InvoiceReference').css({ "border": "1px solid red" })
             _passed = '15';
         }
-        else if ($('#Vendor').val() == '') {
+        else if ($('#Vendor').val() == '' && $("#ReceivingTypeID").val() == 1) {
             $('#Vendor').css({ "border": "1px solid red" })
             _passed = '16';
         }
@@ -544,7 +544,7 @@
             $('#CustName').css({ "border": "1px solid red" })
             _passed = '21';
         }
-        else if ($('#ShipmentType').val() == '') {
+        else if ($('#ShipmentType').val() == '' && $("#ReceivingTypeID").val() == 4) {
             $('#ShipmentType').css({ "border": "1px solid red" })
             _passed = '22';
         }
@@ -552,14 +552,14 @@
             $('#ApprovedBy').css({ "border": "1px solid red" })
             _passed = '22';
         }
-        else if ($('#Remarks').val() == '') {
-            $('#Remarks').css({ "border": "1px solid red" })
-            _passed = '22';
-        }
+            //else if ($('#Remarks').val() == '') {
+            //    $('#Remarks').css({ "border": "1px solid red" })
+            //    _passed = '22';
+            //}
         else
             _passed = "passed";
 
-
+        //alert(_passed);
         return _passed;
 
     }
@@ -587,46 +587,79 @@
     $('#ReceivingID').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#ReceivingDate').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#PONumber').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#DRNumber').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#InvoiceNumber').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#VesselNumber').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#VoyageNumber').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#ShippingLine').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#Forwarder').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#VanNumber').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#Remarks').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
 
     $(function () {

@@ -385,7 +385,7 @@ namespace MoostBrand.Controllers
             //int UserID = Convert.ToInt32(Session["userID"]);
 
             //var user = entity.Users.FirstOrDefault(x => x.ID == UserID);
-            var prs = entity.Requisitions.Where(x => x.Status == false); //active
+            var prs = entity.Requisitions.Where(x => x.Status == false && ( x.ID != 4 && x.ID != 5)); //active
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -484,9 +484,10 @@ namespace MoostBrand.Controllers
                             Description = x.Description
                         });
 
+            
             ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
             ViewBag.ReqTypeID = new SelectList(entity.ReqTypes, "ID", "Type");
-            ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type");
+            ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes.Where(p=> p.ID!= 4 && p.ID !=5), "ID", "Type");
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description");
             //ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name");
@@ -574,7 +575,7 @@ namespace MoostBrand.Controllers
 
             ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
             ViewBag.ReqTypeID = new SelectList(entity.ReqTypes, "ID", "Type", pr.ReqTypeID);
-            ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
+            ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes.Where(p => p.ID != 4 && p.ID != 5), "ID", "Type", pr.RequisitionTypeID);
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", pr.LocationID);
             //ViewBag.VendorID = new SelectList(entity.Vendors, "ID", "Name", pr.VendorID);
@@ -618,7 +619,7 @@ namespace MoostBrand.Controllers
                                     ID = s.ID,
                                     FullName = s.FirstName + " " + s.LastName
                                 };
-                ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
+                ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes.Where(p => p.ID != 4 && p.ID != 5), "ID", "Type", pr.RequisitionTypeID);
                 ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
                 ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
                 ViewBag.VendorID = pr.VendorID;
@@ -702,7 +703,7 @@ namespace MoostBrand.Controllers
                             };
 
             //ViewBag.DateRequired = pr.DateRequired.Value.ToString("dd/MM/yyyy");
-            ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes, "ID", "Type", pr.RequisitionTypeID);
+            ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes.Where(p => p.ID != 4 && p.ID != 5), "ID", "Type", pr.RequisitionTypeID);
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
             ViewBag.VendorID = pr.VendorID;

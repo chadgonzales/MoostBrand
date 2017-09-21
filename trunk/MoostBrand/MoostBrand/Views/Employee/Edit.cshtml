@@ -28,7 +28,9 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
-                    <input type="submit" value="Save" class="btn btn-green" id="btnUpdate" />
+                    <input type="submit" value="Save" class="btn btn-green hidden" id="btnUpdate" hidden="hidden" />
+                    <input type="button" value="Save" class="btn btn-green" id="btn_Update"/>
+
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
                     </a>
@@ -45,6 +47,15 @@
 }
 
 <script>
+
+    $(function () {
+        $('#btn_Update').click(function () {
+
+            alert('successfully save');
+            $('#btnUpdate').click();
+
+        });
+    });
 
     $('#LastName').keyup(function () {
         var text = $(this).val();
