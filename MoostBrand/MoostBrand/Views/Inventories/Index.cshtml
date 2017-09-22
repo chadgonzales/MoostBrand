@@ -68,7 +68,7 @@
                         InStock
                     </th>
                     <th>
-                       Total Ordered
+                        Total Ordered
                     </th>
                     <th>
                         Committed
@@ -135,9 +135,23 @@
                             @Html.DisplayFor(modelItem => item.MaximumInventory)
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+
+                            <div class="custom-tools">
+
+                                <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+
+                                <a href='@Url.Action("Details", new { id = item.ID })' class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Details">
+                                    <i class="fa fa-file"></i>
+                                </a>
+
+                                <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                                    <i class="fa fa-times fa fa-white"></i>
+                                </a>
+
+                            </div>
+
                         </td>
                     </tr>
                 }
