@@ -74,6 +74,25 @@ namespace MoostBrand.Controllers
                 _lst=_lst.Where(p => p.LocationCode == location).ToList();
             }
 
+
+            var lstInventory1 = (from p in entity.StockTransferDetails.ToList()
+                                 group p by new { p.RequisitionDetail.ItemID, p.StockTransfer.LocationID } into g
+                                 select new
+                                 {
+                                     ItemId = g.Key,
+
+                                     OutQty = g.Where(p => p.StockTransfer.STDAte.Date >= dtDateFrom && p.StockTransfer.STDAte.Date <= dtDateTo && p.AprovalStatusID == 2).Sum(p => p.Quantity)
+                                 }).ToList();
+
+            var lstInventory2 = (from p in entity.StockAdjustmentDetails.ToList()
+                                 group p by new { p.ItemID } into g
+                                 select new
+                                 {
+                                     ItemId = g.Key,
+
+                                     AdjustedQty = g.Where(p => p.StockAdjustment.ErrorDate.Date >= dtDateFrom && p.StockAdjustment.ErrorDate.Date <= dtDateTo && p.StockAdjustment.ApprovalStatus == 2).Sum(p => p.Variance)
+                                 }).ToList();
+
             var lstInventory = (from i in _lst
                                 select new
                                     {
@@ -84,8 +103,8 @@ namespace MoostBrand.Controllers
                                         Location = i.Location.Description != null ? i.Location.Description : " ",
                                         ReOrderLevel = i.ReOrder != null ? i.ReOrder : 0,
                                         InQty = i.InStock != null ? i.InStock :0,
-                                        OutQty = 0,// invRepo.getTotalStockTranfer(i.ItemCode,i.LocationCode.Value, dtDateFrom, dtDateTo),
-                                        AdjustedQty =0,// invRepo.getTotalVariance(i.ID,i.LocationCode.Value, dtDateFrom, dtDateTo),
+                                        OutQty = lstInventory1.FirstOrDefault(p => p.ItemId.ItemID.ToString() == i.ItemCode && p.ItemId.LocationID == i.LocationCode) != null ? lstInventory1.FirstOrDefault(p => p.ItemId.ItemID.ToString() == i.ItemCode && p.ItemId.LocationID == i.LocationCode).OutQty : 0, //invRepo.getTotalStockTranfer(i.ItemCode,i.LocationCode.Value, dtDateFrom, dtDateTo),
+                                        AdjustedQty = lstInventory2.FirstOrDefault(p=>p.ItemId.ItemID == i.ID) != null ? lstInventory2.FirstOrDefault(p => p.ItemId.ItemID == i.ID).AdjustedQty : 0,//invRepo.getTotalVariance(i.ID,i.LocationCode.Value, dtDateFrom, dtDateTo),
                                         CommittedQty = i.Committed != null ? i.Committed :0,
                                         TotalOrder = i.Ordered != null ? i.Ordered :0,
                                         ReservationName = "",
@@ -94,11 +113,11 @@ namespace MoostBrand.Controllers
 
                                     }).ToList();
 
-          //  if(brand)
 
-     
+            //  if(brand)
 
-       
+
+
             ReportViewer reportViewer = new ReportViewer();
             reportViewer.ProcessingMode = ProcessingMode.Local;
 

@@ -383,12 +383,12 @@
             $('#LocationCode').css({ "border": "1px solid red" })
             _passed = '8';
         }
-        else if ($('#LeadTime').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
+        else if ($('#LeadTime').val() == '') {
             $('#LeadTime').css({ "border": "1px solid red" })
             _passed = '9';
         }
 
-        else if ($('#ReOrder').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
+        else if ($('#ReOrder').val() == '' ) {
             $('#ReOrder').css({ "border": "1px solid red" })
             _passed = '11';
         }
@@ -438,9 +438,16 @@
 
     var lead = parseInt($("#LeadTime").val());
     var daily = parseInt($("#DailyAverageUsage").val());
-    $("#InStock").focusout(function () {
-        $("#Available").val(lead * daily);
+
+    $("#InStock").keyup(function () {
+
+        var instock = parseInt($("#InStock").val());
+        var ordered  = parseInt($("#Ordered").val());
+        var committed = parseInt($("#Committed").val());
+
+        $("#Available").val((instock + ordered) - committed);
     });
+  
 
     //$('#ItemID').change(function () {
     //    var text = $(this).val();
