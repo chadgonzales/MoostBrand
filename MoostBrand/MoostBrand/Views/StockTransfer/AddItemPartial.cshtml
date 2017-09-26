@@ -17,7 +17,7 @@
                     <label class = "control-label col-md-2">Item Name</label>
                     <div class="col-md-8">
                         @{
-                            if (ViewBag.Post == null)
+                            if (ViewBag.Post == 1)
                             {
                                 @Html.DropDownList("RequisitionDetailID", String.Empty)
                                 @Html.ValidationMessageFor(model => model.RequisitionDetailID, "", new { @class = "text-danger" })

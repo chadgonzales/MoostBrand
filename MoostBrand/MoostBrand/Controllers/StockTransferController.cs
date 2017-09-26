@@ -938,7 +938,7 @@ namespace MoostBrand.Controllers
 
 
             //ViewBag.STid = id;
-            ViewBag.Post = recID.ReceivingID;
+            ViewBag.Post = recID.StockTransferTypeID;
             ViewBag.ReceivingDetailID = new SelectList(items, "ID", "Description");
             ViewBag.RequisitionDetailID = new SelectList(_items, "ID", "Description");
             return PartialView();
