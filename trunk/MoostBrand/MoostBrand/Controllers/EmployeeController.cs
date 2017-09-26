@@ -14,6 +14,7 @@ namespace MoostBrand.Controllers
     public class EmployeeController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
+        EmployeeRepository empRepo = new EmployeeRepository();
 
         [AccessChecker(Action = 1, ModuleID = 18)]
         // GET: Employee
@@ -76,6 +77,7 @@ namespace MoostBrand.Controllers
             var managementmodules = entity.Modules.Where(p => p.ID > 10).ToList();
             var employee = new Employee();
             //employee.CreateUserAccess(modules);
+            employee.EmpID = empRepo.GenerateEmployeeID();
             if (module == "Transaction Module" || module == null)
             {
                 //lagyan if wala makukuha
@@ -99,6 +101,7 @@ namespace MoostBrand.Controllers
                 // TODO: Add insert logic here
                 if (employee.LastName != null && employee.FirstName != null && employee.Position != null)
                 {
+                    employee.EmpID = empRepo.GenerateEmployeeID();
                     entity.Employees.Add(employee);
                     entity.SaveChanges();
 

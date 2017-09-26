@@ -128,7 +128,7 @@ namespace MoostBrand.Controllers
                 {   adjust.No = stockadRepo.GeneratePoNumber(_type);
                     adjust.ApprovalStatus = 1;
                     adjust.IsSync = false;
-                    adjust.ErrorDate = DateTime.Now;
+                   // adjust.ErrorDate = DateTime.Now;
 
                     entity.StockAdjustments.Add(adjust);
                     entity.SaveChanges();
