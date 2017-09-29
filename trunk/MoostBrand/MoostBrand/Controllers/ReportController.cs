@@ -23,6 +23,7 @@ namespace MoostBrand.Controllers
         public ActionResult InventoryReport(string dateFrom, string dateTo, int? brand, int? category, int? vendor, int? location)
         {
 
+            var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
             #region DROPDOWNS
             var loc = entity.Locations.Where(x => x.ID != 10)
                             .Select(x => new
@@ -31,14 +32,15 @@ namespace MoostBrand.Controllers
                                 Description = x.Description
                             });
 
-            ViewBag.Brand = new SelectList(entity.Brands, "ID", "Description");
-            ViewBag.Category = new SelectList(entity.Categories, "ID", "Description");
+            ViewBag.Brand = new SelectList(entity.Items.Select(p=>p.Brand).Distinct(), "ID", "Description");
+            ViewBag.Category = new SelectList(entity.Items.Select(p => p.Category).Distinct(), "ID", "Description");
             ViewBag.Vendor = new SelectList(entity.Vendors, "ID", "GeneralName");
             ViewBag.Location = new SelectList(loc, "ID", "Description");
             #endregion
             DateTime dtDateFrom = DateTime.Now.Date;
             DateTime dtDateTo = DateTime.Now;
 
+            string _sortbybrand = "Brand: ALL", _sortbycategory = "Category: ALL", _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
             if (!String.IsNullOrEmpty(dateFrom))
             {
                 dtDateFrom = Convert.ToDateTime(dateFrom);
@@ -53,30 +55,39 @@ namespace MoostBrand.Controllers
 
             if(brand!=null)
             {
-                var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
-                _lst= _lst.Where(p => items.Contains(p.ItemCode)).ToList();
+              //  var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
+                _lst= _lst.Where(p => p.Items.BrandID == brand).ToList();
+                string _brand = entity.Brands.Find(brand).Description;
+                _sortbybrand = "Brand:" + _brand;
             }
 
             if (category != null)
             {
+               // string _category = entity.Categories.Find(category).Description;
+                _lst =_lst.Where(p => p.Items.CategoryID == category).ToList();
                 string _category = entity.Categories.Find(category).Description;
-                _lst =_lst.Where(p => p.Category == _category).ToList();
+                _sortbycategory = "Category:"+ _category;
             }
 
             if (vendor != null)
             {
-                var items = entity.Items.Where(p => p.VendorCoding == vendor).Select(p => p.Code);
-                _lst= _lst.Where(p => items.Contains(p.ItemCode)).ToList();
+              //  var items = entity.Items.Where(p => p.VendorCoding == vendor).Select(p => p.Code);
+                _lst= _lst.Where(p => p.Items.VendorCoding == vendor).ToList();
+                string _vendor = entity.Vendors.Find(vendor).Name;
+                _sortbyvendor = "Vendor:"+ _vendor;
             }
 
             if (location != null)
             {
                 _lst=_lst.Where(p => p.LocationCode == location).ToList();
+                string _location = entity.Locations.Find(location).Description;
+                _sortbylocation = "Location:"+_location;
+              
             }
 
 
             var lstInventory1 = (from p in entity.StockTransferDetails.ToList()
-                                 group p by new { p.RequisitionDetail.ItemID, p.StockTransfer.LocationID } into g
+                                 group p by new { p.RequisitionDetail.Item.Code, p.StockTransfer.Requisition.LocationID } into g
                                  select new
                                  {
                                      ItemId = g.Key,
@@ -93,6 +104,15 @@ namespace MoostBrand.Controllers
                                      AdjustedQty = g.Where(p => p.StockAdjustment.ErrorDate.Date >= dtDateFrom && p.StockAdjustment.ErrorDate.Date <= dtDateTo && p.StockAdjustment.ApprovalStatus == 2).Sum(p => p.Variance)
                                  }).ToList();
 
+            var lstInventory3 = (from p in entity.RequisitionDetails.Where(r=>r.Requisition.ReqTypeID == 2 && r.Requisition.RequisitionTypeID == 4 && r.Requisition.Customer != null).ToList()
+                                 group p by new { p.Item.Code, p.Requisition.LocationID } into g
+                                 select new
+                                 {
+                                     ItemId = g.Key,
+                                   
+                                    ReservationName = string.Join("\n", g.Where(p => p.Requisition.RequestedDate.Date >= dtDateFrom && p.Requisition.RequestedDate.Date <= dtDateTo && p.Requisition.ApprovalStatus == 2).Select(p => p.Requisition.Customer).ToArray())
+                                 }).ToList();
+
             var lstInventory = (from i in _lst
                                 select new
                                     {
@@ -103,15 +123,38 @@ namespace MoostBrand.Controllers
                                         Location = i.Location.Description != null ? i.Location.Description : " ",
                                         ReOrderLevel = i.ReOrder != null ? i.ReOrder : 0,
                                         InQty = i.InStock != null ? i.InStock :0,
-                                        OutQty = lstInventory1.FirstOrDefault(p => p.ItemId.ItemID.ToString() == i.ItemCode && p.ItemId.LocationID == i.LocationCode) != null ? lstInventory1.FirstOrDefault(p => p.ItemId.ItemID.ToString() == i.ItemCode && p.ItemId.LocationID == i.LocationCode).OutQty : 0, //invRepo.getTotalStockTranfer(i.ItemCode,i.LocationCode.Value, dtDateFrom, dtDateTo),
+                                        OutQty = lstInventory1.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode) != null ? lstInventory1.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode).OutQty : 0, //invRepo.getTotalStockTranfer(i.ItemCode,i.LocationCode.Value, dtDateFrom, dtDateTo),
                                         AdjustedQty = lstInventory2.FirstOrDefault(p=>p.ItemId.ItemID == i.ID) != null ? lstInventory2.FirstOrDefault(p => p.ItemId.ItemID == i.ID).AdjustedQty : 0,//invRepo.getTotalVariance(i.ID,i.LocationCode.Value, dtDateFrom, dtDateTo),
                                         CommittedQty = i.Committed != null ? i.Committed :0,
-                                        TotalOrder = i.Ordered != null ? i.Ordered :0,
-                                        ReservationName = "",
-                                        QOH = "",
+                                        TotalOrder = i.Ordered != null ? i.Ordered :0,                                                                                       
+                                        ReservationName = lstInventory3.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode) != null ? lstInventory3.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode).ReservationName : " ",
+                                        QOH =0,
+                                        PcsPerBox = i.Items.Quantity
 
 
                                     }).ToList();
+
+            var _lstInventory = (from i in lstInventory
+                                 select new
+                                {
+                                    ItemCode = i.ItemCode,
+                                    ItemPurchaseDesc = i.ItemPurchaseDesc,
+                                    ItemSalesDesc = i.ItemSalesDesc,
+                                    UOM = i.UOM,
+                                    Location = i.Location,
+                                    ReOrderLevel = i.ReOrderLevel,
+                                    InQty = i.InQty,
+                                    OutQty = i.OutQty,
+                                    AdjustedQty = i.AdjustedQty,
+                                    CommittedQty = i.CommittedQty,
+                                    TotalOrder = i.TotalOrder,
+                                    ReservationName = i.ReservationName,
+                                    QOH = i.InQty - i.OutQty - i.CommittedQty + i.AdjustedQty,
+                                    PcsPerBox = i.PcsPerBox
+                                  
+
+                                 }).ToList();
+
 
 
             //  if(brand)
@@ -123,7 +166,7 @@ namespace MoostBrand.Controllers
 
             ReportDataSource _rds = new ReportDataSource();
             _rds.Name = "dsInventory";
-            _rds.Value = lstInventory.OrderBy(p => p.ItemSalesDesc);
+            _rds.Value = _lstInventory.OrderBy(p => p.ItemSalesDesc);
 
             reportViewer.KeepSessionAlive = false;
             reportViewer.LocalReport.DataSources.Clear();
@@ -131,10 +174,10 @@ namespace MoostBrand.Controllers
 
             List<ReportParameter> _parameter = new List<ReportParameter>();
             _parameter.Add(new ReportParameter("DateRange", dtDateFrom.ToString("MMMM dd, yyyy") + " - " + dtDateTo.ToString("MMMM dd, yyyy")));
-            //_parameter.Add(new ReportParameter("CompanyName", companyRepo.GetById(Sessions.CompanyId.Value).Name));
-            //_parameter.Add(new ReportParameter("TotalMaterials", totalMaterials.ToString()));
-            //_parameter.Add(new ReportParameter("TotalTires", totalTires.ToString()));
-            //_parameter.Add(new ReportParameter("TotalBatteries", totalBatteries.ToString()));
+            _parameter.Add(new ReportParameter("SortByBrand", _sortbybrand));
+            _parameter.Add(new ReportParameter("SortByCategory", _sortbycategory));
+            _parameter.Add(new ReportParameter("SortByVendor", _sortbyvendor));
+            _parameter.Add(new ReportParameter("SortByLocation", _sortbylocation));
 
             reportViewer.LocalReport.DataSources.Add(_rds);
             reportViewer.LocalReport.Refresh();

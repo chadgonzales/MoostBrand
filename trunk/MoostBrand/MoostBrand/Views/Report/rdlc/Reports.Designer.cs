@@ -305,6 +305,8 @@ namespace MoostBrand.Views.Report.rdlc {
             
             private global::System.Data.DataColumn columnReOrderLevel;
             
+            private global::System.Data.DataColumn columnPcsPerBox;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public dtInventoryDataTable() {
@@ -444,6 +446,14 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PcsPerBoxColumn {
+                get {
+                    return this.columnPcsPerBox;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -479,7 +489,7 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtInventoryRow AdddtInventoryRow(string ItemCode, string ItemPurchaseDesc, string ItemSalesDesc, string UOM, string InQty, string OutQty, string AdjustedQty, string CommittedQty, string ReservationName, string QOH, string Location, string TotalOrder, string ReOrderLevel) {
+            public dtInventoryRow AdddtInventoryRow(string ItemCode, string ItemPurchaseDesc, string ItemSalesDesc, string UOM, string InQty, string OutQty, string AdjustedQty, string CommittedQty, string ReservationName, string QOH, string Location, string TotalOrder, string ReOrderLevel, string PcsPerBox) {
                 dtInventoryRow rowdtInventoryRow = ((dtInventoryRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ItemCode,
@@ -494,7 +504,8 @@ namespace MoostBrand.Views.Report.rdlc {
                         QOH,
                         Location,
                         TotalOrder,
-                        ReOrderLevel};
+                        ReOrderLevel,
+                        PcsPerBox};
                 rowdtInventoryRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtInventoryRow);
                 return rowdtInventoryRow;
@@ -530,6 +541,7 @@ namespace MoostBrand.Views.Report.rdlc {
                 this.columnLocation = base.Columns["Location"];
                 this.columnTotalOrder = base.Columns["TotalOrder"];
                 this.columnReOrderLevel = base.Columns["ReOrderLevel"];
+                this.columnPcsPerBox = base.Columns["PcsPerBox"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -561,6 +573,8 @@ namespace MoostBrand.Views.Report.rdlc {
                 base.Columns.Add(this.columnTotalOrder);
                 this.columnReOrderLevel = new global::System.Data.DataColumn("ReOrderLevel", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnReOrderLevel);
+                this.columnPcsPerBox = new global::System.Data.DataColumn("PcsPerBox", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPcsPerBox);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -911,6 +925,22 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PcsPerBox {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtInventory.PcsPerBoxColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PcsPerBox\' in table \'dtInventory\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtInventory.PcsPerBoxColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsItemCodeNull() {
                 return this.IsNull(this.tabledtInventory.ItemCodeColumn);
             }
@@ -1063,6 +1093,18 @@ namespace MoostBrand.Views.Report.rdlc {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetReOrderLevelNull() {
                 this[this.tabledtInventory.ReOrderLevelColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPcsPerBoxNull() {
+                return this.IsNull(this.tabledtInventory.PcsPerBoxColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPcsPerBoxNull() {
+                this[this.tabledtInventory.PcsPerBoxColumn] = global::System.Convert.DBNull;
             }
         }
         
