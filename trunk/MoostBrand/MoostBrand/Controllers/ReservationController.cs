@@ -1029,7 +1029,7 @@ namespace MoostBrand.Controllers
                 // TODO: Add insert logic here
                 rd.RequisitionID = id;
                 rd.AprovalStatusID = 1; //submitted
-
+                rd.ReferenceQuantity = rd.Quantity;
                 rd.Committed = reqDetailRepo.getCommited(id, itmID);
 
                 rd.Ordered = reqDetailRepo.getPurchaseOrder(rq.LocationID.Value,itmID);
@@ -1109,6 +1109,7 @@ namespace MoostBrand.Controllers
 
                 prq.ItemID = rd.ItemID;
                 prq.Quantity = rd.Quantity;
+                prq.ReferenceQuantity = rd.Quantity;
                 prq.InStock = rd.InStock;
                 prq.Ordered = rd.Ordered;
                 prq.Committed = rd.Committed;

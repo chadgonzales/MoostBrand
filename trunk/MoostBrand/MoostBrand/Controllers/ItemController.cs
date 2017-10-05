@@ -306,6 +306,9 @@ namespace MoostBrand.Controllers
             ViewBag.Brands = entity.Brands.ToList();
 
             var item = entity.Items.Find(id);
+
+            ViewBag.VendorName = entity.Vendors.Find(item.VendorCoding) == null ? "" : entity.Vendors.Find(item.VendorCoding).GeneralName;
+
             return View(item);
         }
 
@@ -378,6 +381,7 @@ namespace MoostBrand.Controllers
             ViewBag.Sizes = entity.Sizes.ToList();
             ViewBag.UOMS = entity.UnitOfMeasurements.ToList();
             ViewBag.Brands = entity.Brands.ToList();
+            ViewBag.VendorName = entity.Vendors.Find(item.VendorCoding) == null ? "" : entity.Vendors.Find(item.VendorCoding).GeneralName;
             return View(item);
         }
 

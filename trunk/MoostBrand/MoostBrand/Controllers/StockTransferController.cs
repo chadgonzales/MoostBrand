@@ -1013,6 +1013,7 @@ namespace MoostBrand.Controllers
                     else
                     {
                         stocktransferdetail.IsSync = false;
+                        stocktransferdetail.ReferenceQuantity = stocktransferdetail.Quantity;
 
                         entity.StockTransferDetails.Add(stocktransferdetail);
                         entity.SaveChanges();
@@ -1072,6 +1073,7 @@ namespace MoostBrand.Controllers
 
                 sdetails.ReceivingDetailID = stocktransfer.ReceivingDetailID;
                 sdetails.Quantity = stocktransfer.Quantity;
+                sdetails.ReferenceQuantity = stocktransfer.Quantity;
                 sdetails.InStock = stocktransfer.InStock;
                 sdetails.Remarks = stocktransfer.Remarks;
                 sdetails.PreviousItemID = stocktransfer.PreviousItemID;

@@ -1156,7 +1156,7 @@ namespace MoostBrand.Controllers
                 rd.AprovalStatusID = 1; //submitted
 
                 /*rd.Committed = getCommited(rd.ItemID) + rd.Quantity;*/ // COMMENT COMMENT dnagdgan ko + quantity kasi wala syang nkkuha kasi dpa nag ssave yung quantity haha gets mo
-                
+                rd.ReferenceQuantity = rd.Quantity;
                 rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID); //getCommited(rd.ItemID);
                 
                 rd.Ordered = reqDetailRepo.getPurchaseOrder(req.LocationID.Value,rd.ItemID); //getPurchaseOrder(rd.ItemID); // di ko gets msyado ordered so ikaw na bahala haha
@@ -1217,7 +1217,6 @@ namespace MoostBrand.Controllers
                 {
                     rd.PreviousItemID = prvrequiDetail.ItemID;
                     rd.PreviousQuantity = prvrequiDetail.Quantity;
-
                     rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID);
                     rd.Ordered = reqDetailRepo.getPurchaseOrder(prvrequiDetail.Requisition.LocationID.Value, rd.ItemID);
                     rd.InStock = reqDetailRepo.getInstocked(id, itm.Description);
@@ -1239,6 +1238,7 @@ namespace MoostBrand.Controllers
 
                 prvrequiDetail.ItemID = rd.ItemID;
                 prvrequiDetail.Quantity = rd.Quantity;
+                prvrequiDetail.ReferenceQuantity = rd.Quantity;
                 prvrequiDetail.InStock = rd.InStock;
                 prvrequiDetail.Ordered = rd.Ordered;
                 prvrequiDetail.Committed = rd.Committed;
