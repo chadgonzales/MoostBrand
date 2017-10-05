@@ -584,7 +584,7 @@ namespace MoostBrand.Controllers
                         if (newR != null)
                         {
                             newR.ApprovalStatus = 1;
-                            newR.ApprovedBy = Convert.ToInt32(Session["sessionuid"]);
+                            newR.ApprovedBy = receiving.ApprovedBy;
                             newR.IsSync = false;
 
                             if (receiving.Img != null)
@@ -1178,7 +1178,7 @@ namespace MoostBrand.Controllers
                 // TODO: Add insert logic here
                 rd.ReceivingID = id;
                 rd.AprovalStatusID = 1; //submitted
-
+                rd.ReferenceQuantity = rd.Quantity;
                 //var rd1 = entity.ReceivingDetails.Where(r => r.ReceivingID == rd.ReceivingID && r.StockTransferDetailID == rd.StockTransferDetailID).ToList();
 
                 var rd1 = entity.ReceivingDetails.Where(s => s.ReceivingID == rd.ReceivingID && s.RequisitionDetailID == rd.RequisitionDetailID).ToList();
@@ -1266,6 +1266,7 @@ namespace MoostBrand.Controllers
 
                 prvreceivingDetail.RequisitionDetailID = rd.RequisitionDetailID;
                 prvreceivingDetail.Quantity = rd.Quantity;
+                prvreceivingDetail.ReferenceQuantity = rd.Quantity;
                 prvreceivingDetail.InStock = rd.InStock;
                 prvreceivingDetail.Remarks = rd.Remarks;
                 prvreceivingDetail.PreviousItemID = rd.PreviousItemID;

@@ -123,7 +123,7 @@ namespace MoostBrand.DAL
             get
             {
                 string location = "";
-                if (Requisition.Location1.Description == null)
+                if (Requisition.Location1 == null)
                 {
                     location = Requisition.Location.Description;
                 }

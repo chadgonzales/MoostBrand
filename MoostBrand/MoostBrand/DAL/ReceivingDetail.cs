@@ -48,6 +48,8 @@ namespace MoostBrand.DAL
 
         public int? Available { get; set; }
 
+        public int? ReferenceQuantity { get; set; }
+
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
         public virtual Receiving Receiving { get; set; }

@@ -127,7 +127,7 @@
             <div class="form-group">
                 @*@Html.LabelFor(model => model.DescriptionPurchase, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
-                    Description Purchase
+                    Sales Description
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
@@ -364,7 +364,9 @@
             <div class="form-group">
                 <div class="btn-save">
                     <div class="col-md-offset-2 col-md-6">
-                        <input type="button" value="Create" class="btn btn-green" id="save" />
+                        <input type="button" value="Create" class="btn btn-green hidden" id="save" />
+                        <input type="button" value="Create" class="btn btn-green" id="btnSave" />
+                    
                         <a href='@Url.Action("Index")' class="btn btn-light-orange">
                             Back to List
                         </a>
@@ -388,7 +390,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">CLOSE</button>
-                    <button type="submit" class="btn btn-primary" onclick="Submit()">SUBMIT</button>
+                    <button type="submit" class="btn btn-primary" onclick="Submit()" id="btnSubmit">SUBMIT</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -423,6 +425,84 @@
 </script>
 
 <script language="javascript">
+
+
+
+    $('#btnSave').click(function (event) {
+        var _variable = Validate();
+        if (_variable == "passed") {
+            $('#save').click();
+        }
+        else { alert('kindly fill up required fields'); }
+
+    });
+
+
+
+
+
+
+    function Validate() {
+
+        var _passed;
+        //txtEmail
+        if ($('#Code').val() == '') {
+            $('#Code').css({ "border": "1px solid red" })
+            _passed = '1';
+        }
+        else if ($('#Barcode').val() == '') {
+            $('#Barcode').css({ "border": "1px solid red" })
+            _passed = '2';
+        }
+        else if ($('#Description').val() == '') {
+            $('#Description').css({ "border": "1px solid red" })
+            _passed = '3';
+        }
+        else if ($('#DescriptionPurchase').val() == '') {
+            $('#DescriptionPurchase').css({ "border": "1px solid red" })
+            _passed = '4';
+        }
+        else if ($('#CategoryID').val() == '') {
+            $('#CategoryID').css({ "border": "1px solid red" })
+            _passed = '5';
+        }
+        else if ($('#Year').val() == '') {
+            $('#Year').css({ "border": "1px solid red" })
+            _passed = '6';
+        }
+        else if ($('#BrandID').val() == '') {
+            $('#BrandID').css({ "border": "1px solid red" })
+            _passed = '7';
+        }
+        else if ($('#UnitOfMeasurementID').val() == '') {
+            $('#UnitOfMeasurementID').css({ "border": "1px solid red" })
+            _passed = '8';
+        }
+        else if ($('#vendorsearch').val() == '') {
+            $('#vendorsearch').css({ "border": "1px solid red" })
+            _passed = '9';
+        }
+
+        else if ($('#DailyAverageUsage').val() == '') {
+            $('#DailyAverageUsage').css({ "border": "1px solid red" })
+            _passed = '11';
+        }
+        else if ($('#LeadTime').val() == '') {
+            $('#LeadTime').css({ "border": "1px solid red" })
+            _passed = '12';
+        }
+        else if ($('#Quantity').val() == '') {
+            $('#Quantity').css({ "border": "1px solid red" })
+            _passed = '13';
+        }
+
+        else
+            _passed = "passed";
+
+       // alert(_passed);
+        return _passed;
+
+    }
     $(function () {
 
         // add class form-control to textarea and select
@@ -434,22 +514,86 @@
     $('#ItemID').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#Code').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#Barcode').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#Description').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#DescriptionPurchase').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#CategoryID').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#BrandID').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#UnitOfMeasurementID').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#vendorsearch').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#DailyAverageUsage').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#LeadTime').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#Quantity').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#SubstituteItem').keyup(function () {
         var text = $(this).val();
@@ -462,14 +606,23 @@
     $('#Year').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#VendorCoding').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
     $('#LeadTime').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
 </script>
 
