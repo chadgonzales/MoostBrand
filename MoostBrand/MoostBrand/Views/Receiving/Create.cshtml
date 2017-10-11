@@ -84,14 +84,8 @@
                 </label>
                 <div class="col-md-6">
                     @*@Html.DropDownList("RequisitionID", String.Empty)*@
-                    @*@Html.DropDownList("RequisitionID", Enumerable.Empty<SelectListItem>(), "", new { @class = "form-control ddl-item" })*@
-                    <select class="ddl-item">
-                        <option value="volvo">Volvo</option>
-                        <option value="saab">Saab</option>
-                        <option value="mercedes">Mercedes</option>
-                        <option value="audi">Audi</option>
-                    </select>
-                    @*@Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })*@
+                    @Html.DropDownList("RequisitionID", Enumerable.Empty<SelectListItem>(), "",  new { @class = "form-control selectpicker" })
+                    @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
                     
                 </div>
             </div>
@@ -446,25 +440,10 @@
 
     $(document).ready(function () {
 
-        //$(".ddl-item").select2({
-        //    //data: null
-        //});
-        ////alert('a');
-        //var val = $("#LocationID option:selected").val();
+      
+        var val = $("#LocationID option:selected").val();
 
-
-
-
-
-        //var country = ["Australia", "Bangladesh", "Denmark", "Hong Kong", "Indonesia", "Netherlands", "New Zealand", "South Africa"];
-        //$(".ddl-item").select2({
-        //    data: country
-        //});
-
-        $('.ddl-item').select2();
-
-
-        @*$.ajax({
+        $.ajax({
             url: '@Url.Action("getRequisitionID", "Receiving")',
             data: { id: val },
             type: 'get',
@@ -475,11 +454,8 @@
                 }
                 $("#RequisitionID").html(markup).show();
             }
-        })*@
+        })
 
-        //$("#RequisitionID").select2({
-        //    data: null
-        //});
     })
 
 
@@ -861,5 +837,12 @@
                 options.messages["required"] = options.message;
             }
         }
+    });
+
+    $(document).ready(function () {
+        //$('.selectpicker').selectpicker({
+        //    liveSearch: true,
+        //    showSubtext: true
+        //});
     });
 </script>
