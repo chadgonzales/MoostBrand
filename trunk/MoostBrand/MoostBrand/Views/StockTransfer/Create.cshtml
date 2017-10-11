@@ -4,6 +4,8 @@
     ViewBag.Title = "Create Stock Transfer";
 }
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
 
 @using (Html.BeginForm("Create", "StockTransfer", FormMethod.Post, new { enctype = "multipart/form-data", id = "editForm" }))
 {
@@ -332,6 +334,18 @@
             $("#rq").hide();
             $("#res").hide();
         }
+        alert('a');
+        $("#ReceivingID").select2({
+            data: null
+        });
+
+        $("#RequisitionID").select2({
+            data: null
+        });
+
+        $("#ReservationID").select2({
+            data: null
+        });
     }
 
     $("#StockTransferTypeID").change(function () {

@@ -86,7 +86,7 @@ namespace MoostBrand.Controllers
             }
 
 
-            var lstInventory1 = (from p in entity.StockTransferDetails.ToList()
+            var lstInventory1 = (from p in entity.StockTransferDetails.Where(p=>p.RequisitionDetailID != null).ToList()
                                  group p by new { p.RequisitionDetail.Item.Code, p.StockTransfer.Requisition.LocationID } into g
                                  select new
                                  {
@@ -189,6 +189,126 @@ namespace MoostBrand.Controllers
             ViewBag.DateTo = dtDateTo.ToString("MM/dd/yyyy");
 
           //  ViewBag.CompanyName = companyRepo.GetById(Sessions.CompanyId.Value).Name;
+
+            return View();
+        }
+
+        public ActionResult ReservationReport(string dateFrom, string dateTo, int? brand, int? category, int? vendor, int? location)
+        {
+
+            var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
+            #region DROPDOWNS
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Description = x.Description
+                            });
+
+            ViewBag.Brand = new SelectList(entity.Items.Select(p => p.Brand).Distinct(), "ID", "Description");
+            ViewBag.Category = new SelectList(entity.Items.Select(p => p.Category).Distinct(), "ID", "Description");
+            ViewBag.Vendor = new SelectList(entity.Vendors, "ID", "GeneralName");
+            ViewBag.Location = new SelectList(loc, "ID", "Description");
+            #endregion
+            DateTime dtDateFrom = DateTime.Now.Date;
+            DateTime dtDateTo = DateTime.Now;
+
+            string _sortbybrand = "Brand: ALL", _sortbycategory = "Category: ALL", _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
+            if (!String.IsNullOrEmpty(dateFrom))
+            {
+                dtDateFrom = Convert.ToDateTime(dateFrom);
+            }
+
+            if (!String.IsNullOrEmpty(dateTo))
+            {
+                dtDateTo = Convert.ToDateTime(dateTo);
+            }
+
+            var _lst = entity.RequisitionDetails.Where(r=> r.Requisition.ReqTypeID == 2 && r.Requisition.RequisitionTypeID == 4 && r.Requisition.Customer != null).ToList();
+
+            if (brand != null)
+            {
+                //  var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
+                _lst = _lst.Where(p => p.Item.BrandID == brand).ToList();
+                string _brand = entity.Brands.Find(brand).Description;
+                _sortbybrand = "Brand:" + _brand;
+            }
+
+            if (category != null)
+            {
+                // string _category = entity.Categories.Find(category).Description;
+                _lst = _lst.Where(p => p.Item.CategoryID == category).ToList();
+                string _category = entity.Categories.Find(category).Description;
+                _sortbycategory = "Category:" + _category;
+            }
+
+            if (vendor != null)
+            {
+                //  var items = entity.Items.Where(p => p.VendorCoding == vendor).Select(p => p.Code);
+                _lst = _lst.Where(p => p.Item.VendorCoding == vendor).ToList();
+                string _vendor = entity.Vendors.Find(vendor).Name;
+                _sortbyvendor = "Vendor:" + _vendor;
+            }
+
+            if (location != null)
+            {
+                _lst = _lst.Where(p => p.Requisition.LocationID == location).ToList();
+                string _location = entity.Locations.Find(location).Description;
+                _sortbylocation = "Location:" + _location;
+
+            }
+
+
+
+            var lstReservation = (from i in _lst.Where(p=> p.Requisition.RequestedDate.Date >= dtDateFrom && p.Requisition.RequestedDate.Date <= dtDateTo).ToList()
+                                select new
+                                {
+                                    DateCreated = i.Requisition.RequestedDate != null ? i.Requisition.RequestedDate.ToString() : " ",
+                                    RefNumber = i.Requisition.RefNumber != null ? i.Requisition.RefNumber : " ",
+                                    ItemCode = i.Item.Code != null ? i.Item.Code : " ",
+                                    ItemSalesDesc = i.Item.DescriptionPurchase != null ? i.Item.DescriptionPurchase : " ",
+                                    ReservationQty = i.ReferenceQuantity != null ? i.ReferenceQuantity : 0,
+                                    QtyAfterReservation = " ",
+                                    UOM = i.Item.UnitOfMeasurement.Description != null ? i.Item.UnitOfMeasurement.Description : " ",
+                                    CustomerName = i.Requisition.Customer != null ? i.Requisition.Customer : " ", //invRepo.getTotalStockTranfer(i.ItemCode,i.LocationCode.Value, dtDateFrom, dtDateTo),
+                                    DateNeeded = i.Requisition.DateRequired != null ? i.Requisition.DateRequired.ToString() : " ",//invRepo.getTotalVariance(i.ID,i.LocationCode.Value, dtDateFrom, dtDateTo),
+                                    Status = i.Requisition.ReservationType.Type != null ? i.Requisition.ReservationType.Type : " "
+                                  
+
+
+                                }).ToList();
+
+           
+
+
+            ReportViewer reportViewer = new ReportViewer();
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+            ReportDataSource _rds = new ReportDataSource();
+            _rds.Name = "dsReservation";
+            _rds.Value = lstReservation.OrderBy(p => p.ItemSalesDesc);
+
+            reportViewer.KeepSessionAlive = false;
+            reportViewer.LocalReport.DataSources.Clear();
+            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Views\Report\rdlc\Reservation.rdlc";
+
+            List<ReportParameter> _parameter = new List<ReportParameter>();
+            _parameter.Add(new ReportParameter("DateRange", dtDateFrom.ToString("MMMM dd, yyyy") + " - " + dtDateTo.ToString("MMMM dd, yyyy")));
+            _parameter.Add(new ReportParameter("SortByBrand", _sortbybrand));
+            _parameter.Add(new ReportParameter("SortByCategory", _sortbycategory));
+            _parameter.Add(new ReportParameter("SortByVendor", _sortbyvendor));
+            _parameter.Add(new ReportParameter("SortByLocation", _sortbylocation));
+
+            reportViewer.LocalReport.DataSources.Add(_rds);
+            reportViewer.LocalReport.Refresh();
+            reportViewer.LocalReport.SetParameters(_parameter);
+
+            ViewBag.ReportViewer = reportViewer;
+
+            ViewBag.DateFrom = dtDateFrom.ToString("MM/dd/yyyy");
+            ViewBag.DateTo = dtDateTo.ToString("MM/dd/yyyy");
+
+            //  ViewBag.CompanyName = companyRepo.GetById(Sessions.CompanyId.Value).Name;
 
             return View();
         }

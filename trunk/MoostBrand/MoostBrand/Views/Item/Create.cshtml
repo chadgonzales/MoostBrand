@@ -177,10 +177,10 @@
 
                 <div class="form-group"> @*  *@
                     @Html.Hidden("selectedSubCatTypeID")
-                    @Html.LabelFor(model => model.SubCategoriesTypesID, "SubCategoriesTypesID", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.SubCategory.SubCategoryTypeID, "SubCategoriesTypesID", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
-                        @Html.DropDownListFor(m => Model.SubCategoriesTypesID, (SelectList)ViewData["DDLSubCatType"], "", new { @id = "ddlsubcattypes" })
-                        @Html.ValidationMessageFor(model => model.SubCategoriesTypesID, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(m => Model.SubCategory.SubCategoryTypeID, (SelectList)ViewData["DDLSubCatType"], "", new { @id = "ddlsubcattypes" })
+                        @Html.ValidationMessageFor(model => model.SubCategory.SubCategoryTypeID, "", new { @class = "text-danger" })
                     </div>
                 </div>
             }
@@ -197,10 +197,10 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.SubCategoriesTypesID, "SubCategoriesTypesID", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.SubCategory.SubCategoryTypeID, "SubCategoriesTypesID", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-6">
-                        @Html.DropDownListFor(m => Model.SubCategoriesTypesID, Enumerable.Empty<SelectListItem>(), "", new { @id = "ddlsubcattypes" })
-                        @Html.ValidationMessageFor(model => model.SubCategoriesTypesID, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(m => Model.SubCategory.SubCategoryTypeID, Enumerable.Empty<SelectListItem>(), "", new { @id = "ddlsubcattypes" })
+                        @Html.ValidationMessageFor(model => model.SubCategory.SubCategoryTypeID, "", new { @class = "text-danger" })
                     </div>
                 </div>
             }

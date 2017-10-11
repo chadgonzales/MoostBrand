@@ -412,15 +412,9 @@ namespace MoostBrand.DAL
                 .WithRequired(e => e.StockTransferType)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<SubCategory>()
-                .HasMany(e => e.SubCategoriesTypes)
-                .WithOptional(e => e.SubCategory)
-                .HasForeignKey(e => e.SubCategoriesID);
 
-            modelBuilder.Entity<SubCategoriesType>()
-                .HasMany(e => e.Items)
-                .WithOptional(e => e.SubCategoriesType)
-                .HasForeignKey(e => e.SubCategoriesTypesID);
+
+
 
             modelBuilder.Entity<UnitOfMeasurement>()
                 .Property(e => e.QuantityOfMeasure)
@@ -430,6 +424,15 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.Users)
                 .WithRequired(e => e.UserType)
                 .WillCascadeOnDelete(false);
+
+            //////////////////
+
+            modelBuilder.Entity<SubCategoriesType>()
+                .HasMany(e => e.SubCategories)
+                .WithOptional(e => e.SubCategoriesTypes)
+                .HasForeignKey(e => e.SubCategoryTypeID);
+
+        
         }
     }
 }

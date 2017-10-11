@@ -12,7 +12,7 @@ namespace MoostBrand.DAL
         public SubCategory()
         {
             Items = new HashSet<Item>();
-            SubCategoriesTypes = new HashSet<SubCategoriesType>();
+           
         }
 
         public int ID { get; set; }
@@ -28,12 +28,14 @@ namespace MoostBrand.DAL
         [StringLength(100)]
         public string Picture { get; set; }
 
+        public int? SubCategoryTypeID { get; set; }
+
         public virtual Category Category { get; set; }
+
+        public virtual SubCategoriesType SubCategoriesTypes { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Item> Items { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SubCategoriesType> SubCategoriesTypes { get; set; }
     }
 }

@@ -71,10 +71,10 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public ActionResult GetSubCategoriesTypes(int subcategoryID)
         {
-            var objsubcattypes = entity.SubCategoriesTypes
-                .Where(s => s.SubCategoriesID == subcategoryID)
-                .Select(s => new { s.ID, s.Description })
-                .OrderBy(s => s.Description);
+            var objsubcattypes = entity.SubCategories
+                .Where(s => s.ID == subcategoryID)
+                .Select(s => new { s.SubCategoriesTypes.ID, s.SubCategoriesTypes.Description })
+                .OrderBy(s => s);
 
             return Json(objsubcattypes, JsonRequestBehavior.AllowGet);
         }
@@ -258,12 +258,12 @@ namespace MoostBrand.Controllers
                     if (item.SubCategoryID == null || item.SubCategoryID == 0)
                         item.SubCategoryID = entity.SubCategories.FirstOrDefault(p => p.Description == "Not Available").ID;
 
-                    if (item.SubCategoriesTypesID == null || item.SubCategoriesTypesID == 0)
-                        item.SubCategoriesTypesID = entity.SubCategoriesTypes.FirstOrDefault(p => p.Description == "Not Available").ID;
+                    if (item.SubCategory.SubCategoryTypeID == null || item.SubCategory.SubCategoryTypeID == 0)
+                        item.SubCategory.SubCategoryTypeID = entity.SubCategoriesTypes.FirstOrDefault(p => p.Description == "Not Available").ID;
 
                     item.Category = entity.Categories.Find(item.CategoryID);
                     item.SubCategory = entity.SubCategories.Find(item.SubCategoryID);
-                    item.SubCategoriesType = entity.SubCategoriesTypes.Find(item.SubCategoriesTypesID);
+                    item.SubCategory.SubCategoriesTypes = entity.SubCategoriesTypes.Find(item.SubCategory.SubCategoryTypeID);
                     item.Brand = entity.Brands.Find(item.BrandID);
                     item.UnitOfMeasurement = entity.UnitOfMeasurements.Find(item.UnitOfMeasurementID);
                     item.Size = entity.Sizes.Find(item.SizeID);
@@ -340,12 +340,12 @@ namespace MoostBrand.Controllers
                     if (item.SubCategoryID == null || item.SubCategoryID == 0)
                         item.SubCategoryID = entity.SubCategories.FirstOrDefault(p => p.Description == "Not Available").ID;
 
-                    if (item.SubCategoriesTypesID == null || item.SubCategoriesTypesID == 0)
-                        item.SubCategoriesTypesID = entity.SubCategoriesTypes.FirstOrDefault(p => p.Description == "Not Available").ID;
+                    if (item.SubCategory.SubCategoryTypeID == null || item.SubCategory.SubCategoryTypeID == 0)
+                        item.SubCategory.SubCategoryTypeID = entity.SubCategoriesTypes.FirstOrDefault(p => p.Description == "Not Available").ID;
 
                     item.Category = entity.Categories.Find(item.CategoryID);
                     item.SubCategory = entity.SubCategories.Find(item.SubCategoryID);
-                    item.SubCategoriesType = entity.SubCategoriesTypes.Find(item.SubCategoriesTypesID);
+                    item.SubCategory.SubCategoriesTypes = entity.SubCategoriesTypes.Find(item.SubCategory.SubCategoryTypeID);
                     item.Brand = entity.Brands.Find(item.BrandID);
                     item.UnitOfMeasurement = entity.UnitOfMeasurements.Find(item.UnitOfMeasurementID);
                     item.Size = entity.Sizes.Find(item.SizeID);
