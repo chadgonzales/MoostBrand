@@ -80,8 +80,6 @@ namespace MoostBrand.DAL
         public string Year { get; set; }
         public string Image { get; set; }
 
-        public int? SubCategoriesTypesID { get; set; }
-
         public virtual Brand Brand { get; set; }
 
         public virtual Category Category { get; set; }
@@ -91,8 +89,6 @@ namespace MoostBrand.DAL
         public virtual Size Size { get; set; }
 
         public virtual SubCategory SubCategory { get; set; }
-
-        public virtual SubCategoriesType SubCategoriesType { get; set; }
 
         public virtual UnitOfMeasurement UnitOfMeasurement { get; set; }
 
