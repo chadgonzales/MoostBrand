@@ -21,6 +21,18 @@
                     Quantity
                 </th>
                 <th>
+                    In Stock
+                </th>
+                <th>
+                    Committed
+                </th>
+                <th>
+                    Ordered
+                </th>
+                <th>
+                    Available
+                </th>
+                <th>
                     Action
                 </th>
             </tr>
@@ -30,10 +42,23 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.Description)
+                        @Html.DisplayFor(modelItem => item.ReceivingDetail.RequisitionDetail.Item.DescriptionPurchase)
+                        @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.DescriptionPurchase)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GetOrigInstock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GetOrigCommited)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GetOrdered)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GetAvailable)
                     </td>
                     <td>
                         <div class="custom-tools">
@@ -56,15 +81,21 @@
 
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-    @Html.PagedListPager(Model, page => Url.Action("PendingItems",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    @*@Html.PagedListPager(Model, page => Url.Action("PendingItems",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+
+
+    @Html.PagedListPager(Model, page => Url.Action("Details",
+      new { page, id = ViewBag.STid }))
+   
 
     <br /><br />
-    @if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
+    @*@if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
     {
-        <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
-    }
+       
+    }*@
 
+    <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
     <a href='@Url.Action("Details", new { id = ViewBag.STid })' class="btn btn-light-orange">
         Back to List
     </a>
@@ -89,13 +120,102 @@
 </div>
 
 <script>
+    window.onload = function () {
+        //$('#ShowPopop').click(function () {
+
+        var url = $('#AddItemWindow').data('url');
+        $.get(url, function (data) {
+            $('#ShowDialogAdd').html(data);
+            if(@ViewBag.Approved != "2")
+            { 
+                $('#AddItemWindow').modal('show');
+            }
+
+            var addItemPartial = $("#addItemPartial");
+            addItemPartial.submit(function (e) {
+                var ordered = $("#Ordered");
+                var committed = $("#Committed");
+                var available = $("#Available");
+                ordered.prop('disabled', false);
+                committed.prop('disabled', false);
+                available.prop('disabled', false);
+                return true;
+            });
+
+            $("#ReceivingDetailID").change(function () {
+                var val = $("#ReceivingDetailID option:selected").val();
+
+                $.ajax({
+                    url: '@Url.Action("DisplayComputations", "StockTransfer")',
+                    data: { recID: val },
+                    type: 'get',
+                    success: function (data) {
+                        $("#Committed").val(data.Committed);
+                        $("#Ordered").val(data.Ordered);
+                        $("#InStock").val(data.InStock);
+                        $("#Quantity").val(data.Quantity);
+                        $("#Hidden_Quantity").val(data.Quantity);
+                    }
+                })
+            });
+
+            $("#RequisitionDetailID").change(function () {
+              
+                var val = $("#RequisitionDetailID option:selected").val();
+              
+                $.ajax({
+                    url: '@Url.Action("DisplayComputation", "StockTransfer")',
+                    data: { reqID: val },
+                    type: 'get',
+                    success: function (data) {
+                        $("#Committed").val(data.Committed);
+                        $("#Ordered").val(data.Ordered);
+                        $("#InStock").val(data.InStock);
+                        $("#Quantity").val(data.Quantity);
+                        $("#Hidden_Quantity").val(data.Quantity);
+                        
+                    }
+                })
+            });
+
+            $('#Quantity').focusout(function () {
+                if (parseInt($("#Quantity").val()) <= parseInt($("#Hidden_Quantity").val()) && parseInt($("#Quantity").val()) > 0) {
+                    var ordered = parseInt($('#Ordered').val());
+                    var committed = parseInt($('#Committed').val());
+                    var instock = parseInt($('#InStock').val());
+                    console.log(instock);
+
+                    $('#Available').val((instock + ordered) - committed);
+                    $('#quantitymsg').text('');
+                }
+                else
+                {
+                    $('#quantitymsg').text('invalid quantity');
+                    $("#Quantity").val($("#Hidden_Quantity").val());
+                }
+            })
+
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+        });
+        //});
+    }
+
+
+
+
     $('#ShowPopop').click(function () {
 
         var url = $('#AddItemWindow').data('url');
         $.get(url, function (data) {
             $('#ShowDialogAdd').html(data);
 
-            $('#AddItemWindow').modal('show');
+           // if(@ViewBag.Approved != "2")
+            //{ 
+                $('#AddItemWindow').modal('show');
+            //}
 
             // add class form-control to textarea and select
             $("input[disabled]").addClass("form-control");

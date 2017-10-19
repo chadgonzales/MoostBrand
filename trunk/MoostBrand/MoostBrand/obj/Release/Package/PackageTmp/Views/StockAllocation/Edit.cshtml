@@ -9,7 +9,7 @@
     @Html.HiddenFor(model => model.ID)
 
     <div class="panel-heading">
-        <h4 class="panel-title">Create Stock Allocation</h4>
+        <h4 class="panel-title">Edit Stock Allocation</h4>
         <hr />
     </div>
     <div class="panel-body">
@@ -70,18 +70,35 @@
 }
 
 <script language="javascript">
-$(function () {
+    $(function () {
 
-    // add class form-control to textarea and select
-    $("input[disabled]").addClass("form-control");
-    $("textarea").addClass("form-control");
-    $("select").addClass("form-control");
+        // add class form-control to textarea and select
+        $("input[disabled]").addClass("form-control");
+        $("textarea").addClass("form-control");
+        $("select").addClass("form-control");
 
-    $('.date-picker').datepicker({
-        autoclose: true
+        $('.date-picker').datepicker({
+            autoclose: true
+        });
     });
-});
 
+
+    $('#BatchNumber').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#SADate').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Time').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
 </script>
 
 

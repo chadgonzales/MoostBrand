@@ -24,7 +24,8 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-6">
-                        <input type="submit" value="Create" class="btn btn-green" />
+                        <input type="submit" value="Create" class="btn btn-green hidden" id="btnCreate"/>
+                        <input type="button" value="Create" class="btn btn-green" id="btn_Create" />
                         <a href='@Url.Action("Index")' class="btn btn-light-orange">
                             Back to List
                         </a>
@@ -40,3 +41,31 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+
+<script>
+
+
+    $(function () {
+        $('#btn_Create').click(function () {
+
+            alert('successfully save');
+            $('#btnCreate').click();
+
+        });
+    });
+
+
+    $('#LastName').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#FirstName').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Position').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+</script>

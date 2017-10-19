@@ -6,7 +6,7 @@
 
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
@@ -53,6 +53,18 @@
 }
 
 
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-        }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+
+    $('#Code').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Description').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+</script>

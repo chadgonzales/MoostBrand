@@ -8,7 +8,7 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(Model => Model.ID)
     <div class="panel-heading">
-        <h4 class="panel-title">Create Return</h4>
+        <h4 class="panel-title">Edit Return</h4>
         <hr />
     </div>
     <div class="panel-body">
@@ -33,7 +33,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control date-picker" } })
                     @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -71,5 +71,18 @@
         $("input[disabled]").addClass("form-control");
         $("textarea").addClass("form-control");
         $("select").addClass("form-control");
+    });
+
+    $('#Date').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#InspectedBy').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
     });
 </script>

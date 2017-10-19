@@ -16,7 +16,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.TransactionTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.DropDownList("TransactionTypeID", String.Empty)
+                    @Html.DropDownList("TransactionTypeID",String.Empty)
                     @Html.ValidationMessageFor(model => model.TransactionTypeID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -32,18 +32,34 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control date-picker" } })
                     @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SourceLocationID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownList("SourceLocationID", String.Empty)
+                    @Html.ValidationMessageFor(model => model.SourceLocationID, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.InspectedBy, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.InspectedBy, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DropDownList("InspectedBy", String.Empty)
                     @Html.ValidationMessageFor(model => model.InspectedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.InspectedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.InspectedBy, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InspectedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
             
             <div class="form-group">
                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -70,5 +86,18 @@
         $("input[disabled]").addClass("form-control");
         $("textarea").addClass("form-control");
         $("select").addClass("form-control");
+    });
+
+    $('#Date').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#InspectedBy').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
     });
 </script>

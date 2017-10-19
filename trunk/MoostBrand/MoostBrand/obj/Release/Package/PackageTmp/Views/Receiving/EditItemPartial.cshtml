@@ -12,22 +12,60 @@
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             @Html.HiddenFor(model => model.ReceivingID)
-            @Html.HiddenFor(model => model.StockTransferDetailID)
+            @Html.HiddenFor(model => model.RequisitionDetailID)
 
             <div class="form-horizontal">
                 <div class="form-group">
-                    @Html.LabelFor(model => model.StockTransferDetail.RequisitionDetail.Item, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.RequisitionDetail.Item, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
-                        @Html.DisplayFor(model => model.StockTransferDetail.RequisitionDetail.Item.Description)
+                        @Html.DisplayFor(model => model.RequisitionDetail.Item.Description)
                     </div>
                 </div>
             </div>
             <div class="form-horizontal">
+                <label id="editquantitymsg" class="text-danger col-md-8 col-md-offset-2 no-padding"></label>
+                <div class="clearfix"></div>
                 <div class="form-group">
                     @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
                         @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.InStock, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.GetInstock, new { htmlAttributes = new { @class = "form-control", @placeholder = "0"} })
+                        @Html.ValidationMessageFor(model => model.InStock, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Ordered, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.GetOrdered, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" , @disabled = true} })
+                        @Html.ValidationMessageFor(model => model.Ordered, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Committed, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.GetCommited, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" , @disabled = true} })
+                        @Html.ValidationMessageFor(model => model.Committed, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Available, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.GetAvailable, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" , @disabled = true} })
+                        @Html.ValidationMessageFor(model => model.Available, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -56,3 +94,24 @@
         </div>
     }
 </div><!-- /.modal-content -->
+
+<script>
+
+
+    $('#Quantity').focusout(function () {
+
+        if ($("#Quantity").val() <= @ViewBag.Qty && $("#Quantity").val() > 0) {
+
+            $('#editquantitymsg').text('');
+        }
+        else
+        {
+
+            $('#editquantitymsg').text('invalid quantity');
+            var qty =@ViewBag.Qty;
+            $("#Quantity").val(qty);
+        }
+
+    });
+
+</script>

@@ -4,6 +4,10 @@
     ViewBag.Title = "Edit";
 }
 
+@if (TempData["message"] != null)
+{
+    <h2>@TempData["message"]</h2>
+}
 
 @using (Html.BeginForm())
 {
@@ -24,7 +28,9 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
-                    <input type="submit" value="Save" class="btn btn-green" />
+                    <input type="submit" value="Save" class="btn btn-green hidden" id="btnUpdate" hidden="hidden" />
+                    <input type="button" value="Save" class="btn btn-green" id="btn_Update"/>
+
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
                     </a>
@@ -39,3 +45,28 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script>
+
+    $(function () {
+        $('#btn_Update').click(function () {
+
+            alert('successfully save');
+            $('#btnUpdate').click();
+
+        });
+    });
+
+    $('#LastName').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#FirstName').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Position').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+</script>

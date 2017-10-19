@@ -32,6 +32,7 @@ namespace ItemsEncoder
         public Nullable<int> MaximumInventory { get; set; }
         public Nullable<int> DailyAverageUsage { get; set; }
         public Nullable<int> LeadTime { get; set; }
+        public string SalesDescription { get; set; }
     
         public virtual Location Location { get; set; }
     }

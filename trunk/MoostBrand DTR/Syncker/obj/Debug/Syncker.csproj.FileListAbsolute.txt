@@ -1,0 +1,15 @@
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\bin\Debug\default.png
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\bin\Debug\mysettings.txt
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\bin\Debug\Syncker.exe.config
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\bin\Debug\Syncker.exe.manifest
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\bin\Debug\Syncker.application
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\bin\Debug\Syncker.exe
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\bin\Debug\Syncker.pdb
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\bin\Debug\DTR.exe
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\bin\Debug\Newtonsoft.Json.dll
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\obj\Debug\Syncker.csprojResolveAssemblyReference.cache
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\obj\Debug\Syncker.exe.manifest
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\obj\Debug\Syncker.application
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\obj\Debug\Syncker.exe
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\obj\Debug\Syncker.pdb
+D:\Projects\JentecTAMS\trunk\TAMS\Syncker\bin\Debug\DTR.pdb

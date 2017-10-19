@@ -42,6 +42,12 @@
                         @Html.ActionLink("Batch #", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
+                        Source
+                    </th>
+                    <th>
+                        Destination
+                    </th>
+                    <th>
                         Action
                     </th>
                 </tr>
@@ -54,6 +60,12 @@
                             @Html.DisplayFor(modelItem => item.BatchNumber)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.Receiving.Requisition.Location.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Receiving.Requisition.Location1.Description)
+                        </td>
+                        <td>
                             <div class="custom-tools">
                                 <a href='@Url.Action("Details", new { id = item.ID })' class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Details">
                                     <i class="fa fa-file"></i>
@@ -61,7 +73,8 @@
                                 <a href='@Url.Action("Items", new { id = item.ID })' class="btn btn-xs btn-orange tooltips" data-placement="top" data-original-title="Items">
                                     <i class="fa fa-times fa fa-files-o"></i>
                                 </a>
-                                @if (Convert.ToInt32(Session["sessionuid"]) == item.Receiving.ReceivedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                @if (Convert.ToInt32(Session["sessionuid"]) == item.Receiving.ReceivedBy)
+                             
                                 {
                                     <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
                                         <i class="fa fa-edit"></i>

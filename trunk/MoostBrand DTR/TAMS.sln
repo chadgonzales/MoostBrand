@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Portal", "http://localhost:54136", "{10B57623-4CBF-4510-B677-162AB15F0BD2}"
+	ProjectSection(WebsiteProperties) = preProject
+		UseIISExpress = "true"
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_54136"
+		Debug.AspNetCompiler.PhysicalPath = "Portal\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54136\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_54136"
+		Release.AspNetCompiler.PhysicalPath = "Portal\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_54136\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		SlnRelativePath = "Portal\"
+		DefaultWebSiteLanguage = "Visual C#"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTR", "DTR\DTR.csproj", "{7CA1B839-AC28-4C31-930A-25425FCA2621}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Syncker", "Syncker\Syncker.csproj", "{BC46F3FF-9428-4B0A-9C2B-88CD40840724}"
+	ProjectSection(ProjectDependencies) = postProject
+		{10B57623-4CBF-4510-B677-162AB15F0BD2} = {10B57623-4CBF-4510-B677-162AB15F0BD2}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{10B57623-4CBF-4510-B677-162AB15F0BD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10B57623-4CBF-4510-B677-162AB15F0BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10B57623-4CBF-4510-B677-162AB15F0BD2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{10B57623-4CBF-4510-B677-162AB15F0BD2}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{7CA1B839-AC28-4C31-930A-25425FCA2621}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CA1B839-AC28-4C31-930A-25425FCA2621}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CA1B839-AC28-4C31-930A-25425FCA2621}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CA1B839-AC28-4C31-930A-25425FCA2621}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC46F3FF-9428-4B0A-9C2B-88CD40840724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC46F3FF-9428-4B0A-9C2B-88CD40840724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC46F3FF-9428-4B0A-9C2B-88CD40840724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC46F3FF-9428-4B0A-9C2B-88CD40840724}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

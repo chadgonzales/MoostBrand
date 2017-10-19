@@ -3,7 +3,7 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewBag.Title = "Receving";
+    ViewBag.Title = "Return";
 }
 <div class="panel-heading">
     <h4 class="panel-title">Returns</h4>
@@ -52,7 +52,7 @@
             {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.TransactionType.Type)
+                            @Html.DisplayFor(modelItem => item.ReturnTransactionType.Type)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ReturnType.Type)
@@ -70,8 +70,8 @@
                                 </a>
                                 @if (item.ApprovalStatus == 1)
                                 {
-                                    if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
-                                    {
+                                    //if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                    //{
                                         <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
                                             <i class="fa fa-edit"></i>
                                         </a>
@@ -85,7 +85,7 @@
                                         <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
                                             <i class="fa fa-thumbs-down"></i>
                                         </a>
-                                    }
+                                    //}
                                 }
                             </div>
 

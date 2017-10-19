@@ -1,21 +1,20 @@
 ﻿@model MoostBrand.DAL.Receiving
 @{
-    ViewBag.Title = "Edit Stock Transfer";
+    ViewBag.Title = "Edit Receiving";
 }
 @using (Html.BeginForm("Edit", "Receiving", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
     @*@Html.HiddenFor(model => model.ID)
-    @Html.HiddenFor(model => model.ReceivingTypeID)
-    @Html.HiddenFor(model => model.ReceivingID)
-    @Html.HiddenFor(model => model.LocationID)
-    @Html.HiddenFor(model => model.StockTransferID)*@
+        @Html.HiddenFor(model => model.ReceivingTypeID)
+        @Html.HiddenFor(model => model.ReceivingID)
+        @Html.HiddenFor(model => model.LocationID)
+        @Html.HiddenFor(model => model.StockTransferID)*@
     @*@Html.HiddenFor(model => model.RequisitionID)*@
 
     <div class="panel-heading">
-        <h4 class="panel-title">Edit Receving</h4>
-        <hr />
+        <h4 class="panel-title">Edit Receiving</h4>
     </div>
 
 
@@ -23,17 +22,32 @@
 
         <div class="form-horizontal">
 
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    <small class="text-danger"><span class="symbol required"></span> Required Fields</small>
+                </label>
+            </div>
+
             @Html.ValidationSummary(true, "", new { @class = "text-danger alert alert-danger" })
             <div class="form-group">
-                @Html.LabelFor(model => model.ReceivingType, htmlAttributes: new { @class = "control-label col-md-2" })
+                @*@Html.LabelFor(model => model.ReceivingType, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Receiving Type
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("ReceivingTypeID", String.Empty )
+                    @Html.DropDownList("ReceivingTypeID", String.Empty)
                     @Html.ValidationMessageFor(model => model.ReceivingTypeID, "", new { @class = "text-danger" })
                 </div>
+
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+                @*@Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Location
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
                     @Html.DropDownList("LocationID", String.Empty)
                     @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
@@ -41,60 +55,93 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.ReceivingID, htmlAttributes: new { @class = "control-label col-md-2" })
+                @*@Html.LabelFor(model => model.ReceivingID, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Receiving ID
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.ReceivingID, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.ReceivingID, "", new { @class = "text-danger" })
                 </div>
             </div>
 
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.StockTransfer, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.DropDownList("StockTransferID", String.Empty)
+                        @Html.ValidationMessageFor(model => model.StockTransferID, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
             <div class="form-group">
-                @Html.LabelFor(model => model.StockTransfer, htmlAttributes: new { @class = "control-label col-md-2" })
+                @*@Html.LabelFor(model => model.RequisitionID, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Requisition ID
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("StockTransferID", String.Empty)
-                    @Html.ValidationMessageFor(model => model.StockTransferID, "", new { @class = "text-danger" })
+                    @Html.DropDownList("RequisitionID", String.Empty)
+                    @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-md-2">Requisition #</label>
+                <label class="control-label col-md-2">
+                    Requisition #
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
                     @Html.Editor("RefNumber", new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-md-2">Requested By</label>
+                <label class="control-label col-md-2">
+                    Requested By
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
                     @Html.Editor("RequestedBy", new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.ReceivingDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                @*@Html.LabelFor(model => model.ReceivingDate, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Receiving Date
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.ReceivingDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.ReceivingDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
                     @Html.ValidationMessageFor(model => model.ReceivingDate, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div id="br">
                 <div class="form-group">
-                    <label class="control-label col-md-2">Receiving Location</label>
+                    <label class="control-label col-md-2">
+                        Receiving Location
+                        <span class="symbol required"></span>
+                    </label>
                     <div class="col-md-6">
                         @Html.Editor("Destination", new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label col-md-2">Source Location</label>
-                    <div class="col-md-6">
-                        @Html.Editor("SourceLoc", new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                </div>
+                @*<div class="form-group">
+                        <label class="control-label col-md-2">Source Location</label>
+                        <div class="col-md-6">
+                            @Html.Editor("SourceLoc", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>*@
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @*@Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    <label class="control-label col-md-2">
+                        Encoded By
+                        <span class="symbol required"></span>
+                    </label>
                     <div class="col-md-6">
                         @Html.DropDownList("EncodedBy", String.Empty)
                         @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
@@ -102,7 +149,11 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.CheckedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @*@Html.LabelFor(model => model.CheckedBy, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    <label class="control-label col-md-2">
+                        Checked By
+                        <span class="symbol required"></span>
+                    </label>
                     <div class="col-md-6">
                         @Html.DropDownList("CheckedBy", String.Empty)
                         @Html.ValidationMessageFor(model => model.CheckedBy, "", new { @class = "text-danger" })
@@ -111,23 +162,47 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.ReceivedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+                @*@Html.LabelFor(model => model.ReceivedBy, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Received By
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
                     @Html.DropDownList("ReceivedBy", String.Empty)
                     @Html.ValidationMessageFor(model => model.ReceivedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.PONumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="form-group pnumber">
+                @*@Html.LabelFor(model => model.PONumber, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    PO Number
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.PONumber, "", new { @class = "text-danger" })
                 </div>
             </div>
 
+            <div id="_PODate">
+                <div class="form-group pnumber">
+                    <label class="control-label col-md-2">
+                        PO Date
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-md-6">
+                        <input type="text" id="PODate" hidden="hidden" />
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
-                @Html.LabelFor(model => model.DRNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                @*@Html.LabelFor(model => model.DRNumber, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    DR Number
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.DRNumber, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.DRNumber, "", new { @class = "text-danger" })
@@ -135,7 +210,11 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.InvoiceReference, htmlAttributes: new { @class = "control-label col-md-2" })
+                @*@Html.LabelFor(model => model.InvoiceReference, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Invoice Reference
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.InvoiceReference, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.InvoiceReference, "", new { @class = "text-danger" })
@@ -143,7 +222,11 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.InvoiceNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                @*@Html.LabelFor(model => model.InvoiceNumber, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Invoice Number
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.InvoiceNumber, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.InvoiceNumber, "", new { @class = "text-danger" })
@@ -152,25 +235,31 @@
 
             <div id="po">
                 <div class="form-group">
-                    <label class="control-label col-md-2">Vendor</label>
+                    <label class="control-label col-md-2">
+                        Vendor
+                        <span class="symbol required"></span>
+                    </label>
                     <div class="col-md-6">
                         @Html.Editor("Vendor", new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-md-2">Vendor Code</label>
+                    <label class="control-label col-md-2">
+                        Vendor Code
+                        <span class="symbol required"></span>
+                    </label>
                     <div class="col-md-6">
                         @Html.Editor("VendorCode", new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="control-label col-md-2">Vendor Contact Person</label>
-                    <div class="col-md-6">
-                        @Html.Editor("VendorContact", new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                </div>
+                @*<div class="form-group vcontact">
+                        <label class="control-label col-md-2">Vendor Contact Person</label>
+                        <div class="col-md-6">
+                            @Html.Editor("VendorContact", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>*@
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.VesselNumber, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -181,7 +270,11 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.WaybillNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @*@Html.LabelFor(model => model.WaybillNumber, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    <label class="control-label col-md-2">
+                        Waybill Number
+                        <span class="symbol required"></span>
+                    </label>
                     <div class="col-md-6">
                         @Html.EditorFor(model => model.WaybillNumber, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.WaybillNumber, "", new { @class = "text-danger" })
@@ -197,7 +290,11 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.ShippingLine, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @*@Html.LabelFor(model => model.ShippingLine, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    <label class="control-label col-md-2">
+                        Shipping Line
+                        <span class="symbol required"></span>
+                    </label>
                     <div class="col-md-6">
                         @Html.EditorFor(model => model.ShippingLine, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.ShippingLine, "", new { @class = "text-danger" })
@@ -205,7 +302,11 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.Forwarder, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @*@Html.LabelFor(model => model.Forwarder, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    <label class="control-label col-md-2">
+                        Forwarder
+                        <span class="symbol required"></span>
+                    </label>
                     <div class="col-md-6">
                         @Html.EditorFor(model => model.Forwarder, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Forwarder, "", new { @class = "text-danger" })
@@ -223,14 +324,20 @@
 
             <div id="cr">
                 <div class="form-group">
-                    <label class="control-label col-md-2">Customer Name</label>
+                    <label class="control-label col-md-2">
+                        Customer Name
+                        <span class="symbol required"></span>
+                    </label>
                     <div class="col-md-6">
                         @Html.Editor("CustName", new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-md-2">Shipment Type</label>
+                    <label class="control-label col-md-2">
+                        Shipment Type
+                        <span class="symbol required"></span>
+                    </label>
                     <div class="col-md-6">
                         @Html.Editor("ShipmentType", new { htmlAttributes = new { @class = "form-control" } })
                     </div>
@@ -244,10 +351,21 @@
                 </div>
             </div>
 
+            @*<div class="form-group">
+                    <label class="control-label col-md-2">Receiving Location</label>
+                    <div class="col-md-6">
+                        @Html.Editor("ReceivingLocation", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>*@
             <div class="form-group">
-                <label class="control-label col-md-2">Receiving Location</label>
+                @*@Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Approved By
+                    <span class="symbol required"></span>
+                </label>
                 <div class="col-md-6">
-                    @Html.Editor("ReceivingLocation", new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.DropDownList("ApprovedBy")
+                    @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -270,7 +388,8 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
-                    <input type="submit" value="Save" class="btn btn-green" />
+                    <input type="submit" value="Save" class="btn btn-green hidden" />
+                    <input type="button" value="Save" class="btn btn-green" id="btnupdate" />
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
                     </a>
@@ -281,6 +400,184 @@
     </div>
 }
 
+<script>
+
+    $('#save').click(function (event) {
+        var _variable = Validate();
+        if (_variable == "passed") {
+            $('#submit').click();
+        }
+        else { alert('kindly fill up required fields'); }
+
+    });
+
+    function Validate() {
+
+        var _passed;
+        //txtEmail
+        if ($('#ReceivingTypeID').val() == '') {
+            $('#ReceivingTypeID').css({ "border": "1px solid red" })
+            _passed = '1';
+          
+        }
+        else if ($('#LocationID').val() == '' && $("#ReceivingTypeID").val() == 3) {
+            $('#LocationID').css({ "border": "1px solid red" })
+            _passed = '2';
+          
+        }
+        else if ($('#ReceivingID').val() == '') {
+            $('#ReceivingID').css({ "border": "1px solid red" })
+            _passed = '3';
+          
+        }
+        else if ($('#RequisitionID').val() == '') {
+            $('#RequisitionID').css({ "border": "1px solid red" })
+            _passed = '4';
+        }
+        else if ($('#RefNumber').val() == '') {
+            $('#RefNumber').css({ "border": "1px solid red" })
+            _passed = '5';
+            
+        }
+        else if ($('#RequestedBy').val() == '') {
+            $('#RequestedBy').css({ "border": "1px solid red" })
+            _passed = '6';
+            
+        }
+        else if ($('#ReceivingDate').val() == '') {
+            $('#ReceivingDate').css({ "border": "1px solid red" })
+            _passed = '7';
+          
+        }
+        else if ($('#Destination').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
+            $('#Destination').css({ "border": "1px solid red" })
+            _passed = '8';
+           
+        }
+        else if ($('#EncodedBy').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
+            $('#EncodedBy').css({ "border": "1px solid red" })
+            _passed = '9';
+            
+        }
+
+        else if ($('#CheckedBy').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
+            $('#CheckedBy').css({ "border": "1px solid red" })
+            _passed = '11';
+            
+        }
+        else if ($('#ReceivedBy').val() == '') {
+            $('#ReceivedBy').css({ "border": "1px solid red" })
+            _passed = '12';
+            
+        }
+        else if ($('#PONumber').val() == '' && ($("#ReceivingTypeID").val() != 2 || $("#ReceivingTypeID").val() != 3)) {
+            $('#PONumber').css({ "border": "1px solid red" })
+            _passed = '13';
+           
+        }
+        else if ($('#DRNumber').val() == '') {
+            $('#DRNumber').css({ "border": "1px solid red" })
+            _passed = '14';
+            
+        }
+        else if ($('#InvoiceReference').val() == '') {
+            $('#InvoiceReference').css({ "border": "1px solid red" })
+            _passed = '15';
+           
+        }
+        else if ($('#Vendor').val() == '' && $("#ReceivingTypeID").val() == 1) {
+            $('#Vendor').css({ "border": "1px solid red" })
+            _passed = '16';
+           
+        }
+        else if ($('#VendorCode').val() == '') {
+            $('#VendorCode').css({ "border": "1px solid red" })
+            _passed = '17';
+            
+        }
+        else if ($('#WaybillNumber').val() == '' && $("#ReceivingTypeID").val() == 1) {
+            $('#WaybillNumber').css({ "border": "1px solid red" })
+            _passed = '18';
+            
+        }
+        else if ($('#ShippingLine').val() == '' && $("#ReceivingTypeID").val() == 1) {
+            $('#ShippingLine').css({ "border": "1px solid red" })
+            _passed = '19';
+            
+        }
+        else if ($('#Forwarder').val() == '' && $("#ReceivingTypeID").val() == 1) {
+            $('#Forwarder').css({ "border": "1px solid red" })
+            _passed = '20';
+           
+        }
+        else if ($('#CustName').val() == '') {
+            $('#CustName').css({ "border": "1px solid red" })
+            _passed = '21';
+           
+        }
+        else if ($('#ShipmentType').val() == '' && $("#ReceivingTypeID").val() == 4) {
+            $('#ShipmentType').css({ "border": "1px solid red" })
+            _passed = '22';
+          
+        }
+        else if ($('#ApprovedBy').val() == '') {
+            $('#ApprovedBy').css({ "border": "1px solid red" })
+            _passed = '22';
+            
+        }
+           
+        else
+            _passed = "passed";
+
+        //alert(_passed);
+        return _passed;
+
+    }
+    $(document).ready(function () {
+        $.get("@Url.Action("GetRequisition", "Receiving")/" + $("#RequisitionID").val(), null, function (data) {
+            //$("#RequisitionID").val(data.ID);
+            $("#RefNumber").val(data.RefNumber);
+            $("#RequestedBy").val(data.RequestedBy);
+            $("#Destination").val(data.Destination);
+            $("#SourceLoc").val(data.SourceLoc);
+            $("#Vendor").val(data.Vendor);
+            $("#VendorCode").val(data.VendorCode);
+            $("#VendorContact").val(data.VendorContact);
+            $("#CustName").val(data.CustName);
+            $("#ShipmentType").val(data.ShipmentType);
+            $("#Invoice").val(data.Invoice);
+        });
+
+
+
+        var val = $("#LocationID option:selected").val();
+
+        $.ajax({
+            url: '@Url.Action("getRequisitionID", "Receiving")',
+            data: { id: val },
+            type: 'get',
+            success: function (data) {
+                //  var markup = "<option value='0'>Select Requisition</option>";
+                for (var x = 0; x < data.length; x++) {
+                    var markup = "<option value=" + data[x].ID + ">" + data[x].RefNumber + "</option>";
+                }
+                $("#RequisitionID").html(markup).show();
+            }
+        })
+
+        var val = $("#ReceivingTypeID").val();
+        if (val == 2 || val == 3) {
+            $('.pnumber').hide();
+            $('.vcontact').hide();
+        }
+        else {
+            $('.pnumber').show();
+            $('.vcontact').show();
+        }
+
+    })
+</script>
+
 <script language="javascript">
     $(function () {
 
@@ -288,6 +585,84 @@
         $("input[disabled]").addClass("form-control");
         $("textarea").addClass("form-control");
         $("select").addClass("form-control");
+    });
+
+    $('#ReceivingID').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ReceivingDate').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#PONumber').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#DRNumber').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#InvoiceNumber').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#VesselNumber').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#VoyageNumber').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ShippingLine').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#Forwarder').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#VanNumber').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
     });
 
     $(function () {
@@ -328,8 +703,8 @@
         HideOrShow();
     });
 
-    $("#StockTransferID").change(function () {
-        var val = $("#StockTransferID").val();
+    $("#RequisitionID").change(function () {
+        var val = $("#RequisitionID").val();
         GetRequisition(val);
     });
 
@@ -350,7 +725,7 @@
 
     function GetRequisition(id) {
         $.get("@Url.Action("GetRequisition", "Receiving")/" + id, null, function (data) {
-            $("#RequisitionID").val(data.ID);
+            //$("#RequisitionID").val(data.ID);
             $("#RefNumber").val(data.RefNumber);
             $("#RequestedBy").val(data.RequestedBy);
             $("#Destination").val(data.Destination);
@@ -361,6 +736,8 @@
             $("#CustName").val(data.CustName);
             $("#ShipmentType").val(data.ShipmentType);
             $("#Invoice").val(data.Invoice);
+            $("#PONumber").val(data.PONumber);
+            $("#PODate").val(data.strDate);
         });
     }
 
@@ -369,30 +746,36 @@
         GetStockTransfers(val);
         if (val == 1) { //PO
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RRPO", null, BindData);
+            $("#_PODate").show();
             $("#br").hide();
             $("#po").show();
             $("#cr").hide();
         } else if (val == 2) { //BR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RRBR", null, BindData);
+            $("#_PODate").hide();
             $("#br").show();
             $("#po").hide();
             $("#cr").hide();
         } else if (val == 3) { //WR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RRWR", null, BindData);
+            $("#_PODate").hide();
             $("#br").show();
             $("#po").hide();
             $("#cr").hide();
         } else if (val == 5) { //OR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RROR", null, BindData);
+            $("#_PODate").hide();
             $("#br").show();
             $("#po").hide();
             $("#cr").hide();
         } else if (val == 4) { //CR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RRCR", null, BindData);
+            $("#_PODate").hide();
             $("#br").hide();
             $("#po").hide();
             $("#cr").show();
         } else {
+            $("#_PODate").hide();
             $("#RefNumber").val("");
             $("#br").hide();
             $("#po").hide();

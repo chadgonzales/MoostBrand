@@ -1,11 +1,19 @@
 ﻿@model MoostBrand.DAL.StockTransfer
 
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 @{
     ViewBag.Title = "Create Stock Transfer";
 }
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+@*@{
+    Layout = null;
+}*@
 
 @using (Html.BeginForm("Create", "StockTransfer", FormMethod.Post, new { enctype = "multipart/form-data", id = "editForm" }))
 {
@@ -65,7 +73,7 @@
 }
 
 <script src="~/Scripts/CustomJs.js"></script>
-<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+@*<script src="~/Scripts/jquery-1.12.4.min.js"></script>*@
 <script type="text/javascript">
     function myModal() {
         $('#SaveWindow').modal('show');
@@ -334,18 +342,11 @@
             $("#rq").hide();
             $("#res").hide();
         }
-        alert('a');
-        $("#ReceivingID").select2({
-            data: null
-        });
-
-        $("#RequisitionID").select2({
-            data: null
-        });
-
-        $("#ReservationID").select2({
-            data: null
-        });
+      
+        //$(".ddl-item").select2({
+        //    data: null
+        //});
+      
     }
 
     $("#StockTransferTypeID").change(function () {

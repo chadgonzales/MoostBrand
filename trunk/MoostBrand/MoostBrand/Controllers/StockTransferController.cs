@@ -207,7 +207,7 @@ namespace MoostBrand.Controllers
 
             List<RecCustom> lstRecCustom = new List<RecCustom>(); 
             var _receivings = (from r in entity.Receivings.ToList()
-                               where r.ApprovalStatus == 2 && !_st.Select(p => p.ReceivingID).Contains(r.ID)
+                               where r.ApprovalStatus == 2 && /*!_st.Select(p => p.ReceivingID).Contains(r.ID)*/  r.ReceivingDetails.Sum(p => p.Quantity) > 0
                                select r).ToList();
 
 
@@ -238,7 +238,7 @@ namespace MoostBrand.Controllers
 
             var lstReq = (from r in entity.Requisitions.ToList()
                           where r.ApprovalStatus == 2 &&
-                          !_st.Select(p => p.RequisitionID).Contains(r.ID) &&
+                         /* !_st.Select(p => p.RequisitionID).Contains(r.ID)*/ r.RequisitionDetails.Sum(p => p.Quantity) > 0 &&
                           (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))
                           select r).ToList();
 
@@ -270,9 +270,9 @@ namespace MoostBrand.Controllers
             //var lstReq = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))).ToList();
 
             var _lstReq = (from r in entity.Requisitions.ToList()
-                          where r.ApprovalStatus == 2 &&
-                          !_st.Select(p => p.RequisitionID).Contains(r.ID) &&
-                          (r.RefNumber.Contains("CR"))
+                          where r.ApprovalStatus == 2
+                          /*!_st.Select(p => p.RequisitionID).Contains(r.ID)*/ && r.RequisitionDetails.Sum(p => p.Quantity) > 0
+                          && (r.RefNumber.Contains("CR"))
                           select r).ToList();
 
             foreach (var _req in _lstReq)
@@ -341,9 +341,9 @@ namespace MoostBrand.Controllers
                         });
 
             ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name");
-            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
-            ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID");
-            ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
+            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2 && r.RequisitionDetails.Sum(p=>p.Quantity) > 0), "ID", "RefNumber");
+            ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2 && r.ReceivingDetails.Sum(p => p.Quantity) > 0), "ID", "ReceivingID");
+            ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2 && r.RequisitionDetails.Sum(p => p.Quantity) > 0), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees
                           select new
@@ -445,10 +445,10 @@ namespace MoostBrand.Controllers
                                 Description = x.Description
                             });
 
-                ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name");
-                ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
+                ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name", stocktransfer.StockTransferTypeID);
+                ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber",stocktransfer.RequisitionID);
                 ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID", stocktransfer.ReceivingID);
-                ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
+                ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
                 //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
                 ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
                 var empList = from s in entity.Employees
@@ -572,10 +572,10 @@ namespace MoostBrand.Controllers
                             Description = x.Description
                         });
 
-            ViewBag.StockTransferTypeID = new SelectList(entity.StockTransferTypes.Where(p=>p.ID != 2).ToList(), "ID", "Name");
-            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
-            ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID");
-            ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
+            ViewBag.StockTransferTypeID = new SelectList(entity.StockTransferTypes.Where(p=>p.ID != 2).ToList(), "ID", "Name", stocktransfer.StockTransferTypeID);
+            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
+            ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID", stocktransfer.ReceivingID);
+            ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
             //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees
@@ -912,11 +912,11 @@ namespace MoostBrand.Controllers
         {
 
             var recID = entity.StockTransfers.Find(id);
-            var _stdetails = entity.StockTransferDetails.Where(s=>s.StockTransferID == id).Select(s=>s.ReceivingDetailID);
+            //var _stdetails = entity.StockTransferDetails.Where(s=>s.StockTransferID == id).Select(s=>s.ReceivingDetailID);
             int recIDs = Convert.ToInt32(recID.ReceivingID);
             var items = entity.ReceivingDetails
                         .ToList()
-                        .FindAll(rd => rd.ReceivingID == recIDs && rd.AprovalStatusID == 2 && !_stdetails.Contains(rd.ID))
+                        .FindAll(rd => rd.ReceivingID == recIDs && rd.AprovalStatusID == 2 && rd.Quantity > 0 ) /*!_stdetails.Contains(rd.ID)*/
                         .Select(ed => new
                         {
                             ID = ed.ID,
@@ -925,10 +925,10 @@ namespace MoostBrand.Controllers
 
             var reqID = entity.StockTransfers.Find(id);
             int reqIDs = Convert.ToInt32(reqID.RequisitionID);
-            var _stdetails1 = entity.StockTransferDetails.Where(s => s.StockTransferID == id).Select(s => s.RequisitionDetailID);
+            //var _stdetails1 = entity.StockTransferDetails.Where(s => s.StockTransferID == id).Select(s => s.RequisitionDetailID);
             var _items = entity.RequisitionDetails
                         .ToList()
-                        .FindAll(rd => rd.RequisitionID == reqIDs && rd.AprovalStatusID == 2 && !_stdetails1.Contains(rd.ID))
+                        .FindAll(rd => rd.RequisitionID == reqIDs && rd.AprovalStatusID == 2 && rd.Quantity > 0)  /*!_stdetails1.Contains(rd.ID)*/
                         .Select(ed => new
                         {
                             ID = ed.ID,

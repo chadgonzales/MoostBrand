@@ -1,0 +1,1 @@
+Data Source=162.252.86.229;Initial Catalog=JENTECDTR;User ID=sa;Password=r0ck5taR@p!c@550

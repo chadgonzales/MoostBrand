@@ -19,6 +19,18 @@
                 Quantity
             </th>
             <th>
+                In Stock
+            </th>
+            <th>
+                Ordered
+            </th>
+            <th>
+                Committed
+            </th>
+            <th>
+                Available
+            </th>
+            <th>
                 Action
             </th>
         </tr>
@@ -30,6 +42,18 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InStock)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ordered)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Committed)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Available)
                 </td>
                 <td>
                     <a href="#" id="ShowPopopEdit" onclick="ShowEdit(@item.ID)">Edit</a>

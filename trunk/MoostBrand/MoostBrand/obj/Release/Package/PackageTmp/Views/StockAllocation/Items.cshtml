@@ -31,7 +31,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.ReceivingDetail.StockTransferDetail.RequisitionDetail.Item.Description)
+                    @Html.DisplayFor(modelItem => item.ReceivingDetail.RequisitionDetail.Item.Description)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantity)
@@ -61,7 +61,7 @@
     }
 
     <a href='@Url.Action("Details", new { id = ViewBag.STAid })' class="btn btn-light-orange">
-        Back to List
+        Back to Details
     </a>
 
     <div id="AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.STAid })">

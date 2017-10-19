@@ -1,83 +1,150 @@
 ﻿@model MoostBrand.DAL.StockAdjustmentDetail
-<div class="modal-content">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="modal-title">Add Item</h4>
-    </div>
-    @using (Html.BeginForm())
-            {
-        <div class="modal-body">
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            @if (ViewBag.TransType == 1)
+    <div class="modal-content" >
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Add Item</h4>
+        </div>
+        @using (Html.BeginForm())
             {
-                <div class="form-horizontal">
+            <div class="modal-body">
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                @*<div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="control-label col-md-2">Item Name</label>
+                            <div class="col-md-8">
+                                @Html.DropDownList("ItemID", String.Empty)
+                                @Html.ValidationMessageFor(model => model.ItemID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>*@
+
+
+                @Html.Hidden("CategoryID")
+                @Html.Hidden("ItemID")
+                @Html.Hidden("ItemCode")
+
+                <div class="form-horizontal" id="modalItem">
                     <div class="form-group">
-                        <label class="control-label col-md-2">Item Name</label>
+                        <label class="control-label col-md-2">Item Code</label>
                         <div class="col-md-8">
-                            @Html.DropDownList("StockTransferDetailID", String.Empty)
-                            @Html.ValidationMessageFor(model => model.StockTransferDetailID, "", new { @class = "text-danger" })
+                            @Html.TextBox("itemcode", ViewBag.ItemCode as string, new { @class = "form-control" })
                         </div>
                     </div>
                 </div>
-            }
-            else
-            {
-                <div class="form-horizontal">
+
+
+                <div class="form-horizontal" id="modalItem">
                     <div class="form-group">
                         <label class="control-label col-md-2">Item Name</label>
                         <div class="col-md-8">
-                            @Html.DropDownList("ReceivingDetailID", String.Empty)
-                            @Html.ValidationMessageFor(model => model.ReceivingDetailID, "", new { @class = "text-danger" })
+                            @Html.TextBox("itemsearch", ViewBag.ItemName as string, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ItemID, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
-            }
 
-            <div class="form-horizontal">
-                <div class="form-group">
-                    <label class="control-label col-md-2">Reason</label>
-                    <div class="col-md-8">
-                        @Html.DropDownList("ReasonForAdjustmentID", String.Empty)
-                        @Html.ValidationMessageFor(model => model.ReasonForAdjustmentID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
 
-            <div class="form-horizontal">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.QuantityOrdered, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.QuantityOrdered, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.QuantityOrdered, "", new { @class = "text-danger" })
+                <div class="form-horizontal" id="modalCat">
+                    <div class="form-group">
+                        <label class="control-label col-md-2">Category</label>
+                        <div class="col-md-8">
+                            @Html.TextBox("catsearch", ViewBag.CatName as string, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                @*=====================================================================================================================================================*@
+                @*=====================================================================================================================================================*@
+                @*=====================================================================================================================================================*@
+                @*=====================================================================================================================================================*@
+
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.OldQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.OldQuantity, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.OldQuantity, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NewQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.NewQuantity, new { htmlAttributes = new { @class = "form-control", @readonly="readonly" } })
+                            @Html.ValidationMessageFor(model => model.NewQuantity, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Variance, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-8">
+                            @Html.EditorFor(model => model.Variance, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Variance, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Notes, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-8">
+                            @Html.TextAreaFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Notes, "", new { @class = "text-danger" })
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="form-horizontal">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.QuantityReceived, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.QuantityReceived, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.QuantityReceived, "", new { @class = "text-danger" })
-                    </div>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-green" id="_btnAddItem">Add Item</button>
+                <input type="submit" value="Add Item" class="btn btn-green" id="btnAddItem" style="display:none;"/>
             </div>
-            <div class="form-horizontal">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-8">
-                        @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <input type="submit" value="Add Item" class="btn btn-green" />
-        </div>
+        }
+    </div><!-- /.modal-content -->
+
+    <script>
+
+
+    $('#_btnAddItem').click(function () {
+
+        Validation();
+    });
+
+
+    function Validation()
+    {
+        if ($('#NewQuantity').val() == '')
+        {
+            alert('please input New Quantity');
+            returnToPreviousPage();
+            return false;
+        }
+        else if ($('#Variance').val() == '')
+        {
+            alert('please input Variance');
+            returnToPreviousPage();
+            return false;
+        }
+        else { $('#btnAddItem').click(); }
+
+
     }
-</div><!-- /.modal-content -->
+
+    $('#Variance').keyup(function () {
+
+        var oldQty = parseInt($('#OldQuantity').val());
+        var newQty = parseInt($('#Variance').val());
+
+        $('#NewQuantity').val(oldQty + newQty);
+
+    })
+
+    </script>

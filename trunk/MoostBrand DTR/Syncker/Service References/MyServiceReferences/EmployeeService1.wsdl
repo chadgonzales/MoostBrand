@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetEmployees">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetEmployeesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetEmployeesResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetEmployeesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetEmployees" />
+  </wsdl:message>
+  <wsdl:message name="GetEmployeesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetEmployeesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="EmployeeServiceSoap">
+    <wsdl:operation name="GetEmployees">
+      <wsdl:input message="tns:GetEmployeesSoapIn" />
+      <wsdl:output message="tns:GetEmployeesSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="EmployeeServiceSoap" type="tns:EmployeeServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetEmployees">
+      <soap:operation soapAction="http://tempuri.org/GetEmployees" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="EmployeeServiceSoap12" type="tns:EmployeeServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetEmployees">
+      <soap12:operation soapAction="http://tempuri.org/GetEmployees" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EmployeeService">
+    <wsdl:port name="EmployeeServiceSoap" binding="tns:EmployeeServiceSoap">
+      <soap:address location="http://tams-pdy.2sds.com/WebServices/EmployeeService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="EmployeeServiceSoap12" binding="tns:EmployeeServiceSoap12">
+      <soap12:address location="http://tams-pdy.2sds.com/WebServices/EmployeeService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
