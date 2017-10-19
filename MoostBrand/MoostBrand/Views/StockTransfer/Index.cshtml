@@ -62,8 +62,9 @@
                             @Html.DisplayFor(modelItem => item.TransferID)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Requisition.RequisitionType.Type)
-                            @Html.DisplayFor(modelItem => item.Receiving.ReceivingType.Type)
+                            @*@Html.DisplayFor(modelItem => item.Requisition.RequisitionType.Type)
+                            @Html.DisplayFor(modelItem => item.Receiving.ReceivingType.Type)*@
+                            @Html.DisplayFor(modelItem => item.StockTransferType.Name)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Location.Description)

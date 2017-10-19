@@ -40,6 +40,7 @@ namespace ItemsEncoder
         public Nullable<decimal> Price { get; set; }
         public string DescriptionPurchase { get; set; }
         public string Year { get; set; }
+        public Nullable<int> DailyAverageUsage { get; set; }
     
         public virtual Brand Brand { get; set; }
         public virtual Category Category { get; set; }

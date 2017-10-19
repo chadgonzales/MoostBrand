@@ -29,6 +29,7 @@
           <Property Name="Year" Type="nvarchar" MaxLength="50" />
           <Property Name="ItemCode" Type="nvarchar" MaxLength="100" />
           <Property Name="POSBarCode" Type="nvarchar" MaxLength="100" />
+          <Property Name="SalesDescription" Type="nvarchar" MaxLength="100" />
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="Category" Type="nvarchar" MaxLength="100" />
           <Property Name="InventoryUoM" Type="nvarchar" MaxLength="100" />
@@ -68,6 +69,7 @@
           <Property Name="VendorCoding" Type="int" />
           <Property Name="Image" Type="nvarchar(max)" />
           <Property Name="SubCategoriesTypesID" Type="int" />
+          <Property Name="DailyAverageUsage" Type="int" />
           <Property Name="LeadTime" Type="int" />
           <Property Name="ItemID" Type="nvarchar" MaxLength="50" />
           <Property Name="Quantity" Type="int" />
@@ -285,6 +287,7 @@
           <NavigationProperty Name="Category" Relationship="Self.FK_Items_Categories" FromRole="Items" ToRole="Categories" />
           <NavigationProperty Name="SubCategory" Relationship="Self.FK_Items_SubCategories" FromRole="Items" ToRole="SubCategories" />
           <NavigationProperty Name="UnitOfMeasurement" Relationship="MoostBrandModel.FK_Items_UnitOfMeasurements" FromRole="Item" ToRole="UnitOfMeasurement" />
+          <Property Name="DailyAverageUsage" Type="Int32" />
         </EntityType>
         <EntityType Name="SubCategory">
           <Key>
@@ -425,6 +428,7 @@
           <Property Name="DailyAverageUsage" Type="Int32" />
           <Property Name="LeadTime" Type="Int32" />
           <NavigationProperty Name="Location" Relationship="MoostBrandModel.FK_Inventory_Locations" FromRole="Inventory" ToRole="Location" />
+          <Property Name="SalesDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -494,6 +498,7 @@
           <EntitySetMapping Name="Items">
             <EntityTypeMapping TypeName="MoostBrandModel.Item">
               <MappingFragment StoreEntitySet="Items">
+                <ScalarProperty Name="DailyAverageUsage" ColumnName="DailyAverageUsage" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="Barcode" ColumnName="Barcode" />
@@ -547,6 +552,7 @@
           <EntitySetMapping Name="Inventories">
             <EntityTypeMapping TypeName="MoostBrandModel.Inventory">
               <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="SalesDescription" ColumnName="SalesDescription" />
                 <ScalarProperty Name="LeadTime" ColumnName="LeadTime" />
                 <ScalarProperty Name="DailyAverageUsage" ColumnName="DailyAverageUsage" />
                 <ScalarProperty Name="MaximumInventory" ColumnName="MaximumInventory" />

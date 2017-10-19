@@ -8,7 +8,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#RequisitionID").select2({
+        $(".ddl-item").select2({
             data: null
         });
     });
@@ -93,14 +93,14 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("RequisitionID", String.Empty)
+                    @Html.DropDownList("RequisitionID",null, new { @class = "form-control ddl-item" })
                     @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group hidden">
                 <label class="control-label col-md-2">
-                    Requisition #
+                    Str #
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
@@ -578,7 +578,7 @@
             }
         })
 
-        $("#RequisitionID").select2({
+        $(".ddl-item").select2({
             data: null
         });
 

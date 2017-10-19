@@ -3,307 +3,340 @@
 @{
     ViewBag.Title = "Create Stock Transfer";
 }
-<script src="~/Scripts/CustomJs.js"></script>
-<script type="text/javascript">
 
 
-
-    //// -Pearl
-    //$(function () {
-    //    var counterhelper = 2, counteroperator = 2;
-    //    $('#btnAddHelper').click(function () {
-    //        var wrapper = $(".input_fields_wrap");
-    //        var newTextBoxDiv = $(document.createElement('div'))
-    //            .attr("id", 'TextBoxDivHelper' + counterhelper)
-
-    //        newTextBoxDiv.after().html('<div class="HelperRow container" style= "margin-top:15px"> <div class="form-group"> <label class ="control-label col-md-2"> &nbsp; </label><div ><div><div class="col-md-6"><input type="text" id="helper' + counterhelper + '" name="helper' + counterhelper + '" class="txthelper form-control" /></div></div><div class="row"><span class="DeleteHelper" style="cursor:pointer">Delete</span></div></div> </div></div>');
-    //        newTextBoxDiv.appendTo(".HelperRow");
-    //        counterhelper++;
-    //    });
-
-    //    $('#btnAddOperator').click(function () {
-
-    //        var newTextBoxDiv = $(document.createElement('div'))
-    //            .attr("id", 'TextBoxDivOperator' + counteroperator)
-
-    //        newTextBoxDiv.after().html('<div class="OperatorRow container" style= "margin-top:15px"> <div class="form-group"> <label class ="control-label col-md-2"> &nbsp; </label><div ><div><div class="col-md-6"><input type="text" id="operator' + counteroperator + '" name="operator' + counteroperator + '" class="txtoperator form-control" /></div></div><div class="row"><span class="DeleteOperator">Delete</span></div></div> </div></div>');
-    //        newTextBoxDiv.appendTo(".OperatorRow");
-    //        counteroperator++;
-    //    });
-
-    //    $(document).on('click', '.DeleteHelper', function(){
-    //        $(this).closest('.container').remove();
-    //        counterhelper--;
-    //    });
-
-    //    $(document).on('click', '.DeleteOperator', function () {
-    //        $(this).closest('.container').remove();
-    //        counteroperator--;
-    //    });
-    //});
-
-</script>
-
-@using (Html.BeginForm("Create", "StockTransfer", FormMethod.Post))
+@using (Html.BeginForm("Create", "StockTransfer", FormMethod.Post, new { enctype = "multipart/form-data", id = "editForm" }))
 {
     @Html.AntiForgeryToken()
 
     <div class="panel-heading">
         <h4 class="panel-title">Create Stock Transfer</h4>
-        <hr />
+
     </div>
     <div class="panel-body">
 
         <div class="form-horizontal">
 
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    <small class="text-danger"><span class="symbol required"></span> Required Fields</small>
+                </label>
+            </div>
+
+
             @Html.ValidationSummary(true, "", new { @class = "text-danger alert alert-danger" })
-
-            @*<div class="container">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.RequisitionID, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.DropDownList("RequisitionID", String.Empty)
-                        @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.DropDownList("LocationID", String.Empty)
-                        @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TransferID, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.TransferID, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.TransferID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.STDAte, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.STDAte, new { htmlAttributes = new { @class = "form-control date-picker" } })
-                        @Html.ValidationMessageFor(model => model.STDAte, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.StartTime, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Driver, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.Driver, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Driver, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Helper, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="HelperRow">
-                        <div id="TextBoxDivHelper1">
-                            <div class="col-md-6">
-                                <input type="text" id="helper1" class="txthelper form-control" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <input type="button" value="+" class="btn btn-small btn-success" id="btnAddHelper" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ReceivedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.DropDownList("ReceivedBy", String.Empty)
-                        @Html.ValidationMessageFor(model => model.ReceivedBy, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TimeReceived, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.TimeReceived, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.TimeReceived, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.RequestedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.DropDownList("RequestedBy", String.Empty)
-                        @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ReleasedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.DropDownList("ReleasedBy", String.Empty)
-                        @Html.ValidationMessageFor(model => model.ReleasedBy, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Operator, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="OperatorRow">
-                        <div id="TextBoxDivOperator1">
-                            <div class="col-md-6">
-                                <input type="text" id="operator1" class="txtoperator form-control" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <input type="button" value="+" class="btn btn-small btn-success" id="btnAddOperator" />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.CounterCheckedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.DropDownList("CounterCheckedBy", String.Empty)
-                        @Html.ValidationMessageFor(model => model.CounterCheckedBy, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PostedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.DropDownList("PostedBy", String.Empty)
-                        @Html.ValidationMessageFor(model => model.PostedBy, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.DropDownList("EncodedBy", String.Empty)
-                        @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>*@
 
             @Html.EditorForModel()
 
-
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
-                    <input type="submit" value="Create" class="btn btn-green" />
+                    <input type="button" onclick="myModal()" value="Create" class="btn btn-green hidden" id="save" />
+                    <input type="button" value="Create" class="btn btn-green" id="btnCreate" />
+
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
                     </a>
                 </div>
             </div>
-
         </div>
-
     </div>
+
+    <div id="SaveWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <div id="ShowDialogSave" class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        Would you like to proceed?
+                    </h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">CLOSE</button>
+                    <button type="submit" class="btn btn-primary" onclick="Submit()" id="save">SUBMIT</button>
+ 
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 }
 
-
-@*<script language="javascript">
-$(function () {
-
-    // add class form-control to textarea and select
-    $("input[disabled]").addClass("form-control");
-    $("textarea").addClass("form-control");
-    $("select").addClass("form-control");
-
-    $('.date-picker').datepicker({
-        autoclose: true
-    });
-});
-
-</script>*@
-
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-
-}
+<script src="~/Scripts/CustomJs.js"></script>
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-    // -Pearl
-    //$('#submit').click(function () {
-    //    var helper = [], operator = [];
+    function myModal() {
+        $('#SaveWindow').modal('show');
+    }
 
-    //    $('.HelperRow').each(function (index, ele) {
-    //        var lstHelper = {
-    //            Name: $('.txthelper', this).val()
-    //        }
-    //        helper.push(lstHelper);
-    //    });
+    function Submit() {
+        $(document).on("click", "#save", function () {
+            $("#editForm").unbind('submit').submit();
 
-    //    $('.OperatorRow').each(function (index, ele) {
-    //        var lstOperator = {
-    //            Name: $('.txtoperator', this).val()
-    //        }
-    //        operator.push(lstOperator);
-    //    });
+        });
+    }
 
-    //    var data = {
-    //        RequisitionID: $('#RequisitionID option:selected').val(),
-    //        LocationID: $('#LocationID option:selected').val(),
-    //        TransferID: $('#TransferID').val(),
-    //        STDAte: $('#STDAte').val(),
-    //        StartTime: $('#StartTime').val(),
-    //        EndTime: $('#EndTime').val(),
-    //        Driver: $('#Driver').val(),
-    //        StartTime: $('#StartTime').val(),
-    //        EndTime: $('#EndTime').val(),
-    //        ReceivedBy: $('#ReceivedBy option:selected').val(),
-    //        TimeReceived: $('#TimeReceived').val(),
-    //        RequestedBy: $('#RequestedBy option:selected').val(),
-    //        ReleasedBy: $('#ReleasedBy option:selected').val(),
-    //        CounterCheckedBy: $('#CounterCheckedBy option:selected').val(),
-    //        PostedBy: $('#PostedBy option:selected').val(),
-    //        EncodedBy: $('#EncodedBy option:selected').val(),
-    //        Remarks: $('#Remarks').val(),
-    //        Helpers: helper,
-    //        Operators: operator
 
-    //    }
 
-    //    $.ajax({
-    //        type: 'POST',
-    //        url: '/StockTransfer/Create',
-    //        data: JSON.stringify(data),
-    //        contentType: 'application/json',
-    //        success: function (data) {
-    //            if (data.status)
-    //                alert("Saved!");
-    //            else
-    //                alert("Error!!!!!");
-    //        },
-    //        error: function (error) {
-    //            console.log(error);
-    //        }
-    //    });
-    //});
+    $('#btnCreate').click(function (event) {
+        var _variable = Validate();
+        if (_variable == "passed") {
+            myModal();
+        }
+        else { alert('kindly fill up required fields'); }
+
+    });
+
+
+    function Validate() {
+
+        var _passed;
+        //txtEmail
+        if ($('#StockTransferTypeID').val() == '') {
+            $('#StockTransferTypeID').css({ "border": "1px solid red" })
+            _passed = '1';
+        
+        }
+        else if ($('#ReceivingID').val() == '' && $("#StockTransferTypeID").val() == 2) {
+            $('#ReceivingID').css({ "border": "1px solid red" })
+            _passed = '2';
+           
+        }
+        else if ($('#RequisitionID').val() == '' && $("#StockTransferTypeID").val() == 1) {
+            $('#RequisitionID').css({ "border": "1px solid red" })
+            _passed = '3';
+           
+        }
+        else if ($('#LocationID').val() == '') {
+            $('#LocationID').css({ "border": "1px solid red" })
+            _passed = '4';
+            
+        }
+        else if ($('#TransferID').val() == '') {
+            $('#TransferID').css({ "border": "1px solid red" })
+            _passed = '5';
+            
+        }
+        else if ($('#STDAte').val() == '') {
+            $('#STDAte').css({ "border": "1px solid red" })
+            _passed = '6';
+ 
+        }
+        else if ($('#TimeStarted').val() == '') {
+            $('#TimeStarted').css({ "border": "1px solid red" })
+            _passed = '7';
+           
+        }
+        else if ($('#TimeFinish').val() == '') {
+            $(TimeFinish).css({ "border": "1px solid red" })
+            _passed = '8';
+          
+        }
+        else if ($('#Driver').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
+            $('#Driver').css({ "border": "1px solid red" })
+            _passed = '9';
+           
+        }
+
+        else if ($('#PlateNo').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
+            $('#PlateNo').css({ "border": "1px solid red" })
+            _passed = '11';
+            
+        }
+        else if ($('#HelperID').val() == '') {
+            $('#HelperID').css({ "border": "1px solid red" })
+            _passed = '12';
+           
+        }
+        else if ($('#RequestedBy').val() == '') {
+            $('#RequestedBy').css({ "border": "1px solid red" })
+            _passed = '13';
+           
+        }
+        else if ($('#ReceivedBy').val() == '') {
+            $('#ReceivedBy').css({ "border": "1px solid red" })
+            _passed = '14';
+           
+        }
+        else if ($('#ReleasedBy').val() == '') {
+            $('#ReleasedBy').css({ "border": "1px solid red" })
+            _passed = '15';
+           
+        }
+        else if ($('#OperatorID').val() == '') {
+            $('#OperatorID').css({ "border": "1px solid red" })
+            _passed = '17';
+           
+        }
+        else if ($('#CounterCheckedBy').val() == '' && $("#ReceivingTypeID").val() == 1) {
+            $('#CounterCheckedBy').css({ "border": "1px solid red" })
+            _passed = '18';
+          
+        }
+        else if ($('#EncodedBy').val() == '' && $("#ReceivingTypeID").val() == 1) {
+            $('#EncodedBy').css({ "border": "1px solid red" })
+            _passed = '19';
+           
+        }
+        else if ($('#PostedBy').val() == '' && $("#ReceivingTypeID").val() == 1) {
+            $('#PostedBy').css({ "border": "1px solid red" })
+            _passed = '20';
+            
+        }
+
+        else
+            _passed = "passed";
+
+        //alert(_passed);
+        return _passed;
+
+    }
+
+    $('#StockTransferTypeID').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ReceivingID').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#RequisitionID').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#TimeStarted').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#LocationID').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#TransferID').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#STDAte').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#TimeStarted').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#TimeFinish').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#Driver').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#RequestedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ReceivedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ReleasedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#CounterCheckedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#EncodedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#PostedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $(function () {
+        HideOrShow();
+    });
+
+    function HideOrShow() {
+        var val = $("#StockTransferTypeID").val();
+        if (val == "") {
+            $("#rc").hide();
+            $("#rq").hide();
+            $("#res").hide();
+        } else if (val == 1) {
+            $("#rc").hide();
+            $("#res").hide();
+            $("#rq").show();
+        } else if (val == 2) {
+            $("#rc").show();
+            $("#rq").hide();
+            $("#res").hide();
+        } else if (val == 3) {
+            $("#res").show();
+            $("#rq").hide();
+            $("#rc").hide();
+        }
+        else {
+            $("#rc").hide();
+            $("#rq").hide();
+            $("#res").hide();
+        }
+    }
+
+    $("#StockTransferTypeID").change(function () {
+        HideOrShow();
+    });
 
     $('#LocationID').change(function () {
         _locID = $('#LocationID').val();
@@ -325,13 +358,24 @@ $(function () {
         });
     });
 
+    $('#ReservationID').change(function () {
+        //var _id = $('#_ReservationID').val();
+        $.ajax({
+            url: "/StockTransfer/ReqID",
+            type: "POST",
+            data: { reqID: $('#ReservationID').val() },
+            cache: false,
+            success: function (r) {
+            }
+        });
+       
+    });
+
     function BindData(data) {
         $("#TransferID").val(data);
     }
 
     function GetLocationCode(_locID) {
-        //var procemessage = "<option value='0'> Please wait...</option>";
-        //$("#ddlsubcat").html(procemessage).show();
         var url = "/StockTransfer/GetLocationCode/";
 
         $.ajax({
@@ -348,8 +392,6 @@ $(function () {
         });
     }
 
-
-    //pwera lang dito 
     jQuery.validator.unobtrusive.adapters.add("dropdown", function (options) {
         if (options.element.tagName.toUpperCase() == "SELECT" && options.element.type.toUpperCase() == "SELECT-ONE") {
             options.rules["required"] = true;
@@ -360,3 +402,4 @@ $(function () {
     });
 
 </script>
+

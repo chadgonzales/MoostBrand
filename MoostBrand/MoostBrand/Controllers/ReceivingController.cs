@@ -15,7 +15,7 @@ namespace MoostBrand.Controllers
     [LoginChecker]
     public class ReceivingController : Controller
     {
-        MoostBrandEntities entity = new MoostBrandEntities();
+         MoostBrandEntities entity = new MoostBrandEntities();
         RequisitionDetailsRepository reqDetailRepo = new RequisitionDetailsRepository();
         InventoryRepository invRepo = new InventoryRepository();
 
@@ -332,7 +332,9 @@ namespace MoostBrand.Controllers
 
            
 
-            var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 & s.Requisition.LocationID== loc.ID  & !entity.Receivings.Select(p=>p.RequisitionID).Contains(s.RequisitionID.Value))
+            var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 & s.Requisition.LocationID== loc.ID
+                                                       && s.StockTransferDetails.Sum(p => p.Quantity) > 0
+                                                      /*!entity.Receivings.Select(p=>p.RequisitionID).Contains(s.RequisitionID.Value)*/)
                      .Select(r => new
                       {
                           ID = r.RequisitionID.Value,
@@ -340,7 +342,11 @@ namespace MoostBrand.Controllers
                       });
 
            
-                var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 & r.ReqTypeID == 1 && r.LocationID == loc.ID & !entity.Receivings.Select(p => p.RequisitionID).Contains(r.ID))
+                var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2
+                                                                    & r.ReqTypeID == 1
+                                                                    && r.LocationID == loc.ID
+                                                                    && r.RequisitionDetails.Sum(p => p.Quantity) > 0
+                                                                   /* & !entity.Receivings.Select(p => p.RequisitionID).Contains(r.ID)*/)
                     .Select(r => new
                     {
                         ID = r.ID,
@@ -372,7 +378,9 @@ namespace MoostBrand.Controllers
 
 
             int _ReqID = Convert.ToInt32(Session["ReqID"]);
-            var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 & s.Requisition.LocationID == loc.ID & s.RequisitionID == _ReqID)
+            var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 
+                                                        && s.Requisition.LocationID == loc.ID 
+                                                        && s.RequisitionID == _ReqID)
                      .Select(r => new
                      {
                          ID = r.RequisitionID.Value,
@@ -380,7 +388,9 @@ namespace MoostBrand.Controllers
                      });
 
 
-            var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 & r.ReqTypeID == 1 && r.LocationID == loc.ID & r.ID == _ReqID)
+            var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 & r.ReqTypeID == 1 
+                                                                && r.LocationID == loc.ID 
+                                                                && r.ID == _ReqID)
                 .Select(r => new
                 {
                     ID = r.ID,
@@ -1153,16 +1163,28 @@ namespace MoostBrand.Controllers
 
             int reqID = entity.Receivings.Find(id).RequisitionID;
             var _details = entity.ReceivingDetails.Where(p => p.ReceivingID == id).Select(p => p.RequisitionDetailID);
-            var items = entity.RequisitionDetails
+            var _items1 = entity.RequisitionDetails
                         .ToList()
-                        .FindAll(rd => rd.RequisitionID == reqID && rd.AprovalStatusID == 2 && !_details.Contains(rd.ID))
+                        .FindAll(rd => rd.RequisitionID == reqID && rd.AprovalStatusID == 2 && /*!_details.Contains(rd.ID)*/rd.Quantity > 0)
                         .Select(ed => new
                         {
                             ID = ed.ID,
                             Description = ed.Item.DescriptionPurchase
                         });
 
+            var _items2 = entity.StockTransferDetails
+                     .ToList()
+                     .FindAll(rd => rd.StockTransfer.RequisitionID == reqID && rd.AprovalStatusID == 2 && /*!_details.Contains(rd.ID)*/rd.Quantity > 0)
+                     .Select(ed => new
+                     {
+                         ID = ed.RequisitionDetail.ID,
+                         Description = ed.RequisitionDetail.Item.DescriptionPurchase
+                     });
+
             ViewBag.STid = id;
+
+
+            var items = (from p in _items1 select p).Union(from q in _items2 select q);
             ViewBag.RequisitionDetailID = new SelectList(items, "ID", "Description");
 
             return PartialView();

@@ -31,7 +31,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
-                    <input type="submit" value="Save" class="btn btn-green" id="save" />
+                    <input type="submit" value="Save" class="btn btn-green hidden" id="save" />
                     <input type="button" value="Save" class="btn btn-green" id="btnUpdate" />
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
@@ -76,13 +76,14 @@ $(function () {
 </script>
 
 <script src="~/Scripts/CustomJs.js"></script>
-<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+@*<script src="~/Scripts/jquery-1.12.4.min.js"></script>*@
 <script type="text/javascript">
 
     $('#btnUpdate').click(function (event) {
+      
         var _variable = Validate();
         if (_variable == "passed") {      
-            $('#save').click
+            $('#save').click();
         }
         else { alert('kindly fill up required fields'); }
 
@@ -371,6 +372,12 @@ $(function () {
                 alert("error : " + reponse);
             }
         });
+
+        $('.ddl-item').select2({
+            data: null
+
+        });
+
     });
 
     function BindData(data) {

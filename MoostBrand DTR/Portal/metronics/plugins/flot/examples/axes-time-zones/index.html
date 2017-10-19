@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Flot Examples: Time zones</title>
+	<link href="../examples.css" rel="stylesheet" type="text/css">
+	<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script><![endif]-->
+	<script language="javascript" type="text/javascript" src="../../jquery.js"></script>
+	<script language="javascript" type="text/javascript" src="../../jquery.flot.js"></script>
+	<script language="javascript" type="text/javascript" src="../../jquery.flot.time.js"></script>
+	<script language="javascript" type="text/javascript" src="date.js"></script>
+	<script type="text/javascript">
+
+	$(function() {
+
+		timezoneJS.timezone.zoneFileBasePath = "tz";
+		timezoneJS.timezone.defaultZoneFile = [];
+		timezoneJS.timezone.init({async: false});
+
+		var d = [
+			//[Date.UTC(2011, 2, 12, 14, 0, 0), 28],
+			//[Date.UTC(2011, 2, 12, 15, 0, 0), 27], Date.UTC(2011, 0, 1, 2, 3, 4, 567) // 1 Jan 2011, 02:03:04.567 in UTC
+			[Date.UTC(2011, 2, 12, 1, 0, 0), 1], // 12 Mar 2011, 02:03:04.567 in UTC
+			[Date.UTC(2011, 2, 12, 1, 30, 0), 3],
+			[Date.UTC(2011, 2, 12, 2, 0, 0), 4],
+			[Date.UTC(2011, 2, 12, 2, 30, 0), 4],
+			[Date.UTC(2011, 2, 12, 3, 0, 0), 12],
+			[Date.UTC(2011, 2, 12, 3, 30, 0), 15],
+			[Date.UTC(2011, 2, 12, 4, 0, 0), 20],
+			[Date.UTC(2011, 2, 12, 4, 30, 0), 24],
+			/*[Date.UTC(2011, 2, 13, 16, 0, 0), 25],
+			[Date.UTC(2011, 2, 13, 17, 0, 0), 19],
+			[Date.UTC(2011, 2, 13, 18, 0, 0), 16],
+			[Date.UTC(2011, 2, 13, 19, 0, 0), 14],
+			[Date.UTC(2011, 2, 13, 20, 0, 0), 11],
+			[Date.UTC(2011, 2, 13, 21, 0, 0), 9],
+			[Date.UTC(2011, 2, 13, 22, 0, 0), 7.5],
+			[Date.UTC(2011, 2, 13, 23, 0, 0), 6]*/
+		];
+
+		var plot = $.plot("#placeholderUTC", [d], {
+			xaxis: {
+				mode: "time"
+			}
+		});
+		
+		
+
+		var plot = $.plot("#placeholderLocal", [d], {
+			xaxis: {
+				mode: "time",
+				tickSize: [0.5, 'hour']
+			},
+			series: {
+                            lines: {
+                                show: true,
+                                lineWidth: 2,
+                                fill: true,
+                                fillColor: {
+                                    colors: [{
+                                            opacity: 0.05
+                                        }, {
+                                            opacity: 0.01
+                                        }
+                                    ]
+                                }
+                            },
+                            points: {
+                                show: true
+                            },
+                            shadowSize: 2
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true,
+                            tickColor: "#eee",
+                            borderWidth: 0
+                        },
+                        colors: ["#d12610", "#37b7f3", "#52e136"]
+		});
+
+		
+		function showTooltip(x, y, contents) {
+                    $('<div id="tooltip">' + contents + '</div>').css({
+                            position: 'absolute',
+                            display: 'none',
+                            top: y + 5,
+                            left: x + 15,
+                            border: '1px solid #333',
+                            padding: '4px',
+                            color: '#fff',
+                            'border-radius': '3px',
+                            'background-color': '#333',
+                            opacity: 0.80
+                        }).appendTo("body").fadeIn(200);
+                }
+
+                var previousPoint = null;
+                $("#placeholderLocal").bind("plothover", function (event, pos, item) {
+                    $("#x").text(pos.x.toFixed(2));
+                    $("#y").text(pos.y.toFixed(2));
+
+                    if (item) {
+                        if (previousPoint != item.dataIndex) {
+                            previousPoint = item.dataIndex;
+
+                            $("#tooltip").remove();
+                            var x = item.datapoint[0].toFixed(2),
+                                y = item.datapoint[1].toFixed(2);
+
+                            showTooltip(item.pageX, item.pageY, y + "&#x2103");
+                        }
+                    } else {
+                        $("#tooltip").remove();
+                        previousPoint = null;
+                    }
+                });
+				
+				/*function showTooltip(x, y, contents, z) {
+    $('<div id="flot-tooltip">' + contents + '</div>').css({
+        position: 'absolute',
+        display: 'none',
+        top: y - 30,
+        left: x + 30,
+        border: '2px solid',
+        padding: '2px',
+        'background-color': '#FFF',
+        opacity: 0.80,
+        'border-color': z,
+        '-moz-border-radius': '5px',
+        '-webkit-border-radius': '5px',
+        '-khtml-border-radius': '5px',
+        'border-radius': '5px'
+    }).appendTo("body").fadeIn(200);
+}
+ 
+function getMonthName(numericMonth) {
+    var monthArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var alphaMonth = monthArray[numericMonth];
+ 
+    return alphaMonth;
+}
+ 
+function convertToDate(timestamp) {
+    var newDate = new Date(timestamp);
+    var dateString = newDate.getMonth();
+    var monthName = getMonthName(dateString);
+ 
+    return monthName;
+}
+ 
+var previousPoint = null;
+var previousPointLabel = null;
+ 
+$("#placeholderLocal").bind("plothover", function (event, pos, item) {
+    if (item) {
+        if ((previousPoint != item.dataIndex) || (previousLabel != item.series.label)) {
+            previousPoint = item.dataIndex;
+            previousLabel = item.series.label;
+ 
+            $("#flot-tooltip").remove();
+ 
+            if (item.series.label == "Temperature - High") {
+                var unitLabel = "\u00B0C";
+            } else if (item.series.label == "Temperature - Low") {
+                var unitLabel = "\u00B0C";
+            } else if (item.series.label == "Rainfall") {
+                var unitLabel = "mm";
+            }
+ 
+            var x = convertToDate(item.datapoint[0]);
+            y = item.datapoint[1];
+            z = item.series.color;
+ 
+            showTooltip(item.pageX, item.pageY,
+                    "<b>" + item.series.label + "</b><br /> " + x + " = " + y + unitLabel,
+                    z);
+        }
+    } else {
+        $("#flot-tooltip").remove();
+        previousPoint = null;
+    }
+});
+				
+				
+				*/
+				
+		var plot = $.plot("#placeholderChicago", [d], {
+			xaxis: {
+				mode: "time",
+				timezone: "America/Chicago"
+			}
+		});
+		
+		
+
+		// Add the Flot version string to the footer
+
+		$("#footer").prepend("Flot " + $.plot.version + " &ndash; ");
+	});
+
+	</script>
+</head>
+<body>
+
+	<div id="header">
+		<h2>Time zones</h2>
+	</div>
+
+	<div id="content">
+
+		<h3>UTC</h3>
+		<div class="demo-container" style="height: 300px;">
+			<div id="placeholderUTC" class="demo-placeholder"></div>
+		</div>
+
+		<h3>Browser</h3>
+		<div class="demo-container" style="height: 300px;">
+			<div id="placeholderLocal" class="demo-placeholder"></div>
+		</div>
+
+		<h3>Chicago</h3>
+		<div class="demo-container" style="height: 300px;">
+			<div id="placeholderChicago" class="demo-placeholder"></div>
+		</div>
+
+	</div>
+
+	<div id="footer">
+		Copyright &copy; 2007 - 2013 IOLA and Ole Laursen
+	</div>
+
+</body>
+</html>

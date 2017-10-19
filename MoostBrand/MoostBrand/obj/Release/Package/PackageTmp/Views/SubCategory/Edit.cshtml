@@ -79,4 +79,13 @@
         $("textarea").addClass("form-control");
         $("select").addClass("form-control");
     });
+
+    $('#Code').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Description').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
 </script>

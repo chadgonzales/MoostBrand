@@ -51,14 +51,14 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.Description)
+                        @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.DescriptionPurchase)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.RequisitionDetail.Quantity)
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.QuantityReceived)
-                    </td>
+                    </td>*@
                     <td>
                         <div class="custom-tools">
                             <a href='@Url.Action("EditItem", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
