@@ -16,3 +16,11 @@ D:\Projects\JentecTAMS\trunk\TAMS\DTR\obj\Debug\DTR.exe
 D:\Projects\JentecTAMS\trunk\TAMS\DTR\obj\Debug\DTR.pdb
 D:\Projects\JentecTAMS\trunk\TAMS\DTR\bin\Debug\DTR.pdb
 D:\Projects\JentecTAMS\trunk\TAMS\DTR\obj\Debug\DTR.csprojResolveAssemblyReference.cache
+C:\Users\nepoy\Desktop\test\trunk\MoostBrand DTR\DTR\bin\Debug\DTR.exe.config
+C:\Users\nepoy\Desktop\test\trunk\MoostBrand DTR\DTR\obj\Debug\DTR.csprojResolveAssemblyReference.cache
+C:\Users\nepoy\Desktop\test\trunk\MoostBrand DTR\DTR\obj\Debug\DTR.frmEnrollment.resources
+C:\Users\nepoy\Desktop\test\trunk\MoostBrand DTR\DTR\obj\Debug\DTR.frmLog.resources
+C:\Users\nepoy\Desktop\test\trunk\MoostBrand DTR\DTR\obj\Debug\DTR.frmLogin.resources
+C:\Users\nepoy\Desktop\test\trunk\MoostBrand DTR\DTR\obj\Debug\DTR.frmLogList.resources
+C:\Users\nepoy\Desktop\test\trunk\MoostBrand DTR\DTR\obj\Debug\DTR.Properties.Resources.resources
+C:\Users\nepoy\Desktop\test\trunk\MoostBrand DTR\DTR\obj\Debug\DTR.csproj.GenerateResource.Cache
