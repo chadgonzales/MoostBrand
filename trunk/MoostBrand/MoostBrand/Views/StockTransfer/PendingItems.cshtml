@@ -46,7 +46,7 @@
                         @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.DescriptionPurchase)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
+                        @Html.DisplayFor(modelItem => item.ReferenceQuantity)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.GetOrigInstock)
@@ -118,15 +118,20 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
 
 <script>
     window.onload = function () {
-        //$('#ShowPopop').click(function () {
-
+        //alert('a');
+        ////$('#ShowPopop').click(function () {
+        //alert($("#Hidden_Quantity").val());
         var url = $('#AddItemWindow').data('url');
         $.get(url, function (data) {
+           
             $('#ShowDialogAdd').html(data);
-            if(@ViewBag.Approved != "2")
+          
+            @*alert(@ViewBag.Approved);*@
+            if(@ViewBag.Approved != 2)
             { 
                 $('#AddItemWindow').modal('show');
             }
@@ -179,6 +184,7 @@
             });
 
             $('#Quantity').focusout(function () {
+                alert($("#Hidden_Quantity").val());
                 if (parseInt($("#Quantity").val()) <= parseInt($("#Hidden_Quantity").val()) && parseInt($("#Quantity").val()) > 0) {
                     var ordered = parseInt($('#Ordered').val());
                     var committed = parseInt($('#Committed').val());

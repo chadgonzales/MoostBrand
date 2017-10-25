@@ -93,6 +93,10 @@
         if (_variable == "passed") {
             myModal();
         }
+        else if (_variable == "Helper")
+        { alert("Kindly fill up field/s for Helpers"); }
+        else if (_variable == "Operator")
+        { alert("Kindly fill up field/s for Operators"); }
         else { alert('kindly fill up required fields'); }
 
     });
@@ -142,20 +146,21 @@
             _passed = '8';
           
         }
-        else if ($('#Driver').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
+        else if ($('#Driver').val() == '' ) {
             $('#Driver').css({ "border": "1px solid red" })
             _passed = '9';
            
         }
 
-        else if ($('#PlateNo').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
+        else if ($('#PlateNo').val() == '' ) {
             $('#PlateNo').css({ "border": "1px solid red" })
             _passed = '11';
             
         }
-        else if ($('#HelperID').val() == '') {
-            $('#HelperID').css({ "border": "1px solid red" })
-            _passed = '12';
+        else if ($('._helper').val() == '' || $('._helper').val() == null) {
+            //$('.helper-field').css({ "border": "1px solid red" })
+            _passed = "Helper";
+            //alert("Kindly fill up fields for Helper");
            
         }
         else if ($('#RequestedBy').val() == '') {
@@ -173,9 +178,10 @@
             _passed = '15';
            
         }
-        else if ($('#OperatorID').val() == '') {
-            $('#OperatorID').css({ "border": "1px solid red" })
-            _passed = '17';
+        else if ($('._operator').val() == '' || $('._operator').val() == null) {
+            //$('.operator-field').css({ "border": "1px solid red" })
+            _passed = "Operator";
+            
            
         }
         else if ($('#CounterCheckedBy').val() == '' && $("#ReceivingTypeID").val() == 1) {
@@ -197,7 +203,8 @@
         else
             _passed = "passed";
 
-        //alert(_passed);
+       
+       
         return _passed;
 
     }

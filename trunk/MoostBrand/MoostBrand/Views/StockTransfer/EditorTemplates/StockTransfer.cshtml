@@ -175,7 +175,7 @@
         </label>
         <div class="col-md-6">
             <div id="helper-fields">
-                @Html.EditorFor(model => model.Helpers, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Helpers, new { htmlAttributes = new { @class = "form-control _helper" } })
                 @Html.AddLink("Add", "#helper-fields", ".helper-field", "Helpers", typeof(MoostBrand.DAL.Helper))
                 @*<button onclick="appendRow()" value="Add Row" class="btn Button ButtonContentAdd">Add</button>*@
             </div>
@@ -234,7 +234,7 @@
         </label>
         <div class="col-md-6">
             <div id="operator-fields">
-                @Html.EditorFor(model => model.Operators, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Operators, new { htmlAttributes = new { @class = "form-control _operator" } })
                 @Html.AddLink("Add", "#operator-fields", ".operator-field", "Operators", typeof(MoostBrand.DAL.Operator))
             </div>
         </div>

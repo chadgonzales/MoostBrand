@@ -280,7 +280,7 @@ namespace MoostBrand.Controllers
                             });
 
 
-                ViewBag.ItemName = new SelectList(items, "ID", "Description");
+                ViewBag.ItemName = new SelectList(items, "ID", "Description", Convert.ToInt32(stockTransferDirect.ItemName));
                 ViewBag.LocationID = new SelectList(loc, "ID", "Description", stockTransferDirect.LocationID);
                 ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ReceivedBy);
                 ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.RequestedBy);
@@ -410,7 +410,7 @@ namespace MoostBrand.Controllers
             });
 
 
-            ViewBag.ItemName = new SelectList(items, "ID", "Description");
+            ViewBag.ItemName = new SelectList(items, "ID", "Description", Convert.ToInt32(stockTransferDirect.ItemName));
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stockTransferDirect.LocationID);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ReceivedBy);
             ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.RequestedBy);
@@ -553,6 +553,28 @@ namespace MoostBrand.Controllers
             {
                 return View();
             }
+        }
+
+        public ActionResult getInventoryByLocation(int id)
+        {
+            var loc = entity.Locations.Find(id);
+
+            var st = entity.Inventories.Where(s => s.LocationCode == loc.ID
+                                                       && s.InStock> 0)
+                     .Select(r => new
+                     {
+                         ID = r.Items.Description,
+                         ItemName = r.Items.Description
+                     });
+
+
+            
+
+            return Json(st, JsonRequestBehavior.AllowGet);
+
+
+
+
         }
 
         #endregion

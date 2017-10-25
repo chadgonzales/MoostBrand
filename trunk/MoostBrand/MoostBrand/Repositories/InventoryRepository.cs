@@ -53,7 +53,7 @@ namespace MoostBrand.DAL
             var r = entity.Requisitions.Where(p => p.ApprovalStatus == 2 && p.LocationID == location).Select(p => p.ID).ToList();
             var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
             int c = 0;
-            var com = entity.RequisitionDetails.Where(model => model.ItemID == item && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID.Value) 
+            var com = entity.RequisitionDetails.Where(model => model.ItemID == item && model.AprovalStatusID == 2 && model.AprovalStatusID == 5 && type.Contains(model.Requisition.RequisitionTypeID.Value) 
                                                 && r.Contains(model.RequisitionID));
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
@@ -79,7 +79,7 @@ namespace MoostBrand.DAL
             {
                 var lstReqDetail = new List<RequisitionDetail>();
 
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == item  
+                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.AprovalStatusID == 5 && x.ItemID == item  
                                                         && requi.Contains(x.RequisitionID) 
                                                         && x.Requisition.LocationID == location).ToList();
 
@@ -161,7 +161,7 @@ namespace MoostBrand.DAL
         public int getStockTranfer(string code)
         {
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
-            var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 2).Select(p => p.ID).ToList();
+            var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 2 && p.ApprovedStatus == 5).Select(p => p.ID).ToList();
             int c = 0;
             var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == item && model.AprovalStatusID == 2 && st.Contains(model.StockTransferID.Value));
             var committed = com.Sum(x => x.Quantity);
@@ -181,7 +181,7 @@ namespace MoostBrand.DAL
         public int getTotalStockTranfer(string code, int locationID,DateTime from, DateTime to)
         {
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
-            var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 2 && p.LocationID == locationID && (p.STDAte>= from && p.STDAte<= to)).Select(p => p.ID).ToList();
+            var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 2 && p.ApprovedStatus == 5 && p.LocationID == locationID && (p.STDAte>= from && p.STDAte<= to)).Select(p => p.ID).ToList();
             int c = 0;
             var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == item && model.AprovalStatusID == 2 && st.Contains(model.StockTransferID.Value));
             var committed = com.Sum(x => x.Quantity);
@@ -201,7 +201,7 @@ namespace MoostBrand.DAL
         public int getTotalVariance(int invID, int locationID, DateTime from, DateTime to)
         {
           
-            var st = entity.StockAdjustments.Where(p => p.ApprovalStatus == 2 && p.LocationID == locationID && (p.ErrorDate >= from && p.ErrorDate <= to)).Select(p => p.ID).ToList();
+            var st = entity.StockAdjustments.Where(p => p.ApprovalStatus == 2 && p.ApprovalStatus == 5 && p.LocationID == locationID && (p.ErrorDate >= from && p.ErrorDate <= to)).Select(p => p.ID).ToList();
             int c = 0;
             var com = entity.StockAdjustmentDetails.Where(model => model.ItemID == invID  && st.Contains(model.StockAdjustmentID.Value));
             var committed = com.Sum(x => x.Variance);
@@ -220,7 +220,7 @@ namespace MoostBrand.DAL
         public int getStockTranferReceiving(string code)
         {
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
-            var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 2).Select(p => p.ID).ToList();
+            var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 2 && p.ApprovedStatus == 5).Select(p => p.ID).ToList();
             int c = 0;
             var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == item && model.AprovalStatusID == 2 && st.Contains(model.StockTransferID.Value));
             var committed = com.Sum(x => x.Quantity);

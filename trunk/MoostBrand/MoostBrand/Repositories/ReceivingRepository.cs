@@ -18,7 +18,7 @@ namespace MoostBrand.DAL
         {
           
             int c = 0;
-            var com = entity.ReceivingDetails.Where(model => model.RequisitionDetailID == reqID && model.AprovalStatusID == 2 );
+            var com = entity.ReceivingDetails.Where(model => model.RequisitionDetailID == reqID && model.AprovalStatusID == 2 && model.AprovalStatusID == 5);
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)

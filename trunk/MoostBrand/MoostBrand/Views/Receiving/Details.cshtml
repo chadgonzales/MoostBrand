@@ -69,7 +69,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-4">Str #</label>
                     <div class="col-md-8">
-                        <label class="custom-label">
+                        <label class="custom-label str">
                             @Html.DisplayFor(model => model.Requisition.RefNumber)
                         </label>
                     </div>
@@ -219,14 +219,14 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                @*<div class="form-group">
                     <label class="control-label col-md-4">Invoice Number</label>
                     <div class="col-md-8">
                         <label class="custom-label">
                             @Html.DisplayFor(model => model.InvoiceNumber)
                         </label>
                     </div>
-                </div>
+                </div>*@
 
                 <div id="pr">
                     <div class="form-group">
@@ -245,14 +245,14 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label class="control-label col-md-4">Shipper Attn</label>
                         <div class="col-md-8">
                             <label class="custom-label">
                                 @Html.DisplayFor(model => model.Requisition.Vendor.Attn)
                             </label>
                         </div>
-                    </div>
+                    </div>*@
                     <div class="form-group">
                         <label class="control-label col-md-4">Vessel Number</label>
                         <div class="col-md-8">
@@ -427,27 +427,33 @@
             $("#br").hide();
             $("#pr").show();
             $("#cr").hide();
+            $(".str").hide();
         } else if (val == 2) { //BR
             $("#br").show();
             $("#pr").hide();
             $("#cr").hide();
+            $(".str").show();
         } else if (val == 3) { //WR
             $("#br").show();
             $("#pr").hide();
             $("#cr").hide();
             $("#brcr").show();
+            $(".str").show();
         } else if (val == 5) { //OR
             $("#br").show();
             $("#pr").hide();
             $("#cr").hide();
+            $(".str").show();
         } else if (val == 4) { //CR
             $("#br").hide();
             $("#pr").hide();
             $("#cr").show();
+            $(".str").show();
         } else {
             $("#br").hide();
             $("#pr").hide();
             $("#cr").hide();
+            $(".str").hide();
         }
     });
 </script>

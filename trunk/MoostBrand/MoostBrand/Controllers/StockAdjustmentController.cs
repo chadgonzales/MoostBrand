@@ -200,7 +200,7 @@ namespace MoostBrand.Controllers
                 ViewBag.LocationID = new SelectList(loc, "ID", "Description");
                 ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName");
                 ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName");
-                ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type");
+                ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type",adjust.TransactionTypeID);
                 ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
                 ViewBag.PostedBy = new SelectList(employees, "ID", "FullName");
                 ViewBag.Date = DateTime.Now.ToString("MMM/dd/yyyy");

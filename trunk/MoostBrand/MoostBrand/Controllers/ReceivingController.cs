@@ -267,7 +267,7 @@ namespace MoostBrand.Controllers
             }
            else
             {
-                 qty = entity.StockTransferDetails.FirstOrDefault(model => model.RequisitionDetailID == reqID).Quantity.Value;
+                 qty = entity.StockTransferDetails.Where(model => model.RequisitionDetailID == reqID).Sum(p=>p.Quantity.Value);
             }
             //var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             //var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
@@ -380,7 +380,8 @@ namespace MoostBrand.Controllers
             int _ReqID = Convert.ToInt32(Session["ReqID"]);
             var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 
                                                         && s.Requisition.LocationID == loc.ID 
-                                                        && s.RequisitionID == _ReqID)
+                                                        && s.RequisitionID == _ReqID
+                                                        && s.StockTransferDetails.Sum(p => p.Quantity) > 0)
                      .Select(r => new
                      {
                          ID = r.RequisitionID.Value,
@@ -390,7 +391,8 @@ namespace MoostBrand.Controllers
 
             var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 & r.ReqTypeID == 1 
                                                                 && r.LocationID == loc.ID 
-                                                                && r.ID == _ReqID)
+                                                                && r.ID == _ReqID
+                                                                && r.RequisitionDetails.Sum(p => p.Quantity) > 0)
                 .Select(r => new
                 {
                     ID = r.ID,
@@ -844,7 +846,7 @@ namespace MoostBrand.Controllers
                 {
                     foreach (var _details in receving.ReceivingDetails)
                     {
-                        if (_details.AprovalStatusID == 2)
+                        if (_details.AprovalStatusID != 1)
                         {
                             approve++;
                         }
@@ -955,6 +957,41 @@ namespace MoostBrand.Controllers
                     if (item != null)
                     {
                         item.AprovalStatusID = 3;
+                        item.IsSync = false;
+
+                        entity.Entry(item).State = EntityState.Modified;
+                        entity.SaveChanges();
+                    }
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [AccessChecker(Action = 5, ModuleID = 5)]
+        [HttpPost]
+        public ActionResult ForceClosed(int id)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                var receiving = entity.Receivings.Find(id);
+                receiving.ApprovalStatus = 5;
+                receiving.IsSync = false;
+
+                entity.Entry(receiving).State = EntityState.Modified;
+                entity.SaveChanges();
+
+                foreach (var _details in entity.ReceivingDetails.Where(r => r.ReceivingID == id).ToList())
+                {
+                    var item = entity.ReceivingDetails.Find(_details.ID);
+                    if (item != null)
+                    {
+                        item.AprovalStatusID = 5;
                         item.IsSync = false;
 
                         entity.Entry(item).State = EntityState.Modified;
@@ -1093,11 +1130,18 @@ namespace MoostBrand.Controllers
                     int requisitionId = Convert.ToInt32(Session["requisitionId"]);
 
                     var reqDetail = entity.RequisitionDetails.Find(item.RequisitionDetailID);
-                    if (reqDetail != null)
+                    var stDetails = entity.RequisitionDetails.Find(item.RequisitionDetailID);
+                    if (reqDetail != null && item.Receiving.ReceivingTypeID == 1)
                     {
                         reqDetail.Quantity = reqDetail.Quantity - item.Quantity;
 
                         entity.Entry(reqDetail).State = EntityState.Modified;
+                    }
+                    else if (stDetails != null)
+                    {
+                        stDetails.Quantity = stDetails.Quantity - item.Quantity;
+
+                        entity.Entry(stDetails).State = EntityState.Modified;
                     }
 
                     item.InStock = reqDetailRepo.getInstockedReceiving(requisitionId, reqDetail.Item.Code) + item.Quantity;
@@ -1297,6 +1341,10 @@ namespace MoostBrand.Controllers
 
                 entity.Entry(prvreceivingDetail).CurrentValues.SetValues(rd);
                 //entity.Entry(prvreceivingDetail).State = EntityState.Modified;
+                entity.SaveChanges();
+
+                var _rec = entity.ReceivingDetails.Find(rd.ID);
+                _rec.ReferenceQuantity = rd.Quantity;
                 entity.SaveChanges();
             }
             catch

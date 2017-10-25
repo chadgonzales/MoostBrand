@@ -21,6 +21,7 @@ namespace MoostBrand.DAL
             int c = 0;
 
             var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == itemID && model.AprovalStatusID == 2
+                                                                                                          && model.AprovalStatusID == 5
                                                                                                           && st.Contains(model.StockTransferID.Value)
                                                                                                           && model.RequisitionDetail.Requisition.Status == false);
 
@@ -28,6 +29,7 @@ namespace MoostBrand.DAL
             if (com == null)
             {
                 var com1 = entity.StockTransferDetails.Where(model => model.ReceivingDetail.RequisitionDetail.ItemID == itemID && model.AprovalStatusID == 2
+                                                                                                                               && model.AprovalStatusID == 5
                                                                                                          && st.Contains(model.StockTransferID.Value)
                                                                                                          && model.ReceivingDetail.RequisitionDetail.Requisition.Status == false);
 
@@ -55,6 +57,7 @@ namespace MoostBrand.DAL
                 var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
                 int c = 0;
                 var com = entity.ReceivingDetails.Where(model => model.RequisitionDetail.ItemID == itemID && model.AprovalStatusID == 2
+                                                                                           && model.AprovalStatusID == 5
                                                                                           && type.Contains(model.RequisitionDetail.Requisition.RequisitionTypeID.Value)
                                                                                           && model.RequisitionDetail.Requisition.Status == false
                                                                                           && model.RequisitionDetail.Requisition.LocationID == requi.LocationID);
