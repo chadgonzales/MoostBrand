@@ -424,6 +424,8 @@
         if (_variable == "passed") {
             myModal();
         }
+        else if (_variable == "vendor not valid")
+        { alert('Please choose a valid vendor'); }
         else { alert('kindly fill up required fields'); }
 
     });
@@ -462,7 +464,7 @@
         }
         else if ($('#VendorID').val() == '' && $('#RequisitionTypeID').val() == 1) {
             $('#VendorID').css({ "border": "1px solid red" })
-            _passed = '8';
+            _passed = "vendor not valid";
         }
         else if ($('#PONumber').val() == '' && $('#RequisitionTypeID').val() == 1) {
             $('#PONumber').css({ "border": "1px solid red" })
@@ -522,7 +524,7 @@
         //}
         else
             _passed = "passed";
-
+      
       
         return _passed;
 

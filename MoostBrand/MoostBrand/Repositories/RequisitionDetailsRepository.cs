@@ -22,6 +22,7 @@ namespace MoostBrand.DAL
                 var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
                 int c = 0;
                 var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2
+                                                                                          && model.AprovalStatusID == 5
                                                                                           && type.Contains(model.Requisition.RequisitionTypeID.Value)
                                                                                           && model.Requisition.Status == false
                                                                                           && model.Requisition.LocationID == requi.LocationID);
@@ -45,7 +46,8 @@ namespace MoostBrand.DAL
         {
             var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
             int c = 0;
-            var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2 
+            var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID && model.AprovalStatusID == 2
+                                                                                      && model.AprovalStatusID == 5
                                                                                       && type.Contains(model.Requisition.RequisitionTypeID.Value) 
                                                                                       && model.Requisition.LocationID == locationid
                                                                                       && model.Requisition.Status == false);
@@ -146,7 +148,8 @@ namespace MoostBrand.DAL
 
             var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 1).Select(p => p.ID).ToList();
             int c = 0;
-            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == itemID && model.AprovalStatusID == 2 
+            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == itemID && model.AprovalStatusID == 2
+                                                                                                          && model.AprovalStatusID == 5
                                                                                                           && st.Contains(model.StockTransferID.Value)
                                                                                                           && model.RequisitionDetail.Requisition.Status == false);
             var committed = com.Sum(x => x.Quantity);
@@ -165,7 +168,8 @@ namespace MoostBrand.DAL
 
             var st = entity.StockTransfers.Where(p => p.ApprovedStatus == 1).Select(p => p.ID).ToList();
             int c = 0;
-            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == itemID && model.AprovalStatusID == 2 
+            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == itemID && model.AprovalStatusID == 2
+                                                                                                          && model.AprovalStatusID == 5
                                                                                                           && st.Contains(model.StockTransferID.Value)
                                                                                                           && model.StockTransfer.LocationID == locationID
                                                                                                           && model.RequisitionDetail.Requisition.Status == false);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MoostBrand.DAL
 {
@@ -7,7 +8,8 @@ namespace MoostBrand.DAL
         public int OperatorID { get; set; }
 
         public int? StockTransferID { get; set; }
-        
+
+        [Required]
         public string Name { get; set; }
 
         public int? DeletedOperator { get; set; }

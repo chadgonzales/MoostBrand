@@ -659,7 +659,7 @@ namespace MoostBrand.Controllers
 
                     foreach (var _details in st.StockTransferDetails)
                     {
-                        if (_details.AprovalStatusID == 2)
+                        if (_details.AprovalStatusID != 1)
                         {
                             approve++;
                             qty += _details.Quantity.Value;
@@ -719,8 +719,6 @@ namespace MoostBrand.Controllers
         }
 
         // POST: StockTransfer/Denied/5
-        [AccessChecker(Action = 5, ModuleID = 4)]
-        [HttpPost]
         public ActionResult Denied(int id)
         {
             try
@@ -740,6 +738,43 @@ namespace MoostBrand.Controllers
                 {
                     var _stdetails = entity.StockTransferDetails.Find(_details.ID);
                     _stdetails.AprovalStatusID = 3;
+                    _stdetails.IsSync = false;
+
+                    entity.Entry(_stdetails).State = EntityState.Modified;
+                    entity.SaveChanges();
+                }
+
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+
+        [AccessChecker(Action = 5, ModuleID = 4)]
+        [HttpPost]
+        public ActionResult ForceClosed(int id)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                var st = entity.StockTransfers.Find(id);
+                st.ApprovedStatus = 5;
+                st.IsSync = false;
+
+                entity.Entry(st).State = EntityState.Modified;
+                entity.SaveChanges();
+
+
+                var stdetails = entity.StockTransferDetails.Where(s => s.StockTransferID == id).ToList();
+
+                foreach (var _details in stdetails)
+                {
+                    var _stdetails = entity.StockTransferDetails.Find(_details.ID);
+                    _stdetails.AprovalStatusID = 5;
                     _stdetails.IsSync = false;
 
                     entity.Entry(_stdetails).State = EntityState.Modified;
@@ -1115,6 +1150,10 @@ namespace MoostBrand.Controllers
 
                 sdetails.IsSync = false;
                 entity.Entry(sdetails).CurrentValues.SetValues(stocktransfer);
+                entity.SaveChanges();
+
+                var _st = entity.StockTransferDetails.Find(stocktransfer.ID);
+                _st.ReferenceQuantity = stocktransfer.Quantity;
                 entity.SaveChanges();
             }
             catch (Exception ex)

@@ -667,7 +667,7 @@ namespace MoostBrand.Controllers
                 {
                     foreach (var _details in pr.RequisitionDetails)
                     {
-                        if (_details.AprovalStatusID == 2)
+                        if (_details.AprovalStatusID != 1)
                         {
                             approve++;
                         }
@@ -1120,6 +1120,10 @@ namespace MoostBrand.Controllers
 
                 prq.IsSync = false;
                 entity.Entry(prq).CurrentValues.SetValues(rd);
+                entity.SaveChanges();
+
+                var _res = entity.RequisitionDetails.Find(rd.ID);
+                _res.ReferenceQuantity = rd.Quantity;
                 entity.SaveChanges();
             }
             catch

@@ -135,4 +135,22 @@
             }
         })
     });
+
+    $('#Quantity').focusout(function () {
+
+        if (parseInt($("#Quantity").val()) <= parseInt($("#Hidden_Quantity").val()) && parseInt($("#Quantity").val()) > 0) {
+            var ordered = parseInt($('#Ordered').val());
+            var committed = parseInt($('#Committed').val());
+            var instock = parseInt($('#InStock').val());
+            console.log(instock);
+
+            $('#Available').val((instock + ordered) - committed);
+            $('#quantitymsg').text('');
+        }
+        else {
+
+            $('#quantitymsg').text('invalid quantity');
+            $("#Quantity").val($("#Hidden_Quantity").val());
+        }
+    })
 </script>

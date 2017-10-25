@@ -97,8 +97,17 @@
                                         <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
                                             <i class="fa fa-thumbs-down"></i>
                                         </a>
-                                   // }
-                                }
+
+
+                                    if (item.ReceivingDetails.Where(p => p.AprovalStatusID == 2).Sum(p => p.Quantity) > 0 && item.ReceivingDetails.Where(p => p.AprovalStatusID == 2).Sum(p => p.Quantity) != item.ReceivingDetails.Sum(p => p.ReferenceQuantity) && item.ApprovalStatus != 5)
+                                    {
+                                        <a href = "#" id = "force closed" onclick = "ForceClosed(@item.ID)" class="btn btn-xs btn-dark-grey tooltips" data-placement="top" data-original-title="Force Closed">
+                                            <i class="fa fa-close"></i>
+                                        </a>
+                                    }
+
+                                        // }
+}
                             </div>
 
                         </td>
@@ -135,5 +144,20 @@
         var frm = $("#action_form").serialize();
 
         $.post(url, frm, ReloadFunction);
+    }
+
+
+    function ForceClosed() {
+        var prID = arguments[0];
+
+        var url = '@Url.Action("ForceClosed", "Receiving")/' + prID;
+
+        var frm = $("#action_form").serialize();
+
+        $.post(url, frm, ReloadFunction);
+
+        function ReloadFunction() {
+            location.reload();
+        }
     }
 </script>

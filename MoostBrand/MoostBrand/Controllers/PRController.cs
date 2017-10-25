@@ -784,7 +784,7 @@ namespace MoostBrand.Controllers
                 {
                     foreach ( var _details in pr.RequisitionDetails)
                     {
-                        if (_details.AprovalStatusID == 2)
+                        if (_details.AprovalStatusID != 1)
                         {
                             approve++;
                         }
@@ -910,6 +910,28 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 var pr = entity.Requisitions.Find(id);
                 pr.ApprovalStatus = 3;
+                pr.IsSync = false;
+
+                entity.Entry(pr).State = EntityState.Modified;
+                entity.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        [AccessChecker(Action = 5, ModuleID = 3)]
+        [HttpPost]
+        public ActionResult ForceClosed(int id)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+                var pr = entity.Requisitions.Find(id);
+                pr.ApprovalStatus = 5;
                 pr.IsSync = false;
 
                 entity.Entry(pr).State = EntityState.Modified;
@@ -1250,6 +1272,11 @@ namespace MoostBrand.Controllers
                 prvrequiDetail.IsSync = false;
                 entity.Entry(prvrequiDetail).CurrentValues.SetValues(rd);
                 entity.SaveChanges();
+
+                var _req = entity.RequisitionDetails.Find(rd.ID);
+                _req.ReferenceQuantity = rd.Quantity;
+                entity.SaveChanges();
+
             }
             catch
             {

@@ -96,13 +96,13 @@
                 </div>
             </div>
 
-            <div class="form-group hidden">
+            <div class="form-group">
                 <label class="control-label col-md-2">
                     Str #
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.Editor("RefNumber", new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.Editor("RefNumber", new { htmlAttributes = new { @class = "form-control hidden" } })
                 </div>
             </div>
 
@@ -858,6 +858,7 @@
                 $("#RequisitionID").html(markup).show();
             }
         })
+
         $('.ddl-item').select2({
             data: null
 
