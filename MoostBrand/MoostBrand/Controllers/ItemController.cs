@@ -299,13 +299,15 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 2, ModuleID = 11)]
         public ActionResult Edit(int id)
         {
-            ViewBag.Categories = entity.Categories.ToList();
-            ViewBag.Colors = entity.Colors.ToList();
-            ViewBag.Sizes = entity.Sizes.ToList();
-            ViewBag.UOMS = entity.UnitOfMeasurements.ToList();
-            ViewBag.Brands = entity.Brands.ToList();
+          
 
             var item = entity.Items.Find(id);
+
+            ViewBag.CategoryID = new SelectList(entity.Categories.ToList(), "ID", "Description", item.ColorID);
+            ViewBag.ColorID = new SelectList(entity.Colors.ToList(), "ID", "Description", item.ColorID);
+            ViewBag.SizeID = new SelectList(entity.Sizes.ToList(), "ID", "Description", item.SizeID);
+            ViewBag.UnitOfMeasurementID = new SelectList(entity.UnitOfMeasurements.ToList(), "ID", "Description", item.UnitOfMeasurementID);
+            ViewBag.BrandID = new SelectList(entity.Brands.ToList(), "ID", "Description", item.BrandID);
 
             ViewBag.VendorName = entity.Vendors.Find(item.VendorCoding) == null ? "" : entity.Vendors.Find(item.VendorCoding).GeneralName;
 
@@ -376,11 +378,12 @@ namespace MoostBrand.Controllers
                     ModelState.AddModelError("", "Fill all fields");
                 }
             }
-            ViewBag.Categories = entity.Categories.ToList();
-            ViewBag.Colors = entity.Colors.ToList();
-            ViewBag.Sizes = entity.Sizes.ToList();
-            ViewBag.UOMS = entity.UnitOfMeasurements.ToList();
-            ViewBag.Brands = entity.Brands.ToList();
+            ViewBag.CategoryID = new SelectList(entity.Categories.ToList(), "ID", "Description", item.ColorID);
+            ViewBag.ColorID = new SelectList(entity.Colors.ToList(), "ID", "Description", item.ColorID);
+            ViewBag.SizeID = new SelectList(entity.Sizes.ToList(), "ID", "Description", item.SizeID);
+            ViewBag.UnitOfMeasurementID = new SelectList(entity.UnitOfMeasurements.ToList(), "ID", "Description", item.UnitOfMeasurementID);
+            ViewBag.BrandID = new SelectList(entity.Brands.ToList(), "ID", "Description", item.BrandID);
+
             ViewBag.VendorName = entity.Vendors.Find(item.VendorCoding) == null ? "" : entity.Vendors.Find(item.VendorCoding).GeneralName;
             return View(item);
         }

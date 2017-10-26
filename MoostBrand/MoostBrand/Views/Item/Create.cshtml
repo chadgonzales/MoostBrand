@@ -168,7 +168,9 @@
             {
                 <div class="form-group">@*  *@
                     @Html.Hidden("selectedSubCatID")
-                    @Html.LabelFor(model => model.SubCategoryID, "SubCategoryID", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label class="control-label col-md-2">
+                        Sub Category
+                    </label>
                     <div class="col-md-6">
                         @Html.DropDownListFor(m => Model.SubCategoryID, (SelectList)ViewData["DDLSubCat"], "", new { @id = "ddlsubcat", @onchange = "javascript:GetSubCategoriesTypes(this.value);" })
                         @Html.ValidationMessageFor(model => model.SubCategoryID, "", new { @class = "text-danger" })
@@ -177,7 +179,9 @@
 
                 <div class="form-group"> @*  *@
                     @Html.Hidden("selectedSubCatTypeID")
-                    @Html.LabelFor(model => model.SubCategory.SubCategoryTypeID, "SubCategoriesTypesID", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <label class="control-label col-md-2">
+                        Sub Category Type
+                    </label>
                     <div class="col-md-6">
                         @Html.DropDownListFor(m => Model.SubCategory.SubCategoryTypeID, (SelectList)ViewData["DDLSubCatType"], "", new { @id = "ddlsubcattypes" })
                         @Html.ValidationMessageFor(model => model.SubCategory.SubCategoryTypeID, "", new { @class = "text-danger" })
@@ -230,15 +234,19 @@
             </div>
 
             <div class="form-group">@*  *@
-                @Html.LabelFor(model => model.ColorID, "ColorID", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.DropDownListFor(model => Model.ColorID, new SelectList(ViewBag.Colors, "ID", "Description"), "")
-                    @Html.ValidationMessageFor(model => model.ColorID, "", new { @class = "text-danger" })
-                </div>
-            </div>
+                <label class="control-label col-md-2">
+                    Color
+                </label>
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(model => Model.ColorID, new SelectList(ViewBag.Colors, "ID", "Description"), "")
+                        @Html.ValidationMessageFor(model => model.ColorID, "", new { @class = "text-danger" })
+                    </div>
+             </div>
 
             <div class="form-group">@*  *@
-                @Html.LabelFor(model => model.SizeID, "SizeID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <label class="control-label col-md-2">
+                    Size
+                </label>
                 <div class="col-md-6">
                     @Html.DropDownListFor(model => Model.SizeID, new SelectList(ViewBag.Sizes, "ID", "Description"), "")
                     @Html.ValidationMessageFor(model => model.SizeID, "", new { @class = "text-danger" })

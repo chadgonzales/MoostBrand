@@ -68,6 +68,8 @@
 
         public bool? IsSync { get; set; }
 
+        public int? ItemID { get; set; }
+
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
         public virtual Employee Employee { get; set; }

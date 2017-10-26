@@ -128,7 +128,7 @@ namespace MoostBrand.Controllers
             });
 
 
-            ViewBag.ItemName = new SelectList(items, "ID", "Description");
+            ViewBag.ItemID = new SelectList(items, "ID", "Description");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description");
             ViewBag.ReceivedBy = empList;
             ViewBag.RequestedBy = empList;
@@ -147,6 +147,8 @@ namespace MoostBrand.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(StockTransferDirect stockTransferDirect)
         {
+
+            string itemname = entity.Items.Find(stockTransferDirect.ItemID).Description;
 
             var stDirect = entity.StockTransferDirects.Where(s => s.TransferID == stockTransferDirect.TransferID).ToList();
 
@@ -190,8 +192,8 @@ namespace MoostBrand.Controllers
                 }
                 #endregion
 
+                stockTransferDirect.ItemName = itemname;
                 stockTransferDirect.ApprovedStatus = 1;
-                stockTransferDirect.ApprovedBy = Convert.ToInt32(Session["sessionuid"]);
                 stockTransferDirect.IsSync = false;
 
                 entity.StockTransferDirects.Add(stockTransferDirect);
@@ -224,7 +226,7 @@ namespace MoostBrand.Controllers
                 Description = x.Description
             });
 
-            ViewBag.ItemName = new SelectList(items, "ID", "Description");
+            ViewBag.ItemID = new SelectList(items, "ID", "Description");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stockTransferDirect.LocationID);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ReceivedBy);
             ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.RequestedBy);
@@ -256,13 +258,12 @@ namespace MoostBrand.Controllers
             {
 
                 #region DROPDOWNS
-                var items = entity.StockTransferDetails
+                var items = entity.Items
                     .ToList()
-                    .FindAll(r => r.AprovalStatusID == 2)
                     .Select(rd => new
                     {
                         ID = rd.ID,
-                        Description = rd.RequisitionDetail.Item.Description
+                        Description = rd.Description
                     });
 
                 var empList = from s in entity.Employees
@@ -280,7 +281,7 @@ namespace MoostBrand.Controllers
                             });
 
 
-                ViewBag.ItemName = new SelectList(items, "ID", "Description", Convert.ToInt32(stockTransferDirect.ItemName));
+                ViewBag.ItemID = new SelectList(items, "ID", "Description", stockTransferDirect.ItemID);
                 ViewBag.LocationID = new SelectList(loc, "ID", "Description", stockTransferDirect.LocationID);
                 ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ReceivedBy);
                 ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.RequestedBy);
@@ -374,7 +375,8 @@ namespace MoostBrand.Controllers
                         stockTransferDirect.StockTransferOperators.Remove(operators);
                     }
                     #endregion
-
+                    string itemname = entity.Items.Find(stockTransferDirect.ItemID).Description;
+                    stockTransferDirect.ItemName = itemname;
                     entity.Entry(stockTransferDirect).State = EntityState.Modified;
                     entity.SaveChanges();
                     return RedirectToAction("Index");
@@ -386,13 +388,12 @@ namespace MoostBrand.Controllers
             }
 
             #region DROPDOWNS
-            var items = entity.StockTransferDetails
+            var items = entity.Items
                 .ToList()
-                .FindAll(r => r.AprovalStatusID == 2)
                 .Select(rd => new
                 {
                     ID = rd.ID,
-                    Description = rd.RequisitionDetail.Item.Description
+                    Description = rd.Description
                 });
 
             var empList = from s in entity.Employees
@@ -410,7 +411,7 @@ namespace MoostBrand.Controllers
             });
 
 
-            ViewBag.ItemName = new SelectList(items, "ID", "Description", Convert.ToInt32(stockTransferDirect.ItemName));
+            ViewBag.ItemID = new SelectList(items, "ID", "Description", stockTransferDirect.ItemID);
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stockTransferDirect.LocationID);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ReceivedBy);
             ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.RequestedBy);
@@ -507,17 +508,18 @@ namespace MoostBrand.Controllers
         {
             try
             {
-                var Invnt = new Inventory();
-
+           
                 var st = entity.StockTransferDirects.Find(id);
-                var Dst = Convert.ToInt32(st.ItemName);
-                var rq = entity.RequisitionDetails.Where(r => r.ID == Dst).FirstOrDefault();
-                var itm = Convert.ToString(rq.ItemID);
+                var Dst =st.ItemID;
+                var rq = entity.Inventories.Where(r => r.Items.ID == Dst &&  r.LocationCode == st.LocationID).FirstOrDefault();
+                var itm = rq.ID;
 
-                var items = entity.Inventories.Where(x => x.ItemCode == itm).FirstOrDefault();
+                var items = entity.Inventories.Find(itm);
                 int qty = Convert.ToInt32(items.InStock) - Convert.ToInt32(st.Quantity);
 
+                Inventory Invnt = entity.Inventories.Find(itm);
                 Invnt.InStock = qty;
+                Invnt.Available = (Invnt.InStock + Invnt.Ordered) - Invnt.Committed;
 
                 st.ApprovedStatus = 2;
                 st.IsSync = false;
@@ -563,7 +565,7 @@ namespace MoostBrand.Controllers
                                                        && s.InStock> 0)
                      .Select(r => new
                      {
-                         ID = r.Items.Description,
+                         ID = r.Items.ID,
                          ItemName = r.Items.Description
                      });
 

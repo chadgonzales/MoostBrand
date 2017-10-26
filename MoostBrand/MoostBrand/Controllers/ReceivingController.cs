@@ -1130,7 +1130,7 @@ namespace MoostBrand.Controllers
                     int requisitionId = Convert.ToInt32(Session["requisitionId"]);
 
                     var reqDetail = entity.RequisitionDetails.Find(item.RequisitionDetailID);
-                    var stDetails = entity.RequisitionDetails.Find(item.RequisitionDetailID);
+                    var stDetails = entity.StockTransferDetails.FirstOrDefault(s=>s.RequisitionDetailID == item.RequisitionDetailID);
                     if (reqDetail != null && item.Receiving.ReceivingTypeID == 1)
                     {
                         reqDetail.Quantity = reqDetail.Quantity - item.Quantity;
