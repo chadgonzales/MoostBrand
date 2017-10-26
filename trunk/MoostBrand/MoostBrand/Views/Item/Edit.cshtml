@@ -143,13 +143,15 @@
                 </label>
                 <div class="col-md-6">
                     @*@Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control" })*@
-                    @Html.DropDownListFor(m => Model.CategoryID, new SelectList(ViewBag.Categories, "ID", "Description"), "", new { @id = "ddlcategory", @onchange = "javascript:GetSubCategory(this.value);" })
-                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+                    @Html.DropDownList("CategoryID", null, new { @*@id = "ddlcategory",*@ @onchange = "javascript:GetSubCategory(this.value);" })
+                    @*@Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })*@
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.SubCategoryID, "SubCategoryID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <label class="control-label col-md-2">
+                   Sub Category
+                </label>
                 <div class="col-md-6">
                     @Html.DropDownListFor(m => Model.SubCategoryID, Enumerable.Empty<SelectListItem>(), "", new { @id = "ddlsubcat", @onchange = "javascript:GetSubCategoriesTypes(this.value);" })
                     @Html.ValidationMessageFor(model => model.SubCategoryID, "", new { @class = "text-danger" })
@@ -157,7 +159,9 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.SubCategory.SubCategoryTypeID, "SubCategoriesTypesID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <label class="control-label col-md-2">
+                    Sub Category Type
+                </label>
                 <div class="col-md-6">
                     @Html.DropDownListFor(m => Model.SubCategory.SubCategoryTypeID, Enumerable.Empty<SelectListItem>(), "", new { @id = "ddlsubcattypes" })
                     @Html.ValidationMessageFor(model => model.SubCategory.SubCategoryTypeID, "", new { @class = "text-danger" })
@@ -183,23 +187,27 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownListFor(model => Model.BrandID, new SelectList(ViewBag.Brands, "ID", "Description"), "")
-                    @Html.ValidationMessageFor(model => model.BrandID, "", new { @class = "text-danger" })
+                    @Html.DropDownList("BrandID", null, new { @class= "form-control" })
+                    @*@Html.ValidationMessageFor(model => model.BrandID, "", new { @class = "text-danger" })*@
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.ColorID, "ColorID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <label class="control-label col-md-2">
+                    Color
+                </label>
                 <div class="col-md-6">
-                    @Html.DropDownListFor(model => Model.ColorID, new SelectList(ViewBag.Colors, "ID", "Description"), "")
+                    @Html.DropDownList("ColorID", null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.ColorID, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.SizeID, "SizeID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <label class="control-label col-md-2">
+                   Size
+                </label>
                 <div class="col-md-6">
-                    @Html.DropDownListFor(model => Model.SizeID, new SelectList(ViewBag.Sizes, "ID", "Description"), "")
+                    @Html.DropDownList("SizeID", null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.SizeID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -211,7 +219,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownListFor(model => Model.UnitOfMeasurementID, new SelectList(ViewBag.UOMS, "ID", "Description"), "")
+                    @Html.DropDownList("UnitOfMeasurementID", null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.UnitOfMeasurementID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -244,8 +252,8 @@
                     @Html.ValidationMessageFor(model => model.VendorCoding, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="form-group">
-                @*@Html.LabelFor(model => model.ReOrderLevel, htmlAttributes: new { @class = "control-label col-md-2" })*@
+            @*<div class="form-group">
+             
                 <label class="control-label col-md-2">
                     Re-order Level
                     <span class="symbol required"></span>
@@ -254,7 +262,7 @@
                     @Html.EditorFor(model => model.ReOrderLevel, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.ReOrderLevel, "", new { @class = "text-danger" })
                 </div>
-            </div>
+            </div>*@
 
             @*<div class="form-group">
                     @Html.LabelFor(model => model.MinimumStock, "MinimumStock", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -271,6 +279,18 @@
                         @Html.ValidationMessageFor(model => model.MaximumStock, "", new { @class = "text-danger" })
                     </div>
                 </div>*@
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.DailyAverageUsage, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Daily Average Usage
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.DailyAverageUsage, new { htmlAttributes = new { @class = "form-control", @value = "0" } })
+                    @Html.ValidationMessageFor(model => model.DailyAverageUsage, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
             <div class="form-group">
                 @*@Html.LabelFor(model => model.LeadTime, htmlAttributes: new { @class = "control-label col-md-2" })*@

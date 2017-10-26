@@ -26,12 +26,12 @@
     @Html.HiddenFor(model => model.ID)
 
     @*<div class="form-group">
-        @Html.LabelFor(model => model.ItemName, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-6">
-            @Html.EditorFor(model => model.ItemName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ItemName, "", new { @class = "text-danger" })
-        </div>
-    </div>*@
+            @Html.LabelFor(model => model.ItemName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.ItemName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ItemName, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
 
     <div class="form-group">
         @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -44,7 +44,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.ItemName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("ItemName", Enumerable.Empty<SelectListItem>(), "", new { @class = "form-control ddl-item" })
+            @Html.DropDownList("ItemID", null, new { @class = "form-control ddl-item" })
             @Html.ValidationMessageFor(model => model.ItemName, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    
+
 
     <div class="form-group">
         @Html.LabelFor(model => model.TransferID, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -74,25 +74,24 @@
             @Html.ValidationMessageFor(model => model.STDate, "", new { @class = "text-danger" })
         </div>
     </div>
-    <div class="">
-        @Html.EditorFor(model => model.TimeStarted, new { htmlAttributes = new { @class = "form-control time-picker" } })
-
-    </div>
     <div class="form-group">
         @Html.LabelFor(model => model.TimeStarted, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-6 input-group input-append bootstrap-timepicker">
-            @Html.EditorFor(model => model.TimeStarted, new { htmlAttributes = new { @class = "form-control time-picker" } })
-
-            
+        <div class="col-md-6">
+            <div class="input-group input-append bootstrap-timepicker">
+                @Html.EditorFor(model => model.TimeStarted, new { htmlAttributes = new { @class = "form-control time-picker" } })
+                <span class="input-group-addon add-on"><i class="fa fa-clock-o"></i></span>
+            </div>
             @Html.ValidationMessageFor(model => model.TimeStarted, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.TimeFinish, htmlAttributes: new { @class = "control-label col-md-2 time-picker" })
-        <div class="col-md-6 input-group input-append bootstrap-timepicker">
-            @Html.EditorFor(model => model.TimeFinish, new { htmlAttributes = new { @class = "form-control" } })
-            <span class="input-group-addon add-on"><i class="fa fa-clock-o"></i></span>
+        @Html.LabelFor(model => model.TimeFinish, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            <div class="input-group input-append bootstrap-timepicker">
+                @Html.EditorFor(model => model.TimeFinish, new { htmlAttributes = new { @class = "form-control time-picker" } })
+                <span class="input-group-addon add-on"><i class="fa fa-clock-o"></i></span>
+            </div>
             @Html.ValidationMessageFor(model => model.TimeFinish, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -118,7 +117,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.ReceivedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("ReceivedBy")
+            @Html.DropDownList("ReceivedBy", null, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.ReceivedBy, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -126,7 +125,10 @@
     <div class="form-group">
         @Html.LabelFor(model => model.TimeReceived, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.EditorFor(model => model.TimeReceived, new { htmlAttributes = new { @class = "form-control time-picker" } })
+            <div class="input-group input-append bootstrap-timepicker">
+                @Html.EditorFor(model => model.TimeReceived, new { htmlAttributes = new { @class = "form-control time-picker" } })
+                <span class="input-group-addon add-on"><i class="fa fa-clock-o"></i></span>
+            </div>
             @Html.ValidationMessageFor(model => model.TimeReceived, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -134,7 +136,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.RequestedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("RequestedBy")
+            @Html.DropDownList("RequestedBy", null, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -142,7 +144,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.ReleasedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("ReleasedBy")
+            @Html.DropDownList("ReleasedBy", null, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.ReleasedBy, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -160,7 +162,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.CounterCheckedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("CounterCheckedBy")
+            @Html.DropDownList("CounterCheckedBy", null, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.CounterCheckedBy, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -168,7 +170,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("EncodedBy")
+            @Html.DropDownList("EncodedBy", null, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -176,7 +178,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.PostedBy, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.DropDownList("PostedBy")
+            @Html.DropDownList("PostedBy", null, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.PostedBy, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -185,7 +187,7 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-6">
-            @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control"  })
             @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -209,7 +211,7 @@
                 for (var x = 0; x < data.length; x++) {
                     markup += "<option value=" + data[x].ID + ">" + data[x].ItemName + "</option>";
                 }
-                $("#ItemName").html(markup).show();
+                $("#ItemID").html(markup).show();
             }
         });
 
@@ -219,18 +221,18 @@
         });
     });
 
-        $(function () {
+    $(function () {
 
-            // add class form-control to textarea and select
-            $("input[disabled]").addClass("form-control");
-            $("textarea").addClass("form-control");
-            $("select").addClass("form-control");
+        // add class form-control to textarea and select
+        $("input[disabled]").addClass("form-control");
+        $("textarea").addClass("form-control");
+        $("select").addClass("form-control");
 
-            $('.date-picker').datepicker({
-                autoclose: true
-            });
+        $('.date-picker').datepicker({
+            autoclose: true
         });
-    
+    });
+
 </script>
 
 
@@ -250,4 +252,8 @@
     });
 </script>
 
-
+<style>
+    .bootstrap-timepicker-widget.dropdown-menu.open {
+        width: 50%;
+    }
+</style>

@@ -184,7 +184,7 @@
             });
 
             $('#Quantity').focusout(function () {
-                alert($("#Hidden_Quantity").val());
+                //alert($("#Hidden_Quantity").val());
                 if (parseInt($("#Quantity").val()) <= parseInt($("#Hidden_Quantity").val()) && parseInt($("#Quantity").val()) > 0) {
                     var ordered = parseInt($('#Ordered').val());
                     var committed = parseInt($('#Committed').val());

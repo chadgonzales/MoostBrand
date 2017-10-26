@@ -46,6 +46,14 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label col-md-2"> Sales Description</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.DescriptionPurchase)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label col-md-2">Substitute Item</label>
             <div class="col-md-6">
                 <label class="custom-label">
@@ -70,6 +78,14 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="control-label col-md-2">Sub Category Type</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.SubCategory.SubCategoriesTypes.Description)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="control-label col-md-2">Sub Category</label>
             <div class="col-md-6">
                 <label class="custom-label">
@@ -77,6 +93,7 @@
                 </label>
             </div>
         </div>
+       
         <div class="form-group">
             <label class="control-label col-md-2">Year</label>
             <div class="col-md-6">
@@ -110,29 +127,29 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-2">Unit Of Measure</label>
+            <label class="control-label col-md-2">Unit Of Measurement</label>
             <div class="col-md-6">
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.UnitOfMeasurement.Description)
                 </label>
             </div>
         </div>
-        <div class="form-group">
+        @*<div class="form-group">
             <label class="control-label col-md-2">Last Unit Cost</label>
             <div class="col-md-6">
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.LastUnitCost)
                 </label>
             </div>
-        </div>
-        <div class="form-group">
+        </div>*@
+        @*<div class="form-group">
             <label class="control-label col-md-2">Weighted Average Cost</label>
             <div class="col-md-6">
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.WeightedAverageCost)
                 </label>
             </div>
-        </div>
+        </div>*@
         <div class="form-group">
             <label class="control-label col-md-2">Vendor Coding</label>
             <div class="col-md-6">
@@ -142,10 +159,26 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-2">Re Order Level</label>
+            <label class="control-label col-md-2"> Daily Average Usage</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.ReOrderLevel)
+                    @Html.DisplayFor(model => model.DailyAverageUsage)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2"> Lead Time</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.LeadTime)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Quantity</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Quantity)
                 </label>
             </div>
         </div>

@@ -82,16 +82,16 @@
                                 </a>
                                 @if (item.ApprovedStatus == 1)
                                 {
-                                    if (Convert.ToInt32(Session["sessionuid"]) == item.RequestedBy)
+                                    //if (Convert.ToInt32(Session["sessionuid"]) == item.RequestedBy)
                                     //if (Convert.ToInt32(Session["sessionuid"]) == item.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
-                                    {
+                                    //{
                                         <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                         <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
                                             <i class="fa fa-times fa fa-white"></i>
                                         </a>
-                                    }
+                                    //}
                                     //if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                                     //{
                                         <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
@@ -125,7 +125,7 @@
     function Approve() {
         var prID = arguments[0];
 
-        var url = '@Url.Action("Approve", "StockTransfer")/' + prID;
+        var url = '@Url.Action("Approve", "StockTransferDirects")/' + prID;
 
         var frm = $("#action_form").serialize();
 
@@ -139,7 +139,7 @@
     function Deny() {
         var prID = arguments[0];
 
-        var url = '@Url.Action("Denied", "StockTransfer")/' + prID;
+        var url = '@Url.Action("Denied", "StockTransferDirects")/' + prID;
 
         var frm = $("#action_form").serialize();
 

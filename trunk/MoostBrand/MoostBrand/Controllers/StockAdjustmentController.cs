@@ -197,12 +197,12 @@ namespace MoostBrand.Controllers
                            Description = x.Description
                        });
 
-                ViewBag.LocationID = new SelectList(loc, "ID", "Description");
-                ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName");
-                ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName");
+                ViewBag.LocationID = new SelectList(loc, "ID", "Description", adjust.LocationID);
+                ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName", adjust.PreparedBy);
+                ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName", adjust.AdjustedBy);
                 ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type",adjust.TransactionTypeID);
-                ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
-                ViewBag.PostedBy = new SelectList(employees, "ID", "FullName");
+                ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", adjust.ApprovedBy);
+                ViewBag.PostedBy = new SelectList(employees, "ID", "FullName", adjust.PostedBy);
                 ViewBag.Date = DateTime.Now.ToString("MMM/dd/yyyy");
                 #endregion
 
@@ -249,7 +249,7 @@ namespace MoostBrand.Controllers
                             Description = x.Description
                         });
 
-            ViewBag.LocationID = new SelectList(loc, "ID", "Description");
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description", adjust.LocationID);
             ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName", adjust.PreparedBy);
             ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName", adjust.AdjustedBy);
             ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", adjust.TransactionTypeID);
