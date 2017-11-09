@@ -14,14 +14,10 @@
         {
             StockTransferHelpers = new HashSet<StockTransferHelper>();
             StockTransferOperators = new HashSet<StockTransferOperator>();
+            StockTransferDirectItems = new HashSet<StockTransferDirectItems>();
         }
 
         public int ID { get; set; }
-
-        [StringLength(250)]
-        public string ItemName { get; set; }
-
-        public int? Quantity { get; set; }
 
         [StringLength(50)]
         public string TransferID { get; set; }
@@ -68,8 +64,6 @@
 
         public bool? IsSync { get; set; }
 
-        public int? ItemID { get; set; }
-
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
         public virtual Employee Employee { get; set; }
@@ -89,6 +83,10 @@
         public virtual Location Location { get; set; }
 
         //public virtual StockTransferDetail StockTransferDetail { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockTransferDirectItems> StockTransferDirectItems { get; set; }
+
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransferHelper> StockTransferHelpers { get; set; }

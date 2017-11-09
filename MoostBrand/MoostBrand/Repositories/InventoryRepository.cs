@@ -23,7 +23,12 @@ namespace MoostBrand.DAL
          
             return item;
         }
+        public int getItemID(string itemcode)
+        {
+            int item = entity.Items.FirstOrDefault(i => i.Code == itemcode).ID;
 
+            return item;
+        }
         public int getCommited(string code, int location)
         {
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
@@ -33,6 +38,29 @@ namespace MoostBrand.DAL
             var com = entity.RequisitionDetails.Where(model => model.ItemID == item && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID.Value) 
                                                                                     && r.Contains(model.RequisitionID)
                                                                                     && model.Requisition.LocationID == location);
+            var committed = com.Sum(x => x.Quantity);
+            c = Convert.ToInt32(committed);
+            if (committed == null)
+            {
+                c = 0;
+            }
+
+            _committed = c;
+
+
+
+            return _committed;
+        }
+
+        public int getCommited_ForceClose(int id)
+        {
+
+            var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
+            int c = 0;
+            var com = entity.RequisitionDetails.Where(model =>  type.Contains(model.Requisition.RequisitionTypeID.Value)
+                                                                                    && model.RequisitionID == id
+                                                                                    && model.AprovalStatusID == 2
+                                                                                    && model.Quantity > 0);
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -79,9 +107,28 @@ namespace MoostBrand.DAL
             {
                 var lstReqDetail = new List<RequisitionDetail>();
 
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.AprovalStatusID == 5 && x.ItemID == item  
+                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2  && x.ItemID == item  
                                                         && requi.Contains(x.RequisitionID) 
                                                         && x.Requisition.LocationID == location).ToList();
+
+                po = lstReqDetail.Sum(x => x.Quantity) ?? 0;
+            }
+            return po;
+        }
+
+        public int getPurchaseOrder_ForceClose(int id)
+        {
+            
+            var requi = entity.Requisitions.Where(p => p.ID == id).ToList();
+            int po = 0;
+            if (requi != null)
+            {
+                var lstReqDetail = new List<RequisitionDetail>();
+
+                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 
+                                                                && x.Quantity  > 0
+                                                                && x.AprovalStatusID == 2
+                                                                && x.RequisitionID == id).ToList();
 
                 po = lstReqDetail.Sum(x => x.Quantity) ?? 0;
             }

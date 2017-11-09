@@ -88,7 +88,6 @@ namespace MoostBrand.DAL
 
         public virtual Size Size { get; set; }
 
-        public virtual SubCategory SubCategory { get; set; }
 
         public virtual UnitOfMeasurement UnitOfMeasurement { get; set; }
 

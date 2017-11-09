@@ -25,7 +25,6 @@ namespace MoostBrand.DAL
         [StringLength(100)]
         public string Picture { get; set; }
 
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SubCategory> SubCategories { get; set; }
     }

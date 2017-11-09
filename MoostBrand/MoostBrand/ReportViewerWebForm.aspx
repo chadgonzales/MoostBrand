@@ -8,10 +8,9 @@
 <head runat="server">
     <title></title>
 
-        <style>
-        #ReportViewer1 {
-            width: 100% !important;
-            height: 400px !important;
+    <style>
+        #ReportViewer1{
+            width:100% !important;
         }
     </style>
 </head>

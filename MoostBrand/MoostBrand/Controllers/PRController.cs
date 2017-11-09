@@ -196,16 +196,6 @@ namespace MoostBrand.Controllers
 
         public int getCommited(int itemID)
         {
-            //var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
-            //int c = 0;
-            //var com = entity.RequisitionDetails.Where(x => x.ItemID == itemID && x.AprovalStatusID == 2 && x.Requisition.RequisitionTypeID == 4 && x.Requisition.LocationID == requi.Requisition.LocationID);
-            //var committed = com.Sum(x => x.Quantity) ?? 0;
-            ////c = Convert.ToInt32(committed);
-            ////if (committed == null)
-            ////{
-            ////    c = 0;
-            ////}
-            //return c;
             var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
             int c = 0;
             if (requi != null)
@@ -221,16 +211,6 @@ namespace MoostBrand.Controllers
         }
         public int getPurchaseOrder(int itemID)
         {
-            //var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
-            //int po = 0;
-            //var pur = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2 && x.ItemID == itemID && x.Requisition.LocationID == requi.Requisition.LocationID);
-            //var porder = pur.Sum(x => x.Quantity) ?? 0;
-            ////po = Convert.ToInt32(porder);
-            ////if (porder == null)
-            ////{
-            ////    po = 0;
-            ////}
-            //return po;
             var requi = entity.RequisitionDetails.FirstOrDefault(x => x.AprovalStatusID == 2);
             int po = 0;
             if (requi != null)
@@ -663,6 +643,7 @@ namespace MoostBrand.Controllers
                     {
                         pr.IsSync = false;
                         pr.Status = false;
+                        pr.ReqTypeID = r.ReqTypeID;
                         var newPR = SetNull(pr);
                         newPR.ApprovalStatus = r.ApprovalStatus;
                       //  newPR.RequestedDate = r.RequestedDate;
@@ -813,6 +794,7 @@ namespace MoostBrand.Controllers
 
                                 entity.Entry(i).State = EntityState.Modified;
                                 entity.SaveChanges();
+
                             }
 
                         }
@@ -937,7 +919,28 @@ namespace MoostBrand.Controllers
                 entity.Entry(pr).State = EntityState.Modified;
                 entity.SaveChanges();
 
-                return RedirectToAction("Index");
+                var rd = pr.RequisitionDetails.Select(p => p.ItemID).ToList();
+                var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
+                var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
+                if (inv != null)
+                {
+                    foreach (var _inv in inv)
+                    {
+                        var i = entity.Inventories.Find(_inv.ID);
+                        i.Committed = i.Committed - invRepo.getCommited_ForceClose(id);
+                        i.Ordered = i.Ordered - invRepo.getPurchaseOrder_ForceClose(id);
+                        i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
+                        i.Available = (i.InStock + i.Ordered) - i.Committed;
+
+                        entity.Entry(i).State = EntityState.Modified;
+                        entity.SaveChanges();
+
+                    }
+
+                }
+                   
+
+             return RedirectToAction("Index");
             }
             catch
             {

@@ -17,6 +17,7 @@ namespace MoostBrand.DAL
 
         public int ID { get; set; }
 
+
         [StringLength(50)]
         public string Code { get; set; }
 

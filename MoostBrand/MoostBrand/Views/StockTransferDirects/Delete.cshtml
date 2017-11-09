@@ -1,4 +1,4 @@
-﻿@model MoostBrand.DAL.StockTransferDirect
+﻿@model MoostBrand.DAL.StockTransfer
 
 @{
     ViewBag.Title = "Delete";
@@ -15,24 +15,6 @@
 <div class="panel-body">
     <div class="form-horizontal">
         <div class="form-group">
-            <label class="control-label col-md-4">Item Name</label>
-            <div class="col-md-8">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.ItemName)
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-4">Quantity</label>
-            <div class="col-md-8">
-                <label class="custom-label">
-                    @Html.DisplayFor(model => model.Quantity)
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group">
             <label class="control-label col-md-4">StockTransfer #</label>
             <div class="col-md-8">
                 <label class="custom-label">
@@ -45,7 +27,7 @@
             <label class="control-label col-md-4">Date</label>
             <div class="col-md-8">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.STDate)
+                    @Html.DisplayFor(model => model.STDAte)
                 </label>
             </div>
         </div>
@@ -79,7 +61,7 @@
 
         <div class="form-group">
             <label class="control-label col-md-4">Helper</label>
-            @foreach (var item in Model.StockTransferHelpers)
+            @foreach (var item in Model.Helpers)
             {
                 <div class="col-md-8">
                     <label class="custom-label">
@@ -91,7 +73,7 @@
 
         <div class="form-group">
             <label class="control-label col-md-4">Operator</label>
-            @foreach (var item in Model.StockTransferOperators)
+            @foreach (var item in Model.Operators)
             {
                 <div class="col-md-8">
                     <label class="custom-label">

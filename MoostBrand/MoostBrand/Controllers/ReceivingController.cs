@@ -148,7 +148,7 @@ namespace MoostBrand.Controllers
                     Vendor = r.Vendor.Name != null ? r.Vendor.Name : " ",
                     VendorCode = r.Vendor.Code != null ? r.Vendor.Code : " ",
                     VendorContact = r.Vendor.ContactPerson != null ? r.Vendor.ContactPerson : " ",
-                    CustName   = " ",
+                    CustName   = r.Customer != null ? r.Customer : " ",
                     ShipmentType = r.ShipmentType.Type ,
                     PONumber = r.PONumber != null ? r.PONumber : " ",
                     Invoice = r.InvoiceNumber != null ? r.InvoiceNumber : " ",
@@ -887,6 +887,20 @@ namespace MoostBrand.Controllers
 
                                 entity.Entry(i).State = EntityState.Modified;
                                 entity.SaveChanges();
+
+
+                                StockLedger _stockledger = new StockLedger();
+                                _stockledger.InventoryID = _inv.ID;
+                                _stockledger.Type = "Stock In";
+                                _stockledger.InQty = receving.ReceivingDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _item && p.ReceivingID == id).Quantity;
+                                _stockledger.ReferenceNo = receving.ReceivingID;
+                                _stockledger.BeginningBalance = i.InStock - _stockledger.InQty;
+                                _stockledger.RemainingBalance = i.InStock;
+                                _stockledger.Date = DateTime.Now;
+
+                                entity.StockLedgers.Add(_stockledger);
+                                entity.SaveChanges();
+
                             }
 
                         }
@@ -914,6 +928,19 @@ namespace MoostBrand.Controllers
 
 
                                 entity.Inventories.Add(inventory);
+                                entity.SaveChanges();
+
+
+                                StockLedger _stockledger = new StockLedger();
+                                _stockledger.InventoryID = inventory.ID;
+                                _stockledger.Type = "Stock In";
+                                _stockledger.InQty = inventory.InStock;
+                                _stockledger.ReferenceNo = receving.ReceivingID;
+                                _stockledger.BeginningBalance = inventory.InStock - _stockledger.InQty;
+                                _stockledger.RemainingBalance = inventory.InStock;
+                                _stockledger.Date = DateTime.Now;
+
+                                entity.StockLedgers.Add(_stockledger);
                                 entity.SaveChanges();
                             }
                         }

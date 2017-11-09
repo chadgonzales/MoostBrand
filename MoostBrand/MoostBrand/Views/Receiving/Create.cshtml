@@ -52,7 +52,7 @@
                 <div class="form-group">
                     @*@Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })*@
                     <label class="control-label col-md-2">
-                        Location
+                        Receiving Location
                         <span class="symbol required"></span>
                     </label>
                     <div class="col-md-6">
@@ -65,7 +65,7 @@
             <div class="form-group">
                 @*@Html.LabelFor(model => model.ReceivingID, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
-                    Receiving ID
+                   RR Number
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
@@ -102,7 +102,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.Editor("RefNumber", new { htmlAttributes = new { @class = "form-control hidden" } })
+                    @Html.Editor("RefNumber", new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
 
@@ -187,7 +187,7 @@
                 @*@Html.LabelFor(model => model.PONumber, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     PO Number
-                    <span class="symbol required"></span>
+                    @*<span class="symbol required"></span>*@
                 </label>
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "form-control" } })
@@ -351,7 +351,7 @@
     <div class="form-group">
         <label class="control-label col-md-2">
             Customer Name
-            <span class="symbol required"></span>
+            @*<span class="symbol required"></span>*@
         </label>
         <div class="col-md-6">
             @Html.Editor("CustName", new { htmlAttributes = new { @class = "form-control" } })
@@ -537,11 +537,11 @@
             _passed = '12';
 
         }
-        else if ($('#PONumber').val() == '' && ($("#ReceivingTypeID").val() != 2 || $("#ReceivingTypeID").val()!= 3)) {
-            $('#PONumber').css({ "border": "1px solid red" })
-            _passed = '13';
+        //else if ($('#PONumber').val() == '' && ($("#ReceivingTypeID").val() != 2 || $("#ReceivingTypeID").val()!= 3)) {
+        //    $('#PONumber').css({ "border": "1px solid red" })
+        //    _passed = '13';
 
-        }
+        //}
         else if ($('#DRNumber').val() == ''  && $("#ReceivingTypeID").val() == 1 ) {
             $('#DRNumber').css({ "border": "1px solid red" })
             _passed = '14';
@@ -577,11 +577,11 @@
             _passed = '20';
 
         }
-        else if ($('#CustName').val() == '') {
-            $('#CustName').css({ "border": "1px solid red" })
-            _passed = '21';
+        //else if ($('#CustName').val() == '') {
+        //    $('#CustName').css({ "border": "1px solid red" })
+        //    _passed = '21';
 
-        }
+        //}
         else if ($('#ShipmentType').val() == '' && $("#ReceivingTypeID").val() == 4) {
             $('#ShipmentType').css({ "border": "1px solid red" })
             _passed = '22';

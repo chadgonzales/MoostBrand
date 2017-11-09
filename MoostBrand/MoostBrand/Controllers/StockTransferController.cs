@@ -122,7 +122,7 @@ namespace MoostBrand.Controllers
             //int UserID = Convert.ToInt32(Session["userID"]);
 
             //var user = entity.Users.FirstOrDefault(x => x.ID == UserID);
-            var sts = from o in entity.StockTransfers
+            var sts = from o in entity.StockTransfers.Where(p=>p.StockTransferTypeID!=4)
                       select o;
 
             if (!String.IsNullOrEmpty(searchString))
@@ -193,7 +193,7 @@ namespace MoostBrand.Controllers
             stocktransfer.STDAte = DateTime.Now;
             
             #region DROPDOWNS
-            var _types = entity.StockTransferTypes.Where(p=>p.ID != 2).ToList();
+            var _types = entity.StockTransferTypes.Where(p=>p.ID != 2 && p.ID != 4).ToList();
             var _st = entity.StockTransfers.ToList();
 
 
@@ -331,7 +331,7 @@ namespace MoostBrand.Controllers
         public ActionResult Create(StockTransfer stocktransfer)
         {
             #region DROPDOWNS
-            var _types = entity.StockTransferTypes.Where(p=>p.ID != 2).ToList();
+            var _types = entity.StockTransferTypes.Where(p=>p.ID != 2 && p.ID !=4).ToList();
 
             var loc = entity.Locations.Where(x => x.ID != 10)
                         .Select(x => new
@@ -427,7 +427,7 @@ namespace MoostBrand.Controllers
         public ActionResult Edit(int id = 0)
         {
             var stocktransfer = entity.StockTransfers.Find(id);
-            var _types = entity.StockTransferTypes.Where(p=>p.ID!=2).ToList();
+            var _types = entity.StockTransferTypes.Where(p=>p.ID!=2 && p.ID !=4).ToList();
 
             if (stocktransfer == null)
             {
@@ -700,6 +700,18 @@ namespace MoostBrand.Controllers
 
                                 entity.Entry(i).State = EntityState.Modified;
                                 entity.SaveChanges();
+
+                                StockLedger _stockledger = new StockLedger();
+                                _stockledger.InventoryID = _inv.ID;
+                                _stockledger.Type = "Stock Out";
+                                _stockledger.OutQty = stRepo.getStockTranfer(_itemid, id);
+                                _stockledger.ReferenceNo = st.TransferID;
+                                _stockledger.BeginningBalance = _inv.InStock + _stockledger.OutQty;
+                                _stockledger.RemainingBalance = _inv.InStock;
+                                _stockledger.Date = DateTime.Now;
+
+                                entity.StockLedgers.Add(_stockledger);
+                                entity.SaveChanges();
                             }
 
                         }
@@ -712,8 +724,9 @@ namespace MoostBrand.Controllers
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
+                e.Message.ToString();
             }
             return View();
         }

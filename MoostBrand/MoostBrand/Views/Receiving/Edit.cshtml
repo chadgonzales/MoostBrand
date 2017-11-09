@@ -69,7 +69,7 @@
             <div class="form-group">
                 @*@Html.LabelFor(model => model.ReceivingID, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
-                    Receiving ID
+                    RR Number
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
@@ -189,7 +189,7 @@
                 @*@Html.LabelFor(model => model.PONumber, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     PO Number
-                    <span class="symbol required"></span>
+                    @*<span class="symbol required"></span>*@
                 </label>
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "form-control" } })
@@ -400,7 +400,7 @@
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
-                    <input type="submit" value="Save" class="btn btn-green hidden" />
+                    <input type="submit" value="Save" class="btn btn-green hidden" id="btnSubmit" />
                     <input type="button" value="Save" class="btn btn-green" id="btnupdate" />
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
@@ -414,10 +414,10 @@
 
 <script>
 
-    $('#save').click(function (event) {
+    $('#btnupdate').click(function (event) {
         var _variable = Validate();
         if (_variable == "passed") {
-            $('#submit').click();
+            $('#btnSubmit').click();
         }
         else { alert('kindly fill up required fields'); }
 
@@ -482,11 +482,11 @@
             _passed = '12';
             
         }
-        else if ($('#PONumber').val() == '' && ($("#ReceivingTypeID").val() != 2 || $("#ReceivingTypeID").val() != 3)) {
-            $('#PONumber').css({ "border": "1px solid red" })
-            _passed = '13';
+        //else if ($('#PONumber').val() == '' && ($("#ReceivingTypeID").val() != 2 || $("#ReceivingTypeID").val() != 3)) {
+        //    $('#PONumber').css({ "border": "1px solid red" })
+        //    _passed = '13';
            
-        }
+        //}
         else if ($('#DRNumber').val() == '' && $("#ReceivingTypeID").val() == 1) {
             $('#DRNumber').css({ "border": "1px solid red" })
             _passed = '14';
