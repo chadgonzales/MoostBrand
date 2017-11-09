@@ -30,8 +30,7 @@ namespace MoostBrand.DAL
 
         public int? SubCategoryTypeID { get; set; }
 
-        public virtual Category Category { get; set; }
-
+        public virtual Category Categories { get; set; }
         public virtual SubCategoriesType SubCategoriesTypes { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

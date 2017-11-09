@@ -179,6 +179,7 @@ namespace MoostBrand.Controllers
                     var reOrder = inventory.DailyAverageUsage * inventory.LeadTime;
                     inventory.ReOrder = reOrder;
                     inventory.SalesDescription = invRepo.getItemSalesDesc(inventory.ItemCode);
+                    inventory.ItemID = invRepo.getItemID(inventory.ItemCode);
 
                     entity.Inventories.Add(inventory);
                     entity.SaveChanges();
@@ -241,6 +242,7 @@ namespace MoostBrand.Controllers
             if (ModelState.IsValid)
             {
                 inventory.SalesDescription = invRepo.getItemSalesDesc(inventory.ItemCode);
+                inventory.ItemID = invRepo.getItemID(inventory.ItemCode);
                 entity.Entry(inventory).State = EntityState.Modified;
                 entity.SaveChanges();
                 return RedirectToAction("Index");

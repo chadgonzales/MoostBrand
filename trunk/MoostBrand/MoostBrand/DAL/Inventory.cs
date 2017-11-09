@@ -9,6 +9,10 @@
     [Table("Inventory")]
     public partial class Inventory
     {
+        public Inventory()
+        {
+            StockTransferDetails = new HashSet<StockTransferDetail>();
+        }
         public int ID { get; set; }
 
         [StringLength(50)]
@@ -57,5 +61,8 @@
         public virtual Location Location { get; set; }
 
         public virtual Item Items { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockTransferDetail> StockTransferDetails { get; set; }
     }
 }

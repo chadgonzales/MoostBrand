@@ -170,5 +170,27 @@ namespace MoostBrand.DAL
                 return total;
             }
         }
+
+        public string GetAuthorizedPerson
+        {
+            get
+            {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                try
+                {
+                    if (AuthorizedPerson != "" || AuthorizedPerson != null)
+                    {
+                        int x = Convert.ToInt32(AuthorizedPerson);
+                        return entity.Employees.Find(x).EmployeeFullName;
+                    }
+                    else
+                        return "";
+                }
+                catch
+                {
+                    return "";
+                }
+            }
+        }
     }
 }

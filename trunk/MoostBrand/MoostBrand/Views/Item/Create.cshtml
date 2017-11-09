@@ -164,9 +164,46 @@
                 </div>
             </div>
 
-            @if (ViewBag.Error != null)
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Sub Category Types
+                    @*<span class="symbol required"></span>*@
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("SubCategoryTypesID", new SelectList(ViewBag.Categories, "ID", "Description"), "", new { @id = "ddlcategory", @onchange = "javascript:GetSubCategory(this.value);" })
+                  
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Sub Categories
+                    @*<span class="symbol required"></span>*@
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("SubCategory")
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <table id="tblItems" class="table table-hover table-striped table-bordered">
+                   
+                                        <tbody> 
+                                            @foreach (var sub in Model.Category.SubCategories)
+                                            {
+
+                                                Html.RenderPartial("_SubCategoryRow", sub);
+                                            }
+                                        </tbody>
+                  
+                </table>
+            </div>
+
+
+
+
+            @*@if (ViewBag.Error != null)
             {
-                <div class="form-group">@*  *@
+                <div class="form-group">
                     @Html.Hidden("selectedSubCatID")
                     <label class="control-label col-md-2">
                         Sub Category
@@ -177,7 +214,7 @@
                     </div>
                 </div>
 
-                <div class="form-group"> @*  *@
+                <div class="form-group"> 
                     @Html.Hidden("selectedSubCatTypeID")
                     <label class="control-label col-md-2">
                         Sub Category Type
@@ -207,7 +244,7 @@
                         @Html.ValidationMessageFor(model => model.SubCategory.SubCategoryTypeID, "", new { @class = "text-danger" })
                     </div>
                 </div>
-            }
+            }*@
 
             <div class="form-group">
                 @*@Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label col-md-2" })*@
@@ -731,6 +768,11 @@
         });
     }
 
+
+
+</script>
+
+<script>
 
 
 </script>

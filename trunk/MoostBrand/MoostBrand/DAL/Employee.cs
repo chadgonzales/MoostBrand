@@ -60,6 +60,9 @@ namespace MoostBrand.DAL
         public string employee_name
         { get { return EmpID + " - " + LastName + "," + FirstName; } }
 
+        public string EmployeeFullName
+        { get { return LastName + "," + FirstName; } }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransfer> StockTransfers { get; set; }
 

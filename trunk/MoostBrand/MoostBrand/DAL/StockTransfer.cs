@@ -114,6 +114,24 @@ namespace MoostBrand.DAL
         public virtual StockTransferType StockTransferType { get; set; }
 
         //public int? _ReservationID { get; set; }
+
+        public string GetDestination
+        {
+            
+            get
+            {
+                MoostBrandEntities db = new MoostBrandEntities();
+                try
+                {
+                    return db.Locations.Find(LocationID).Description;
+                }
+                catch
+                {
+                    return "";
+                }
+            }
+
+        }
         internal void CreateHelpers(int count = 1)
         {
             for (int i = 0; i < count; i++)

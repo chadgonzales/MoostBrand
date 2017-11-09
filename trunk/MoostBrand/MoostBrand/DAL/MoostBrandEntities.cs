@@ -56,6 +56,7 @@ namespace MoostBrand.DAL
         public virtual DbSet<StockTransferDirect> StockTransferDirects { get; set; }
         public virtual DbSet<StockTransferHelper> StockTransferHelpers { get; set; }
         public virtual DbSet<StockTransferOperator> StockTransferOperators { get; set; }
+        public virtual DbSet<StockLedger> StockLedgers { get; set; }
         public virtual DbSet<StockTransfer> StockTransfers { get; set; }
         public virtual DbSet<StockTransferType> StockTransferTypes { get; set; }
         public virtual DbSet<SubCategory> SubCategories { get; set; }

@@ -1,4 +1,4 @@
-﻿@model MoostBrand.DAL.StockTransferDirect
+﻿@model MoostBrand.DAL.StockTransfer
 
 @{
     ViewBag.Title = "Details";
@@ -14,24 +14,7 @@
         <div class="row">
 
             <div class="col-sm-6">
-                <div class="form-group">
-                    <label class="control-label col-md-4">Item Name</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.ItemName)
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-4">Quantity</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.Quantity)
-                        </label>
-                    </div>
-                </div>
-
+           
                 <div class="form-group">
                     <label class="control-label col-md-4">StockTransfer #</label>
                     <div class="col-md-8">
@@ -42,10 +25,19 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="control-label col-md-4">Location</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Location.Description)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="control-label col-md-4">Date</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.STDate)
+                            @Html.DisplayFor(model => model.STDAte)
                         </label>
                     </div>
                 </div>
@@ -79,7 +71,7 @@
 
                 <div class="form-group">
                     <label class="control-label col-md-4">Helper</label>
-                    @foreach (var item in Model.StockTransferHelpers)
+                    @foreach (var item in Model.Helpers)
                     {
                         <div class="col-md-8">
                             <label class="custom-label">
@@ -91,7 +83,7 @@
 
                 <div class="form-group">
                     <label class="control-label col-md-4">Operator</label>
-                    @foreach (var item in Model.StockTransferOperators)
+                    @foreach (var item in Model.Operators)
                     {
                         <div class="col-md-8">
                             <label class="custom-label">
@@ -189,23 +181,7 @@
                     </div>
                 </div>
 
-                @*<dt>
-            @Html.DisplayNameFor(model => model.Location)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Location)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TimeReceived)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TimeReceived)
-        </dd>
-
-        </dl>*@
+        
             </div>
         </div>
 
@@ -223,5 +199,51 @@
                 </a>
             </div>
         </div>
+
+        @Html.Action("PendingItems", "StockTransferDirects", new { page = ViewBag.Page })
+        <div class="panel-heading">
+            <h4 class="panel-title">History</h4>
+            <hr />
+        </div>
+        <table class="table table-striped table-bordered table-hover table-full-width dataTable ">
+            <thead>
+                <tr>
+                    <th>
+                        Item Code
+                    </th>
+                    <th>
+                        Item Name
+                    </th>
+                    <th>
+                        Quantity
+                    </th>
+                   
+                    <th>
+                        Previous Quantity
+                    </th>
+                </tr>
+            </thead>
+
+            @foreach (var item in Model.StockTransferDetails)
+            {
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Inventories.Items.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Inventories.Items.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                      
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PreviousQuantity)
+                        </td>
+                    </tr>
+                </tbody>
+            }
+        </table>
     </div>
 </div>

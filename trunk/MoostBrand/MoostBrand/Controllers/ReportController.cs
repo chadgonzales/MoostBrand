@@ -7,11 +7,9 @@ using MoostBrand.DAL;
 using PagedList;
 using System.Linq.Dynamic;
 using System.Data.Entity;
-using Microsoft.Reporting.WebForms;
 using System.Data.Entity.Core.Objects;
 using System.Web.Mvc.Html;
-
-
+using Microsoft.Reporting.WebForms;
 
 namespace MoostBrand.Controllers
 {
@@ -309,6 +307,95 @@ namespace MoostBrand.Controllers
             ViewBag.DateTo = dtDateTo.ToString("MM/dd/yyyy");
 
             //  ViewBag.CompanyName = companyRepo.GetById(Sessions.CompanyId.Value).Name;
+
+            return View();
+        }
+
+        public ActionResult StockLedgerReport(string dateFrom, string dateTo,string itemcode, string itemdesc)
+        {
+
+            DateTime dtDateFrom = DateTime.Now.Date;
+            DateTime dtDateTo = DateTime.Now;
+
+            if (!String.IsNullOrEmpty(dateFrom))
+            {
+                dtDateFrom = Convert.ToDateTime(dateFrom);
+            }
+
+            if (!String.IsNullOrEmpty(dateTo))
+            {
+                dtDateTo = Convert.ToDateTime(dateTo);
+            }
+
+            ViewBag.ItemCode = new SelectList(entity.Inventories.Select(x => x.Items).Distinct(), "Code", "Code");
+            ViewBag.ItemDesc = new SelectList(entity.Inventories.Select(x => x.Items).Distinct(), "Description", "Description");
+
+
+            string _sortbycode = "Item Code: ALL", _sortbydesc = "Item Description: ALL";
+
+
+            var _lst = entity.StockLedgers.ToList();
+
+            if (!String.IsNullOrEmpty(itemcode))
+            {
+
+                _lst = _lst.Where(p => p.Inventories.ItemCode.Trim() == itemcode.Trim()).ToList();
+                string _Code = entity.Items.FirstOrDefault(p => p.Code == itemcode).Code;
+                _sortbycode = "Item Code:" + _Code;
+            }
+
+            if (!String.IsNullOrEmpty(itemdesc))
+            {
+
+                _lst = _lst.Where(p => p.Inventories.Description.Trim() == itemdesc.Trim()).ToList();
+                string _desc = entity.Items.FirstOrDefault(p => p.Description == itemdesc).Description;
+                _sortbydesc = "Item Description:" + _desc;
+            }
+
+
+
+            var lstStockLedger = (from i in _lst.Where(p => p.Date.Value.Date >= dtDateFrom && p.Date.Value.Date <= dtDateTo).ToList()
+                                  select new
+                                {
+                                    ItemCode = i.Inventories.ItemCode != null ? i.Inventories.ItemCode : " ",
+                                    ItemDesc = i.Inventories.Description != null ? i.Inventories.Description : " ",
+                                    Type = i.Type != null ? i.Type : " ",
+                                    ReferenceNo = i.ReferenceNo != null ? i.ReferenceNo : " ",
+                                    InQty = i.InQty != null ? i.InQty : 0,
+                                    OutQty = i.OutQty != null ? i.OutQty : 0,
+                                    RemainingBalance = i.RemainingBalance != null ? i.RemainingBalance : 0,
+                                    BeginningBalance = i.BeginningBalance != null ? i.BeginningBalance : 0,
+                                    Variance = i.Variance != null ? i.Variance : 0,
+                                    Date = i.Date != null ? i.Date.Value.ToString("MM/dd/yyyy") : "",
+                                    Location = i.Inventories.LocationCode != null ? i.Inventories.Location.Description : " "
+
+                                }).ToList();
+
+
+
+            ReportViewer reportViewer = new ReportViewer();
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+            ReportDataSource _rds = new ReportDataSource();
+            _rds.Name = "dsStockLedger";
+            _rds.Value = lstStockLedger.OrderBy(p => p.Type);
+
+            reportViewer.KeepSessionAlive = false;
+            reportViewer.LocalReport.DataSources.Clear();
+            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Views\Report\rdlc\StockLedger.rdlc";
+
+            List<ReportParameter> _parameter = new List<ReportParameter>();
+            _parameter.Add(new ReportParameter("DateRange", dtDateFrom.ToString("MMMM dd, yyyy") + " - " + dtDateTo.ToString("MMMM dd, yyyy")));
+            _parameter.Add(new ReportParameter("SortByCode", _sortbycode));
+            _parameter.Add(new ReportParameter("SortByDesc", _sortbydesc));
+            reportViewer.LocalReport.DataSources.Add(_rds);
+            reportViewer.LocalReport.Refresh();
+            reportViewer.LocalReport.SetParameters(_parameter);
+
+            ViewBag.ReportViewer = reportViewer;
+
+            ViewBag.DateFrom = dtDateFrom.ToString("MM/dd/yyyy");
+            ViewBag.DateTo = dtDateTo.ToString("MM/dd/yyyy");
 
             return View();
         }

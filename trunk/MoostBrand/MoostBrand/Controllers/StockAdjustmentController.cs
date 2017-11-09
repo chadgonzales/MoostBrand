@@ -333,6 +333,18 @@ namespace MoostBrand.Controllers
                             i.InStock = _inv.NewQuantity;
                             entity.Entry(i).State = EntityState.Modified;
                             entity.SaveChanges();
+
+                            StockLedger _stockledger = new StockLedger();
+                            _stockledger.InventoryID = _inv.ID;
+                            _stockledger.Type = "Stock Adjustment";
+                            _stockledger.Variance = _inv.Variance;
+                            _stockledger.ReferenceNo = adjust.No;
+                            _stockledger.BeginningBalance = _inv.OldQuantity;
+                            _stockledger.RemainingBalance = _inv.NewQuantity;
+                            _stockledger.Date = DateTime.Now;
+
+                            entity.StockLedgers.Add(_stockledger);
+                            entity.SaveChanges();
                         }
 
                     }

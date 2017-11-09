@@ -1,4 +1,4 @@
-﻿@model MoostBrand.DAL.StockTransferDirect
+﻿@model MoostBrand.DAL.StockTransfer
 
 @{
     ViewBag.Title = "Edit";
@@ -37,48 +37,6 @@
 <script src="~/Scripts/CustomJs.js"></script>
 <script src="~/Scripts/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-    @*$('#LocationID').change(function () {
-        _locID = $('#LocationID').val();
-        var url = "/StockTransferDirects/GetLocationCode/";
-
-        $.ajax({
-            url: url,
-            data: { locID: _locID },
-            cache: false,
-            type: "POST",
-            success: function (data) {
-                $.each(data, function (i, val) {
-                    $.get("@Url.Action("GenerateSTRNumber", "StockTransferDirects")/STR", null, BindData);
-                })
-            },
-            error: function (reponse) {
-                alert("error : " + reponse);
-            }
-        });
-    });*@
-
-    //function BindData(data) {
-    //    $("#TransferID").val(data);
-    //}
-
-    @*function GetLocationCode(_locID) {
-        var url = "/StockTransferDirects/GetLocationCode/";
-
-        $.ajax({
-            url: url,
-            data: { locID: _locID },
-            cache: false,
-            type: "POST",
-            success: function (data) {
-                $.get("@Url.Action("GenerateSTRNumber", "StockTransferDirects")/STR", null, BindData);
-                $.get("@Url.Action("GenerateSTRNumber", "StockTransferDirects")/STR - ", null, BindData);
-            },
-            error: function (reponse) {
-                alert("error : " + reponse);
-            }
-        });
-    }*@
-
 
 
     $('#Quantity').keyup(function () {
@@ -105,7 +63,7 @@
         var text = $(this).val();
         $(this).val(text.toUpperCase());
     });
-    $('#StockTransferHelpers').keyup(function () {
+    $('#Helpers').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
     });
@@ -113,7 +71,7 @@
         var text = $(this).val();
         $(this).val(text.toUpperCase());
     });
-    $('#StockTransferOperators').keyup(function () {
+    $('#Operators').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
     });

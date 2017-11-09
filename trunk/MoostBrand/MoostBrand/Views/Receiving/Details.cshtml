@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-md-4">Type</label>
+                    <label class="control-label col-md-4">Receiving Type</label>
                     <div class="col-md-8">
                         <label class="custom-label">
                             @Html.DisplayFor(model => model.Requisition.RequisitionType.Type)
@@ -48,14 +48,6 @@
                 </div>*@
 
 
-                <div class="form-group">
-                    <label class="control-label col-md-4">PO Number</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.PONumber)
-                        </label>
-                    </div>
-                </div>
 
                 <div class="form-group">
                     <label class="control-label col-md-4">Requisition ID</label>
@@ -155,14 +147,14 @@
 
                 <div id="br">
 
-                    <div class="form-group">
+                    @*<div class="form-group">
                         <label class="control-label col-md-4">Receving Location</label>
                         <div class="col-md-8">
                             <label class="custom-label">
                                 @Html.DisplayFor(model => model.Requisition.Location1.Description)
                             </label>
                         </div>
-                    </div>
+                    </div>*@
                     <div class="form-group">
                         <label class="control-label col-md-4">Source Location</label>
                         <div class="col-md-8">
@@ -229,22 +221,66 @@
                 </div>*@
 
                 <div id="pr">
+
+
                     <div class="form-group">
-                        <label class="control-label col-md-4">Shipper Name</label>
+                        <label class="control-label col-md-4">PO Number</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisition.Vendor.GeneralName)
+                                @Html.DisplayFor(model => model.PONumber)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-4">PO Date</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Requisition._RequestedDate)
                             </label>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-md-4">Shipper Code</label>
+                        <label class="control-label col-md-4">Vendor</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Requisition.Vendor.Name)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Vendor Code</label>
                         <div class="col-md-8">
                             <label class="custom-label">
                                 @Html.DisplayFor(model => model.Requisition.Vendor.Code)
                             </label>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Waybill Number</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.WaybillNumber)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Shipping Line</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.ShippingLine)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Forwarder</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Forwarder)
+                            </label>
+                        </div>
+                    </div>
+                 
                     @*<div class="form-group">
                         <label class="control-label col-md-4">Shipper Attn</label>
                         <div class="col-md-8">
@@ -277,6 +313,7 @@
                             </label>
                         </div>
                     </div>
+
                 </div>
                 <div id="cr">
                     <div class="form-group">

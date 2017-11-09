@@ -26,79 +26,88 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-md-4">Reference #</label>
-                    <div class="col-md-8">
-                        <label class="custom-label req">
-                            @Html.DisplayFor(model => model.Requisition.RefNumber)
-                        </label>
-                        <label class="custom-label rec">
-                            @Html.DisplayFor(model => model.Receiving.ReceivingID)
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-4">Date</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.STDAte)
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-4">Time Started</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.TimeStarted)
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-4">Time End</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.TimeFinish)
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-4">Driver</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.Driver)
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-4">Helper</label>
-                    @foreach (var item in Model.Helpers)
-                    {
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Destination</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(modelItem => item.Name)
+                                @Html.DisplayFor(model => model.GetDestination)
                             </label>
                         </div>
-                    }
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-md-4">Received By</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.Employee3.FirstName),
-                            @Html.DisplayFor(model => model.Employee3.LastName)
-                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Reference #</label>
+                        <div class="col-md-8">
+                            <label class="custom-label req">
+                                @Html.DisplayFor(model => model.Requisition.RefNumber)
+                            </label>
+                            <label class="custom-label rec">
+                                @Html.DisplayFor(model => model.Receiving.ReceivingID)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Date</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.STDAte)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Time Started</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.TimeStarted)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Time End</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.TimeFinish)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Driver</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Driver)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Helper</label>
+                        @foreach (var item in Model.Helpers)
+                        {
+                            <div class="col-md-8">
+                                <label class="custom-label">
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </label>
+                            </div>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Received By</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Employee3.FirstName),
+                                @Html.DisplayFor(model => model.Employee3.LastName)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Requested By</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Employee5.FirstName),
+                                @Html.DisplayFor(model => model.Employee5.LastName)
+                            </label>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label col-md-4">Requested By</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.Employee5.FirstName),
-                            @Html.DisplayFor(model => model.Employee5.LastName)
-                        </label>
-                    </div>
-                </div>
-            </div>
 
             <div class="col-sm-6">
                 <div class="form-group">

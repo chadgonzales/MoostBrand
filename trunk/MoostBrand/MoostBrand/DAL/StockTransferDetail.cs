@@ -20,7 +20,7 @@ namespace MoostBrand.DAL
         public int ID { get; set; }
 
         public int? StockTransferID { get; set; }
-
+        public int? InventoryID { get; set; }
         public int? RequisitionDetailID { get; set; }
 
         public int? Quantity { get; set; }
@@ -55,6 +55,8 @@ namespace MoostBrand.DAL
 
         public virtual RequisitionDetail RequisitionDetail { get; set; }
 
+        public virtual Inventory Inventories { get; set; }
+
         //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         //public virtual ICollection<ReturnedItem> ReturnedItems { get; set; }
 
@@ -67,28 +69,34 @@ namespace MoostBrand.DAL
         {
             get
             {
-                int _rid = 0, _ritemid= 0;
-                MoostBrandEntities entity = new MoostBrandEntities();
-                RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
-                StockTransferRepository stRepo = new StockTransferRepository();
-
-
-                if (RequisitionDetailID != null)
+                try
                 {
-                    RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
-                    _rid = item.RequisitionID;
-                    _ritemid = item.ItemID;
-                    return (reqDetailsRepo.getCommited(_rid, _ritemid) - Quantity.Value);
+                    int _rid = 0, _ritemid = 0;
+                    MoostBrandEntities entity = new MoostBrandEntities();
+                    RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
+                    StockTransferRepository stRepo = new StockTransferRepository();
 
+
+                    if (RequisitionDetailID != null)
+                    {
+                        RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+                        _rid = item.RequisitionID;
+                        _ritemid = item.ItemID;
+                        return (reqDetailsRepo.getCommited(_rid, _ritemid) - Quantity.Value);
+
+                    }
+                    else
+                    {
+                        ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
+                        _rid = item1.Receiving.RequisitionID;
+                        _ritemid = item1.RequisitionDetail.ItemID;
+                        return (stRepo.getCommited_Receiving(_rid, _ritemid) - Quantity.Value);
+                    }
                 }
-                else
+                catch
                 {
-                    ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
-                    _rid = item1.Receiving.RequisitionID;
-                    _ritemid = item1.RequisitionDetail.ItemID;
-                    return (stRepo.getCommited_Receiving(_rid, _ritemid) - Quantity.Value);
+                    return 0; 
                 }
-
               
               
             }
@@ -98,29 +106,35 @@ namespace MoostBrand.DAL
         {
             get
             {
-                int _rid = 0, _ritemid = 0;
-                MoostBrandEntities entity = new MoostBrandEntities();
-                RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
-                StockTransferRepository stRepo = new StockTransferRepository();
-
-
-                if (RequisitionDetailID != null)
+                try
                 {
-                    RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
-                    _rid = item.RequisitionID;
-                    _ritemid = item.ItemID;
-                    return (reqDetailsRepo.getCommited(_rid, _ritemid));
+                    int _rid = 0, _ritemid = 0;
+                    MoostBrandEntities entity = new MoostBrandEntities();
+                    RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
+                    StockTransferRepository stRepo = new StockTransferRepository();
+
+
+                    if (RequisitionDetailID != null)
+                    {
+                        RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+                        _rid = item.RequisitionID;
+                        _ritemid = item.ItemID;
+                        return (reqDetailsRepo.getCommited(_rid, _ritemid));
+
+                    }
+                    else
+                    {
+                        ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
+                        _rid = item1.Receiving.RequisitionID;
+                        _ritemid = item1.RequisitionDetail.ItemID;
+                        return (stRepo.getCommited_Receiving(_rid, _ritemid));
+                    }
 
                 }
-                else
+                catch
                 {
-                    ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
-                    _rid = item1.Receiving.RequisitionID;
-                    _ritemid = item1.RequisitionDetail.ItemID;
-                    return (stRepo.getCommited_Receiving(_rid, _ritemid));
+                    return 0;
                 }
-
-
 
             }
         }
@@ -129,36 +143,41 @@ namespace MoostBrand.DAL
         {
             get
             {
-                int _rid = 0, _ritemid = 0;
-                string _ritemcode = "";
-                MoostBrandEntities entity = new MoostBrandEntities();
-                RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
-                StockTransferRepository stRepo = new StockTransferRepository();
-
-                //int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
-               // RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
-
-                if (RequisitionDetailID != null)
+                try
                 {
-                    RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
-                    _rid = item.RequisitionID;
-                    _ritemid = item.ItemID;
-                    _ritemcode = item.Item.Code;
-                 
+                    int _rid = 0, _ritemid = 0;
+                    string _ritemcode = "";
+                    MoostBrandEntities entity = new MoostBrandEntities();
+                    RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
+                    StockTransferRepository stRepo = new StockTransferRepository();
 
+                    //int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
+                    // RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+
+                    if (RequisitionDetailID != null)
+                    {
+                        RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+                        _rid = item.RequisitionID;
+                        _ritemid = item.ItemID;
+                        _ritemcode = item.Item.Code;
+
+
+                    }
+                    else
+                    {
+                        ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
+                        _rid = item1.Receiving.RequisitionID;
+                        _ritemid = item1.RequisitionDetail.ItemID;
+                        _ritemcode = item1.RequisitionDetail.Item.Code;
+
+                    }
+
+                    int total = (repo.getInstocked(_rid, _ritemcode) - repo.getStockTranfer(_ritemid));
+
+                    return total;
                 }
-                else
-                {
-                    ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
-                    _rid = item1.Receiving.RequisitionID;
-                    _ritemid = item1.RequisitionDetail.ItemID;
-                    _ritemcode = item1.RequisitionDetail.Item.Code;
-                  
-                }
-
-                int total = (repo.getInstocked(_rid, _ritemcode) - repo.getStockTranfer(_ritemid));
-
-                return total;
+                catch
+                    { return 0; }
             }
         }
 
@@ -167,37 +186,42 @@ namespace MoostBrand.DAL
         {
             get
             {
-                int _rid = 0, _ritemid = 0;
-                string _ritemcode = "";
-
-                MoostBrandEntities entity = new MoostBrandEntities();
-                RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
-
-                //int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
-                // RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
-
-                if (RequisitionDetailID != null)
+                try
                 {
-                    RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
-                    _rid = item.RequisitionID;
-                    _ritemid = item.ItemID;
-                    _ritemcode = item.Item.Code;
+                    int _rid = 0, _ritemid = 0;
+                    string _ritemcode = "";
+
+                    MoostBrandEntities entity = new MoostBrandEntities();
+                    RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
+
+                    //int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
+                    // RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+
+                    if (RequisitionDetailID != null)
+                    {
+                        RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+                        _rid = item.RequisitionID;
+                        _ritemid = item.ItemID;
+                        _ritemcode = item.Item.Code;
 
 
+                    }
+                    else
+                    {
+                        ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
+                        _rid = item1.Receiving.RequisitionID;
+                        _ritemid = item1.RequisitionDetail.ItemID;
+                        _ritemcode = item1.RequisitionDetail.Item.Code;
+
+                    }
+
+
+                    int total = (repo.getInstocked(_rid, _ritemcode) - Quantity.Value);
+
+                    return total;
                 }
-                else
-                {
-                    ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
-                    _rid = item1.Receiving.RequisitionID;
-                    _ritemid = item1.RequisitionDetail.ItemID;
-                    _ritemcode = item1.RequisitionDetail.Item.Code;
-
-                }
-
-
-                int total = (repo.getInstocked(_rid, _ritemcode) - Quantity.Value);
-
-                return total;
+                catch
+                { return 0; }
             }
         }
 
@@ -205,34 +229,39 @@ namespace MoostBrand.DAL
         {
             get
             {
-                int _rlocationid = 0, _ritemid = 0;
-              
-
-                MoostBrandEntities entity = new MoostBrandEntities();
-                RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
-
-                //RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
-
-
-                if (RequisitionDetailID != null)
+                try
                 {
-                    RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
-                    _rlocationid = item.Requisition.LocationID.Value;
-                    _ritemid = item.ItemID;
+                    int _rlocationid = 0, _ritemid = 0;
 
+
+                    MoostBrandEntities entity = new MoostBrandEntities();
+                    RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
+
+                    //RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+
+
+                    if (RequisitionDetailID != null)
+                    {
+                        RequisitionDetail item = entity.RequisitionDetails.Find(RequisitionDetailID);
+                        _rlocationid = item.Requisition.LocationID.Value;
+                        _ritemid = item.ItemID;
+
+                    }
+                    else
+                    {
+                        ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
+                        _rlocationid = item1.RequisitionDetail.Requisition.LocationID.Value;
+                        _ritemid = item1.RequisitionDetail.ItemID;
+
+                    }
+
+
+                    int total = repo.getPurchaseOrder(_rlocationid, _ritemid);
+
+                    return total;
                 }
-                else
-                {
-                    ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
-                    _rlocationid = item1.RequisitionDetail.Requisition.LocationID.Value;
-                    _ritemid = item1.RequisitionDetail.ItemID;
-
-                }
-
-
-                int total = repo.getPurchaseOrder(_rlocationid, _ritemid);
-
-                return total;
+                catch
+                { return 0; }
             }
         }
 

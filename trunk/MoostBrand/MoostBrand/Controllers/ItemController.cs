@@ -258,12 +258,12 @@ namespace MoostBrand.Controllers
                     if (item.SubCategoryID == null || item.SubCategoryID == 0)
                         item.SubCategoryID = entity.SubCategories.FirstOrDefault(p => p.Description == "Not Available").ID;
 
-                    if (item.SubCategory.SubCategoryTypeID == null || item.SubCategory.SubCategoryTypeID == 0)
-                        item.SubCategory.SubCategoryTypeID = entity.SubCategoriesTypes.FirstOrDefault(p => p.Description == "Not Available").ID;
+                    //if (item.SubCategory.SubCategoryTypeID == null || item.SubCategory.SubCategoryTypeID == 0)
+                    //    item.SubCategory.SubCategoryTypeID = entity.SubCategoriesTypes.FirstOrDefault(p => p.Description == "Not Available").ID;
 
                     item.Category = entity.Categories.Find(item.CategoryID);
-                    item.SubCategory = entity.SubCategories.Find(item.SubCategoryID);
-                    item.SubCategory.SubCategoriesTypes = entity.SubCategoriesTypes.Find(item.SubCategory.SubCategoryTypeID);
+                    //item.SubCategory = entity.SubCategories.Find(item.SubCategoryID);
+                    //item.SubCategory.SubCategoriesTypes = entity.SubCategoriesTypes.Find(item.SubCategory.SubCategoryTypeID);
                     item.Brand = entity.Brands.Find(item.BrandID);
                     item.UnitOfMeasurement = entity.UnitOfMeasurements.Find(item.UnitOfMeasurementID);
                     item.Size = entity.Sizes.Find(item.SizeID);
@@ -342,12 +342,12 @@ namespace MoostBrand.Controllers
                     if (item.SubCategoryID == null || item.SubCategoryID == 0)
                         item.SubCategoryID = entity.SubCategories.FirstOrDefault(p => p.Description == "Not Available").ID;
 
-                    if (item.SubCategory.SubCategoryTypeID == null || item.SubCategory.SubCategoryTypeID == 0)
-                        item.SubCategory.SubCategoryTypeID = entity.SubCategoriesTypes.FirstOrDefault(p => p.Description == "Not Available").ID;
+                    //if (item.SubCategory.SubCategoryTypeID == null || item.SubCategory.SubCategoryTypeID == 0)
+                    //    item.SubCategory.SubCategoryTypeID = entity.SubCategoriesTypes.FirstOrDefault(p => p.Description == "Not Available").ID;
 
                     item.Category = entity.Categories.Find(item.CategoryID);
-                    item.SubCategory = entity.SubCategories.Find(item.SubCategoryID);
-                    item.SubCategory.SubCategoriesTypes = entity.SubCategoriesTypes.Find(item.SubCategory.SubCategoryTypeID);
+                    //item.SubCategory = entity.SubCategories.Find(item.SubCategoryID);
+                    //item.SubCategory.SubCategoriesTypes = entity.SubCategoriesTypes.Find(item.SubCategory.SubCategoryTypeID);
                     item.Brand = entity.Brands.Find(item.BrandID);
                     item.UnitOfMeasurement = entity.UnitOfMeasurements.Find(item.UnitOfMeasurementID);
                     item.Size = entity.Sizes.Find(item.SizeID);
