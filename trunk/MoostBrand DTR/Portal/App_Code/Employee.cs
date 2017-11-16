@@ -17,6 +17,7 @@ public class Employee : DBInterface, IPageable
     string _middleName = string.Empty;
     string _lastName = string.Empty;
     string _suffix = string.Empty;
+    string _paybasis = string.Empty;
     string _email = string.Empty;
     int _uploadID = 0;
     string _type = string.Empty;
@@ -62,6 +63,11 @@ public class Employee : DBInterface, IPageable
     {
         set { _suffix = value; }
         get { return _suffix; }
+    }
+    public string PayBasis
+    {
+        set { _paybasis = value; }
+        get { return _paybasis; }
     }
     public string Email
     {
@@ -110,7 +116,6 @@ public class Employee : DBInterface, IPageable
         set { _groupName = value; }
         get { return _groupName; }
     }
-
     #endregion
 
 
@@ -119,16 +124,30 @@ public class Employee : DBInterface, IPageable
 
     DataTable IPageable.ListPerPage(string _search, int _start, int _end, params string[] _custom)
     {
+        //string query = string.Format(
+        //    "WITH Temp_Table as ( " +
+        //    "SELECT id,empId,firstName,middleName,lastName,email,active" +
+        //    ",row_number() OVER (order by empId) as rowNum " +
+        //    "FROM employees WHERE " +
+        //    "empId LIKE {0} " +
+        //    "OR firstName LIKE {0} " +
+        //    "OR middleName LIKE {0} " +
+        //    "OR lastName LIKE {0} " +
+        //    "OR email LIKE {0} " +
+        //    ")" +
+        //    "SELECT * FROM Temp_Table " +
+        //    "WHERE rowNum Between {1} and {2}", "'%" + _search + "%'", _start, _end);
+
         string query = string.Format(
             "WITH Temp_Table as ( " +
-            "SELECT id,empId,firstName,middleName,lastName,email,active" +
+            "SELECT EMPID,FName,MName,LName,Suffix,Paybasis,Email" +
             ",row_number() OVER (order by empId) as rowNum " +
             "FROM employees WHERE " +
-            "empId LIKE {0} " +
-            "OR firstName LIKE {0} " +
-            "OR middleName LIKE {0} " +
-            "OR lastName LIKE {0} " +
-            "OR email LIKE {0} " +
+            "EMPID LIKE {0} " +
+            "OR FName LIKE {0} " +
+            "OR MName LIKE {0} " +
+            "OR LName LIKE {0} " +
+            "OR Email LIKE {0} " +
             ")" +
             "SELECT * FROM Temp_Table " +
             "WHERE rowNum Between {1} and {2}", "'%" + _search + "%'", _start, _end);
@@ -140,14 +159,24 @@ public class Employee : DBInterface, IPageable
 
     int IPageable.TotalRows(string _search, params string[] _custom)
     {
+        //string query = string.Format(
+        //    "SELECT COUNT(id) " +
+        //    "FROM employees WHERE " +
+        //    "empId LIKE {0} " +
+        //    "OR firstName LIKE {0} " +
+        //    "OR middleName LIKE {0} " +
+        //    "OR lastName LIKE {0} " +
+        //    "OR email LIKE {0} ", "'%" + _search + "%'");
+
+
         string query = string.Format(
-            "SELECT COUNT(id) " +
-            "FROM employees WHERE " +
-            "empId LIKE {0} " +
-            "OR firstName LIKE {0} " +
-            "OR middleName LIKE {0} " +
-            "OR lastName LIKE {0} " +
-            "OR email LIKE {0} ", "'%" + _search + "%'");
+           "SELECT COUNT(EMPID) " +
+           "FROM employees WHERE " +
+           "EMPID LIKE {0} " +
+           "OR FName LIKE {0} " +
+           "OR MName LIKE {0} " +
+           "OR LName LIKE {0} " +
+           "OR Email LIKE {0} ", "'%" + _search + "%'");
 
         DataTable _dt = this.FReadDataTable(query);
         if (_dt.Rows.Count > 0)
@@ -158,19 +187,34 @@ public class Employee : DBInterface, IPageable
 
     DataTable IPageable.ListPerPageDTR(string _search, int _start, int _end, params string[] _custom)
     {
+        //string query = string.Format(
+        //    "WITH Temp_Table as ( " +
+        //    "SELECT id,empId,firstName,middleName,lastName,email,active" +
+        //    ",row_number() OVER (order by empId) as rowNum " +
+        //    "FROM employees WHERE " +
+        //    "empId LIKE {0} " +
+        //    "OR firstName LIKE {0} " +
+        //    "OR middleName LIKE {0} " +
+        //    "OR lastName LIKE {0} " +
+        //    "OR email LIKE {0} " +
+        //    ")" +
+        //    "SELECT * FROM Temp_Table " +
+        //    "WHERE rowNum Between {1} and {2}", "'%" + _search + "%'", _start, _end); 
+
         string query = string.Format(
             "WITH Temp_Table as ( " +
-            "SELECT id,empId,firstName,middleName,lastName,email,active" +
+            "SELECT EMPID,FName,MName,LName,Suffix,Paybasis,Email" +
             ",row_number() OVER (order by empId) as rowNum " +
             "FROM employees WHERE " +
-            "empId LIKE {0} " +
-            "OR firstName LIKE {0} " +
-            "OR middleName LIKE {0} " +
-            "OR lastName LIKE {0} " +
-            "OR email LIKE {0} " +
+            "EMPID LIKE {0} " +
+            "OR FName LIKE {0} " +
+            "OR MName LIKE {0} " +
+            "OR LName LIKE {0} " +
+            "OR Email LIKE {0} " +
             ")" +
             "SELECT * FROM Temp_Table " +
             "WHERE rowNum Between {1} and {2}", "'%" + _search + "%'", _start, _end);
+
 
         DataTable _dt = this.FReadDataTable(query);
 
@@ -178,14 +222,23 @@ public class Employee : DBInterface, IPageable
     }
     int IPageable.TotalRowsDTR(string _search, params string[] _custom)
     {
+        //string query = string.Format(
+        //    "SELECT COUNT(id) " +
+        //    "FROM employees WHERE " +
+        //    "empId LIKE {0} " +
+        //    "OR firstName LIKE {0} " +
+        //    "OR middleName LIKE {0} " +
+        //    "OR lastName LIKE {0} " +
+        //    "OR email LIKE {0} ", "'%" + _search + "%'");
+
         string query = string.Format(
-            "SELECT COUNT(id) " +
-            "FROM employees WHERE " +
-            "empId LIKE {0} " +
-            "OR firstName LIKE {0} " +
-            "OR middleName LIKE {0} " +
-            "OR lastName LIKE {0} " +
-            "OR email LIKE {0} ", "'%" + _search + "%'");
+         "SELECT COUNT(EMPID) " +
+         "FROM employees WHERE " +
+         "EMPID LIKE {0} " +
+         "OR FName LIKE {0} " +
+         "OR MName LIKE {0} " +
+         "OR LName LIKE {0} " +
+         "OR Email LIKE {0} ", "'%" + _search + "%'");
 
         DataTable _dt = this.FReadDataTable(query);
         if (_dt.Rows.Count > 0)
@@ -204,7 +257,7 @@ public class Employee : DBInterface, IPageable
     public bool Exist()
     {
         SqlParameterCollection oparam = new SqlCommand().Parameters;
-        oparam.AddWithValue("@id", _id);
+        //oparam.AddWithValue("@id", _id);
         oparam.AddWithValue("@empId", _empId);
 
         DataTable _dt = this.ExecuteRead("sp_employee_validate_empId", oparam);
@@ -223,8 +276,10 @@ public class Employee : DBInterface, IPageable
             oparam.AddWithValue("@firstName", _firstName);
             oparam.AddWithValue("@middleName", _middleName);
             oparam.AddWithValue("@lastName", _lastName);
+            //oparam.AddWithValue("@suffix", _suffix);
+            oparam.AddWithValue("@PayBasis", _paybasis);
             oparam.AddWithValue("@email", _email);
-            oparam.AddWithValue("@active", _active);
+            //oparam.AddWithValue("@active", _active);
 
             _rowsAffected = this.ExecuteCUD("sp_employee_add", oparam);
         }
@@ -241,15 +296,18 @@ public class Employee : DBInterface, IPageable
         try
         {
             SqlParameterCollection oparam = new SqlCommand().Parameters;
-            oparam.AddWithValue("@id", _id);
+            //oparam.AddWithValue("@id", _id);
             oparam.AddWithValue("@empId", _empId);
             oparam.AddWithValue("@firstName", _firstName);
             oparam.AddWithValue("@middleName", _middleName);
             oparam.AddWithValue("@lastName", _lastName);
+            //oparam.AddWithValue("@suffix", _suffix);
+            oparam.AddWithValue("@PayBasis", _paybasis);
             oparam.AddWithValue("@email", _email);
-            oparam.AddWithValue("@active", _active);
+            //oparam.AddWithValue("@active", _active);
 
-            _rowsAffected = this.ExecuteCUD("sp_employee_edit", oparam);
+            //_rowsAffected = this.ExecuteCUD("sp_employee_edit", oparam);
+            _rowsAffected = this.ExecuteCUD("sp_employee_add", oparam);
         }
         catch
         {
@@ -262,7 +320,7 @@ public class Employee : DBInterface, IPageable
         try
         {
             SqlParameterCollection oparam = new SqlCommand().Parameters;
-            oparam.AddWithValue("@id", _id);
+            oparam.AddWithValue("@empId", _empId);
 
             _rowsAffected = this.ExecuteCUD("sp_employee_delete", oparam);
         }

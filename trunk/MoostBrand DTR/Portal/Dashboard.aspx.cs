@@ -33,7 +33,13 @@ public partial class Dashboard : PagingIterface
             SetShowLinks();
 
         }
-        catch { Response.Redirect("~/Login.aspx"); }
+        catch {
+            //Response.Redirect("~/Login.aspx");
+
+            Response.Redirect("~/Login.aspx", false);        //write redirect
+            Context.ApplicationInstance.CompleteRequest();
+
+        }
 
         if (!IsPostBack)
         {
@@ -205,7 +211,11 @@ public partial class Dashboard : PagingIterface
     protected void lnkUploadMasterFile_Click(object sender, EventArgs e)
     {
         HidePanel();
-        Response.Redirect("~/Masterfile.aspx");
+        //Response.Redirect("~/Masterfile.aspx");
+
+        Response.Redirect("~/Masterfile.aspx", false);        //write redirect
+        Context.ApplicationInstance.CompleteRequest();
+
     }
     protected void lnkUserManagement_Click(object sender, EventArgs e)
     {
@@ -240,7 +250,10 @@ public partial class Dashboard : PagingIterface
     {
         Session.Abandon();
         Session.Clear();
-        Response.Redirect("~/Login.aspx");
+        //Response.Redirect("~/Login.aspx");
+
+        Response.Redirect("~/Login.aspx", false);        //write redirect
+        Context.ApplicationInstance.CompleteRequest();
     }
 
 
@@ -9157,5 +9170,14 @@ public partial class Dashboard : PagingIterface
         else
             lblStatus.Text = "Pending";
 
+    }
+
+    protected void lnkCreateEmployee_Click(object sender, EventArgs e)
+    {
+        HidePanel();
+        //Response.Redirect("~/Masterfile.aspx");
+
+        Response.Redirect("~/Employees.aspx", false);
+        Context.ApplicationInstance.CompleteRequest();
     }
 }

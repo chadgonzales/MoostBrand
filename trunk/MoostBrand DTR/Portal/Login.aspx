@@ -9,7 +9,7 @@
 <!-- BEGIN HEAD -->
 <head>
     <meta charset="utf-8" />
-    <title>JENTEC TAMS | Login</title>
+    <title>MOOSTBRAND TAMS | Login</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -68,7 +68,7 @@
                 </div>
                 <div class="form-actions">
 
-                    <asp:Button ID="btnLogIn" runat="server" Text="Login" OnClick="btnLogIn_Click" class="btn green pull-right" />
+                    <asp:Button ID="btnLogIn" runat="server" Text="Login" OnClick="btnLogIn_Click" class="btn red pull-right" />
                     
                         <%--<i class="m-icon-swapright m-icon-white"></i>--%>
                     
@@ -79,7 +79,7 @@
         <!-- END LOGIN -->
         <!-- BEGIN COPYRIGHT -->
         <div class="copyright">
-            2015 &copy; JENTEC STORAGE INC. TAMS by SDS
+            2017 &copy; MOOSTBRAND. HOME DEPOT. TAMS by SDS
         </div>
 
 

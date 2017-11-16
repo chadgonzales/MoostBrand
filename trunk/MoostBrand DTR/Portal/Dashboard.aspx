@@ -11,7 +11,7 @@
 <!-- BEGIN HEAD -->
 <head>
     <meta charset="utf-8" />
-    <title>JENTEC | TAMS</title>
+    <title>MOOSTBRAND | TAMS</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -98,6 +98,13 @@
                         <span class="title">Upload Masterfile</span>
                         </asp:LinkButton>
                     </li>
+                    <li class="start">
+                        <asp:LinkButton ID="lnkCreateEmployee" runat="server" OnClick="lnkCreateEmployee_Click">
+                        <i class="icon-plus"></i>                         
+                        <span class="title">Employee</span>
+                        </asp:LinkButton>
+                    </li>
+
                     <li class="start">
                         <asp:LinkButton ID="lnkProfile" runat="server" OnClick="lnkProfile_Click">
                         <i class="icon-user"></i>                         
@@ -259,7 +266,7 @@
                         <div class="row-fluid">
                             <div class="span12">
                                 <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                <div class="portlet box blue">
+                                <div class="portlet box yellow">
                                     <div class="portlet-title">
                                         <div class="caption"><i class="icon-user"></i>Users</div>
                                         <div class="tools">
@@ -303,7 +310,7 @@
                                                             <td>
                                                                 <asp:Label ID="lblUserTypeID" runat="server" Text='<%#Bind("usertypeID") %>' Visible="false"></asp:Label>
                                                                 <asp:DropDownList ID="ddlUserType" runat="server" Visible="false" class="m-wrap small"></asp:DropDownList>
-                                                                <asp:LinkButton ID="lnkUpdate" runat="server" Text="update usertype" CommandName="Update" class="btn blue mini"></asp:LinkButton>
+                                                                <asp:LinkButton ID="lnkUpdate" runat="server" Text="update usertype" CommandName="Update" class="btn yellow mini"></asp:LinkButton>
                                                                 <asp:LinkButton ID="lnkCancel" runat="server" Text="cancel" CommandName="Cancel" Visible="false" class="btn red mini"></asp:LinkButton>
                                                             </td>
                                                         </tr>
@@ -337,7 +344,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-group"></i>Add/Edit Group</div>
                                             <div class="tools">
@@ -362,7 +369,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-actions">
-                                                    <asp:Button ID="btnAddGroup" runat="server" Text="SAVE" OnClick="btnAddGroup_Click" class="btn blue" />
+                                                    <asp:Button ID="btnAddGroup" runat="server" Text="SAVE" OnClick="btnAddGroup_Click" class="btn yellow" />
                                                     <asp:Button ID="btnBackGroup" runat="server" Text="BACK" OnClick="btnBackGroup_Click" class="btn red" />
                                                 </div>
                                             </div>
@@ -379,7 +386,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-group"></i>Groups</div>
                                             <div class="tools">
@@ -390,7 +397,7 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:Button ID="btnAddNewGroup" runat="server" Text="Add New Group" OnClick="btnAddNewGroup_Click" class="btn blue" />
+                                                    <asp:Button ID="btnAddNewGroup" runat="server" Text="Add New Group" OnClick="btnAddNewGroup_Click" class="btn yellow" />
                                                 </div>
                                             </div>
 
@@ -413,11 +420,11 @@
                                                                     <asp:Label ID="lblGroupName" runat="server" Text='<%#Bind("name") %>'></asp:Label>
                                                                 </td>
                                                                 <td>
-                                                                    <asp:LinkButton ID="btnUpdate" runat="server" Text="Update" CommandName="Update" class="btn blue mini" />
+                                                                    <asp:LinkButton ID="btnUpdate" runat="server" Text="Update" CommandName="Update" class="btn yellow mini" />
                                                                     <asp:LinkButton ID="btnRemove" runat="server" Text="Remove" CommandName="Remove"
                                                                         OnClientClick="return confirm('Are you sure you want to remove this group?');" class="btn red mini" Visible="true" />
                                                                     <asp:LinkButton ID="btnViewApprover" runat="server" Text="View Approver" CommandName="View Approver" class="btn blue mini" />
-                                                                    <asp:LinkButton ID="btnAddApprover" runat="server" Text="Add Approver" CommandName="Approver" class="btn blue mini" />
+                                                                    <asp:LinkButton ID="btnAddApprover" runat="server" Text="Add Approver" CommandName="Approver" class="btn green mini" />
                                                                 </td>
                                                             </tr>
                                                         </ItemTemplate>
@@ -452,7 +459,7 @@
                                     <asp:DropDownList ID="ddlApprover" runat="server"></asp:DropDownList>
                                 </div>
                                 <div class="modal-footer">
-                                    <asp:LinkButton ID="btnSaveApprover" runat="server" class="btn blue" OnClick="btnSaveApprover_Click">SAVE</asp:LinkButton>
+                                    <asp:LinkButton ID="btnSaveApprover" runat="server" class="btn yellow" OnClick="btnSaveApprover_Click">SAVE</asp:LinkButton>
                                     <asp:LinkButton ID="btnCancelApprover" runat="server" OnClick="btnCancelApprover_Click" class="btn red">CANCEL</asp:LinkButton>
                                 </div>
                             </div>
@@ -488,7 +495,7 @@
                                                             <asp:Label ID="lblApproverName" runat="server" Text='<%#Bind("fullname") %>'></asp:Label>
                                                         </td>
                                                         <td>
-                                                            <asp:LinkButton ID="lnkRemove" runat="server" Text="Remove" CommandName="Remove" OnClientClick="return confirm('Are you sure you want to remove this approver?');"></asp:LinkButton>
+                                                            <asp:LinkButton ID="lnkRemove" runat="server" Text="Remove" CommandName="Remove" OnClientClick="return confirm('Are you sure you want to remove this approver?');" class="btn red mini"></asp:LinkButton>
                                                         </td>
                                                     </tr>
                                                 </ItemTemplate>
@@ -522,7 +529,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-group"></i>Employee Groupings</div>
                                             <div class="tools">
@@ -536,7 +543,7 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:Button ID="btnAddEmpGroup" runat="server" Text="Add Employee Groupings" OnClick="btnAddEmpGroup_Click" class="btn blue" />
+                                                    <asp:Button ID="btnAddEmpGroup" runat="server" Text="Add Employee Groupings" OnClick="btnAddEmpGroup_Click" class="btn yellow" />
 
                                                 </div>
                                             </div>
@@ -571,7 +578,7 @@
                                                                     <asp:Label ID="lblGroupID" runat="server" Text='<%#Bind("groupID") %>' Visible="false"></asp:Label>
                                                                     <asp:DropDownList ID="ddlEmpGroup" runat="server" Visible="false" class="m-wrap small"></asp:DropDownList>
                                                                     <%--<asp:Label ID="lblGroupName" runat="server" Text='<%#Bind("groupName") %>'></asp:Label>--%>
-                                                                    <asp:LinkButton ID="lnkUpdate" runat="server" Text="Update Group" CommandName="Update" class="btn blue mini"></asp:LinkButton>
+                                                                    <asp:LinkButton ID="lnkUpdate" runat="server" Text="Update Group" CommandName="Update" class="btn yellow mini"></asp:LinkButton>
                                                                     <asp:LinkButton ID="lnkCancel" runat="server" Text="Cancel" CommandName="Cancel" Visible="false" class="btn red mini"></asp:LinkButton>
 
                                                                 </td>
@@ -595,7 +602,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-group"></i>Add/Edit Group</div>
                                             <div class="tools">
@@ -664,7 +671,7 @@
                                                 </table>
 
                                                 <div class="form-actions">
-                                                    <asp:Button ID="btnAddtoGroup" runat="server" Text="ADD TO GROUP" OnClick="btnAddtoGroup_Click" class="btn blue" />
+                                                    <asp:Button ID="btnAddtoGroup" runat="server" Text="ADD TO GROUP" OnClick="btnAddtoGroup_Click" class="btn yellow" />
                                                     <asp:Button ID="btnBackEmpGroup" runat="server" Text="BACK" OnClick="btnBackEmpGroup_Click" class="btn red" />
                                                 </div>
 
@@ -699,7 +706,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Leave Types</div>
                                             <div class="tools">
@@ -710,7 +717,7 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:LinkButton ID="lnkAddLeaveType" runat="server" Text="Add Leave type" OnClick="lnkAddLeaveType_Click" class="btn blue"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkAddLeaveType" runat="server" Text="Add Leave type" OnClick="lnkAddLeaveType_Click" class="btn yellow"></asp:LinkButton>
 
                                                 </div>
                                             </div>
@@ -735,7 +742,7 @@
                                                                     <asp:Label ID="lblLeaveTypeDesc" runat="server" Text='<%#Bind("description") %>'></asp:Label>
                                                                 </td>
                                                                 <td>
-                                                                    <asp:LinkButton ID="lnkEditLeaveType" runat="server" CommandName="EditLeaveType" Text="Edit"></asp:LinkButton>
+                                                                    <asp:LinkButton ID="lnkEditLeaveType" runat="server" CommandName="EditLeaveType" Text="Edit" class="btn mini yellow"></asp:LinkButton>
 
                                                                 </td>
                                                             </tr>
@@ -756,7 +763,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Add/Edit Leave Type</div>
                                             <div class="tools">
@@ -790,7 +797,7 @@
                                                 </div>
 
                                                 <div class="form-actions">
-                                                    <asp:Button ID="btnAddLeaveType" runat="server" Text="Save" OnClick="btnAddLeaveType_Click" class="btn blue" />
+                                                    <asp:Button ID="btnAddLeaveType" runat="server" Text="Save" OnClick="btnAddLeaveType_Click" class="btn yellow" />
                                                     <asp:Button ID="btnbackLeaveType" runat="server" Text="Back" OnClick="btnbackLeaveType_Click" class="btn red" />
                                                 </div>
                                             </div>
@@ -824,7 +831,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Leave Applications</div>
                                             <div class="tools">
@@ -835,7 +842,7 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:LinkButton ID="lnkLeaveApplicationAdd" runat="server" Text="Add" OnClick="lnkLeaveApplicationAdd_Click" class="btn blue"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkLeaveApplicationAdd" runat="server" Text="Add" OnClick="lnkLeaveApplicationAdd_Click" class="btn yellow"></asp:LinkButton>
 
                                                 </div>
                                             </div>
@@ -895,8 +902,8 @@
                                                                 <%--<td><asp:Label ID="lblLAModifiedBy" runat="server" Text='<%#Bind("modifiedBy") %>'></asp:Label></td>--%>
                                                                 <td>
                                                                     <%-- <asp:LinkButton ID="lnkLAApprove" runat="server" Text="Approve" CommandName="Approve"></asp:LinkButton>--%>
-                                                                    <asp:LinkButton ID="lnkLADeny" runat="server" Text="Deny" CommandName="Deny"></asp:LinkButton>
-                                                                    <asp:LinkButton ID="lnkLAUpdate" runat="server" Text="Update" CommandName="Update"></asp:LinkButton>
+                                                                    <asp:LinkButton ID="lnkLADeny" runat="server" Text="Deny" CommandName="Deny" class="btn red mini"></asp:LinkButton> <br /></br />
+                                                                    <asp:LinkButton ID="lnkLAUpdate" runat="server" Text="Update" CommandName="Update" class="btn yellow mini" style="display:-moz-grid;"></asp:LinkButton>
                                                                     <%--<asp:LinkButton ID="lnkLADelete" runat="server" Text="Delete" CommandName="Delete"></asp:LinkButton>--%>
                                                                 </td>
                                                             </tr>
@@ -917,7 +924,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Add/Edit Leave</div>
                                             <div class="tools">
@@ -976,7 +983,7 @@
                                                 </div>
 
                                                 <div class="form-actions">
-                                                    <asp:Button ID="btnLeaveApplicationAdd" runat="server" Text="Save" OnClick="btnLeaveApplicationAdd_Click" class="btn blue" />
+                                                    <asp:Button ID="btnLeaveApplicationAdd" runat="server" Text="Save" OnClick="btnLeaveApplicationAdd_Click" class="btn yellow" />
                                                     <asp:Button ID="btnLeaveApplicationBack" runat="server" Text="Back" OnClick="btnLeaveApplicationBack_Click" class="btn red" />
                                                 </div>
                                             </div>
@@ -1009,7 +1016,7 @@
 
                                 </div>
                                 <div class="modal-footer">
-                                    <asp:LinkButton ID="lnkLAApproveYes" runat="server" OnClick="lnkLAApproveYes_Click" class="btn blue">Deny</asp:LinkButton>
+                                    <asp:LinkButton ID="lnkLAApproveYes" runat="server" OnClick="lnkLAApproveYes_Click" class="btn yellow">Deny</asp:LinkButton>
                                     <asp:LinkButton ID="LinkButton4" runat="server" OnClick="lnkLAApproveCancel_Click" class="btn red">Cancel</asp:LinkButton>
                                 </div>
                             </div>
@@ -1037,7 +1044,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Leave Credits</div>
                                             <div class="tools">
@@ -1048,7 +1055,7 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:LinkButton ID="lnkAddLeaveCredits" runat="server" Text="Add" OnClick="lnkAddLeaveCredits_Click" class="btn blue"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkAddLeaveCredits" runat="server" Text="Add" OnClick="lnkAddLeaveCredits_Click" class="btn yellow"></asp:LinkButton>
                                                 </div>
                                             </div>
 
@@ -1098,7 +1105,7 @@
                                                                     <asp:Label ID="lblLCLeaveUsed" runat="server" Text='<%#Bind("qty") %>'></asp:Label>
                                                                 </td>
                                                                 <td>
-                                                                    <asp:LinkButton ID="lnkLCEdit" runat="server" Text="Edit" CommandName="Edit"></asp:LinkButton>
+                                                                    <asp:LinkButton ID="lnkLCEdit" runat="server" Text="Edit" CommandName="Edit" class="btn yellow mini"></asp:LinkButton>
                                                                 </td>
                                                             </tr>
                                                         </ItemTemplate>
@@ -1118,7 +1125,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Add/Edit Leave Credits</div>
                                             <div class="tools">
@@ -1165,7 +1172,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-actions">
-                                                    <asp:Button ID="btnLeaveCreditAdd" runat="server" Text="Save" OnClick="btnLeaveCreditAdd_Click" class="btn blue" />
+                                                    <asp:Button ID="btnLeaveCreditAdd" runat="server" Text="Save" OnClick="btnLeaveCreditAdd_Click" class="btn yellow" />
                                                     <asp:Button ID="btnLeaveCreditBack" runat="server" Text="Back" OnClick="btnLeaveCreditBack_Click" class="btn red" />
                                                 </div>
                                             </div>
@@ -1196,7 +1203,7 @@
                         <div class="row-fluid">
                             <div class="span12">
                                 <!-- BEGIN SAMPLE FORM PORTLET-->
-                                <div class="portlet box blue">
+                                <div class="portlet box yellow">
                                     <div class="portlet-title">
                                         <div class="caption"><i class="icon-user"></i>Change Password</div>
                                         <div class="tools">
@@ -1231,7 +1238,7 @@
                                                 </div>
                                             </div>
                                             <div class="form-actions">
-                                                <asp:Button ID="btnChangePw" runat="server" Text="Change Password" OnClick="btnChangePw_Click" class="btn blue" />
+                                                <asp:Button ID="btnChangePw" runat="server" Text="Change Password" OnClick="btnChangePw_Click" class="btn yellow" />
                                                 <asp:Button ID="btnChangePwBack" runat="server" Text="Back" OnClick="btnChangePwBack_Click" class="btn red" />
                                             </div>
                                         </div>
@@ -1258,7 +1265,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>OT Requests</div>
                                             <div class="tools">
@@ -1269,7 +1276,7 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:LinkButton ID="lnkAddOTRequest" runat="server" Text="Add" OnClick="lnkAddOTRequest_Click" class="btn blue"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkAddOTRequest" runat="server" Text="Add" OnClick="lnkAddOTRequest_Click" class="btn yellow"></asp:LinkButton>
                                                 </div>
                                             </div>
                                             <table class="table table-striped table-hover">
@@ -1338,8 +1345,8 @@
                                                                 </td>
                                                                 <td>
                                                                     <%--<asp:LinkButton ID="lnkApprove" runat="server" Text="Approve" CommandName="Approve"></asp:LinkButton>--%>
-                                                                    <asp:LinkButton ID="lnkDeny" runat="server" Text="Deny" CommandName="Deny"></asp:LinkButton>
-                                                                    <asp:LinkButton ID="lnkEdit" runat="server" Text="Update" CommandName="Edit"></asp:LinkButton>
+                                                                    <asp:LinkButton ID="lnkDeny" runat="server" Text="Deny" CommandName="Deny" class="btn red mini"></asp:LinkButton><br /><br />
+                                                                    <asp:LinkButton ID="lnkEdit" runat="server" Text="Update" CommandName="Edit" class="btn yellow mini" style="display:-moz-grid"></asp:LinkButton>
                                                                 </td>
                                                             </tr>
                                                         </ItemTemplate>
@@ -1357,7 +1364,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Add/Edit Overtime Application</div>
                                             <div class="tools">
@@ -1432,7 +1439,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-actions">
-                                                    <asp:Button ID="btnOTRequestAdd" runat="server" Text="Save" OnClick="btnOTRequestAdd_Click" class="btn blue" />
+                                                    <asp:Button ID="btnOTRequestAdd" runat="server" Text="Save" OnClick="btnOTRequestAdd_Click" class="btn yellow" />
                                                     <asp:Button ID="btnOTRequestBack" runat="server" Text="Back" OnClick="btnOTRequestBack_Click" class="btn red" />
                                                 </div>
                                             </div>
@@ -1463,7 +1470,7 @@
 
                                 </div>
                                 <div class="modal-footer">
-                                    <asp:LinkButton ID="lnkApproveYes" runat="server" OnClick="lnkApproveYes_Click" class="btn blue">Approve</asp:LinkButton>
+                                    <asp:LinkButton ID="lnkApproveYes" runat="server" OnClick="lnkApproveYes_Click" class="btn yellow">Approve</asp:LinkButton>
                                     <asp:LinkButton ID="lnkApproveCancel" runat="server" OnClick="lnkApproveCancel_Click" class="btn red">Cancel</asp:LinkButton>
                                 </div>
                             </div>
@@ -1487,7 +1494,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Shift Schedules</div>
                                             <div class="tools">
@@ -1498,7 +1505,7 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:LinkButton ID="lnkAddShiftSchedule" runat="server" Text="Add" OnClick="lnkAddShiftSchedule_Click" class="btn blue"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkAddShiftSchedule" runat="server" Text="Add" OnClick="lnkAddShiftSchedule_Click" class="btn yellow"></asp:LinkButton>
                                                 </div>
                                             </div>
                                             <table class="table table-striped table-hover">
@@ -1561,7 +1568,7 @@
                                                                     <asp:Label ID="lblIsForceCredit" runat="server" Text='<%#Bind("IsForceCredit") %>'></asp:Label>
                                                                 </td>
                                                                 <td>
-                                                                    <asp:LinkButton ID="lnkEdit" runat="server" Text="Update" CommandName="Edit"></asp:LinkButton>
+                                                                    <asp:LinkButton ID="lnkEdit" runat="server" Text="Update" CommandName="Edit" class="btn yellow mini"></asp:LinkButton>
                                                                 </td>
                                                             </tr>
                                                         </ItemTemplate>
@@ -1579,7 +1586,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Add/Edit Shift Schedule</div>
                                             <div class="tools">
@@ -1671,7 +1678,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-actions">
-                                                    <asp:Button ID="btnShiftScheduleAdd" runat="server" Text="Save" OnClick="btnShiftScheduleAdd_Click" class="btn blue" />
+                                                    <asp:Button ID="btnShiftScheduleAdd" runat="server" Text="Save" OnClick="btnShiftScheduleAdd_Click" class="btn yellow" />
                                                     <asp:Button ID="btnShiftScheduleBack" runat="server" Text="Back" OnClick="btnShiftScheduleBack_Click" class="btn red" />
                                                 </div>
                                             </div>
@@ -1697,7 +1704,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Employee Shift Schedules</div>
                                             <div class="tools">
@@ -1713,8 +1720,8 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:LinkButton ID="lnkAddShiftScheduleTagging" runat="server" Text="Add" OnClick="lnkAddShiftScheduleTagging_Click" class="btn blue" Visible="false"></asp:LinkButton>
-                                                    <asp:LinkButton ID="lnkImportShiftSchedule" runat="server" Text="Upload Shift Schedule" OnClick="lnkImportShiftSchedule_Click" class="btn blue"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkAddShiftScheduleTagging" runat="server" Text="Add" OnClick="lnkAddShiftScheduleTagging_Click" class="btn yellow" Visible="false"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkImportShiftSchedule" runat="server" Text="Upload Shift Schedule" OnClick="lnkImportShiftSchedule_Click" class="btn yellow"></asp:LinkButton>
                                                 </div>
                                             </div>
 
@@ -1781,7 +1788,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Add/Edit Employee Shift Schedule</div>
                                             <div class="tools">
@@ -1817,7 +1824,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-actions">
-                                                    <asp:Button ID="btnShiftScheduleTaggingAdd" runat="server" Text="Save" OnClick="btnShiftScheduleTaggingAdd_Click" class="btn blue" />
+                                                    <asp:Button ID="btnShiftScheduleTaggingAdd" runat="server" Text="Save" OnClick="btnShiftScheduleTaggingAdd_Click" class="btn yellow" />
                                                     <asp:Button ID="btnShiftScheduleTaggingBack" runat="server" Text="Back" OnClick="btnShiftScheduleTaggingBack_Click" class="btn red" />
                                                 </div>
                                             </div>
@@ -1830,7 +1837,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Upload shift schedule</div>
                                             <div class="tools">
@@ -1845,7 +1852,7 @@
                                                 <div class="clearfix"></div>
                                             </div>
                                             <asp:FileUpload ID="flImportShiftSchedule" runat="server" />
-                                            <asp:LinkButton ID="lnkImportSave" runat="server" Text="Upload Shift Schedule" OnClick="lnkImport_Click" class="btn blue"></asp:LinkButton>
+                                            <asp:LinkButton ID="lnkImportSave" runat="server" Text="Upload Shift Schedule" OnClick="lnkImport_Click" class="btn yellow"></asp:LinkButton>
                                             <asp:LinkButton ID="lnkImportCancel" runat="server" Text="Back to List" OnClick="lnkImportCancel_Click" class="btn red"></asp:LinkButton>
 
                                         </div>
@@ -1870,7 +1877,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Change Schedule Requests</div>
                                             <div class="tools">
@@ -1881,7 +1888,7 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:LinkButton ID="lnkAddChangeSchedule" runat="server" Text="Add" OnClick="lnkAddChangeSchedule_Click" class="btn blue"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkAddChangeSchedule" runat="server" Text="Add" OnClick="lnkAddChangeSchedule_Click" class="btn yellow"></asp:LinkButton>
                                                 </div>
                                             </div>
                                             <table class="table table-striped table-hover">
@@ -1933,7 +1940,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Change Schedule Requests</div>
                                             <div class="tools">
@@ -1968,7 +1975,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-actions">
-                                                    <asp:Button ID="btnSaveChangeSchedule" runat="server" Text="Save" OnClick="btnSaveChangeSchedule_Click" class="btn blue" />
+                                                    <asp:Button ID="btnSaveChangeSchedule" runat="server" Text="Save" OnClick="btnSaveChangeSchedule_Click" class="btn yellow" />
                                                     <asp:Button ID="btnChangeChangeSchedule" runat="server" Text="Back" OnClick="btnChangeChangeSchedule_Click" class="btn red" />
                                                 </div>
                                             </div>
@@ -1993,7 +2000,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Logs</div>
                                             <div class="tools">
@@ -2011,7 +2018,7 @@
                                                 <asp:TextBox ID="txtDateFrom" runat="server" class="m-wrap medium date-picker"></asp:TextBox>
                                                 To
                                                 <asp:TextBox ID="txtDateTo" runat="server" class="m-wrap medium date-picker"></asp:TextBox>
-                                                <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" class="btn blue" />
+                                                <asp:Button ID="btnSearch" runat="server" Text="Search" OnClick="btnSearch_Click" class="btn yellow" />
                                             </div>
                                             <table class="table table-striped table-hover">
                                                 <thead>
@@ -2071,7 +2078,7 @@
                                 <!-- END PAGE HEADER-->
 
                                 <!-- BEGIN SAMPLE FORM PORTLET-->
-                                <div class="portlet box blue">
+                                <div class="portlet box yellow">
                                     <div class="portlet-title">
                                         <div class="caption"><i class="icon-group"></i>Profile</div>
                                         <div class="tools">
@@ -2144,7 +2151,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Holidays</div>
                                             <div class="tools">
@@ -2155,7 +2162,7 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:LinkButton ID="lnkAddHolidays" runat="server" Text="Add" OnClick="lnkAddHolidays_Click" class="btn blue"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkAddHolidays" runat="server" Text="Add" OnClick="lnkAddHolidays_Click" class="btn yellow"></asp:LinkButton>
                                                 </div>
                                             </div>
 
@@ -2189,7 +2196,7 @@
 
                                                                 </td>
                                                                 <td>
-                                                                    <asp:LinkButton ID="lnkEdit" runat="server" Text="Update" CommandName="Edit"></asp:LinkButton>
+                                                                    <asp:LinkButton ID="lnkEdit" runat="server" Text="Update" CommandName="Edit" class="btn yellow mini"></asp:LinkButton>
                                                                 </td>
                                                             </tr>
                                                         </ItemTemplate>
@@ -2207,7 +2214,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Add/Edit Holidays</div>
                                             <div class="tools">
@@ -2250,7 +2257,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-actions">
-                                                    <asp:Button ID="btnHolidaysAdd" runat="server" Text="Save" OnClick="btnHolidaysAdd_Click" class="btn blue" />
+                                                    <asp:Button ID="btnHolidaysAdd" runat="server" Text="Save" OnClick="btnHolidaysAdd_Click" class="btn yellow" />
                                                     <asp:Button ID="btnHolidaysBack" runat="server" Text="Back" OnClick="btnHolidaysBack_Click" class="btn red" />
                                                 </div>
                                             </div>
@@ -2275,7 +2282,7 @@
                             <div class="span12">
 
                                 <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                <div class="portlet box blue">
+                                <div class="portlet box yellow">
                                     <div class="portlet-title">
                                         <div class="caption"><i class="icon-reorder"></i>Upload DTR</div>
                                         <div class="tools">
@@ -2286,7 +2293,7 @@
                                     <div class="span6">
                                         Entries
                                         <asp:TextBox ID="txtSearch" runat="server" class="m-wrap medium"></asp:TextBox>
-                                        <asp:Button ID="Button1" runat="server" Text="SEARCH" OnClick="btnSearch_Click" class="btn blue" />
+                                        <asp:Button ID="Button1" runat="server" Text="SEARCH" OnClick="btnSearch_Click" class="btn yellow" />
 
                                     </div>
                                     <div class="span6">
@@ -2296,10 +2303,10 @@
 
                                             <asp:FileUpload ID="flEmployee" runat="server" class="btn" Style="padding: 5px 14px; height: 25px;" />
 
-                                            <asp:Button ID="btnUploadEmployee" runat="server" Text="Upload" OnClick="btnUploadEmployee_Click" class="btn blue" />
-                                            <asp:Button ID="btnProcessDTR" runat="server" Text="Process" OnClick="btnProcessDTR_Click" class="btn blue" />
+                                            <asp:Button ID="btnUploadEmployee" runat="server" Text="Upload" OnClick="btnUploadEmployee_Click" class="btn yellow" />
+                                            <asp:Button ID="btnProcessDTR" runat="server" Text="Process" OnClick="btnProcessDTR_Click" class="btn yellow" />
 
-                                            <asp:Button ID="btnBackUpload" runat="server" Text="BACK" OnClick="btnBackUpload_Click" class="btn blue" Visible="false" />
+                                            <asp:Button ID="btnBackUpload" runat="server" Text="BACK" OnClick="btnBackUpload_Click" class="btn yellow" Visible="false" />
                                         </div>
                                     </div>
 
@@ -2469,7 +2476,7 @@
                             <div class="span12">
 
                                 <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                <div class="portlet box blue">
+                                <div class="portlet box yellow">
                                     <div class="portlet-title">
                                         <div class="caption"><i class="icon-reorder"></i>Daily Time Record</div>
                                         <div class="tools">
@@ -2480,7 +2487,7 @@
                                         </div>
                                         <div class="span6">
                                             <div style="float: right;">
-                                                <asp:LinkButton ID="lnkSelectPayrollPeriodDTR" runat="server" OnClick="lnkSelectPayrollPeriodDTR_Click" class="btn blue">No selected payroll period</asp:LinkButton>
+                                                <asp:LinkButton ID="lnkSelectPayrollPeriodDTR" runat="server" OnClick="lnkSelectPayrollPeriodDTR_Click" class="btn yellow">No selected payroll period</asp:LinkButton>
                                                 <asp:Label ID="lblPayrollPeriodIDDTR" runat="server" Visible="false" Text="0"></asp:Label>
                                                 <asp:Label ID="lblPayrollPeriodDTR" runat="server" Visible="false"></asp:Label>
                                                 <asp:Label ID="lblPayrollPeriodStartDTR" runat="server" Visible="false"></asp:Label>
@@ -2494,8 +2501,8 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:Button ID="btnProcessDTR1DTR" runat="server" Text="Process DTR" Visible="false" class="btn blue" OnClick="btnProcessDTR1DTR_Click" Style="vertical-align: top !Important;" />
-                                                    <asp:Button ID="btnSaveDTRDTR" runat="server" Text="Save DTR" Visible="false" class="btn blue" OnClick="btnSaveDTRDTR_Click" Style="vertical-align: top !Important;" />
+                                                    <asp:Button ID="btnProcessDTR1DTR" runat="server" Text="Process DTR" Visible="false" class="btn yellow" OnClick="btnProcessDTR1DTR_Click" Style="vertical-align: top !Important;" />
+                                                    <asp:Button ID="btnSaveDTRDTR" runat="server" Text="Save DTR" Visible="false" class="btn yellow" OnClick="btnSaveDTRDTR_Click" Style="vertical-align: top !Important;" />
 
                                                     <asp:DropDownList ID="ddlDTREmployeeDTR" runat="server" Visible="false" AutoPostBack="true" OnSelectedIndexChanged="ddlDTREmployeeDTR_SelectedIndexChanged" class="m-wrap medium"></asp:DropDownList>
 
@@ -2605,7 +2612,7 @@
                             <div class="span12">
 
                                 <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                <div class="portlet box blue">
+                                <div class="portlet box yellow">
                                     <div class="portlet-title">
                                         <div class="caption"><i class="icon-reorder"></i>Daily Time Record</div>
                                         <div class="tools">
@@ -2616,7 +2623,7 @@
                                         </div>
                                         <div class="span6">
                                             <div style="float: right;">
-                                                <asp:LinkButton ID="lnkSelectPayrollPeriod" runat="server" OnClick="lnkSelectPayrollPeriod_Click" class="btn blue">No selected payroll period</asp:LinkButton>
+                                                <asp:LinkButton ID="lnkSelectPayrollPeriod" runat="server" OnClick="lnkSelectPayrollPeriod_Click" class="btn yellow">No selected payroll period</asp:LinkButton>
                                                 <asp:Label ID="lblPayrollPeriodID" runat="server" Visible="false" Text="0"></asp:Label>
                                                 <asp:Label ID="lblPayrollPeriod" runat="server" Visible="false"></asp:Label>
                                                 <asp:Label ID="lblPayrollPeriodStart" runat="server" Visible="false"></asp:Label>
@@ -2627,7 +2634,7 @@
                                         <div class="clearfix"></div>
                                         <%--<div class="span3">
                                             <div style="float: right;">
-                                                <asp:Button ID="btnPostDTR" runat="server" Text="Post DTR" Visible="false" class="btn blue" />
+                                                <asp:Button ID="btnPostDTR" runat="server" Text="Post DTR" Visible="false" class="btn yellow" />
                                             </div>
                                         </div>--%>
                     <%--<div class="span3">
@@ -2639,8 +2646,8 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:Button ID="btnProcessDTR1" runat="server" Text="Process DTR" Visible="true" class="btn blue" OnClick="btnProcessDTR1_Click" Style="vertical-align: top !Important;" />
-                                                    <asp:Button ID="btnSaveDTR" runat="server" Text="Save DTR" Visible="false" class="btn blue" OnClick="btnSaveDTR_Click" Style="vertical-align: top !Important;" />
+                                                    <asp:Button ID="btnProcessDTR1" runat="server" Text="Process DTR" Visible="true" class="btn yellow" OnClick="btnProcessDTR1_Click" Style="vertical-align: top !Important;" />
+                                                    <asp:Button ID="btnSaveDTR" runat="server" Text="Save DTR" Visible="false" class="btn yellow" OnClick="btnSaveDTR_Click" Style="vertical-align: top !Important;" />
 
                                                     <asp:DropDownList ID="ddlDTREmployee" runat="server" Visible="false" AutoPostBack="true" OnSelectedIndexChanged="ddlDTREmployee_SelectedIndexChanged" class="m-wrap medium"></asp:DropDownList>
 
@@ -2796,7 +2803,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Payroll Period</div>
                                             <div class="tools">
@@ -2807,7 +2814,7 @@
                                             </div>
                                             <div class="span6">
                                                 <div style="float: right;">
-                                                    <asp:LinkButton ID="lnkAddPayrollPeriod" runat="server" Text="Add" OnClick="lnkAddPayrollPeriod_Click" class="btn blue"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkAddPayrollPeriod" runat="server" Text="Add" OnClick="lnkAddPayrollPeriod_Click" class="btn yellow"></asp:LinkButton>
                                                 </div>
                                             </div>
 
@@ -2848,7 +2855,7 @@
                                                                     <asp:CheckBox ID="chkIsActive" runat="server" Enabled="false"></asp:CheckBox>
                                                                 </td>
                                                                 <td>
-                                                                    <asp:LinkButton ID="lnkEdit" runat="server" Text="Update" CommandName="Edit"></asp:LinkButton>
+                                                                    <asp:LinkButton ID="lnkEdit" runat="server" Text="Update" CommandName="Edit" class="btn yellow mini"></asp:LinkButton>
                                                                 </td>
                                                             </tr>
                                                         </ItemTemplate>
@@ -2866,7 +2873,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE FORM PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Add/Edit Holidays</div>
                                             <div class="tools">
@@ -2946,7 +2953,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-actions">
-                                                    <asp:Button ID="btnPayrollPeriodSave" runat="server" Text="Save" OnClick="btnPayrollPeriodSave_Click" class="btn blue" />
+                                                    <asp:Button ID="btnPayrollPeriodSave" runat="server" Text="Save" OnClick="btnPayrollPeriodSave_Click" class="btn yellow" />
                                                     <asp:Button ID="btnPayrollPeriodBack" runat="server" Text="Back" OnClick="btnPayrollPeriodBack_Click" class="btn red" />
                                                 </div>
                                             </div>
@@ -2972,7 +2979,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>DTR Report</div>
                                             <div class="tools">
@@ -2993,8 +3000,8 @@
                                                 <asp:DropDownList ID="ddlPayrollPeriod" runat="server"></asp:DropDownList>
                                             </div>
                                             <div class="span3" style="margin: 0px;">
-                                                <asp:Button ID="btnSearchDTR" runat="server" Text="Search" OnClick="btnSearchDTR_Click" class="btn blue" />
-                                                <asp:Button ID="btnGenerateReportDTR" Visible="false" runat="server" Text="Generate Report" OnClick="btnGenerateReportDTR_Click" class="btn blue" />
+                                                <asp:Button ID="btnSearchDTR" runat="server" Text="Search" OnClick="btnSearchDTR_Click" class="btn yellow" />
+                                                <asp:Button ID="btnGenerateReportDTR" Visible="false" runat="server" Text="Generate Report" OnClick="btnGenerateReportDTR_Click" class="btn yellow" />
                                             </div>
                                             <table class="table table-striped table-hover">
                                                 <thead>
@@ -3280,7 +3287,7 @@
                             <div class="row-fluid">
                                 <div class="span12">
                                     <!-- BEGIN SAMPLE TABLE PORTLET-->
-                                    <div class="portlet box blue">
+                                    <div class="portlet box yellow">
                                         <div class="portlet-title">
                                             <div class="caption"><i class="icon-reorder"></i>Leave Report</div>
                                             <div class="tools">
@@ -3309,8 +3316,8 @@
                                                 <asp:TextBox ID="txtLeaveDateTo" runat="server" class="m-wrap medium date-picker"></asp:TextBox>
                                             </div>
                                             <div class="span3" style="margin: 0px;">
-                                                <asp:Button ID="btnSearchLeaveReport" runat="server" Text="Search" OnClick="btnSearchLeaveReport_Click" class="btn blue" />
-                                                <asp:Button ID="Button3" Visible="false" runat="server" Text="Generate Report" OnClick="btnGenerateReportDTR_Click" class="btn blue" />
+                                                <asp:Button ID="btnSearchLeaveReport" runat="server" Text="Search" OnClick="btnSearchLeaveReport_Click" class="btn yellow" />
+                                                <asp:Button ID="Button3" Visible="false" runat="server" Text="Generate Report" OnClick="btnGenerateReportDTR_Click" class="btn yellow" />
                                             </div>
                                             <table class="table table-striped table-hover">
                                                 <thead>
@@ -3389,7 +3396,7 @@
         <!-- BEGIN FOOTER -->
         <div class="footer">
             <div class="footer-inner">
-                2015 &copy; JENTEC STORAGE INC. TAMS by SDS
+                2017 &copy; MOOSTBRAND. HOME DEPOT. TAMS by SDS
             </div>
             <div class="footer-tools">
                 <span class="go-top">
@@ -3432,7 +3439,122 @@
 
 
             $("input[type = 'submit'].aspNetDisabled").attr('class', 'aspNetDisabled btn disabled');
+
+
+            if ($('#pnlProfile').length > 0) {
+                // Do something
+                $('ul.page-sidebar-menu li:nth-child(3)').addClass("active");
+            }
+
         });
+
+        //pnlProfile
+        if ($('#pnlProfile').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(3)').addClass("active");
+        }
+
+        //pnlUsers
+        else if ($('#pnlUsers').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(4)').addClass("active");
+        }
+
+            //pnlGroupList, pnlNewGroup
+        else if ($('#pnlGroupList').length > 0 || $('#pnlNewGroup').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(5)').addClass("active");
+        }
+            //pnlEmpGroupingsList, pnlNewGroupings
+        else if ($('#pnlEmpGroupingsList').length > 0 || $('#pnlNewGroupings').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(6)').addClass("active");
+        }
+
+            //pnlOTRequestList, pnlOTRequestNew
+        else if ($('#pnlOTRequestList').length > 0 || $('#pnlOTRequestNew').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(7)').addClass("active");
+        }
+
+            //pnlLeaveTypeLists, pnlAddLeaveType
+        else if ($('#pnlLeaveTypeLists').length > 0 || $('#pnlAddLeaveType').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(8)').addClass("active");
+        }
+
+            //pnlLeaveCreditsList, pnlLeaveCreditsAdd
+        else if ($('#pnlLeaveCreditsList').length > 0 || $('#pnlLeaveCreditsAdd').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(9)').addClass("active");
+        }
+
+            //pnlLeaveApplicationLists, pnlLeaveApplicationAdd
+        else if ($('#pnlLeaveApplicationLists').length > 0 || $('#pnlLeaveApplicationAdd').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(10)').addClass("active");
+        }
+
+            //pnlShiftScheduleList, pnlShiftScheduleNew
+        else if ($('#pnlShiftScheduleList').length > 0 || $('#pnlShiftScheduleNew').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(11)').addClass("active");
+        }
+
+        //pnlShiftScheduleTaggingList
+        else if ($('#pnlShiftScheduleTaggingList').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(12)').addClass("active");
+        }
+
+            //pnlChangeScheduleRequestsList, pnlChangeScheduleRequestsNew
+        else if ($('#pnlChangeScheduleRequestsList').length > 0 || $('#pnlChangeScheduleRequestsNew').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(13)').addClass("active");
+        }
+
+            //pnlHolidaysList, pnlHolidaysNew
+        else if ($('#pnlHolidaysList').length > 0 || $('#pnlHolidaysNew').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(14)').addClass("active");
+        }
+
+        //pnlDTR
+        else if ($('#pnlDTR').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(15)').addClass("active");
+        }
+
+        //pnlPayrollPeriod
+        else if ($('#pnlPayrollPeriod').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(16)').addClass("active");
+        }
+
+        //pnlLogsView
+        else if ($('#pnlLogsView').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(17)').addClass("active");
+        }
+
+            //pnlChangePassword
+        else if ($('#pnlChangePassword').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(18)').addClass("active");
+        }
+
+            //pnlDTRReport
+        else if ($('#pnlDTRReport').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(19)').addClass("active");
+        }
+
+            //pnlLeaveReport
+        else if ($('#pnlLeaveReport').length > 0) {
+            // Do something
+            $('ul.page-sidebar-menu li:nth-child(20)').addClass("active");
+        }
+
     </script>
     <!-- END JAVASCRIPTS -->
 </body>

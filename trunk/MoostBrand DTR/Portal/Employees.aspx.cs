@@ -21,7 +21,12 @@ public partial class _Default : PagingIterface
         {
             int _uid = Convert.ToInt32(Session["uid"].ToString());
         }
-        catch{Response.Redirect("~/Login.aspx");}
+        catch
+        {
+            //Response.Redirect("~/Login.aspx");
+            Response.Redirect("~/Login.aspx", false);        //write redirect
+            Context.ApplicationInstance.CompleteRequest();
+        }
 
         ReferenceControls(GetPageableObject(), rptrEmployees, txtSearch, lblShowing, drpEntries,
         lnkPage1, lnkPage2, lnkPage3, lnkPage4, lnkFirst, lnkPrevious, lnkNext, lnkLast);
@@ -45,26 +50,32 @@ public partial class _Default : PagingIterface
     protected void rptrEmployees_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
         Label lblID = (Label)e.Item.FindControl("lblID");
+        Label lblEmpID = (Label)e.Item.FindControl("lblEmpID");
 
         if (e.CommandName == "edit")
         {
-            Label lblActive = (Label)e.Item.FindControl("lblActive");
-            Label lblEmpID = (Label)e.Item.FindControl("lblEmpID");
+            //Label lblActive = (Label)e.Item.FindControl("lblActive");
+            //Label lblEmpID = (Label)e.Item.FindControl("lblEmpID");
             Label lblFName = (Label)e.Item.FindControl("lblFName");
             Label lblMName = (Label)e.Item.FindControl("lblMName");
             Label lblLName = (Label)e.Item.FindControl("lblLName");
             Label lblEmail = (Label)e.Item.FindControl("lblEmail");
+            Label lblPaybasis = (Label)e.Item.FindControl("lblPaybasis");
+            //Label lblSuffix = (Label)e.Item.FindControl("lblSuffix");
 
-            lblEID.Text = lblID.Text;
+
+            //lblEID.Text = lblID.Text;
             txtEmpId.Text = lblEmpID.Text;
             txtFName.Text = lblFName.Text;
             txtMName.Text = lblMName.Text;
             txtLName.Text = lblLName.Text;
             txtEmail.Text = lblEmail.Text;
-            if (lblActive.Text == "1")
-                chkActive.Checked = true;
-            else
-                chkActive.Checked = false;
+            txtPayBasis.Text = lblPaybasis.Text;
+            //txtSuffix.Text = lblSuffix.Text;
+            //if (lblActive.Text == "1")
+            //    chkActive.Checked = true;
+            //else
+            //    chkActive.Checked = false;
 
             HidePanel();
             pnlAdd.Visible = true;
@@ -72,7 +83,8 @@ public partial class _Default : PagingIterface
         else
         {
             Employee _employee = new Employee();
-            _employee.ID = Convert.ToInt32(lblID.Text);
+            //_employee.ID = Convert.ToInt32(lblID.Text);
+            _employee.EmployeeID = lblEmpID.Text;
 
             if (_employee.Remove() > 0)
             {
@@ -146,25 +158,51 @@ public partial class _Default : PagingIterface
     {
         ValidateEntry();
         Employee _employee = new Employee();
-        _employee.ID = Convert.ToInt32(lblEID.Text);
+        //_employee.ID = Convert.ToInt32(lblEID.Text);
         _employee.EmployeeID = txtEmpId.Text;
         _employee.FirstName = txtFName.Text;
         _employee.MiddleName = txtMName.Text;
         _employee.LastName = txtLName.Text;
         _employee.Email = txtEmail.Text;
-        if (chkActive.Checked)
-            _employee.Active = 1;
-        else
-            _employee.Active = 0;
+        //_employee.Suffix = txtSuffix.Text;
+        _employee.PayBasis = txtPayBasis.Text;
+        //if (chkActive.Checked)
+        //    _employee.Active = 1;
+        //else
+        //    _employee.Active = 0;
+
+        //if (_employee.Exist())
+        //{
+        //    lblErr.Text = "Employee ID already exist.";
+        //    lblErr.Visible = true;
+        //}
+        //else
+        //{
+        //if (lblEID.Text == "0")
+        //{
 
         if (_employee.Exist())
         {
-            lblErr.Text = "Employee ID already exist.";
-            lblErr.Visible = true;
+            if (_employee.Update() > 0)
+            {
+                HidePanel();
+                txtSearch.Text = string.Empty;
+                PageNo = 1;
+                Paginate();
+                pnlList.Visible = true;
+                Response.Write("<script type=\"text/javascript\">alert('Success.');" + "window.close();</script>");
+                return;
+            }
+            else
+            {
+                lblErr.Text = "Updating employee failed.";
+                lblErr.Visible = true;
+            }
         }
+
         else
         {
-            if (lblEID.Text == "0")
+            if (txtEmpId.Text != null)
             {
                 if (_employee.Add() > 0)
                 {
@@ -182,25 +220,24 @@ public partial class _Default : PagingIterface
                     lblErr.Visible = true;
                 }
             }
-            else
-            {
-                if (_employee.Update() > 0)
-                {
-                    HidePanel();
-                    txtSearch.Text = string.Empty;
-                    PageNo = 1;
-                    Paginate();
-                    pnlList.Visible = true;
-                    Response.Write("<script type=\"text/javascript\">alert('Success.');" + "window.close();</script>");
-                    return;
-                }
-                else
-                {
-                    lblErr.Text = "Updating employee failed.";
-                    lblErr.Visible = true;
-                }
-            }
+            //}
+            //if (_employee.Update() > 0)
+            //{
+            //    HidePanel();
+            //    txtSearch.Text = string.Empty;
+            //    PageNo = 1;
+            //    Paginate();
+            //    pnlList.Visible = true;
+            //    Response.Write("<script type=\"text/javascript\">alert('Success.');" + "window.close();</script>");
+            //    return;
+            //}
+            //else
+            //{
+            //    lblErr.Text = "Updating employee failed.";
+            //    lblErr.Visible = true;
+            //}
         }
+        //}
     }
     void ClearEntry()
     {
@@ -209,7 +246,9 @@ public partial class _Default : PagingIterface
         txtMName.Text = string.Empty;
         txtLName.Text = string.Empty;
         txtEmail.Text = string.Empty;
-        chkActive.Checked = true;
+        //txtSuffix.Text = string.Empty;
+        txtPayBasis.Text = string.Empty;
+        //chkActive.Checked = true;
     }
     protected void btnNew_Click(object sender, EventArgs e)
     {
@@ -229,7 +268,11 @@ public partial class _Default : PagingIterface
         //HidePanel();
         //pnlUpload.Visible = true;
         //MasterFileSource();
-        Response.Redirect("~/MasterFile.aspx");
+
+        //Response.Redirect("~/MasterFile.aspx");
+
+        Response.Redirect("~/MasterFile.aspx", false);        //write redirect
+        Context.ApplicationInstance.CompleteRequest();
     }
     protected void rptrMaster_ItemCommand(object source, RepeaterCommandEventArgs e)
     {
@@ -355,7 +398,12 @@ public partial class _Default : PagingIterface
     }
     protected void lnkEmployees_Click(object sender, EventArgs e)
     {
-        Response.Redirect("~/Employees.aspx");
+        //Response.Redirect("~/Employees.aspx");
+
+        Response.Redirect("~/Employees.aspx", false);        //write redirect
+        Context.ApplicationInstance.CompleteRequest();
+
+
     }
     protected void btnBackUpload_Click(object sender, EventArgs e)
     {

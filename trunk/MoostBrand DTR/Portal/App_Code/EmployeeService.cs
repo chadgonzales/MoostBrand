@@ -25,6 +25,7 @@ public class EmployeeService : System.Web.Services.WebService {
     {
         Employee _employee = new Employee();
 
+        //_employee.ID = Convert.ToInt32(row["empId"]);
         _employee.EmployeeID = Convert.ToString(row["EMPID"]);
         _employee.FirstName = Convert.ToString(row["FName"]);
         _employee.MiddleName = Convert.ToString(row["MName"]);
