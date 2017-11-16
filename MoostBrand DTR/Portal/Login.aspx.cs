@@ -41,7 +41,10 @@ public partial class Login : System.Web.UI.Page
             Session["upw"] = _dtUser.Rows[0]["password"].ToString();
             Session["uname"] = _dtUser.Rows[0]["username"].ToString();
             Session["utype"] = _dtUser.Rows[0]["type"].ToString();
-            Response.Redirect("~/Dashboard.aspx");
+            //Response.Redirect("~/Dashboard.aspx");
+
+            Response.Redirect("~/Dashboard.aspx", false);        //write redirect
+            Context.ApplicationInstance.CompleteRequest();
         }
         else
         {

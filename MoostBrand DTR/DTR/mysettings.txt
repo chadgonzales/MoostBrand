@@ -1,1 +1,1 @@
-Data Source=162.252.86.229;Initial Catalog=JENTECDTR;User ID=sa;Password=r0ck5taR@p!c@550
+Data Source=216.55.182.238;Initial Catalog=MoostBrandDTR;User ID=sa;Password=5d5r0ck5taR

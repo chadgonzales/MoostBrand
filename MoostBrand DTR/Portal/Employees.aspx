@@ -90,7 +90,7 @@
                         <div class="col-md-6">
                             <div class="btn-holder">
                                 <asp:Button ID="btnNew" runat="server" Text="ADD NEW EMPLOYEES" OnClick="btnNew_Click" class="btn btn-blue" />
-                                <asp:Button ID="btnUpload" runat="server" Text="UPLOAD MASTERFILE" OnClick="btnUpload_Click" class="btn btn-blue" />
+                                <%--<asp:Button ID="btnUpload" runat="server" Text="UPLOAD MASTERFILE" OnClick="btnUpload_Click" class="btn btn-blue" />--%>
                             </div>
                         </div>
 
@@ -143,6 +143,8 @@
                             <th>FIRST NAME</th>
                             <th>MIDDLE NAME</th>
                             <th>LAST NAME</th>
+                            <%--<th>Suffix</th>--%>
+                            <th>PayBasis</th>
                             <th>EMAIL</th>
                             <th>&nbsp;</th>
                         </tr>
@@ -151,20 +153,24 @@
                             <ItemTemplate>
                                 <tr>
                                     <td>
-                                        <asp:Label ID="lblID" runat="server" Text='<%# Bind("id") %>' Visible="false"></asp:Label>
-                                        <asp:Label ID="lblActive" runat="server" Text='<%# Bind("active") %>' Visible="false"></asp:Label>
-                                        <asp:Label ID="lblEmpID" runat="server" Text='<%# Bind("empId") %>'></asp:Label></td>
+                                        <%--<asp:Label ID="lblID" runat="server" Text='<%# Bind("id") %>' Visible="false"></asp:Label>--%>
+<%--                                        <asp:Label ID="lblActive" runat="server" Text='<%# Bind("active") %>' Visible="false"></asp:Label>--%>
+                                        <asp:Label ID="lblEmpID" runat="server" Text='<%# Bind("EMPID") %>'></asp:Label></td>
                                     <td>
-                                        <asp:Label ID="lblFName" runat="server" Text='<%# Bind("firstName") %>'></asp:Label></td>
+                                        <asp:Label ID="lblFName" runat="server" Text='<%# Bind("FName") %>'></asp:Label></td>
                                     <td>
-                                        <asp:Label ID="lblMName" runat="server" Text='<%# Bind("middleName") %>'></asp:Label></td>
+                                        <asp:Label ID="lblMName" runat="server" Text='<%# Bind("MName") %>'></asp:Label></td>
                                     <td>
-                                        <asp:Label ID="lblLName" runat="server" Text='<%# Bind("lastName") %>'></asp:Label></td>
+                                        <asp:Label ID="lblLName" runat="server" Text='<%# Bind("LName") %>'></asp:Label></td>
+                         <%--           <td>
+                                        <asp:Label ID="lblSuffix" runat="server" Text='<%# Bind("Suffix") %>'></asp:Label></td>--%>
                                     <td>
-                                        <asp:Label ID="lblEmail" runat="server" Text='<%# Bind("email") %>'></asp:Label></td>
+                                        <asp:Label ID="lblPaybasis" runat="server" Text='<%# Bind("Paybasis") %>'></asp:Label></td>
+                                    <td>
+                                        <asp:Label ID="lblEmail" runat="server" Text='<%# Bind("Email") %>'></asp:Label></td>
                                     <td>
                                         <asp:Button ID="btnEdit" runat="server" CommandName="edit" Text="UPDATE" class="btn btn-blue btn-xs" />
-                                        <asp:Button ID="btnDelete" runat="server" CommandName="delete" Text="REMOVE" OnClientClick="return confirm('Are you sure you want to remove this employee?');"   class="btn btn-blue btn-xs"/>
+                                        <%--<asp:Button ID="btnDelete" runat="server" CommandName="delete" Text="REMOVE" OnClientClick="return confirm('Are you sure you want to remove this employee?');"   class="btn btn-blue btn-xs"/>--%>
                                     </td>
                                 </tr>
                             </ItemTemplate>
@@ -245,15 +251,25 @@
                                 <asp:TextBox ID="txtLName" runat="server" class="form-control"></asp:TextBox>
                             </div>
 
+<%--                            <div class="form-group">
+                                <div class="form-label">Suffix</div>
+                                <asp:TextBox ID="txtSuffix" runat="server" class="form-control"></asp:TextBox>
+                            </div>--%>
+
+                            <div class="form-group">
+                                <div class="form-label">PayBasis</div>
+                                <asp:TextBox ID="txtPayBasis" runat="server" class="form-control"></asp:TextBox>
+                            </div>
+
                             <div class="form-group">
                                 <div class="form-label">Email</div>
                                 <asp:TextBox ID="txtEmail" runat="server" class="form-control"></asp:TextBox>
                             </div>
 
-                            <div class="form-group">
+<%--                            <div class="form-group">
                                 <div class="form-label">Active</div>
                                 <asp:CheckBox ID="chkActive" runat="server" class="" />
-                            </div>
+                            </div>--%>
 
 
                             <div class="form-group">
@@ -315,7 +331,7 @@
             <div class="footer-bg">
                 <div class="container">
                     <div class="left">
-                        Copyright &copy; 2015 Jentec - Time and Attendance Management System
+                        Copyright &copy; 2017 MoostBrand - Time and Attendance Management System
                     </div>
 
                 </div>
