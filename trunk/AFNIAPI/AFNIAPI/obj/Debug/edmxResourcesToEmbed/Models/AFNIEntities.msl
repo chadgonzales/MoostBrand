@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AfniDTRModelStoreContainer" CdmEntityContainer="AfniDTREntities">
+    <EntitySetMapping Name="Logs">
+      <EntityTypeMapping TypeName="AfniDTRModel.Log">
+        <MappingFragment StoreEntitySet="Logs">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="timeInOut" ColumnName="timeInOut" />
+          <ScalarProperty Name="logType" ColumnName="logType" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
