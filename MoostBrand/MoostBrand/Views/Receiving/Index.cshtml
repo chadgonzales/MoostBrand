@@ -133,7 +133,8 @@
 
         var frm = $("#action_form").serialize();
 
-        $.post(url, frm, ReloadFunction);
+        $.post(url, frm);
+        location.reload();
     }
 
     function Deny() {
@@ -143,7 +144,8 @@
 
         var frm = $("#action_form").serialize();
 
-        $.post(url, frm, ReloadFunction);
+        $.post(url, frm);
+        location.reload();
     }
 
 
@@ -154,10 +156,13 @@
 
         var frm = $("#action_form").serialize();
 
-        $.post(url, frm, ReloadFunction);
+        $.post(url, frm);
+        location.reload();
 
-        function ReloadFunction() {
-            location.reload();
-        }
+       
+    }
+
+    function ReloadFunction() {
+        location.reload();
     }
 </script>
