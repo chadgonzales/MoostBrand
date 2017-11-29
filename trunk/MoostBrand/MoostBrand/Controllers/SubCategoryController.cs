@@ -41,7 +41,7 @@ namespace MoostBrand.Controllers
             {
                 sub = sub.Where(c => c.Code.Contains(searchString)
                                        || c.Description.Contains(searchString)
-                                       || c.Category.Description.Contains(searchString));
+                                       /*|| c.Category.Description.Contains(searchString)*/);
             }
 
             switch (sortOrder)
@@ -52,9 +52,9 @@ namespace MoostBrand.Controllers
                 case "desc":
                     sub = sub.OrderByDescending(c => c.Description);
                     break;
-                case "catdesc":
-                    sub = sub.OrderByDescending(c => c.Category.Description);
-                    break;
+                //case "catdesc":
+                //    sub = sub.OrderByDescending(c => c.Category.Description);
+                //    break;
                 default:
                     sub = sub.OrderBy(c => c.ID);
                     break;

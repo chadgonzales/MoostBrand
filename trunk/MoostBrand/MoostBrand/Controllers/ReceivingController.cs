@@ -267,7 +267,7 @@ namespace MoostBrand.Controllers
             }
            else
             {
-                 qty = entity.StockTransferDetails.Where(model => model.RequisitionDetailID == reqID).Sum(p=>p.Quantity.Value);
+                 qty = entity.StockTransferDetails.Where(model => model.RequisitionDetailID == reqID && model.Quantity > 0).Sum(p=>p.Quantity.Value);
             }
             //var com = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 4 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
             //var pur = entity.RequisitionDetails.Where(model => model.Requisition.RequisitionTypeID == 1 && model.AprovalStatusID == 2 && model.ItemID == itmID.ItemID);
@@ -879,10 +879,14 @@ namespace MoostBrand.Controllers
                             foreach (var _inv in inv)
                             {
                                 var i = entity.Inventories.Find(_inv.ID);
-                                i.Committed = invRepo.getCommitedReceiving(loc, _inv.ItemCode);
-                                i.Ordered = invRepo.getPurchaseOrderReceiving(loc, _inv.ItemCode);
+                              //  i.Committed = invRepo.getCommitedReceiving(loc, _inv.ItemCode);
                                 int _item = entity.Items.FirstOrDefault(t => t.Code == _inv.ItemCode).ID;
-                                i.InStock = invRepo.getInstockedReceiving(receving.RequisitionID, _inv.ItemCode) + receving.ReceivingDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _item && p.ReceivingID == id).Quantity;
+                                int _qty = receving.ReceivingDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _item && p.ReceivingID == id).Quantity.Value;
+                                if (receving.Requisition.ReqTypeID == 1)
+                                {
+                                    i.Ordered = i.Ordered - _qty; //invRepo.getPurchaseOrderReceiving(loc, _inv.ItemCode);  
+                                }         
+                                i.InStock = invRepo.getInstockedReceiving(receving.RequisitionID, _inv.ItemCode) + _qty;
                                 i.Available = (i.InStock + i.Ordered) - i.Committed;
 
                                 entity.Entry(i).State = EntityState.Modified;
@@ -892,7 +896,7 @@ namespace MoostBrand.Controllers
                                 StockLedger _stockledger = new StockLedger();
                                 _stockledger.InventoryID = _inv.ID;
                                 _stockledger.Type = "Stock In";
-                                _stockledger.InQty = receving.ReceivingDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _item && p.ReceivingID == id).Quantity;
+                                _stockledger.InQty = _qty;
                                 _stockledger.ReferenceNo = receving.ReceivingID;
                                 _stockledger.BeginningBalance = i.InStock - _stockledger.InQty;
                                 _stockledger.RemainingBalance = i.InStock;

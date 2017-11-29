@@ -32,12 +32,13 @@ namespace MoostBrand.DAL
         public int getCommited(string code, int location)
         {
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
-            var r = entity.Requisitions.Where(p => p.ApprovalStatus == 2).Select(p => p.ID).ToList();
+            var r = entity.StockTransfers.Where(p => p.ApprovedStatus == 2).Select(p => p.ID).ToList();
             var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
             int c = 0;
-            var com = entity.RequisitionDetails.Where(model => model.ItemID == item && model.AprovalStatusID == 2 && type.Contains(model.Requisition.RequisitionTypeID.Value) 
-                                                                                    && r.Contains(model.RequisitionID)
-                                                                                    && model.Requisition.LocationID == location);
+            var com = entity.StockTransferDetails.Where(model => model.RequisitionDetail.ItemID == item && model.AprovalStatusID == 2 && type.Contains(model.StockTransfer.Requisition.RequisitionTypeID.Value) 
+                                                                                    && r.Contains(model.StockTransferID.Value)
+                                                                                    && model.StockTransfer.Requisition.LocationID == location
+                                                                                    && model.Quantity > 0);
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -52,7 +53,7 @@ namespace MoostBrand.DAL
             return _committed;
         }
 
-        public int getCommited_ForceClose(int id)
+        public int getCommited_ForceClose(int id, int itemid)
         {
 
             var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
@@ -60,7 +61,8 @@ namespace MoostBrand.DAL
             var com = entity.RequisitionDetails.Where(model =>  type.Contains(model.Requisition.RequisitionTypeID.Value)
                                                                                     && model.RequisitionID == id
                                                                                     && model.AprovalStatusID == 2
-                                                                                    && model.Quantity > 0);
+                                                                                    && model.Quantity > 0
+                                                                                    && model.ItemID == itemid);
             var committed = com.Sum(x => x.Quantity);
             c = Convert.ToInt32(committed);
             if (committed == null)
@@ -116,7 +118,7 @@ namespace MoostBrand.DAL
             return po;
         }
 
-        public int getPurchaseOrder_ForceClose(int id)
+        public int getPurchaseOrder_ForceClose(int id, int itemid)
         {
             
             var requi = entity.Requisitions.Where(p => p.ID == id).ToList();
@@ -128,7 +130,8 @@ namespace MoostBrand.DAL
                 lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 
                                                                 && x.Quantity  > 0
                                                                 && x.AprovalStatusID == 2
-                                                                && x.RequisitionID == id).ToList();
+                                                                && x.RequisitionID == id
+                                                                && x.ItemID == itemid).ToList();
 
                 po = lstReqDetail.Sum(x => x.Quantity) ?? 0;
             }
@@ -138,11 +141,12 @@ namespace MoostBrand.DAL
         {
 
             int item = entity.Items.FirstOrDefault(i => i.Code == code).ID;
-            var requi = entity.RequisitionDetails.Where(x => x.AprovalStatusID == 2 && x.Requisition.ReqTypeID == 1
-                                                                                    && x.Requisition.RequisitionTypeID == 1
-                                                                                    && x.Requisition.LocationID == location
-                                                                                    && x.Requisition.Status == false
-                                                                                    && x.ItemID == item);
+            var requi = entity.ReceivingDetails.Where(x => x.AprovalStatusID == 2 && x.Receiving.Requisition.ReqTypeID == 1
+                                                                                    && x.Receiving.Requisition.RequisitionTypeID == 1
+                                                                                    && x.Receiving.Requisition.LocationID == location
+                                                                                    && x.Receiving.Requisition.Status == false
+                                                                                    && x.RequisitionDetail.ItemID == item
+                                                                                    && x.Quantity > 0);
             int po = 0;
             var ordered = requi.Sum(x => x.Quantity);
             po = Convert.ToInt32(ordered);

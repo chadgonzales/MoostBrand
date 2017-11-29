@@ -127,6 +127,8 @@
 
 <script type="text/javascript">
     function Approve() {
+
+        $('#approve_button').prop('disabled', false);
         var prID = arguments[0];
 
         var url = '@Url.Action("Approve", "StockTransfer")/' + prID;
