@@ -123,7 +123,7 @@ namespace MoostBrand.Controllers
                                         InQty = i.InStock != null ? i.InStock :0,
                                         OutQty = lstInventory1.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode) != null ? lstInventory1.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode).OutQty : 0, //invRepo.getTotalStockTranfer(i.ItemCode,i.LocationCode.Value, dtDateFrom, dtDateTo),
                                         AdjustedQty = lstInventory2.FirstOrDefault(p=>p.ItemId.ItemID == i.ID) != null ? lstInventory2.FirstOrDefault(p => p.ItemId.ItemID == i.ID).AdjustedQty : 0,//invRepo.getTotalVariance(i.ID,i.LocationCode.Value, dtDateFrom, dtDateTo),
-                                        CommittedQty = i.Committed != null ? i.Committed :0,
+                                        CommittedQty = i.Committed != null || i.Committed > 0 ? i.Committed :0,
                                         TotalOrder = i.Ordered != null ? i.Ordered :0,                                                                                       
                                         ReservationName = lstInventory3.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode) != null ? lstInventory3.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode).ReservationName : " ",
                                         QOH =0,

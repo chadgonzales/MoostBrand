@@ -692,10 +692,11 @@ namespace MoostBrand.Controllers
                             foreach (var _inv in inv)
                             {
                                 int _itemid = entity.Items.FirstOrDefault(p => p.Code == _inv.ItemCode).ID;
+                                int _qty = st.StockTransferDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _itemid && p.StockTransferID == id).Quantity.Value;
                                 var i = entity.Inventories.Find(_inv.ID);
-                                i.Committed = invRepo.getCommited(_inv.ItemCode, st.LocationID);
-                                i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, st.LocationID);
-                                i.InStock = invRepo.getInstocked(st.RequisitionID.Value, _inv.ItemCode) - stRepo.getStockTranfer(_itemid,id);
+                                i.Committed = i.Committed - _qty;
+                                //  i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, st.LocationID);
+                                i.InStock = invRepo.getInstocked(st.RequisitionID.Value, _inv.ItemCode) - _qty;//stRepo.getStockTranfer(_itemid,id);
                                 i.Available = (i.InStock + i.Ordered) - i.Committed;
 
                                 entity.Entry(i).State = EntityState.Modified;
@@ -704,7 +705,7 @@ namespace MoostBrand.Controllers
                                 StockLedger _stockledger = new StockLedger();
                                 _stockledger.InventoryID = _inv.ID;
                                 _stockledger.Type = "Stock Out";
-                                _stockledger.OutQty = stRepo.getStockTranfer(_itemid, id);
+                                _stockledger.OutQty = _qty;
                                 _stockledger.ReferenceNo = st.TransferID;
                                 _stockledger.BeginningBalance = _inv.InStock + _stockledger.OutQty;
                                 _stockledger.RemainingBalance = _inv.InStock;

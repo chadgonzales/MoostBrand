@@ -787,8 +787,16 @@ namespace MoostBrand.Controllers
                             foreach (var _inv in inv)
                             {
                                 var i = entity.Inventories.Find(_inv.ID);
-                                i.Committed = invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
-                                i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _inv.ItemCode && p.RequisitionID == id).Quantity.Value;
+                                if (pr.ReqTypeID == 2)
+                                {
+                                    i.Committed = i.Committed + _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                }
+                                else
+                                {
+                                    i.Ordered = i.Ordered + _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                }
+
                                 i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
                                 i.Available = (i.InStock + i.Ordered) - i.Committed;
 
@@ -927,8 +935,8 @@ namespace MoostBrand.Controllers
                     foreach (var _inv in inv)
                     {
                         var i = entity.Inventories.Find(_inv.ID);
-                        i.Committed = i.Committed - invRepo.getCommited_ForceClose(id);
-                        i.Ordered = i.Ordered - invRepo.getPurchaseOrder_ForceClose(id);
+                        i.Committed = i.Committed - invRepo.getCommited_ForceClose(id,_inv.ItemID.Value);
+                        i.Ordered = i.Ordered - invRepo.getPurchaseOrder_ForceClose(id, _inv.ItemID.Value);
                         i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
                         i.Available = (i.InStock + i.Ordered) - i.Committed;
 
