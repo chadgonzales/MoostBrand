@@ -19,10 +19,18 @@
 
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label class="control-label col-md-4">Stock Transfer #</label>
+                    <label class="control-label col-md-4">Transfer ID</label>
                     <div class="col-md-8">
                         <label class="custom-label">
                             @Html.DisplayFor(model => model.TransferID)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Stock Transfer Type</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.StockTransferType.Name)
                         </label>
                     </div>
                 </div>
@@ -46,7 +54,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-4">Date</label>
+                    <label class="control-label col-md-4">ST Date</label>
                     <div class="col-md-8">
                         <label class="custom-label">
                             @Html.DisplayFor(model => model.STDAte)
@@ -62,7 +70,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-4">Time End</label>
+                    <label class="control-label col-md-4">Time Finish</label>
                     <div class="col-md-8">
                         <label class="custom-label">
                             @Html.DisplayFor(model => model.TimeFinish)
@@ -78,7 +86,15 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-4">Helper</label>
+                    <label class="control-label col-md-4">Plate No</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.PlateNo)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Helpers</label>
                     @foreach (var item in Model.Helpers)
                     {
                         <div class="col-md-8">
@@ -147,7 +163,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-4">Operator</label>
+                    <label class="control-label col-md-4">Operators</label>
                     @foreach (var item in Model.Operators)
             {
                         <div class="col-md-8">
