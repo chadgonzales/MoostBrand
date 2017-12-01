@@ -56,9 +56,9 @@ namespace MoostBrand.DAL
         public int getCommited_ForceClose(int id, int itemid)
         {
 
-            var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
+            //var type = new int[] { 2, 3, 4 }; // SABI ni maam carlyn iadd daw ang Branch and Warehouse
             int c = 0;
-            var com = entity.RequisitionDetails.Where(model =>  type.Contains(model.Requisition.RequisitionTypeID.Value)
+            var com = entity.RequisitionDetails.Where(model =>  model.Requisition.ReqTypeID == 2
                                                                                     && model.RequisitionID == id
                                                                                     && model.AprovalStatusID == 2
                                                                                     && model.Quantity > 0
@@ -127,7 +127,7 @@ namespace MoostBrand.DAL
             {
                 var lstReqDetail = new List<RequisitionDetail>();
 
-                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 
+                lstReqDetail = entity.RequisitionDetails.Where(x => x.Requisition.ReqTypeID == 1 
                                                                 && x.Quantity  > 0
                                                                 && x.AprovalStatusID == 2
                                                                 && x.RequisitionID == id

@@ -135,11 +135,14 @@
 
         var frm = $("#action_form").serialize();
 
-        $.post(url, frm, ReloadFunction);
+        $.post(url, frm);
+        location.reload();
 
-        function ReloadFunction() {
-            location.reload();
-        }
+
+    }
+
+    function ReloadFunction() {
+        location.reload();
     }
 
     function Deny() {
@@ -149,11 +152,8 @@
 
         var frm = $("#action_form").serialize();
 
-        $.post(url, frm, ReloadFunction);
-
-        function ReloadFunction() {
-            location.reload();
-        }
+        $.post(url, frm);
+        location.reload();
     }
 
     function ForceClosed() {
@@ -163,10 +163,7 @@
 
         var frm = $("#action_form").serialize();
 
-        $.post(url, frm, ReloadFunction);
-
-        function ReloadFunction() {
-            location.reload();
-        }
+        $.post(url, frm);
+        location.reload();
     }
 </script>
