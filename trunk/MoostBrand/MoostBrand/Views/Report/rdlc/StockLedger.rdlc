@@ -9,10 +9,13 @@
               <Width>0.8125in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.12279in</Width>
+              <Width>0.78946in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.26705in</Width>
+              <Width>1.23677in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>0.57292in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.30557in</Width>
@@ -24,13 +27,13 @@
               <Width>0.57292in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.87027in</Width>
+              <Width>0.66096in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.00696in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.37973in</Width>
+              <Width>1.37972in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.92709in</Width>
@@ -138,14 +141,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="RemainingBalance">
+                    <Textbox Name="Date">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!RemainingBalance.Value</Value>
+                              <Value>=Fields!Date.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                               </Style>
@@ -154,7 +157,39 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>RemainingBalance</rd:DefaultName>
+                      <rd:DefaultName>Date</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="ReferenceNo">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!ReferenceNo.Value</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>ReferenceNo</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -376,6 +411,7 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
+            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
@@ -405,7 +441,7 @@
     <Height>2.26042in</Height>
     <Style />
   </Body>
-  <Width>9.79042in</Width>
+  <Width>10.04044in</Width>
   <Page>
     <PageHeader>
       <Height>1.97792in</Height>
@@ -665,7 +701,7 @@
                       </Style>
                     </TextRun>
                     <TextRun>
-                      <Value>Type                Item Code               Item Description             Reference Number        In Qty      Out Qty      Variance     Beginning Balance  Remaining Balance       Location      </Value>
+                      <Value>Type                Item Code       Item Description           Date           Reference Number        In Qty      Out Qty      Variance     Beginning Balance  Remaining Balance        Location      </Value>
                       <Style>
                         <FontSize>8pt</FontSize>
                         <FontWeight>Bold</FontWeight>

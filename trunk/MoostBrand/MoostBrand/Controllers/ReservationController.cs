@@ -690,21 +690,31 @@ namespace MoostBrand.Controllers
                             foreach (var _inv in inv)
                             {
                                 var i = entity.Inventories.Find(_inv.ID);
-                                i.Committed = invRepo.getCommited(_inv.ItemCode, pr.LocationID.Value);
-                                i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _inv.ItemCode && p.RequisitionID == id).Quantity.Value;
+                                if (pr.ReqTypeID == 2)
+                                {
+                                    i.Committed = i.Committed + _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                }
+                                else
+                                {
+                                    i.Ordered = i.Ordered + _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                }
+
                                 i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
                                 i.Available = (i.InStock + i.Ordered) - i.Committed;
 
                                 entity.Entry(i).State = EntityState.Modified;
                                 entity.SaveChanges();
-                            }
 
+                            }
                         }
 
                         var invitems = entity.Items.Where(i => rd.Contains(i.ID)).ToList();
 
                         foreach (var _item in invitems)
                         {
+                            int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _item.Code && p.RequisitionID == id).Quantity.Value;
+
                             var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == pr.LocationID).ToList();
                             if (inv1.Count == 0)
                             {
@@ -717,8 +727,16 @@ namespace MoostBrand.Controllers
                                 inventory.InventoryUoM = ""; //_item.UnitOfMeasurement.Description
                                 inventory.InventoryStatus = 2;
                                 inventory.LocationCode = pr.LocationID;
-                                inventory.Committed = invRepo.getCommitedReceiving(pr.LocationID.Value, _item.Code);
-                                inventory.Ordered = invRepo.getPurchaseOrderReceiving(pr.LocationID.Value, _item.Code);
+                                if (pr.ReqTypeID == 2)
+                                {
+                                    inventory.Committed = _qty;
+                                    inventory.Ordered = 0;    //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                }
+                                else
+                                {
+                                    inventory.Ordered = _qty;
+                                    inventory.Committed = 0;   //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                }
                                 inventory.InStock = 0;
                                 inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
 
