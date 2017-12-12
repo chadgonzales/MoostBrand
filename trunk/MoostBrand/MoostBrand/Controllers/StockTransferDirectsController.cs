@@ -120,6 +120,7 @@ namespace MoostBrand.Controllers
 
             ViewBag.ItemID = new SelectList(items.Where(p=>p.ID == ""), "ID", "Description");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description");
+            ViewBag.DestinationID = new SelectList(loc, "ID", "Description");
             ViewBag.ReceivedBy = empList;
             ViewBag.RequestedBy = empList;
             ViewBag.ApprovedBy = empList;
@@ -181,15 +182,24 @@ namespace MoostBrand.Controllers
                     }
                 }
                 #endregion
+                if (stockTransferDirect.LocationID == stockTransferDirect.DestinationID)
+                {
+                    ModelState.AddModelError("", "Source location should not be the same with the destination.");
+                }
+                else
+                {
 
-                //stockTransferDirect.ItemName = itemname;
-                stockTransferDirect.ApprovedStatus = 1;
-                stockTransferDirect.IsSync = false;
-                stockTransferDirect.StockTransferTypeID = 4;
+                    //stockTransferDirect.ItemName = itemname;
+                    stockTransferDirect.ApprovedStatus = 1;
+                    stockTransferDirect.IsSync = false;
+                    stockTransferDirect.StockTransferTypeID = 4;
 
-                entity.StockTransfers.Add(stockTransferDirect);
-                entity.SaveChanges();
-                return RedirectToAction("Index");
+                    entity.StockTransfers.Add(stockTransferDirect);
+                    entity.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            
+
             }
 
             #region DROPDOWNS
@@ -219,6 +229,7 @@ namespace MoostBrand.Controllers
 
             ViewBag.ItemID = new SelectList(items, "ID", "Description");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stockTransferDirect.LocationID);
+            ViewBag.DestinationID = new SelectList(loc, "ID", "Description", stockTransferDirect.DestinationID);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ReceivedBy);
             ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.RequestedBy);
             ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ApprovedBy);
@@ -339,6 +350,7 @@ namespace MoostBrand.Controllers
 
                 //ViewBag.ItemID = new SelectList(items, "ID", "Description", stockTransferDirect.ItemID);
                 ViewBag.LocationID = new SelectList(loc, "ID", "Description", stockTransferDirect.LocationID);
+                ViewBag.DestinationID = new SelectList(loc.Where(p=>p.ID != stockTransferDirect.LocationID), "ID", "Description", stockTransferDirect.DestinationID);
                 ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ReceivedBy);
                 ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.RequestedBy);
                 ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ApprovedBy);
@@ -470,6 +482,7 @@ namespace MoostBrand.Controllers
 
             //ViewBag.ItemID = new SelectList(items, "ID", "Description", stockTransferDirect.ItemID);
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stockTransferDirect.LocationID);
+            ViewBag.DestinationID = new SelectList(loc.Where(p=>p.ID != stockTransferDirect.LocationID), "ID", "Description", stockTransferDirect.DestinationID);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ReceivedBy);
             ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.RequestedBy);
             ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stockTransferDirect.ApprovedBy);

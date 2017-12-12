@@ -84,8 +84,12 @@
 
             <div class="form-group">
                 @*@Html.LabelFor(model => model.RequisitionID, htmlAttributes: new { @class = "control-label col-md-2" })*@
-                <label class="control-label col-md-2">
+                <label class="control-label col-md-2 _requisition">
                     Requisition ID
+                    <span class="symbol required"></span>
+                </label>
+                <label class="control-label col-md-2 directstr">
+                    STR #
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
@@ -131,7 +135,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group _str">
                     <label class="control-label col-md-2">
                         Str #
                         <span class="symbol required"></span>
@@ -501,7 +505,7 @@
         else if ($('#RequisitionID').val() == '') {
             $('#RequisitionID').css({ "border": "1px solid red" })
             _passed = '4';
-            alert(_passed);
+            //alert(_passed);
         }
         //else if ($('#RefNumber').val() == '') {
         //    $('#RefNumber').css({ "border": "1px solid red" })
@@ -518,18 +522,18 @@
             _passed = '7';
 
         }
-        else if ($('#Destination').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
+        else if ($('#Destination').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 6 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
             $('#Destination').css({ "border": "1px solid red" })
             _passed = '8';
 
         }
-        else if ($('#EncodedBy').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
+        else if ($('#EncodedBy').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 6 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
             $('#EncodedBy').css({ "border": "1px solid red" })
             _passed = '9';
 
         }
 
-        else if ($('#CheckedBy').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
+        else if ($('#CheckedBy').val() == '' && ($("#ReceivingTypeID").val() == 2 || $("#ReceivingTypeID").val() == 6 || $("#ReceivingTypeID").val() == 3 || $("#ReceivingTypeID").val() == 5)) {
             $('#CheckedBy').css({ "border": "1px solid red" })
             _passed = '11';
 
@@ -733,6 +737,8 @@
     }
 
     function GetRequisition(id) {
+        var type =  $("#ReceivingTypeID").val();
+
         $.get("@Url.Action("GetRequisition", "Receiving")/" + id, null, function (data) {
             //$("#RequisitionID").val(data.ID);
             $("#RefNumber").val(data.RefNumber);
@@ -762,7 +768,7 @@
         if (val == 1) {
             $("#PONumber").val('');
         }
-        else if (val == 2 || val == 3) {
+        else if (val == 2 || val == 3 || val == 6) {
             $('.pnumber').hide();
             $('.vcontact').hide();
         }
@@ -774,7 +780,6 @@
 
     });
 
-
     function HideOrShow() {
         var val = $("#ReceivingTypeID").val();
         GetStockTransfers(val);
@@ -784,7 +789,9 @@
             $("#po").show();
             $("#cr").hide();
             $("#pos").hide();
+            $('.directstr').hide();
             $('.invoice').show();
+            $('._requisition').show();
         } else if (val == 2) { //BR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RRBR", null, BindData);
             $("#_PODate").hide();
@@ -792,6 +799,8 @@
             $("#po").hide();
             $("#cr").hide();
             $('.invoice').hide();
+            $('.directstr').hide();
+            $('._requisition').show();
         } else if (val == 3) { //WR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RRWR", null, BindData);
             $("#_PODate").hide();
@@ -800,6 +809,22 @@
             $("#cr").hide();
             $("#loc").show();
             $('.invoice').hide();
+            $('.directstr').hide();
+            $('._requisition').show();
+
+        }
+        else if (val == 6) { //DIRECT
+            $.get("@Url.Action("GenerateRefNumber", "Receiving")/RRDR", null, BindData);
+            $("#_PODate").hide();
+            $("#br").show();
+            $("#po").hide();
+            $("#cr").hide();
+            $('.invoice').hide();
+            $('._requisition').hide();
+            $('._str').hide();
+            $('.directstr').show();
+            
+            
         } else if (val == 5) { //OR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RROR", null, BindData);
             $("#_PODate").hide();
@@ -807,6 +832,8 @@
             $("#po").hide();
             $("#cr").hide();
             $('.invoice').hide();
+            $('.directstr').hide();
+            $('._requisition').show();
         } else if (val == 4) { //CR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RRCR", null, BindData);
             $("#_PODate").hide();
@@ -814,12 +841,16 @@
             $("#po").hide();
             $("#cr").show();
             $('.invoice').hide();
+            $('.directstr').hide();
+            $('._requisition').show();
         } else {
             $("#RefNumber").val("");
             $("#_PODate").hide();
             $("#br").hide();
             $("#po").hide();
             $("#cr").hide();
+            $('.directstr').hide();
+            $('._requisition').show();
 
             //$("#pos").hide();
         }
@@ -847,10 +878,11 @@
 
     $("#LocationID").change(function () {
         var val = $("#LocationID option:selected").val();
+        var type = $("#ReceivingTypeID").val();
 
         $.ajax({
             url: '@Url.Action("getRequiLoc", "Receiving")',
-            data: { id: val },
+            data: { id: val, type: type },
             type: 'get',
             success: function (data) {
                 var markup = "<option value='0'>Select Requisition</option>";

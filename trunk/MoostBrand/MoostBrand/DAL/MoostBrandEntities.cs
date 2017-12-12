@@ -318,6 +318,12 @@ namespace MoostBrand.DAL
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Location>()
+                .HasMany(e => e.StockTransfers1)
+                .WithRequired(e => e.Location1)
+                .HasForeignKey(e => e.DestinationID);
+
+
+            modelBuilder.Entity<Location>()
                 .HasMany(e => e.Receivings)
                 .WithRequired(e => e.Location)
                 .WillCascadeOnDelete(false);

@@ -21,6 +21,8 @@ namespace MoostBrand.DAL
 
         public int LocationID { get; set; }
 
+        public int? DestinationID { get; set; }
+
         [Required]
         [StringLength(50)]
         public string TransferID { get; set; }
@@ -100,6 +102,8 @@ namespace MoostBrand.DAL
         public virtual ICollection<Helper> Helpers { get; set; }
 
         public virtual Location Location { get; set; }
+
+        public virtual Location Location1 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Operator> Operators { get; set; }

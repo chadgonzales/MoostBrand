@@ -347,7 +347,7 @@ namespace MoostBrand.Controllers
             if (!String.IsNullOrEmpty(itemdesc))
             {
 
-                _lst = _lst.Where(p => p.Inventories.Description.Trim() == itemdesc.Trim()).ToList();
+                _lst = _lst.Where(p => p.Inventories.Items.Description.Trim() == itemdesc.Trim()).ToList();
                 string _desc = entity.Items.FirstOrDefault(p => p.Description == itemdesc).Description;
                 _sortbydesc = "Item Description:" + _desc;
             }
@@ -358,7 +358,7 @@ namespace MoostBrand.Controllers
                                   select new
                                 {
                                     ItemCode = i.Inventories.ItemCode != null ? i.Inventories.ItemCode : " ",
-                                    ItemDesc = i.Inventories.Description != null ? i.Inventories.Description : " ",
+                                    ItemDesc = i.Inventories.Items.Description != null ? i.Inventories.Items.Description : " ",
                                     Type = i.Type != null ? i.Type : " ",
                                     ReferenceNo = i.ReferenceNo != null ? i.ReferenceNo : " ",
                                     InQty = i.InQty != null ? i.InQty : 0,
