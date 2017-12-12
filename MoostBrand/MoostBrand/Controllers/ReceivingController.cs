@@ -129,34 +129,73 @@ namespace MoostBrand.Controllers
         public ActionResult GetRequisition(int id) //returns Json
         {
             Session["ReqID"] = id;
+            int type = 0;
+
+            try
+            { type = Convert.ToInt32(Session["type"]); }
+            catch { }
+           
             string _date = "";
 
-            if (entity.Requisitions.Find(id).RequestedDate != null)
+            if (type == 6)
             {
-                _date = entity.Requisitions.Find(id).RequestedDate.ToString("MM/dd/yyyy");
+                if (entity.StockTransfers.Find(id).STDAte != null)
+                {
+                    _date = entity.StockTransfers.Find(id).STDAte.ToString("MM/dd/yyyy");
 
+                }
+
+                var req = entity.StockTransfers
+                    .Where(r => r.ID == id)
+                    .Select(r => new
+                    {
+                        RefNumber = r.TransferID != null ? r.TransferID : " ",
+                        RequestedBy = r.Employee1 != null ? r.Employee1.LastName + ", " + r.Employee1.FirstName : " ",
+                        Destination = r.Location1.Description != null ? r.Location1.Description : " ",
+                        SourceLoc = r.Location.Description != null ? r.Location.Description : " ",
+                        Vendor = " ",
+                        VendorCode = " ",
+                        VendorContact = " ",
+                        CustName = " ",
+                        ShipmentType = " ",
+                        PONumber = " ",
+                        Invoice =" ",
+                        strDate = _date
+                    })
+                    .FirstOrDefault();
+
+                return Json(req, JsonRequestBehavior.AllowGet);
             }
+            else
+            {
+                if (entity.Requisitions.Find(id).RequestedDate != null)
+                {
+                    _date = entity.Requisitions.Find(id).RequestedDate.ToString("MM/dd/yyyy");
 
-            var req = entity.Requisitions
-                .Where(r => r.ID == id)
-                .Select(r => new
-                 { 
-                    RefNumber = r.RefNumber != null ? r.RefNumber : " ",
-                    RequestedBy =r.Employee1 != null ? r.Employee1.LastName + ", " + r.Employee1.FirstName : " ",
-                    Destination = r.Location1.Description != null ? r.Location1.Description : " ",
-                    SourceLoc = r.Location.Description != null ? r.Location.Description : " ",
-                    Vendor = r.Vendor.Name != null ? r.Vendor.Name : " ",
-                    VendorCode = r.Vendor.Code != null ? r.Vendor.Code : " ",
-                    VendorContact = r.Vendor.ContactPerson != null ? r.Vendor.ContactPerson : " ",
-                    CustName   = r.Customer != null ? r.Customer : " ",
-                    ShipmentType = r.ShipmentType.Type ,
-                    PONumber = r.PONumber != null ? r.PONumber : " ",
-                    Invoice = r.InvoiceNumber != null ? r.InvoiceNumber : " ",
-                    strDate = _date
-                })
-                .FirstOrDefault();
+                }
 
-            return Json(req, JsonRequestBehavior.AllowGet);
+                var req = entity.Requisitions
+                    .Where(r => r.ID == id)
+                    .Select(r => new
+                    {
+                        RefNumber = r.RefNumber != null ? r.RefNumber : " ",
+                        RequestedBy = r.Employee1 != null ? r.Employee1.LastName + ", " + r.Employee1.FirstName : " ",
+                        Destination = r.Location1.Description != null ? r.Location1.Description : " ",
+                        SourceLoc = r.Location.Description != null ? r.Location.Description : " ",
+                        Vendor = r.Vendor.Name != null ? r.Vendor.Name : " ",
+                        VendorCode = r.Vendor.Code != null ? r.Vendor.Code : " ",
+                        VendorContact = r.Vendor.ContactPerson != null ? r.Vendor.ContactPerson : " ",
+                        CustName = r.Customer != null ? r.Customer : " ",
+                        ShipmentType = r.ShipmentType.Type,
+                        PONumber = r.PONumber != null ? r.PONumber : " ",
+                        Invoice = r.InvoiceNumber != null ? r.InvoiceNumber : " ",
+                        strDate = _date
+                    })
+                    .FirstOrDefault();
+
+                return Json(req, JsonRequestBehavior.AllowGet);
+            }
+          
         }
 
         [HttpPost]
@@ -318,10 +357,10 @@ namespace MoostBrand.Controllers
             return Json(computations, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult getRequiLoc(int id)
+        public ActionResult getRequiLoc(int id, int type)
         {
             var loc = entity.Locations.Find(id);
-
+            Session["type"] = type;
 
             //var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && r.LocationID == loc.ID)
             //        .Select(r => new
@@ -330,7 +369,7 @@ namespace MoostBrand.Controllers
             //            RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
             //        });
 
-           
+
 
             var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 & s.Requisition.LocationID== loc.ID
                                                        && s.StockTransferDetails.Sum(p => p.Quantity) > 0
@@ -341,8 +380,17 @@ namespace MoostBrand.Controllers
                           RefNumber = (r.Requisition.RefNumber.Contains("PR")) ? "PO" + r.Requisition.RefNumber.Substring(2) : r.Requisition.RefNumber
                       });
 
-           
-                var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2
+            var stdirect = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 & s.LocationID == loc.ID & s.StockTransferTypeID == 4
+                                                      && s.StockTransferDetails.Sum(p => p.Quantity) > 0
+                                                     /*!entity.Receivings.Select(p=>p.RequisitionID).Contains(s.RequisitionID.Value)*/)
+                    .Select(r => new
+                    {
+                        ID = r.ID,
+                        RefNumber = r.TransferID
+                    });
+
+
+            var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2
                                                                     & r.ReqTypeID == 1
                                                                     && r.LocationID == loc.ID
                                                                     && r.RequisitionDetails.Sum(p => p.Quantity) > 0
@@ -355,6 +403,10 @@ namespace MoostBrand.Controllers
 
 
             var result = (from p in st select p).Union(from q in _requisitions select q);
+            if (type == 6)
+            {
+                result = stdirect;
+            }
 
             return Json(result, JsonRequestBehavior.AllowGet);
             
