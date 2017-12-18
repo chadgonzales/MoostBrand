@@ -311,7 +311,7 @@ namespace MoostBrand.Controllers
             return View();
         }
 
-        public ActionResult StockLedgerReport(string dateFrom, string dateTo,string itemcode, string itemdesc)
+        public ActionResult StockLedgerReport(string dateFrom, string dateTo,string itemcode, string itemdesc, int? location)
         {
 
             DateTime dtDateFrom = DateTime.Now.Date;
@@ -327,11 +327,19 @@ namespace MoostBrand.Controllers
                 dtDateTo = Convert.ToDateTime(dateTo);
             }
 
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                          .Select(x => new
+                          {
+                              ID = x.ID,
+                              Description = x.Description
+                          });
+
             ViewBag.ItemCode = new SelectList(entity.Inventories.Select(x => x.Items).Distinct(), "Code", "Code");
             ViewBag.ItemDesc = new SelectList(entity.Inventories.Select(x => x.Items).Distinct(), "Description", "Description");
+            ViewBag.Location = new SelectList(loc, "ID", "Description");
 
 
-            string _sortbycode = "Item Code: ALL", _sortbydesc = "Item Description: ALL";
+            string _sortbycode = "Item Code: ALL", _sortbydesc = "Item Description: ALL", _sortbyLocation = "Location: ALL";
 
 
             var _lst = entity.StockLedgers.ToList();
@@ -352,7 +360,13 @@ namespace MoostBrand.Controllers
                 _sortbydesc = "Item Description:" + _desc;
             }
 
+            if (location != null)
+            {
+                _lst = _lst.Where(p => p.Inventories.LocationCode == location).ToList();
+                string _location = entity.Locations.Find(location).Description;
+                _sortbyLocation = "Location:" + _location;
 
+            }
 
             var lstStockLedger = (from i in _lst.Where(p => p.Date.Value.Date >= dtDateFrom && p.Date.Value.Date <= dtDateTo).ToList()
                                   select new
@@ -388,6 +402,7 @@ namespace MoostBrand.Controllers
             _parameter.Add(new ReportParameter("DateRange", dtDateFrom.ToString("MMMM dd, yyyy") + " - " + dtDateTo.ToString("MMMM dd, yyyy")));
             _parameter.Add(new ReportParameter("SortByCode", _sortbycode));
             _parameter.Add(new ReportParameter("SortByDesc", _sortbydesc));
+            _parameter.Add(new ReportParameter("SortByLoc", _sortbyLocation));
             reportViewer.LocalReport.DataSources.Add(_rds);
             reportViewer.LocalReport.Refresh();
             reportViewer.LocalReport.SetParameters(_parameter);
