@@ -268,6 +268,9 @@ namespace MoostBrand.DAL
         public int GetAvailable
         { get { return (GetOrigInstock + GetOrdered) - GetOrigCommited; } }
 
+        public int GetAvailable_Direct
+        { get { return (Inventories.InStock.Value + Inventories.Ordered.Value) - Inventories.Committed.Value; } }
+
     }
 }
 

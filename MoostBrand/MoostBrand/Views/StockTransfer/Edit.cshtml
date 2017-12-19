@@ -320,6 +320,35 @@ $(function () {
         HideOrShow();
     });
 
+    function GetRq() {
+        $.get("@Url.Action("GetRequisition", "StockTransfer")/" + id, null, function (data) {
+            var markup = "<option value=''></option>";
+            for (var x = 0; x < data.length; x++) {
+                markup += "<option value=" + data[x].ID + ">" + data[x].RefNumber + "</option>";
+            }
+            $("#RequisitionID").html(markup).show();
+        });
+    }
+
+    function GetRc() {
+        $.get("@Url.Action("GetReceiving", "StockTransfer")/" + id, null, function (data) {
+            var markup = "<option value=''></option>";
+            for (var x = 0; x < data.length; x++) {
+                markup += "<option value=" + data[x].ID + ">" + data[x].ReceivingID + "</option>";
+            }
+            $("#ReceivingID").html(markup).show();
+        });
+    }
+
+    function GetRes() {
+        $.get("@Url.Action("GetReservation", "StockTransfer")/" + id, null, function (data) {
+            var markup = "<option value=''></option>";
+            for (var x = 0; x < data.length; x++) {
+                markup += "<option value=" + data[x].ID + ">" + data[x].RefNumber + "</option>";
+            }
+            $("#ReservationID").html(markup).show();
+        });
+    }
     function HideOrShow() {
         var val = $("#StockTransferTypeID").val();
         if (val == "") {
@@ -330,32 +359,28 @@ $(function () {
             $("#rc").hide();
             $("#res").hide();
             $("#rq").show();
+            GetRq();
         } else if (val == 2) {
             $("#rc").show();
             $("#rq").hide();
             $("#res").hide();
+            GetRc();
         } else if (val == 3) {
             $("#res").show();
             $("#rq").hide();
             $("#rc").hide();
+            GetRes();
         }
         else {
             $("#rc").hide();
             $("#rq").hide();
             $("#res").hide();
         }
-
-        $("#ReceivingID").select2({
-            data: null
-        });
-
-        $("#RequisitionID").select2({
-            data: null
-        });
-
-        $("#ReservationID").select2({
-            data: null
-        });
+      
+        //$(".ddl-item").select2({
+        //    data: null
+        //});
+      
     }
 
     $("#StockTransferTypeID").change(function () {

@@ -19,6 +19,7 @@
     });
 </script>
 
+
 <div class="container">
 
     @Html.HiddenFor(model => model.ID)
@@ -43,24 +44,24 @@
                 <span class="symbol required"></span>
             </label>
             <div class="col-md-6">
-                @Html.DropDownList("ReceivingID", null, htmlAttributes: new { @class = "form-control ddl-item" })
+                @Html.DropDownList("ReceivingID", Enumerable.Empty<SelectListItem>(), "", new { @class = "form-control ddl-item" })
                 @Html.ValidationMessageFor(model => model.ReceivingID, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
 
     <div id="rq">
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.RequisitionID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.RequisitionID, htmlAttributes: new { @class = "control-label col-md-2" })*@
             <label class="control-label col-md-2">
                 Requisition ID
                 <span class="symbol required"></span>
             </label>
             <div class="col-md-6">
-                @Html.DropDownList("RequisitionID",null, htmlAttributes: new { @class = "form-control ddl-item" })
+                @Html.DropDownList("RequisitionID", Enumerable.Empty<SelectListItem>(), "", new { @class = "form-control ddl-item" })
                 @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
             </div>
-        </div>*@
+        </div>
     </div>
     <div id="res">
         <div class="form-group">
@@ -70,7 +71,7 @@
                 <span class="symbol required"></span>
             </label>
             <div class="col-md-6">
-                @Html.DropDownList("ReservationID", null, htmlAttributes: new { @class = "form-control ddl-item" })
+                @Html.DropDownList("ReservationID", Enumerable.Empty<SelectListItem>(), "", new { @class = "form-control ddl-item" })
                 @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
             </div>
         </div>

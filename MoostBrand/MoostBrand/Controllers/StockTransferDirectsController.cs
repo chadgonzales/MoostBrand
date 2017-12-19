@@ -255,7 +255,7 @@ namespace MoostBrand.Controllers
                         .Select(ed => new
                         {
                             ID = ed.ID,
-                            Description = ed.Items.Description
+                            Description = ed.Description
                         }).OrderBy(p=>p.Description);
 
      
@@ -291,7 +291,7 @@ namespace MoostBrand.Controllers
                     else
                     {
                         stocktransferdetail.IsSync = false;
-
+                        stocktransferdetail.ReferenceQuantity = stocktransferdetail.Quantity;
                         entity.StockTransferDetails.Add(stocktransferdetail);
                         entity.SaveChanges();
                     }

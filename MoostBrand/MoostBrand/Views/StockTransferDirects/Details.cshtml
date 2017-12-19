@@ -102,7 +102,7 @@
                     }
                 </div>
 
-                <div class="form-group">
+                @*<div class="form-group">
                     <label class="control-label col-md-4">Received By</label>
                     <div class="col-md-8">
                         <label class="custom-label">
@@ -110,7 +110,7 @@
                             @Html.DisplayFor(model => model.Employee.LastName)
                         </label>
                     </div>
-                </div>
+                </div>*@
 
                 <div class="form-group">
                     <label class="control-label col-md-4">Requested By</label>
@@ -226,7 +226,18 @@
                     <th>
                         Quantity
                     </th>
-                   
+                    <th>
+                        In Stock
+                    </th>
+                    <th>
+                        Committed
+                    </th>
+                    <th>
+                        Ordered
+                    </th>
+                    <th>
+                        Available
+                    </th>
                     <th>
                         Previous Quantity
                     </th>
@@ -244,9 +255,20 @@
                             @Html.DisplayFor(modelItem => item.Inventories.Items.Description)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Quantity)
+                            @Html.DisplayFor(modelItem => item.ReferenceQuantity)
                         </td>
-                      
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Inventories.InStock)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Inventories.Committed)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Inventories.Ordered)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GetAvailable_Direct)
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.PreviousQuantity)
                         </td>

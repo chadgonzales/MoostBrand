@@ -81,6 +81,11 @@
 <!-- start: BODY -->
 <body>
 
+
+    <div class="preload">
+        <img src="@Url.Content("~/Content/loadingpage.gif")">
+    </div>
+
     <div class="main-wrapper">
         <!-- start: TOPBAR -->
         <header class="topbar navbar navbar-inverse navbar-fixed-top inner">
@@ -512,12 +517,15 @@
                 Main.init();
                 SVExamples.init();
                 FormElements.init();
+                $(".preload").hide();
             }
             catch(err)
             {
 
             }
         });
+
+       
     </script>
 </body>
 

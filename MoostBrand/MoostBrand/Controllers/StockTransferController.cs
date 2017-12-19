@@ -56,45 +56,113 @@ namespace MoostBrand.Controllers
 
         #region COMMENTS
         //// GET: Receiving/GetStockTransfers/5
-        //public ActionResult GetReceivings(int id) //returns Json
-        //{
-        //    var sts = entity.Receivings
-        //             .Include(st => st.Requisition)
-        //             .ToList()
-        //             .FindAll(st => st.Requisition.RequisitionTypeID == id)
-        //             .Select(st => new
-        //             {
-        //                 ID = st.ID,
-        //                 ReceivingID = st.ReceivingID
-        //             });
+        public ActionResult GetRequisition() //returns Json
+        {
+            List<ReqCustom> lstReqCustom = new List<ReqCustom>();
 
-        //    return Json(sts, JsonRequestBehavior.AllowGet);
-        //}
+            //var lstReq = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))).ToList();
+
+            var lstReq = (from r in entity.Requisitions.ToList()
+                          where r.ApprovalStatus == 2 &&
+                         /* !_st.Select(p => p.RequisitionID).Contains(r.ID)*/ r.RequisitionDetails.Sum(p => p.Quantity) > 0 &&
+                          (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))
+                          select r).ToList();
+
+            foreach (var _req in lstReq)
+            {
+                string refNumber;
+
+                if (_req.RefNumber.Contains("BR"))
+                {
+                    refNumber = "BR" + _req.RefNumber.Substring(2);
+                }
+                else if (_req.RefNumber.Contains("WR"))
+                {
+                    refNumber = "WR" + _req.RefNumber.Substring(2);
+                }
+                else
+                {
+                    refNumber = _req.RefNumber;
+                }
+
+                lstReqCustom.Add(
+                    new ReqCustom
+                    {
+                        ID = _req.ID,
+                        RefNumber = refNumber
+                    });
+            }
+
+            return Json(lstReqCustom, JsonRequestBehavior.AllowGet);
+        }
 
         // GET: Receiving/GetRequisition/5
-        //public ActionResult GetRequisition(int id) //returns Json
-        //{
-        //    var req = entity.Receivings
-        //             .Include(st => st.Requisition)
-        //             .Where(st => st.ID == id)
-        //             .Select(st => new
-        //             {
-        //                 ID = st.RequisitionID,
-        //                 RefNumber = st.Requisition.RefNumber,
-        //                 RequestedBy = st.Requisition.Employee1.FirstName + " " + st.Requisition.Employee1.LastName,
-        //                 Destination = st.Requisition.Location1.Description,
-        //                 SourceLoc = st.Requisition.Location.Description,
-        //                 Vendor = st.Requisition.Vendor.Name,
-        //                 VendorCode = st.Requisition.Vendor.Code,
-        //                 VendorContact = st.Requisition.Vendor.Attn,
-        //                 CustName = st.Requisition.Customer,
-        //                 ShipmentType = st.Requisition.ShipmentType.Type,
-        //                 Invoice = st.Requisition.InvoiceNumber
-        //             })
-        //             .FirstOrDefault();
+        public ActionResult GetReservation() //returns Json
+        {
+            List<ReqCustom> _lstReqCustom = new List<ReqCustom>();
 
-        //    return Json(req, JsonRequestBehavior.AllowGet);
-        //}
+            //var lstReq = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))).ToList();
+
+            var _lstReq = (from r in entity.Requisitions.ToList()
+                           where r.ApprovalStatus == 2
+                           /*!_st.Select(p => p.RequisitionID).Contains(r.ID)*/ && r.RequisitionDetails.Sum(p => p.Quantity) > 0
+                           && (r.RefNumber.Contains("CR"))
+                           select r).ToList();
+
+            foreach (var _req in _lstReq)
+            {
+                string refNumber;
+
+                if (_req.RefNumber.Contains("CR"))
+                {
+                    refNumber = "CR" + _req.RefNumber.Substring(2);
+                }
+                else
+                {
+                    refNumber = _req.RefNumber;
+                }
+
+                _lstReqCustom.Add(
+                    new ReqCustom
+                    {
+                        ID = _req.ID,
+                        RefNumber = refNumber
+                    });
+            }
+            return Json(_lstReqCustom, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetReceiving() //returns Json
+        {
+            List<RecCustom> lstRecCustom = new List<RecCustom>();
+
+            var _receivings = (from r in entity.Receivings.ToList()
+                               where r.ApprovalStatus == 2 && /*!_st.Select(p => p.ReceivingID).Contains(r.ID)*/  r.ReceivingDetails.Sum(p => p.Quantity) > 0
+                               select r).ToList();
+
+
+            foreach (var _rec in _receivings)
+            {
+                string refNumber;
+
+                if (_rec.ReceivingID.Contains("PR"))
+                {
+                    refNumber = _rec.ReceivingID;
+                }
+                else
+                {
+                    refNumber = _rec.ReceivingID.Substring(2);
+                }
+
+                lstRecCustom.Add(
+                    new RecCustom
+                    {
+                        ID = _rec.ID,
+                        ReceivingID = refNumber
+                    });
+            }
+            return Json(lstRecCustom, JsonRequestBehavior.AllowGet);
+        }
         #endregion
 
         #region ST Action
@@ -205,96 +273,96 @@ namespace MoostBrand.Controllers
             //                        ReceivingID = (r.ReceivingID.Contains("PR")) ? "PO" + r.ReceivingID.Substring(2) : r.ReceivingID
             //      });
 
-            List<RecCustom> lstRecCustom = new List<RecCustom>(); 
-            var _receivings = (from r in entity.Receivings.ToList()
-                               where r.ApprovalStatus == 2 && /*!_st.Select(p => p.ReceivingID).Contains(r.ID)*/  r.ReceivingDetails.Sum(p => p.Quantity) > 0
-                               select r).ToList();
+            //List<RecCustom> lstRecCustom = new List<RecCustom>(); 
+            //var _receivings = (from r in entity.Receivings.ToList()
+            //                   where r.ApprovalStatus == 2 && /*!_st.Select(p => p.ReceivingID).Contains(r.ID)*/  r.ReceivingDetails.Sum(p => p.Quantity) > 0
+            //                   select r).ToList();
 
 
-            foreach (var _rec in _receivings)
-            {
-                string refNumber;
+            //foreach (var _rec in _receivings)
+            //{
+            //    string refNumber;
 
-                if (_rec.ReceivingID.Contains("PR"))
-                {
-                    refNumber = _rec.ReceivingID;
-                }
-                else
-                {
-                    refNumber=_rec.ReceivingID.Substring(2);
-                }
+            //    if (_rec.ReceivingID.Contains("PR"))
+            //    {
+            //        refNumber = _rec.ReceivingID;
+            //    }
+            //    else
+            //    {
+            //        refNumber=_rec.ReceivingID.Substring(2);
+            //    }
 
-                lstRecCustom.Add(
-                    new RecCustom
-                    {
-                        ID = _rec.ID,
-                        ReceivingID = refNumber
-                    });
-            }
+            //    lstRecCustom.Add(
+            //        new RecCustom
+            //        {
+            //            ID = _rec.ID,
+            //            ReceivingID = refNumber
+            //        });
+            //}
 
-            List <ReqCustom> lstReqCustom = new List<ReqCustom>();
+            //List <ReqCustom> lstReqCustom = new List<ReqCustom>();
 
-            //var lstReq = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))).ToList();
+            ////var lstReq = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))).ToList();
 
-            var lstReq = (from r in entity.Requisitions.ToList()
-                          where r.ApprovalStatus == 2 &&
-                         /* !_st.Select(p => p.RequisitionID).Contains(r.ID)*/ r.RequisitionDetails.Sum(p => p.Quantity) > 0 &&
-                          (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))
-                          select r).ToList();
+            //var lstReq = (from r in entity.Requisitions.ToList()
+            //              where r.ApprovalStatus == 2 &&
+            //             /* !_st.Select(p => p.RequisitionID).Contains(r.ID)*/ r.RequisitionDetails.Sum(p => p.Quantity) > 0 &&
+            //              (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))
+            //              select r).ToList();
 
-            foreach (var _req in lstReq) {
-                string refNumber;
+            //foreach (var _req in lstReq) {
+            //    string refNumber;
 
-                if (_req.RefNumber.Contains("BR"))
-                {
-                    refNumber = "BR" + _req.RefNumber.Substring(2);
-                }
-                else if (_req.RefNumber.Contains("WR"))
-                {
-                    refNumber = "WR" + _req.RefNumber.Substring(2);
-                }
-                else {
-                    refNumber = _req.RefNumber;
-                }
+            //    if (_req.RefNumber.Contains("BR"))
+            //    {
+            //        refNumber = "BR" + _req.RefNumber.Substring(2);
+            //    }
+            //    else if (_req.RefNumber.Contains("WR"))
+            //    {
+            //        refNumber = "WR" + _req.RefNumber.Substring(2);
+            //    }
+            //    else {
+            //        refNumber = _req.RefNumber;
+            //    }
 
-                lstReqCustom.Add(
-                    new ReqCustom
-                    {
-                        ID = _req.ID,
-                        RefNumber = refNumber
-                    });
-            }
+            //    lstReqCustom.Add(
+            //        new ReqCustom
+            //        {
+            //            ID = _req.ID,
+            //            RefNumber = refNumber
+            //        });
+            //}
 
-            List<ReqCustom> _lstReqCustom = new List<ReqCustom>();
+            //List<ReqCustom> _lstReqCustom = new List<ReqCustom>();
 
-            //var lstReq = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))).ToList();
+            ////var lstReq = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))).ToList();
 
-            var _lstReq = (from r in entity.Requisitions.ToList()
-                          where r.ApprovalStatus == 2
-                          /*!_st.Select(p => p.RequisitionID).Contains(r.ID)*/ && r.RequisitionDetails.Sum(p => p.Quantity) > 0
-                          && (r.RefNumber.Contains("CR"))
-                          select r).ToList();
+            //var _lstReq = (from r in entity.Requisitions.ToList()
+            //              where r.ApprovalStatus == 2
+            //              /*!_st.Select(p => p.RequisitionID).Contains(r.ID)*/ && r.RequisitionDetails.Sum(p => p.Quantity) > 0
+            //              && (r.RefNumber.Contains("CR"))
+            //              select r).ToList();
 
-            foreach (var _req in _lstReq)
-            {
-                string refNumber;
+            //foreach (var _req in _lstReq)
+            //{
+            //    string refNumber;
 
-                if (_req.RefNumber.Contains("CR"))
-                {
-                    refNumber = "CR" + _req.RefNumber.Substring(2);
-                }
-                else
-                {
-                    refNumber = _req.RefNumber;
-                }
+            //    if (_req.RefNumber.Contains("CR"))
+            //    {
+            //        refNumber = "CR" + _req.RefNumber.Substring(2);
+            //    }
+            //    else
+            //    {
+            //        refNumber = _req.RefNumber;
+            //    }
 
-                _lstReqCustom.Add(
-                    new ReqCustom
-                    {
-                        ID = _req.ID,
-                        RefNumber = refNumber
-                    });
-            }
+            //    _lstReqCustom.Add(
+            //        new ReqCustom
+            //        {
+            //            ID = _req.ID,
+            //            RefNumber = refNumber
+            //        });
+            //}
 
             var loc = entity.Locations.Where(x => x.ID != 10)
                       .Select(x => new
@@ -304,9 +372,9 @@ namespace MoostBrand.Controllers
                       });
 
             ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name");
-            ViewBag.RequisitionID = new SelectList(lstReqCustom, "ID", "RefNumber");
-            ViewBag.ReservationID = new SelectList(_lstReqCustom, "ID", "RefNumber");
-            ViewBag.ReceivingID = new SelectList(lstRecCustom, "ID", "ReceivingID");
+            //ViewBag.RequisitionID = new SelectList("", "ID", "RefNumber"); //new SelectList(lstReqCustom, "ID", "RefNumber");
+            //ViewBag.ReservationID = new SelectList("", "ID", "RefNumber"); //new SelectList(_lstReqCustom, "ID", "RefNumber");
+            //ViewBag.ReceivingID =  new SelectList("", "ID", "ReceivingID"); //new SelectList(lstRecCustom, "ID", "ReceivingID");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description");
             var empList = new SelectList((from s in entity.Employees
                                           select new
@@ -341,9 +409,9 @@ namespace MoostBrand.Controllers
                         });
 
             ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name");
-            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2 && r.RequisitionDetails.Sum(p=>p.Quantity) > 0), "ID", "RefNumber");
-            ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2 && r.ReceivingDetails.Sum(p => p.Quantity) > 0), "ID", "ReceivingID");
-            ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2 && r.RequisitionDetails.Sum(p => p.Quantity) > 0), "ID", "RefNumber");
+            //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2 && r.RequisitionDetails.Sum(p=>p.Quantity) > 0), "ID", "RefNumber");
+            //ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2 && r.ReceivingDetails.Sum(p => p.Quantity) > 0), "ID", "ReceivingID");
+            //ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2 && r.RequisitionDetails.Sum(p => p.Quantity) > 0), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees
                           select new
@@ -446,9 +514,9 @@ namespace MoostBrand.Controllers
                             });
 
                 ViewBag.StockTransferTypeID = new SelectList(_types, "ID", "Name", stocktransfer.StockTransferTypeID);
-                ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber",stocktransfer.RequisitionID);
-                ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID", stocktransfer.ReceivingID);
-                ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
+                //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber",stocktransfer.RequisitionID);
+                //ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID", stocktransfer.ReceivingID);
+                //ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
                 //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
                 ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
                 var empList = from s in entity.Employees
@@ -573,9 +641,9 @@ namespace MoostBrand.Controllers
                         });
 
             ViewBag.StockTransferTypeID = new SelectList(entity.StockTransferTypes.Where(p=>p.ID != 2).ToList(), "ID", "Name", stocktransfer.StockTransferTypeID);
-            ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
-            ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID", stocktransfer.ReceivingID);
-            ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
+            //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
+            //ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "ReceivingID", stocktransfer.ReceivingID);
+            //ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", stocktransfer.RequisitionID);
             //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
             var empList = from s in entity.Employees
