@@ -325,6 +325,42 @@
         HideOrShow();
     });
 
+    function GetRq() {
+        $(".preload").show();
+        $.get("@Url.Action("GetRequisition", "StockTransfer")", null, function (data) {
+            var markup = "<option value=''></option>";
+            for (var x = 0; x < data.length; x++) {
+                markup += "<option value=" + data[x].ID + ">" + data[x].RefNumber + "</option>";
+            }
+           
+            $("#RequisitionID").html(markup).show();
+            $(".preload").hide();
+        });
+    }
+
+    function GetRc() {
+        $(".preload").show();
+        $.get("@Url.Action("GetReceiving", "StockTransfer")", null, function (data) {
+            var markup = "<option value=''></option>";
+            for (var x = 0; x < data.length; x++) {
+                markup += "<option value=" + data[x].ID + ">" + data[x].ReceivingID + "</option>";
+            }
+            $("#ReceivingID").html(markup).show();
+            $(".preload").hide();
+        });
+    }
+
+    function GetRes() {
+        $(".preload").show();
+        $.get("@Url.Action("GetReservation", "StockTransfer")", null, function (data) {
+            var markup = "<option value=''></option>";
+            for (var x = 0; x < data.length; x++) {
+                markup += "<option value=" + data[x].ID + ">" + data[x].RefNumber + "</option>";
+            }
+            $("#ReservationID").html(markup).show();
+            $(".preload").hide();
+        });
+    }
     function HideOrShow() {
         var val = $("#StockTransferTypeID").val();
         if (val == "") {
@@ -335,14 +371,17 @@
             $("#rc").hide();
             $("#res").hide();
             $("#rq").show();
+            GetRq();
         } else if (val == 2) {
             $("#rc").show();
             $("#rq").hide();
             $("#res").hide();
+            GetRc();
         } else if (val == 3) {
             $("#res").show();
             $("#rq").hide();
             $("#rc").hide();
+            GetRes();
         }
         else {
             $("#rc").hide();

@@ -8155,4 +8155,34 @@ padding:0px;
 margin:0px;
 list-style:none;
 }
+
+
+.preload{
+position: fixed;
+
+height: 100%; /* For 100% screen height */
+width:  100%; /* For 100% screen width */
+
+/*border:3px solid #000;*/
+z-index:99999;
+
+/* Fallback for web browsers that doesn't support RGBa */
+background: rgb(0, 0, 0);
+/* RGBa with 0.6 opacity */
+background: rgba(0, 0, 0, 0.6);
+
+display:block;
+top:0px;
+
+}
+.preload img{
+width: 100px;
+height: 100px;
+position: fixed;
+top: 35%;
+left: 45%;
+z-index:99999;
+
+
+}
 /*end additional*/
