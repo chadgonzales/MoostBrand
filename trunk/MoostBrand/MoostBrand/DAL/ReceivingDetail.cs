@@ -133,10 +133,12 @@ namespace MoostBrand.DAL
                     }
                     else
                     {
-                        total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID)) - repo.getStockTranferReceiving(loc, reqDetail.ItemID));
+                        total = repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code);
+                        //total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID)) - repo.getStockTranferReceiving(loc, reqDetail.ItemID));
+
                     }
                 }
-                catch { total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID)) - repo.getStockTranferReceiving(loc, reqDetail.ItemID)); }
+                catch { total = repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code); }
 
                 return total;
             }

@@ -5,6 +5,47 @@
     ViewBag.Title = "Pending Items";
 }
 
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script>
+    $(document).ajaxSuccess(function () {
+
+     
+        $("#itemsearch").autocomplete({
+
+            source: function (request, response) {
+
+                $.ajax({
+                    url: '@Url.Action("getItems")',
+                    type: "POST",
+                    dataType: "json",
+                    data: {code: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Description,
+                                value: item.Description
+                            };
+                        }))
+                        
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#RequisitionDetailID").val(ui.item.id);
+               
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#itemsearch").autocomplete("option", "appendTo", "#modalItem");
+       
+    })
+</script>
 <div class="panel-heading">
     <h4 class="panel-title">Pending Items</h4>
     <hr />
@@ -82,18 +123,13 @@
 
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-    @*@Html.PagedListPager(Model, page => Url.Action("PendingItems",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
-
+   
   
     @Html.PagedListPager(Model, page => Url.Action("Details",
       new { page, id = ViewBag.Rid }))
 
     <br /><br />
-    @*@if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
-    {
-        
-    }*@
+   
 
     <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
 
@@ -121,7 +157,7 @@
 </div>
 <script>
     window.onload = function () {
-        //$('#ShowPopop').click(function () {
+     
 
             var url = $('#AddItemWindow').data('url');
             $.get(url, function (data) {
@@ -144,8 +180,8 @@
                     $('#AddItemWindow').modal('show');
                 }
 
-                $("#RequisitionDetailID").change(function () {
-                    var val = $("#RequisitionDetailID option:selected").val();
+                $("#itemsearch").focusout(function () {
+                    var val = $("#RequisitionDetailID").val();
 
                     $.ajax({
                         url: '@Url.Action("DisplayComputations", "Receiving")',
@@ -161,14 +197,7 @@
                     })
                 });
 
-                //$('#Quantity').focusout(function () {
-                //    var ordered = parseInt($('#Ordered').val());
-                //    var committed = parseInt($('#Committed').val());
-                //    var instock = parseInt($('#InStock').val());
-                //    console.log(instock);
-
-                //    $('#Available').val((instock + ordered) - committed);
-                //})
+             
 
                 $('#Quantity').focusout(function () {
                    
@@ -188,36 +217,31 @@
                     }
                 })
 
-                //var ordered = parseInt($('#Ordered').val());
-                //var committed = parseInt($('#Committed').val());
-                //var instock = parseInt($('#InStock').val());
-                //console.log(instock);
-
-                //$('#Available').val((instock + ordered) - committed);
-
+               
                 // add class form-control to textarea and select
                 $("input[disabled]").addClass("form-control");
                 $("textarea").addClass("form-control");
                 $("select").addClass("form-control");
             });
-        //});
+       
     }
 
     $('#ShowPopop').click(function () {
 
+        $('#ShowPopop').prop('disabled', false);
+       
         var url = $('#AddItemWindow').data('url');
         $.get(url, function (data) {
             $('#ShowDialogAdd').html(data);
 
-            @*if(@ViewBag.Approved != "2")
-            {*@ 
                 $('#AddItemWindow').modal('show');
-           // }
+           
 
             // add class form-control to textarea and select
             $("input[disabled]").addClass("form-control");
             $("textarea").addClass("form-control");
             $("select").addClass("form-control");
+
         });
     });
 
@@ -252,6 +276,8 @@
         location.reload();
     }
     function Approve(id, itemID){
+
+        $('#approve_button').prop('disabled', false);
         var url = '@Url.Action("ApproveItem", "Receiving")/' + id;
         $.post(url, {id: id, itemID : itemID }, ReloadFunction);
     }

@@ -86,7 +86,8 @@ namespace MoostBrand.DAL
 
                 if (item != null)
                 {
-                    total = (repo.getInstocked(reqId, item.Code) - repo.getStockTranfer(ItemID));
+                    total = repo.getInstocked(reqId, item.Code);
+                    //total = (repo.getInstocked(reqId, item.Code) - repo.getStockTranfer(ItemID));
                 }
 
                 return total;

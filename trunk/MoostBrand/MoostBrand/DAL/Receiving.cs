@@ -84,7 +84,7 @@ namespace MoostBrand.DAL
         public string InvoiceReference { get; set; }
 
         [Required(ErrorMessage = "RequisitionID is required")]
-        public int RequisitionID { get; set; }
+        public int? RequisitionID { get; set; }
 
         public int GetRequisitionID
         {
@@ -101,14 +101,14 @@ namespace MoostBrand.DAL
 
                     if (st != null)
                     {
-                        req = RequisitionID;
+                        req = RequisitionID.Value;
                     }
                     else
                     {
                         var pur = entity.Requisitions.FirstOrDefault(p => p.ApprovalStatus == 2 & p.ReqTypeID == 1 & p.ID == RequisitionID);
                         if (pur != null)
                         {
-                            req = RequisitionID;
+                            req = RequisitionID.Value;
                         }
                     }
                 }
@@ -122,17 +122,21 @@ namespace MoostBrand.DAL
         {
             get
             {
-                string location = "";
-                if (Requisition.Location1 == null)
+                try
                 {
-                    location = Requisition.Location.Description;
-                }
-                else
-                {
-                    location = Requisition.Location1.Description;
-                }
+                    string location = "";
+                    if (Requisition.Location1 == null)
+                    {
+                        location = Requisition.Location.Description;
+                    }
+                    else
+                    {
+                        location = Requisition.Location1.Description;
+                    }
 
-                return location;
+                    return location;
+                }
+                catch { return "direct stock transfer"; }
             }
         }
         public int? StockTransferID { get; set; }
@@ -156,6 +160,8 @@ namespace MoostBrand.DAL
         public virtual ReceivingType ReceivingType { get; set; }
 
         public virtual Requisition Requisition { get; set; }
+
+        public virtual StockTransfer DirectStockTransfers { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAllocation> StockAllocations { get; set; }
