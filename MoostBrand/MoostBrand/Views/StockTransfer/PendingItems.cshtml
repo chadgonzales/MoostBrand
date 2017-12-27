@@ -4,6 +4,111 @@
 @{
     ViewBag.Title = "Pending Items";
 }
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script>
+    $(document).ajaxSuccess(function () {
+
+        $("#itemreq").autocomplete({
+
+            source: function (request, response) {
+
+                $.ajax({
+                    url: '@Url.Action("getRequisitionItems")',
+                    type: "POST",
+                    dataType: "json",
+                    data: {code: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Description,
+                                value: item.Description
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#RequisitionDetailID").val(ui.item.id);
+
+                var val = $("#RequisitionDetailID").val();
+              
+                $.ajax({
+                    url: '@Url.Action("DisplayComputation", "StockTransfer")',
+                    data: { reqID: val },
+                    type: 'get',
+                    success: function (data) {
+                        $("#Committed").val(data.Committed);
+                        $("#Ordered").val(data.Ordered);
+                        $("#InStock").val(data.InStock);
+                        $("#Quantity").val(data.Quantity);
+                        $("#Hidden_Quantity").val(data.Quantity);
+                        
+                    }
+                })
+
+
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#itemreq").autocomplete("option", "appendTo", "#modalItem");
+
+
+        $("#itemrec").autocomplete({
+
+            source: function (request, response) {
+
+                $.ajax({
+                    url: '@Url.Action("getReceivingItems")',
+                    type: "POST",
+                    dataType: "json",
+                    data: {code: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Description,
+                                value: item.Description
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#ReceivingDetailID").val(ui.item.id);
+
+                var val = $("#ReceivingDetailID").val();
+
+                $.ajax({
+                    url: '@Url.Action("DisplayComputations", "StockTransfer")',
+                    data: { recID: val },
+                    type: 'get',
+                    success: function (data) {
+                        $("#Committed").val(data.Committed);
+                        $("#Ordered").val(data.Ordered);
+                        $("#InStock").val(data.InStock);
+                        $("#Quantity").val(data.Quantity);
+                        $("#Hidden_Quantity").val(data.Quantity);
+                    }
+                })
+
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#itemrec").autocomplete("option", "appendTo", "#modalItem");
+
+    })
+</script>
 
 <div class="panel-heading">
     <h4 class="panel-title">Pending Items</h4>
@@ -81,19 +186,14 @@
 
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-    @*@Html.PagedListPager(Model, page => Url.Action("PendingItems",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
-
+  
 
     @Html.PagedListPager(Model, page => Url.Action("Details",
       new { page, id = ViewBag.STid }))
    
 
     <br /><br />
-    @*@if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
-    {
-       
-    }*@
+  
 
     <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
     <a href='@Url.Action("Details", new { id = ViewBag.STid })' class="btn btn-light-orange">
@@ -118,13 +218,11 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
-<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+
 
 <script>
     window.onload = function () {
-        //alert('a');
-        ////$('#ShowPopop').click(function () {
-        //alert($("#Hidden_Quantity").val());
+     
         var url = $('#AddItemWindow').data('url');
         $.get(url, function (data) {
            
@@ -147,8 +245,8 @@
                 return true;
             });
 
-            $("#ReceivingDetailID").change(function () {
-                var val = $("#ReceivingDetailID option:selected").val();
+            @*$("#itemrec").focusout(function () {
+                var val = $("#ReceivingDetailID").val();
 
                 $.ajax({
                     url: '@Url.Action("DisplayComputations", "StockTransfer")',
@@ -164,9 +262,9 @@
                 })
             });
 
-            $("#RequisitionDetailID").change(function () {
+            $("#itemreq").focusout(function () {
               
-                var val = $("#RequisitionDetailID option:selected").val();
+                var val = $("#RequisitionDetailID").val();
               
                 $.ajax({
                     url: '@Url.Action("DisplayComputation", "StockTransfer")',
@@ -181,7 +279,7 @@
                         
                     }
                 })
-            });
+            });*@
 
             $('#Quantity').focusout(function () {
                 //alert($("#Hidden_Quantity").val());
@@ -214,6 +312,7 @@
 
     $('#ShowPopop').click(function () {
 
+      
         var url = $('#AddItemWindow').data('url');
         $.get(url, function (data) {
             $('#ShowDialogAdd').html(data);

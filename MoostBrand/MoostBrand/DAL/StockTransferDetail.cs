@@ -88,7 +88,7 @@ namespace MoostBrand.DAL
                     else
                     {
                         ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
-                        _rid = item1.Receiving.RequisitionID;
+                        _rid = item1.Receiving.RequisitionID.Value;
                         _ritemid = item1.RequisitionDetail.ItemID;
                         return (stRepo.getCommited_Receiving(_rid, _ritemid) - Quantity.Value);
                     }
@@ -125,7 +125,7 @@ namespace MoostBrand.DAL
                     else
                     {
                         ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
-                        _rid = item1.Receiving.RequisitionID;
+                        _rid = item1.Receiving.RequisitionID.Value;
                         _ritemid = item1.RequisitionDetail.ItemID;
                         return (stRepo.getCommited_Receiving(_rid, _ritemid));
                     }
@@ -161,18 +161,17 @@ namespace MoostBrand.DAL
                         _ritemid = item.ItemID;
                         _ritemcode = item.Item.Code;
 
-
                     }
                     else
                     {
                         ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
-                        _rid = item1.Receiving.RequisitionID;
+                        _rid = item1.Receiving.RequisitionID.Value;
                         _ritemid = item1.RequisitionDetail.ItemID;
                         _ritemcode = item1.RequisitionDetail.Item.Code;
 
                     }
-
-                    int total = (repo.getInstocked(_rid, _ritemcode) - repo.getStockTranfer(_ritemid));
+                    int total = repo.getInstocked(_rid, _ritemcode);
+                    //int total = (repo.getInstocked(_rid, _ritemcode) - repo.getStockTranfer(_ritemid));
 
                     return total;
                 }
@@ -209,7 +208,7 @@ namespace MoostBrand.DAL
                     else
                     {
                         ReceivingDetail item1 = entity.ReceivingDetails.Find(ReceivingDetailID);
-                        _rid = item1.Receiving.RequisitionID;
+                        _rid = item1.Receiving.RequisitionID.Value;
                         _ritemid = item1.RequisitionDetail.ItemID;
                         _ritemcode = item1.RequisitionDetail.Item.Code;
 
@@ -269,7 +268,101 @@ namespace MoostBrand.DAL
         { get { return (GetOrigInstock + GetOrdered) - GetOrigCommited; } }
 
         public int GetAvailable_Direct
-        { get { return (Inventories.InStock.Value + Inventories.Ordered.Value) - Inventories.Committed.Value; } }
+        { get
+            {
+                try
+                {
+                    MoostBrandEntities entity = new MoostBrandEntities();
+                    Inventory inv = entity.Inventories.Find(InventoryID);
+
+                    return (inv.InStock.Value + inv.Ordered.Value) - inv.Committed.Value;
+                }
+                catch { return 0; }
+            }
+        }
+
+        public int InventoryInstock
+        {
+            get
+            {
+                try
+                {
+                    MoostBrandEntities entity = new MoostBrandEntities();
+                    Inventory inv = entity.Inventories.Find(InventoryID);
+
+                    return inv.InStock.Value;
+                }
+                catch { return 0; }
+            }
+        }
+
+        public int CommittedInstock
+        {
+            get
+            {
+                try
+                {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                Inventory inv = entity.Inventories.Find(InventoryID);
+
+                return inv.Committed.Value;
+                }
+                catch { return 0; }
+            }
+        }
+
+        public int OrderedInstock
+        {
+            get
+            {
+                try
+                {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                Inventory inv = entity.Inventories.Find(InventoryID);
+
+                return inv.Ordered.Value;
+                }
+                catch { return 0; }
+            }
+        }
+
+        public int pendingInstock
+        {
+            get
+            { 
+                return InventoryInstock - Quantity.Value;
+            }
+        }
+
+        public int pendingAvailable
+        {
+            get
+            {
+                return GetAvailable_Direct - Quantity.Value;
+            }
+        }
+
+        public int approvedInstock
+        {
+            get
+            {
+                if (AprovalStatusID == 2)
+                    return InventoryInstock - ReferenceQuantity.Value;
+                else
+                    return InventoryInstock;
+            }
+        }
+
+        public int approvedAvailable
+        {
+            get
+            {
+                if (AprovalStatusID == 2)
+                    return GetAvailable_Direct - ReferenceQuantity.Value;
+                else
+                    return GetAvailable_Direct;
+            }
+        }
 
     }
 }

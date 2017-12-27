@@ -82,9 +82,9 @@
 <body>
 
 
-    <div class="preload">
+    @*<div class="preload">
         <img src="@Url.Content("~/Content/loadingpage.gif")">
-    </div>
+    </div>*@
 
     <div class="main-wrapper">
         <!-- start: TOPBAR -->
@@ -517,7 +517,7 @@
                 Main.init();
                 SVExamples.init();
                 FormElements.init();
-                $(".preload").hide();
+               // $(".preload").hide();
             }
             catch(err)
             {
@@ -525,7 +525,7 @@
             }
         });
 
-       
+        //$(".preload").hide();
     </script>
 </body>
 

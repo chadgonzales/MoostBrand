@@ -811,6 +811,7 @@ namespace MoostBrand.Controllers
 
                         foreach (var _item in invitems)
                         {
+                            int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _item.Code && p.RequisitionID == id).Quantity.Value;
                             var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == pr.LocationID).ToList();
                             if (inv1.Count == 0)
                             {
@@ -823,11 +824,17 @@ namespace MoostBrand.Controllers
                                 inventory.InventoryUoM =  _item.UnitOfMeasurement.Description;
                                 inventory.InventoryStatus = 2;
                                 inventory.LocationCode = pr.LocationID;
-                                inventory.Committed = invRepo.getCommitedReceiving(pr.LocationID.Value, _item.Code);
-                                inventory.Ordered = invRepo.getPurchaseOrderReceiving(pr.LocationID.Value, _item.Code);
+                                if (pr.ReqTypeID == 2)
+                                {
+                                    inventory.Committed =  _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                }
+                                else
+                                {
+                                    inventory.Ordered =  _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                }
                                 inventory.InStock = 0;
                                 inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
-
+                                inventory.ItemID = _item.ID;
 
                                 entity.Inventories.Add(inventory);
                                 entity.SaveChanges();

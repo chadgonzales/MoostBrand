@@ -100,7 +100,7 @@ namespace MoostBrand.Controllers
                 r.EncodedBy = null;
                 r.CheckedBy = null;
             }
-            else if (r.ReceivingTypeID == 2 || r.ReceivingTypeID == 3 || r.ReceivingTypeID == 5) //BR or WR or OR
+            else if (r.ReceivingTypeID == 2 || r.ReceivingTypeID == 3 || r.ReceivingTypeID == 5 || r.ReceivingTypeID == 6) //BR or WR or OR
             {
                 r.VesselNumber = null;
                 r.VoyageNumber = null;
@@ -201,21 +201,61 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult getInstock(string Code)
         {
-            //var instock = entity.Inventories.FirstOrDefault(x => x.ItemCode == Code);
-            //int total;
-            //if (instock != null)
-            //{
-            //    total = Convert.ToInt32(instock.InStock);
-            //}
-            //else
-            //{
-            //    total = 0;
-            //}
-
+            
             int requisitionId = Convert.ToInt32(Session["requisitionId"]);
             int total = reqDetailRepo.getInstocked(requisitionId, Code);
 
             return Json(total, JsonRequestBehavior.AllowGet);
+        }
+
+        public class ReqItems
+        {
+            public int ID { get; set; }
+            public string Description { get; set; }
+        }
+
+        [HttpPost]
+        public JsonResult getItems(string Code)
+        {
+
+            List<ReqItems> lstItems = new List<ReqItems>();
+
+            int requisitionId = Convert.ToInt32(Session["reqID"]);
+
+            var _items1 = entity.RequisitionDetails.Where(rd => rd.RequisitionID == requisitionId && rd.AprovalStatusID == 2 && rd.Item.DescriptionPurchase.Contains(Code))
+                        .ToList()
+                        .FindAll(rd => rd.Quantity > 0)
+                        .Select(ed => new
+                        {
+                            ID = ed.ID,
+                            Description = ed.Item.DescriptionPurchase
+                        });
+
+            var _items2 = entity.StockTransferDetails.Where(rd => rd.AprovalStatusID == 2 && rd.StockTransfer.RequisitionID == requisitionId
+                                                            && rd.RequisitionDetail.Item.DescriptionPurchase.Contains(Code))
+                     .ToList()
+                     .FindAll(rd => rd.Quantity > 0)
+                     .Select(ed => new
+                     {
+                         ID = ed.RequisitionDetail.ID,
+                         Description = ed.RequisitionDetail.Item.DescriptionPurchase
+                     });
+
+
+            var items = (from p in _items1 select p).Union(from q in _items2 select q);
+
+            foreach (var i in items)
+            {
+                lstItems.Add(
+                    new ReqItems
+                    {
+                        ID = i.ID,
+                        Description = i.Description
+                   });
+            }
+
+
+            return Json(lstItems, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -647,6 +687,11 @@ namespace MoostBrand.Controllers
                     
                         if (newR != null)
                         {
+                            if (newR.StockTransferID == 6)
+                            {
+                                newR.StockTransferID = newR.RequisitionID;
+                                newR.RequisitionID = null;
+                            }
                             newR.ApprovalStatus = 1;
                             newR.ApprovedBy = receiving.ApprovedBy;
                             newR.IsSync = false;
@@ -938,7 +983,7 @@ namespace MoostBrand.Controllers
                                 {
                                     i.Ordered = i.Ordered - _qty; //invRepo.getPurchaseOrderReceiving(loc, _inv.ItemCode);  
                                 }         
-                                i.InStock = invRepo.getInstockedReceiving(receving.RequisitionID, _inv.ItemCode) + _qty;
+                                i.InStock = i.InStock + _qty;
                                 i.Available = (i.InStock + i.Ordered) - i.Committed;
 
                                 entity.Entry(i).State = EntityState.Modified;
@@ -1200,16 +1245,6 @@ namespace MoostBrand.Controllers
                 if (item != null)
                 {
 
-                    //int com = getCommited(itemID);
-                    //item.Committed = com + item.Quantity;
-
-                    //int po = getPurchaseOrder(itemID);
-                    //item.Ordered = po + item.Ordered;
-
-                    ////Available = In Stock + Ordered – Committed
-                    //int avail = (Convert.ToInt32(item.InStock) + Convert.ToInt32(item.Ordered)) - Convert.ToInt32(item.Committed);
-                    //item.Available = avail;
-
                     int requisitionId = Convert.ToInt32(Session["requisitionId"]);
 
                     var reqDetail = entity.RequisitionDetails.Find(item.RequisitionDetailID);
@@ -1232,7 +1267,7 @@ namespace MoostBrand.Controllers
                     item.AprovalStatusID = 2;
                     item.IsSync = false;
 
-                    //entity.Entry(item).State = EntityState.Modified;
+                    
                     entity.SaveChanges();
                 }
             }
@@ -1274,45 +1309,33 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult AddItemPartial(int id)
         {
-            //int transferID = entity.Receivings.Find(id).StockTransferID;
-            //var items = entity.StockTransferDetails
+            int reqID = entity.Receivings.Find(id).RequisitionID.Value;
+
+            Session["reqID"] = reqID;
+
+            //var _items1 = entity.RequisitionDetails
             //            .ToList()
-            //            .FindAll(rd => rd.StockTransferID == transferID && rd.AprovalStatusID == 2)
+            //            .FindAll(rd => rd.RequisitionID == reqID && rd.AprovalStatusID == 2 && rd.Quantity > 0)
             //            .Select(ed => new
             //            {
             //                ID = ed.ID,
-            //                Description = ed.RequisitionDetail.Item.Description
+            //                Description = ed.Item.DescriptionPurchase
             //            });
 
-            //ViewBag.Rid = id;
-            //ViewBag.StockTransferDetailID = new SelectList(items, "ID", "Description");
-
-
-            int reqID = entity.Receivings.Find(id).RequisitionID;
-            var _details = entity.ReceivingDetails.Where(p => p.ReceivingID == id).Select(p => p.RequisitionDetailID);
-            var _items1 = entity.RequisitionDetails
-                        .ToList()
-                        .FindAll(rd => rd.RequisitionID == reqID && rd.AprovalStatusID == 2 && /*!_details.Contains(rd.ID)*/rd.Quantity > 0)
-                        .Select(ed => new
-                        {
-                            ID = ed.ID,
-                            Description = ed.Item.DescriptionPurchase
-                        });
-
-            var _items2 = entity.StockTransferDetails
-                     .ToList()
-                     .FindAll(rd => rd.StockTransfer.RequisitionID == reqID && rd.AprovalStatusID == 2 && /*!_details.Contains(rd.ID)*/rd.Quantity > 0)
-                     .Select(ed => new
-                     {
-                         ID = ed.RequisitionDetail.ID,
-                         Description = ed.RequisitionDetail.Item.DescriptionPurchase
-                     });
+            //var _items2 = entity.StockTransferDetails.Where(rd => rd.AprovalStatusID == 2 && rd.StockTransfer.RequisitionID == reqID)
+            //         .ToList()
+            //         .FindAll(rd => rd.Quantity > 0)
+            //         .Select(ed => new
+            //         {
+            //             ID = ed.RequisitionDetail.ID,
+            //             Description = ed.RequisitionDetail.Item.DescriptionPurchase
+            //         });
 
             ViewBag.STid = id;
 
 
-            var items = (from p in _items1 select p).Union(from q in _items2 select q);
-            ViewBag.RequisitionDetailID = new SelectList(items, "ID", "Description");
+            //var items = (from p in _items1 select p).Union(from q in _items2 select q);
+            ViewBag.RequisitionDetailID = new SelectList("", "ID", "Description");
 
             return PartialView();
         }

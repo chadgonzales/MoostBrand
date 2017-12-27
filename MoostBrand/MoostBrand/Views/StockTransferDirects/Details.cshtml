@@ -258,16 +258,16 @@
                             @Html.DisplayFor(modelItem => item.ReferenceQuantity)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Inventories.InStock)
+                            @Html.DisplayFor(modelItem => item.approvedInstock)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Inventories.Committed)
+                            @Html.DisplayFor(modelItem => item.CommittedInstock)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Inventories.Ordered)
+                            @Html.DisplayFor(modelItem => item.OrderedInstock)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.GetAvailable_Direct)
+                            @Html.DisplayFor(modelItem => item.approvedInstock)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.PreviousQuantity)

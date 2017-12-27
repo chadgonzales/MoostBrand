@@ -14,6 +14,7 @@ namespace MoostBrand.DAL
             this.Helpers = new HashSet<Helper>();
             this.Operators = new HashSet<Operator>();
             this.StockTransferDetails = new HashSet<StockTransferDetail>();
+            directReceivings = new HashSet<Receiving>();
         }
         public int ID { get; set; }
 
@@ -114,6 +115,9 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransferDetail> StockTransferDetails { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Receiving> directReceivings { get; set; }
 
         public virtual StockTransferType StockTransferType { get; set; }
 

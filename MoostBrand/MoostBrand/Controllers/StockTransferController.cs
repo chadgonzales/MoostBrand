@@ -55,18 +55,17 @@ namespace MoostBrand.Controllers
         #endregion
 
         #region COMMENTS
-        //// GET: Receiving/GetStockTransfers/5
-        public ActionResult GetRequisition() //returns Json
+
+        [HttpPost]
+        public JsonResult GetRequisition(string name) //returns Json
         {
             List<ReqCustom> lstReqCustom = new List<ReqCustom>();
-
-            //var lstReq = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))).ToList();
-
-            var lstReq = (from r in entity.Requisitions.ToList()
-                          where r.ApprovalStatus == 2 &&
-                         /* !_st.Select(p => p.RequisitionID).Contains(r.ID)*/ r.RequisitionDetails.Sum(p => p.Quantity) > 0 &&
-                          (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))
-                          select r).ToList();
+            
+            var lstReq = (from  r in entity.Requisitions.Where(r => r.RefNumber.Contains(name)).ToList()
+                          //where r.ApprovalStatus == 2 &&
+                          //      r.RequisitionDetails.Sum(p => p.Quantity) > 0 
+                               
+                         select r).ToList();
 
             foreach (var _req in lstReq)
             {
@@ -96,18 +95,17 @@ namespace MoostBrand.Controllers
             return Json(lstReqCustom, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Receiving/GetRequisition/5
-        public ActionResult GetReservation() //returns Json
+
+        [HttpPost]
+        public JsonResult GetReservation(string name) //returns Json
         {
             List<ReqCustom> _lstReqCustom = new List<ReqCustom>();
 
-            //var lstReq = entity.Requisitions.Where(r => r.ApprovalStatus == 2 && !_st.Select(p => p.RequisitionID).Contains(r.ID) && (r.RefNumber.Contains("BR") || r.RefNumber.Contains("WR"))).ToList();
-
-            var _lstReq = (from r in entity.Requisitions.ToList()
+            var _lstReq = (from  r in entity.Requisitions.Where(x => x.RefNumber.Contains("CR") && x.RefNumber.Contains(name)).ToList()
                            where r.ApprovalStatus == 2
-                           /*!_st.Select(p => p.RequisitionID).Contains(r.ID)*/ && r.RequisitionDetails.Sum(p => p.Quantity) > 0
-                           && (r.RefNumber.Contains("CR"))
-                           select r).ToList();
+                              && r.RequisitionDetails.Sum(p => p.Quantity) > 0
+                             
+                          select r).ToList();
 
             foreach (var _req in _lstReq)
             {
@@ -132,13 +130,15 @@ namespace MoostBrand.Controllers
             return Json(_lstReqCustom, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GetReceiving() //returns Json
+        [HttpPost]
+        public JsonResult GetReceiving(string name) //returns Json
         {
             List<RecCustom> lstRecCustom = new List<RecCustom>();
 
-            var _receivings = (from r in entity.Receivings.ToList()
-                               where r.ApprovalStatus == 2 && /*!_st.Select(p => p.ReceivingID).Contains(r.ID)*/  r.ReceivingDetails.Sum(p => p.Quantity) > 0
-                               select r).ToList();
+            var _receivings = (from  r in entity.Receivings.Where(x => x.ReceivingID.Contains(name)).ToList()
+                               where r.ApprovalStatus == 2 &&  
+                                     r.ReceivingDetails.Sum(p => p.Quantity) > 0
+                              select r).ToList();
 
 
             foreach (var _rec in _receivings)
@@ -1023,41 +1023,95 @@ namespace MoostBrand.Controllers
 
         #region PARTIAL
 
+        public class ReqItems
+        {
+            public int ID { get; set; }
+            public string Description { get; set; }
+        }
+
+
+        [HttpPost]
+        public JsonResult getRequisitionItems(string code)
+        {
+
+            List<ReqItems> lstItems = new List<ReqItems>();
+
+            int requisitionId = Convert.ToInt32(Session["reqIDs"]);
+
+            var _items = entity.RequisitionDetails.Where(rd => rd.RequisitionID == requisitionId && rd.AprovalStatusID == 2 && rd.Item.DescriptionPurchase.Contains(code))
+                       .ToList()
+                       .FindAll(rd =>  rd.Quantity > 0)  /*!_stdetails1.Contains(rd.ID)*/
+                       .Select(ed => new
+                       {
+                           ID = ed.ID,
+                           Description = ed.Item.DescriptionPurchase
+                       });
+
+            foreach (var i in _items)
+            {
+                lstItems.Add(
+                    new ReqItems
+                    {
+                        ID = i.ID,
+                        Description = i.Description
+                    });
+            }
+
+
+            return Json(lstItems, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult getReceivingItems(string code)
+        {
+
+            List<ReqItems> lstItems = new List<ReqItems>();
+
+            int requisitionId = Convert.ToInt32(Session["recIDs"]);
+
+            var items = entity.ReceivingDetails.Where(rd => rd.ReceivingID == requisitionId && rd.AprovalStatusID == 2 && rd.RequisitionDetail.Item.Description.Contains(code))
+                         .ToList()
+                         .FindAll(rd => rd.Quantity > 0) /*!_stdetails.Contains(rd.ID)*/
+                         .Select(ed => new
+                         {
+                             ID = ed.ID,
+                             Description = ed.RequisitionDetail.Item.Description
+                         });
+
+            foreach (var i in items)
+            {
+                lstItems.Add(
+                    new ReqItems
+                    {
+                        ID = i.ID,
+                        Description = i.Description
+                    });
+            }
+
+
+            return Json(lstItems, JsonRequestBehavior.AllowGet);
+        }
+
         // GET: StockTransfer/AddItemPartial/5
         [AccessChecker(Action = 2, ModuleID = 4)]
         public ActionResult AddItemPartial(int id)
         {
 
             var recID = entity.StockTransfers.Find(id);
-            //var _stdetails = entity.StockTransferDetails.Where(s=>s.StockTransferID == id).Select(s=>s.ReceivingDetailID);
+       
             int recIDs = Convert.ToInt32(recID.ReceivingID);
-            var items = entity.ReceivingDetails
-                        .ToList()
-                        .FindAll(rd => rd.ReceivingID == recIDs && rd.AprovalStatusID == 2 && rd.Quantity > 0 ) /*!_stdetails.Contains(rd.ID)*/
-                        .Select(ed => new
-                        {
-                            ID = ed.ID,
-                            Description = ed.RequisitionDetail.Item.Description
-                        });
+
+            Session["recIDs"] = recIDs;
 
             var reqID = entity.StockTransfers.Find(id);
             int reqIDs = Convert.ToInt32(reqID.RequisitionID);
-            //var _stdetails1 = entity.StockTransferDetails.Where(s => s.StockTransferID == id).Select(s => s.RequisitionDetailID);
-            var _items = entity.RequisitionDetails
-                        .ToList()
-                        .FindAll(rd => rd.RequisitionID == reqIDs && rd.AprovalStatusID == 2 && rd.Quantity > 0)  /*!_stdetails1.Contains(rd.ID)*/
-                        .Select(ed => new
-                        {
-                            ID = ed.ID,
-                            Description = ed.Item.DescriptionPurchase
-                        });
 
-
+            Session["reqIDs"] = reqIDs;
 
             //ViewBag.STid = id;
             ViewBag.Post = recID.StockTransferTypeID;
-            ViewBag.ReceivingDetailID = new SelectList(items, "ID", "Description");
-            ViewBag.RequisitionDetailID = new SelectList(_items, "ID", "Description");
+            //ViewBag.ReceivingDetailID = new SelectList(items, "ID", "Description");
+            //ViewBag.RequisitionDetailID = new SelectList(_items, "ID", "Description");
             return PartialView();
         }
 

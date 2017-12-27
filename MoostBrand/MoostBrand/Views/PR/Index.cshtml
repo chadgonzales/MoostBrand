@@ -158,7 +158,7 @@
 
     function Approve() {
 
-        $('#approve_button').prop('disabled', false);
+        $('#approve_button').attr("disabled", "disabled");
         var prID = arguments[0];
      
         var url = '@Url.Action("Approve", "PR")/' + prID;

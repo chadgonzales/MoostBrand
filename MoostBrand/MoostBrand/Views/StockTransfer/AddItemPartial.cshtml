@@ -12,19 +12,23 @@
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <div class="form-horizontal">
+            @Html.Hidden("RequisitionDetailID")
+            @Html.Hidden("ReceivingDetailID")
+
+            <div class="form-horizontal" id="modalItem">
                 <div class="form-group">
                     <label class = "control-label col-md-2">Item Name</label>
                     <div class="col-md-8">
                         @{
                             if (ViewBag.Post == 1 || ViewBag.Post == 3)
                             {
-                                @Html.DropDownList("RequisitionDetailID", String.Empty)
+                                @Html.TextBox("itemreq", ViewBag.ItemReq as string, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.RequisitionDetailID, "", new { @class = "text-danger" })
                             }
                             else
                             {
-                                @Html.DropDownList("ReceivingDetailID", String.Empty)
+
+                                @Html.TextBox("itemrec", ViewBag.ItemRec as string, new { @class = "form-control" })
                                 @Html.ValidationMessageFor(model => model.ReceivingDetailID, "", new { @class = "text-danger" })
                             }
                         }
@@ -100,9 +104,9 @@
 
 <script>
 
-    $("#RequisitionDetailID").change(function () {
+    @*$("#itemreq").focusout(function () {
        
-        var val = $("#RequisitionDetailID option:selected").val();
+        var val = $("#RequisitionDetailID").val();
 
         $.ajax({
             url: '@Url.Action("DisplayComputation", "StockTransfer")',
@@ -119,8 +123,8 @@
         })
     });
 
-    $("#ReceivingDetailID").change(function () {
-        var val = $("#ReceivingDetailID option:selected").val();
+    $("#itemrec").focusout(function () {
+        var val = $("#ReceivingDetailID").val();
 
         $.ajax({
             url: '@Url.Action("DisplayComputations", "StockTransfer")',
@@ -134,7 +138,7 @@
                 $("#Hidden_Quantity").val(data.Quantity);
             }
         })
-    });
+    });*@
 
     $('#Quantity').focusout(function () {
 
