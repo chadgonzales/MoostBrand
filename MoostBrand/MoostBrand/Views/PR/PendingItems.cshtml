@@ -555,6 +555,7 @@
         location.reload();
     }
     function Approve(id, itemID) {
+        $('#approve_button').attr("disabled", "disabled");
         var url = '@Url.Action("ApproveItem", "PR")/' + id;
         $.post(url, { id: id, itemID: itemID }, ReloadFunction);
     }

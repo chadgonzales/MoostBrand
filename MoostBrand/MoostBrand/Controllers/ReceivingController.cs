@@ -642,14 +642,7 @@ namespace MoostBrand.Controllers
                     Description = x.Description
                 });
 
-            //var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2)
-            //                    .Select(r => new
-            //                    {
-            //                        ID = r.ID,
-            //                        RefNumber = (r.RefNumber.Contains("PR")) ? "PO" + r.RefNumber.Substring(2) : r.RefNumber
-            //                    });
-
-            //ViewBag.RequisitionID = new SelectList(_requisitions, "ID", "RefNumber");
+        
             ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description");
             var empList = new SelectList((from s in entity.Employees
@@ -709,9 +702,6 @@ namespace MoostBrand.Controllers
                                 entity.Receivings.Add(newR);
                                 entity.SaveChanges();
                             
-                           
-
-                            //return RedirectToAction("Index");
 
                             return RedirectToAction("Details", new { id = receiving.ID });
                         }
@@ -749,7 +739,6 @@ namespace MoostBrand.Controllers
                         Description = x.Description
                     });
 
-            //ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", receiving.LocationID);
             var empList = from s in entity.Employees
@@ -758,7 +747,7 @@ namespace MoostBrand.Controllers
                               ID = s.ID,
                               FullName = s.FirstName + " " + s.LastName
                           };
-            //new SelectList((), "ID", "FullName");
+           
             ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", receiving.EncodedBy);
             ViewBag.CheckedBy = new SelectList(empList, "ID", "FullName", receiving.CheckedBy);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", receiving.ReceivedBy);
@@ -794,14 +783,14 @@ namespace MoostBrand.Controllers
                 ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber", receiving.RequisitionID);
                 ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
                 ViewBag.LocationID = new SelectList(loc, "ID", "Description", receiving.LocationID);
-                //ViewBag.StockTransferID = new SelectList(entity.StockTransfers, "ID", "TransferID", receiving.StockTransferID);
+                
                 var empList = from s in entity.Employees
                               select new
                               {
                                   ID = s.ID,
                                   FullName = s.FirstName + " " + s.LastName
                               };
-                //new SelectList((), "ID", "FullName");
+              
                 ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", receiving.EncodedBy);
                 ViewBag.CheckedBy = new SelectList(empList, "ID", "FullName", receiving.CheckedBy);
                 ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", receiving.ReceivedBy);
@@ -824,7 +813,7 @@ namespace MoostBrand.Controllers
             {
                 try
                 {
-                    //var r = entity.Requisitions.FirstOrDefault(r1 => r1.ID == pr.ID && (r1.RequestedBy == UserID || AcctType == 1 || AcctType == 4)).ApprovalStatus;
+                  
                     var r = entity.Receivings.FirstOrDefault(r1 => r1.ID == receiving.ID);
                     receiving.ApprovalStatus = 1;
                     if (r.ApprovalStatus == 1)
@@ -867,14 +856,14 @@ namespace MoostBrand.Controllers
             ViewBag.RequisitionID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2), "ID", "RefNumber");
             ViewBag.ReceivingTypeID = new SelectList(entity.ReceivingTypes, "ID", "Type", receiving.ReceivingTypeID);
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", receiving.LocationID);
-            //ViewBag.StockTransferID = new SelectList(entity.StockTransfers, "ID", "TransferID", receiving.StockTransferID);
+           
             var empList = from s in entity.Employees
                           select new
                           {
                               ID = s.ID,
                               FullName = s.FirstName + " " + s.LastName
                           };
-            //new SelectList((), "ID", "FullName");
+          
             ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", receiving.EncodedBy);
             ViewBag.CheckedBy = new SelectList(empList, "ID", "FullName", receiving.CheckedBy);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", receiving.ReceivedBy);
@@ -937,7 +926,7 @@ namespace MoostBrand.Controllers
             {
                 int approve = 0;
                 // TODO: Add delete logic here
-                //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
+              
                 var receving = entity.Receivings.Find(id);
                 if (receving.ReceivingDetails.Count() > 0)
                 {
@@ -976,12 +965,12 @@ namespace MoostBrand.Controllers
                             foreach (var _inv in inv)
                             {
                                 var i = entity.Inventories.Find(_inv.ID);
-                              //  i.Committed = invRepo.getCommitedReceiving(loc, _inv.ItemCode);
+                             
                                 int _item = entity.Items.FirstOrDefault(t => t.Code == _inv.ItemCode).ID;
                                 int _qty = receving.ReceivingDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _item && p.ReceivingID == id).Quantity.Value;
                                 if (receving.Requisition.ReqTypeID == 1)
                                 {
-                                    i.Ordered = i.Ordered - _qty; //invRepo.getPurchaseOrderReceiving(loc, _inv.ItemCode);  
+                                    i.Ordered = i.Ordered - _qty;
                                 }         
                                 i.InStock = i.InStock + _qty;
                                 i.Available = (i.InStock + i.Ordered) - i.Committed;
@@ -1026,6 +1015,7 @@ namespace MoostBrand.Controllers
                                 inventory.Ordered = invRepo.getPurchaseOrderReceiving(loc, _item.Code);
                                 inventory.InStock =  receving.ReceivingDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _item.ID && p.ReceivingID == id).Quantity;
                                 inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
+                                inventory.ItemID = _item.ID;
 
 
                                 entity.Inventories.Add(inventory);
@@ -1189,23 +1179,16 @@ namespace MoostBrand.Controllers
             int UserType = Convert.ToInt32(Session["usertype"]);
 
             var receiving = entity.Receivings.FirstOrDefault(r => r.ID == id);
-            //var ReceivedBy = entity.Receivings.FirstOrDefault(r => r.ID == id).ReceivedBy;
-            //if (ReceivedBy != UserID && UserType != 1 && UserType != 4)
-            //{
-            //    return RedirectToAction("Index", "Home");
-            //}
+          
 
             var items = entity.ReceivingDetails
                         .ToList()
                         .FindAll(rd => rd.ReceivingID == id && rd.AprovalStatusID == 1);
 
             var recdetails = entity.ReceivingDetails.FirstOrDefault(rd => rd.ReceivingID == id && rd.AprovalStatusID == 2);
-            //var items = entity.RequisitionDetails
-            //            .ToList()
-            //            .FindAll(rd => rd.RequisitionID == id && rd.AprovalStatusID == 1 && rd.Requisition.RequestedBy == UserID);
-
+           
             ViewBag.Rid = id;
-            // ViewBag.ReceivedBy =
+          
             try
             {
                 ViewBag.Approved = recdetails.AprovalStatusID.ToString();
@@ -1313,28 +1296,11 @@ namespace MoostBrand.Controllers
 
             Session["reqID"] = reqID;
 
-            //var _items1 = entity.RequisitionDetails
-            //            .ToList()
-            //            .FindAll(rd => rd.RequisitionID == reqID && rd.AprovalStatusID == 2 && rd.Quantity > 0)
-            //            .Select(ed => new
-            //            {
-            //                ID = ed.ID,
-            //                Description = ed.Item.DescriptionPurchase
-            //            });
-
-            //var _items2 = entity.StockTransferDetails.Where(rd => rd.AprovalStatusID == 2 && rd.StockTransfer.RequisitionID == reqID)
-            //         .ToList()
-            //         .FindAll(rd => rd.Quantity > 0)
-            //         .Select(ed => new
-            //         {
-            //             ID = ed.RequisitionDetail.ID,
-            //             Description = ed.RequisitionDetail.Item.DescriptionPurchase
-            //         });
 
             ViewBag.STid = id;
 
 
-            //var items = (from p in _items1 select p).Union(from q in _items2 select q);
+           
             ViewBag.RequisitionDetailID = new SelectList("", "ID", "Description");
 
             return PartialView();

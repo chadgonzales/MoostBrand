@@ -964,27 +964,7 @@ namespace MoostBrand.Controllers
                     entity.SaveChanges();
 
                     #region WAC                    
-                    //var itm = entity.Items.Where(i => i.ID == item.RequisitionDetail.ItemID).FirstOrDefault();
-                    //if (item.Quantity <= itm.Quantity)
-                    //{
-                    //    var itmDetail = from s in entity.ItemDetail
-                    //                    where s.ItemID == itm.ID
-                    //                    select s;
-
-                    //    itm.Quantity -= item.Quantity;
-
-                    //    //decimal qtyCost = 0;
-
-                    //    //foreach (var detail in itmDetail)
-                    //    //    qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
-
-                    //    //itm.Price = Convert.ToDecimal((qtyCost) / itm.Quantity);
-
-                    //    //WAC
-
-                    //    entity.Entry(itm).State = EntityState.Modified;
-                    //    entity.SaveChanges();
-                    //}
+                   
                     #endregion
                 }
 

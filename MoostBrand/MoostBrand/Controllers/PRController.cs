@@ -26,37 +26,7 @@ namespace MoostBrand.Controllers
 
         #region COMMENT
 
-        //[HttpPost]
-        //public JsonResult getCodeCommit(string Code)
-        //{
-        //    var com = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 4 && x.AprovalStatusID == 2);
-        //    var total = com.Sum(x => x.Quantity);
-        //    if (total == null)
-        //    {
-        //        total = 0;
-        //    }
-        //    return Json(total, JsonRequestBehavior.AllowGet);
-        //}
-        //[HttpPost]
-        //public JsonResult getCodePO(string Code)
-        //{
-        //    var pur = entity.RequisitionDetails.Where(x => x.Requisition.RequisitionTypeID == 1 && x.AprovalStatusID == 2);
-        //    var total = pur.Sum(x => x.Quantity);
-        //    if (total == null)
-        //    {
-        //        total = 0;
-        //    }
-        //    return Json(total, JsonRequestBehavior.AllowGet);
-        //}
 
-
-        //[HttpPost]
-        //public JsonResult GetCommitted(int ItemID)
-        //{
-        //    //Available = In Stock + Ordered – Committed
-        //    var num = ItemID;
-        //    return Json(num, JsonRequestBehavior.AllowGet);
-        //}
 
         #endregion
 
@@ -407,8 +377,6 @@ namespace MoostBrand.Controllers
 
             Session["requisitionId"] = id;
 
-            //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
-
             var req = new Req
             {
                 Requisitions = entity.Requisitions.Find(id)
@@ -582,16 +550,10 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 2, ModuleID = 3)]
         public ActionResult Edit(int id)
         {
-            //ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
-
-
-            //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
             var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id);
             if (pr.ApprovalStatus == 1)
             {
                 #region DROPDOWNS
-
-                //ViewBag.DateRequired = pr.DateRequired.Value.ToString("dd/MM/yyyy");
 
                 var employees = from s in entity.Employees
                                 select new
@@ -637,7 +599,7 @@ namespace MoostBrand.Controllers
             {
                 try
                 {
-                    //var r = entity.Requisitions.FirstOrDefault(r1 => r1.ID == pr.ID && (r1.RequestedBy == UserID || AcctType == 1 || AcctType == 4)).ApprovalStatus;
+                    
                     var r = entity.Requisitions.FirstOrDefault(r1 => r1.ID == pr.ID);
                     if(r.ApprovalStatus == 1)
                     {
@@ -683,7 +645,7 @@ namespace MoostBrand.Controllers
                                 FullName = s.FirstName + " " + s.LastName
                             };
 
-            //ViewBag.DateRequired = pr.DateRequired.Value.ToString("dd/MM/yyyy");
+            
             ViewBag.RequisitionTypeID = new SelectList(entity.RequisitionTypes.Where(p => p.ID != 4 && p.ID != 5), "ID", "Type", pr.RequisitionTypeID);
             ViewBag.RequestedBy = new SelectList(employees, "ID", "FullName", pr.RequestedBy);
             ViewBag.LocationID = new SelectList(entity.Locations, "ID", "Description", pr.LocationID);
@@ -710,7 +672,7 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 3, ModuleID = 3)]
         public ActionResult Delete(int id)
         {
-            //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
+            
             var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id);
             if(pr == null)
             {
@@ -758,7 +720,7 @@ namespace MoostBrand.Controllers
             {
                 int approve = 0;
                 // TODO: Add delete logic here
-                //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
+              
                 var pr = entity.Requisitions.Find(id);
 
                 if(pr.RequisitionDetails.Count() > 0)
