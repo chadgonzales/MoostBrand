@@ -577,7 +577,7 @@ namespace MoostBrand.Controllers
                 #region WAC    
                 
                 #endregion
-                return RedirectToAction("Details", new { id = stocktransfer.StockTransferID });
+                return RedirectToAction("Details", new { id = id });
             }
             return RedirectToAction("ApprovedItems", new { id = stocktransfer.StockTransferID });
         }

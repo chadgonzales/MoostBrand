@@ -436,6 +436,8 @@
         location.reload();
     }
     function Approve(id, itemID, ReqID){
+
+        $('#approve_button').attr("disabled", "disabled");
         var url = '@Url.Action("ApproveItem", "Reservation")/' + id;
         $.post(url, {id: id, itemID : itemID , ReqID , ReqID}, ReloadFunction);
     }

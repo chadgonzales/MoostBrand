@@ -186,6 +186,8 @@
 
 
     function Approve() {
+
+        $('#approve_button').attr("disabled", "disabled");
         var prID = arguments[0];
         var url = '@Url.Action("Approve", "Reservation")/' + prID;
         var frm = $("#action_form").serialize();

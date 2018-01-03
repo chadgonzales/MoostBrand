@@ -392,7 +392,7 @@ namespace MoostBrand.Controllers
 
             ReportDataSource _rds = new ReportDataSource();
             _rds.Name = "dsStockLedger";
-            _rds.Value = lstStockLedger.OrderByDescending(c => c.Date).ThenBy(n => n.Type);
+            _rds.Value = lstStockLedger.OrderBy(c => c.Date).ThenBy(n => n.Type);
 
             reportViewer.KeepSessionAlive = false;
             reportViewer.LocalReport.DataSources.Clear();

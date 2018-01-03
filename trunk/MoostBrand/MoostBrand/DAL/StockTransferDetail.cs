@@ -272,10 +272,7 @@ namespace MoostBrand.DAL
             {
                 try
                 {
-                    MoostBrandEntities entity = new MoostBrandEntities();
-                    Inventory inv = entity.Inventories.Find(InventoryID);
-
-                    return (inv.InStock.Value + inv.Ordered.Value) - inv.Committed.Value;
+                    return (InventoryInstock + OrderedInstock) - CommittedInstock;
                 }
                 catch { return 0; }
             }
