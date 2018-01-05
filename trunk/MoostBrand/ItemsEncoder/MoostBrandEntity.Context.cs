@@ -33,5 +33,6 @@ namespace ItemsEncoder
         public virtual DbSet<Inventory> Inventories { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Vendor> Vendors { get; set; }
+        public virtual DbSet<Size> Sizes { get; set; }
     }
 }

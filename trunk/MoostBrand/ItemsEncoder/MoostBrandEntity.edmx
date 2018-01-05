@@ -44,6 +44,7 @@
           <Property Name="MaximumInventory" Type="int" />
           <Property Name="DailyAverageUsage" Type="int" />
           <Property Name="LeadTime" Type="int" />
+          <Property Name="ItemID" Type="int" />
         </EntityType>
         <EntityType Name="Items">
           <Key>
@@ -86,6 +87,14 @@
           <Property Name="Description" Type="nvarchar" MaxLength="100" />
           <Property Name="LocationTypeID" Type="int" />
         </EntityType>
+        <EntityType Name="Sizes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="SubCategories">
           <Key>
             <PropertyRef Name="ID" />
@@ -95,6 +104,7 @@
           <Property Name="Code" Type="nvarchar" MaxLength="50" />
           <Property Name="Description" Type="nvarchar" MaxLength="50" />
           <Property Name="Picture" Type="nvarchar" MaxLength="100" />
+          <Property Name="SubCategoryTypeID" Type="int" />
         </EntityType>
         <EntityType Name="UnitOfMeasurements">
           <Key>
@@ -160,6 +170,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Items_Sizes">
+          <End Role="Sizes" Type="Self.Sizes" Multiplicity="0..1" />
+          <End Role="Items" Type="Self.Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sizes">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Items">
+              <PropertyRef Name="SizeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Items_SubCategories">
           <End Role="SubCategories" Type="Self.SubCategories" Multiplicity="0..1" />
           <End Role="Items" Type="Self.Items" Multiplicity="*" />
@@ -202,6 +224,7 @@
           <EntitySet Name="Inventory" EntityType="Self.Inventory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Items" EntityType="Self.Items" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Locations" EntityType="Self.Locations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sizes" EntityType="Self.Sizes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubCategories" EntityType="Self.SubCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UnitOfMeasurements" EntityType="Self.UnitOfMeasurements" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vendors" EntityType="Self.Vendors" Schema="dbo" store:Type="Tables" />
@@ -215,6 +238,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_Items_Categories" Association="Self.FK_Items_Categories">
             <End Role="Categories" EntitySet="Categories" />
+            <End Role="Items" EntitySet="Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Items_Sizes" Association="Self.FK_Items_Sizes">
+            <End Role="Sizes" EntitySet="Sizes" />
             <End Role="Items" EntitySet="Items" />
           </AssociationSet>
           <AssociationSet Name="FK_Items_SubCategories" Association="Self.FK_Items_SubCategories">
@@ -288,6 +315,7 @@
           <NavigationProperty Name="SubCategory" Relationship="Self.FK_Items_SubCategories" FromRole="Items" ToRole="SubCategories" />
           <NavigationProperty Name="UnitOfMeasurement" Relationship="MoostBrandModel.FK_Items_UnitOfMeasurements" FromRole="Item" ToRole="UnitOfMeasurement" />
           <Property Name="DailyAverageUsage" Type="Int32" />
+          <NavigationProperty Name="Size" Relationship="MoostBrandModel.FK_Items_Sizes" FromRole="Item" ToRole="Size" />
         </EntityType>
         <EntityType Name="SubCategory">
           <Key>
@@ -300,6 +328,7 @@
           <Property Name="Picture" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Category" Relationship="Self.FK_SubCategories_Categories" FromRole="SubCategories" ToRole="Categories" />
           <NavigationProperty Name="Items" Relationship="Self.FK_Items_SubCategories" FromRole="SubCategories" ToRole="Items" />
+          <Property Name="SubCategoryTypeID" Type="Int32" />
         </EntityType>
         <Association Name="FK_Items_Brands">
           <End Role="Brands" Type="Self.Brand" Multiplicity="0..1" />
@@ -382,6 +411,11 @@
             <End Role="Inventory" EntitySet="Inventories" />
           </AssociationSet>
           <EntitySet Name="Vendors" EntityType="MoostBrandModel.Vendor" />
+          <EntitySet Name="Sizes" EntityType="MoostBrandModel.Size" />
+          <AssociationSet Name="FK_Items_Sizes" Association="MoostBrandModel.FK_Items_Sizes">
+            <End Role="Size" EntitySet="Sizes" />
+            <End Role="Item" EntitySet="Items" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UnitOfMeasurement">
           <Key>
@@ -429,6 +463,7 @@
           <Property Name="LeadTime" Type="Int32" />
           <NavigationProperty Name="Location" Relationship="MoostBrandModel.FK_Inventory_Locations" FromRole="Inventory" ToRole="Location" />
           <Property Name="SalesDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ItemID" Type="Int32" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -471,6 +506,27 @@
           <Property Name="FaxNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Size">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Items" Relationship="MoostBrandModel.FK_Items_Sizes" FromRole="Size" ToRole="Item" />
+        </EntityType>
+        <Association Name="FK_Items_Sizes">
+          <End Type="MoostBrandModel.Size" Role="Size" Multiplicity="0..1" />
+          <End Type="MoostBrandModel.Item" Role="Item" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Size">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Item">
+              <PropertyRef Name="SizeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -531,6 +587,7 @@
           <EntitySetMapping Name="SubCategories">
             <EntityTypeMapping TypeName="MoostBrandModel.SubCategory">
               <MappingFragment StoreEntitySet="SubCategories">
+                <ScalarProperty Name="SubCategoryTypeID" ColumnName="SubCategoryTypeID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
@@ -552,6 +609,7 @@
           <EntitySetMapping Name="Inventories">
             <EntityTypeMapping TypeName="MoostBrandModel.Inventory">
               <MappingFragment StoreEntitySet="Inventory">
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="SalesDescription" ColumnName="SalesDescription" />
                 <ScalarProperty Name="LeadTime" ColumnName="LeadTime" />
                 <ScalarProperty Name="DailyAverageUsage" ColumnName="DailyAverageUsage" />
@@ -599,6 +657,15 @@
                 <ScalarProperty Name="Attn" ColumnName="Attn" />
                 <ScalarProperty Name="GeneralName" ColumnName="GeneralName" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sizes">
+            <EntityTypeMapping TypeName="MoostBrandModel.Size">
+              <MappingFragment StoreEntitySet="Sizes">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Code" ColumnName="Code" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>

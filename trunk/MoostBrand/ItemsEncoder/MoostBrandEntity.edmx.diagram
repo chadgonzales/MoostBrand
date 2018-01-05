@@ -19,6 +19,8 @@
         <EntityTypeShape EntityType="MoostBrandModel.Location" Width="1.5" PointX="5.125" PointY="0.75" />
         <AssociationConnector Association="MoostBrandModel.FK_Inventory_Locations" />
         <EntityTypeShape EntityType="MoostBrandModel.Vendor" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="MoostBrandModel.Size" Width="1.5" PointX="9.375" PointY="0.875" />
+        <AssociationConnector Association="MoostBrandModel.FK_Items_Sizes" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

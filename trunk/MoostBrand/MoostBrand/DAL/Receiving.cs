@@ -122,6 +122,7 @@ namespace MoostBrand.DAL
         {
             get
             {
+                MoostBrandEntities entity = new MoostBrandEntities();
                 try
                 {
                     string location = "";
@@ -136,7 +137,55 @@ namespace MoostBrand.DAL
 
                     return location;
                 }
-                catch { return "direct stock transfer"; }
+                catch {
+                        int destid = entity.StockTransfers.Find(RequisitionID.Value).DestinationID.Value;
+                        return entity.Locations.Find(destid).Description;
+                      }
+            }
+        }
+        public string GetSourceLocation
+        {
+            get
+            {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                try
+                {
+                    string location = "";
+                    if (Requisition.Location != null)
+                    {
+                        location = Requisition.Location.Description;
+                    }
+
+                    return location;
+                }
+                catch
+                {
+                    string location = entity.StockTransfers.Find(RequisitionID.Value).Location.Description;
+                    return location;
+                }
+            }
+        }
+
+        public string GetRefNumber
+        {
+            get
+            {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                try
+                {
+                    string refnumber = "";
+                    if (Requisition.RefNumber != null)
+                    {
+                        refnumber = entity.StockTransfers.FirstOrDefault(r=>r.RequisitionID ==RequisitionID.Value).TransferID;
+                    }
+                   
+                    return refnumber;
+                }
+                catch
+                {
+                    string refnumber = entity.StockTransfers.Find(RequisitionID.Value).TransferID;
+                    return refnumber;
+                }
             }
         }
         public int? StockTransferID { get; set; }
