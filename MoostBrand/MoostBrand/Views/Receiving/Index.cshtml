@@ -64,10 +64,10 @@
                             @Html.DisplayFor(modelItem => item.ReceivingType.Type)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Requisition.Location.Description)
+                            @Html.DisplayFor(modelItem => item.GetSourceLocation)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Requisition.Location1.Description)
+                            @Html.DisplayFor(modelItem => item.GetLocation)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ApprovalStatu.Status)

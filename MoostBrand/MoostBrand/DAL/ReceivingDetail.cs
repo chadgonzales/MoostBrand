@@ -13,11 +13,9 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ReceivingDetail()
         {
-            //ReturnedItems = new HashSet<ReturnedItem>();
             StockAllocationDetails = new HashSet<StockAllocationDetail>();
             StockTransferDetails = new HashSet<StockTransferDetail>();
             StockTransferDetails1 = new HashSet<StockTransferDetail>();
-            //StockTransferDirects = new HashSet<StockTransferDirect>();
         }
 
         public int ID { get; set; }
@@ -58,10 +56,7 @@ namespace MoostBrand.DAL
 
         public virtual RequisitionDetail RequisitionDetail1 { get; set; }
 
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //public virtual ICollection<ReturnedItem> ReturnedItems { get; set; }
-
-
+     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAllocationDetail> StockAllocationDetails { get; set; }
 
@@ -71,33 +66,40 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransferDetail> StockTransferDetails1 { get; set; }
 
-        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        //public virtual ICollection<StockTransferDirect> StockTransferDirects { get; set; }
-
+      
         public int GetCommited
         {
             get
             {
                 MoostBrandEntities entity = new MoostBrandEntities();
+                StockTransferRepository dstrRepo = new StockTransferRepository();
 
-              
-                RequisitionDetail reqDetail = entity.RequisitionDetails.Find(RequisitionDetailID);
-              
-
-                RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
-
-                int loc = 0;
-                if (reqDetail.Requisition.Destination == null)
+                if (Receiving.ReceivingTypeID != 6)
                 {
-                    loc = reqDetail.Requisition.LocationID.Value;
-                }
-                else
-                {
-                    loc = reqDetail.Requisition.Destination.Value;
-                }
 
+                    RequisitionDetail reqDetail = entity.RequisitionDetails.Find(RequisitionDetailID);
 
-                return (reqDetailsRepo.getReceivingCommited(loc, reqDetail.ItemID));
+                    RequisitionDetailsRepository reqDetailsRepo = new RequisitionDetailsRepository();
+
+                    int loc = 0;
+                    if (reqDetail.Requisition.Destination == null)
+                    {
+                        loc = reqDetail.Requisition.LocationID.Value;
+                    }
+                    else
+                    {
+                        loc = reqDetail.Requisition.Destination.Value;
+                    }
+
+                    return (reqDetailsRepo.getReceivingCommited(loc, reqDetail.ItemID));
+                }
+                else {
+                    var st = entity.StockTransferDetails.Find(RequisitionDetailID);
+                    int loc = st.StockTransfer.DestinationID.Value;
+                    int itemid = st.Inventories.ItemID.Value;
+
+                    return dstrRepo.getDirectInventory(itemid, loc).Committed.Value;
+                }
             }
         }
 
@@ -108,6 +110,7 @@ namespace MoostBrand.DAL
                 MoostBrandEntities entity = new MoostBrandEntities();
                 RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
                 ReceivingRepository recRepo = new ReceivingRepository();
+                StockTransferRepository dstrRepo = new StockTransferRepository();
 
                 //int reqId = Convert.ToInt32(HttpContext.Current.Session["requisitionId"]);
                 RequisitionDetail reqDetail = entity.RequisitionDetails.Find(RequisitionDetailID);
@@ -116,31 +119,111 @@ namespace MoostBrand.DAL
                 Item item = entity.Items.Find(reqDetail.ItemID);
 
                 int loc = 0;
-                if (reqDetail.Requisition.Destination == null)
+                if (Receiving.ReceivingTypeID != 6)
                 {
-                    loc = reqDetail.Requisition.LocationID.Value;
-                }
-                else
-                {
-                    loc = reqDetail.Requisition.Destination.Value;
-                }
-                int total = 0;
-                try
-                {
-                    if (Receiving.ApprovalStatus == 2)
+                    if (reqDetail.Requisition.Destination == null)
                     {
-                        total = repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code);
+                        loc = reqDetail.Requisition.LocationID.Value;
                     }
                     else
                     {
-                        total = repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code);
-                        //total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID)) - repo.getStockTranferReceiving(loc, reqDetail.ItemID));
-
+                        loc = reqDetail.Requisition.Destination.Value;
                     }
-                }
-                catch { total = repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code); }
+                    int total = 0;
+                    try
+                    {
+                        if (Receiving.ApprovalStatus == 2)
+                        {
+                            total = repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code);
+                        }
+                        else
+                        {
+                            total = repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code);
+                            //total = ((repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code) + recRepo.getReceiving(reqDetail.ID)) - repo.getStockTranferReceiving(loc, reqDetail.ItemID));
 
-                return total;
+                        }
+                    }
+                    catch { total = repo.getInstockedReceiving(reqDetail.RequisitionID, item.Code); }
+                    return total;
+                }
+                else
+                {
+                    var st = entity.StockTransferDetails.Find(RequisitionDetailID);
+                    int loc1 = st.StockTransfer.DestinationID.Value;
+                    int itemid = st.Inventories.ItemID.Value;
+
+                    return dstrRepo.getDirectInventory(itemid, loc1).InStock.Value;
+                }
+
+              
+            }
+        }
+
+        public string GetItemDesc
+        {
+            get
+            {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                StockTransferRepository dstrRepo = new StockTransferRepository();
+
+                if (Receiving.ReceivingTypeID != 6)
+                {
+                    return RequisitionDetail.Item.DescriptionPurchase;
+                }
+                else
+                {
+                    var st = entity.StockTransferDetails.Find(RequisitionDetailID);
+                    int loc1 = st.StockTransfer.DestinationID.Value;
+                    int itemid = st.Inventories.ItemID.Value;
+
+                    return dstrRepo.getDirectInventory(itemid, loc1).Items.DescriptionPurchase;
+                }
+            
+            }
+        }
+
+        public string GetItemCode
+        {
+            get
+            {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                StockTransferRepository dstrRepo = new StockTransferRepository();
+
+                if (Receiving.ReceivingTypeID != 6)
+                {
+                    return RequisitionDetail.Item.Code;
+                }
+               else
+                {
+                    var st = entity.StockTransferDetails.Find(RequisitionDetailID);
+                    int loc1 = st.StockTransfer.DestinationID.Value;
+                    int itemid = st.Inventories.ItemID.Value;
+
+                    return dstrRepo.getDirectInventory(itemid, loc1).Items.Code;
+                }
+
+            }
+        }
+        public string GetPrevItem
+        {
+            get
+            {
+                MoostBrandEntities entity = new MoostBrandEntities();
+                StockTransferRepository dstrRepo = new StockTransferRepository();
+
+                if (Receiving.ReceivingTypeID != 6)
+                {
+                    return RequisitionDetail1.Item.Description;
+                }
+               else
+                {
+                    var st = entity.StockTransferDetails.Find(RequisitionDetailID);
+                    int loc = st.StockTransfer.DestinationID.Value;
+                    int itemid = st.Inventories.ItemID.Value;
+
+                    return dstrRepo.getDirectInventory(itemid, loc).Items.Description;
+                }
+
             }
         }
 
@@ -148,15 +231,27 @@ namespace MoostBrand.DAL
         {
             get
             {
+                StockTransferRepository dstrRepo = new StockTransferRepository();
                 MoostBrandEntities entity = new MoostBrandEntities();
 
                 RequisitionDetailsRepository repo = new RequisitionDetailsRepository();
+                if (Receiving.ReceivingTypeID != 6)
+                {
 
-                RequisitionDetail reqDetail = entity.RequisitionDetails.Find(RequisitionDetailID);
+                    RequisitionDetail reqDetail = entity.RequisitionDetails.Find(RequisitionDetailID);
 
-                int total = repo.getPurchaseOrder(reqDetail.Requisition.LocationID.Value,reqDetail.ItemID);
+                    int total = repo.getPurchaseOrder(reqDetail.Requisition.LocationID.Value, reqDetail.ItemID);
 
-                return total;
+                    return total;
+                }
+                else
+                {
+                    var st = entity.StockTransferDetails.Find(RequisitionDetailID);
+                    int loc1 = st.StockTransfer.DestinationID.Value;
+                    int itemid = st.Inventories.ItemID.Value;
+
+                    return dstrRepo.getDirectInventory(itemid, loc1).Ordered.Value;
+                }
             }
         }
         public int GetAvailable

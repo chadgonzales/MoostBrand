@@ -30,7 +30,8 @@
                     <label class="control-label col-md-4">Receiving Type</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.Requisition.RequisitionType.Type)
+                            @*@Html.DisplayFor(model => model.Requisition.RequisitionType.Type)*@
+                            @Html.DisplayFor(model => model.ReceivingType.Type)
                         </label>
                     </div>
                 </div>
@@ -48,7 +49,9 @@
                     <label class="control-label col-md-4">Str #</label>
                     <div class="col-md-8">
                         <label class="custom-label str">
-                            @Html.DisplayFor(model => model.Requisition.RefNumber)
+                            @*@Html.DisplayFor(model => model.Requisition.RefNumber)*@
+                            @Html.DisplayFor(model => model.GetRefNumber)
+                            
                         </label>
                     </div>
                 </div>
@@ -128,7 +131,8 @@
                         <label class="control-label col-md-4">Source Location</label>
                         <div class="col-md-8">
                             <label class="custom-label">
-                                @Html.DisplayFor(model => model.Requisition.Location.Description)
+                                @Html.DisplayFor(model => model.GetSourceLocation)
+                                @*@Html.DisplayFor(model => model.Requisition.Location.Description)*@
                             </label>
                         </div>
                     </div>
@@ -357,10 +361,10 @@
                 <tbody>
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.Code)
+                            @Html.DisplayFor(modelItem => item.GetItemCode)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.DescriptionPurchase)
+                            @Html.DisplayFor(modelItem => item.GetItemDesc)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.ReferenceQuantity)
@@ -378,7 +382,7 @@
                             @Html.DisplayFor(modelItem => item.GetAvailable)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.RequisitionDetail1.Item.Description)
+                            @Html.DisplayFor(modelItem => item.GetPrevItem)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.PreviousQuantity)
