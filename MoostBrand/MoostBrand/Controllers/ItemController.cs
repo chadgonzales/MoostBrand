@@ -55,29 +55,69 @@ namespace MoostBrand.Controllers
             return randomString;
         }
 
+        // [HttpPost]
+        //public ActionResult GetSubCategory(int categoryID)
+        //{
+
+        //    var objsubcat = entity.SubCategories
+        //            .Where(s => s.CategoryID == categoryID)
+        //            .Select(s => new { s.ID, s.Description })
+        //            .OrderBy(s => s.Description);
+
+        //    return Json(objsubcat, JsonRequestBehavior.AllowGet);
+        //}
+
         [HttpPost]
-        public ActionResult GetSubCategory(int categoryID)
+        public JsonResult GetSubCat(string subcat)
         {
+            var _subcat = entity.SubCategories.Distinct().Where(x => (x.Code.Contains(subcat) || x.Description.Contains(subcat)))
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                SubCategory = x.Description
 
-            var objsubcat = entity.SubCategories
-                    .Where(s => s.CategoryID == categoryID)
-                    .Select(s => new { s.ID, s.Description })
-                    .OrderBy(s => s.Description);
-
-            return Json(objsubcat, JsonRequestBehavior.AllowGet);
+                            });
+            return Json(_subcat, JsonRequestBehavior.AllowGet);
         }
 
-        //Robi
-        [HttpPost]
-        public ActionResult GetSubCategoriesTypes(int subcategoryID)
+        public void AddTagging(int itemID, int? CategoryID, int TaggedID)
         {
-            var objsubcattypes = entity.SubCategories
-                .Where(s => s.ID == subcategoryID)
-                .Select(s => new { s.SubCategoriesTypes.ID, s.SubCategoriesTypes.Description })
-                .OrderBy(s => s);
+            try
+            {
 
-            return Json(objsubcattypes, JsonRequestBehavior.AllowGet);
+                Item item = entity.Items.Find(itemID);
+                item.CategoryID = CategoryID;
+                entity.SaveChanges();
+
+                var _header = entity.CategoryTaggings.Where(p => p.CategoryID == CategoryID && p.ItemID == itemID && p.SubCategoryID == TaggedID).FirstOrDefault();
+
+                if (_header == null)
+                {
+                    CategoryTagging _h = new CategoryTagging();
+                    _h.ItemID = itemID;
+                    _h.CategoryID = CategoryID.Value;
+                    _h.SubCategoryID = TaggedID;
+                    entity.CategoryTaggings.Add(_h);
+                    entity.SaveChanges();
+
+                }
+
+            }
+            catch (Exception e) { e.ToString(); }
         }
+
+        public void DeleteTagging(int? taggedid)
+        {
+            try
+            {
+                CategoryTagging details = entity.CategoryTaggings.Find(taggedid);
+                entity.CategoryTaggings.Remove(details);
+                entity.SaveChanges();
+
+            }
+            catch { }
+        }
+
 
         [HttpPost]
         public ActionResult GetItemById(int itemID)
@@ -193,8 +233,8 @@ namespace MoostBrand.Controllers
             var item = new Item();
             item.ItemID = CodeGenerator();
 
-            ViewBag.Categories = entity.Categories.ToList();
-            ViewBag.Colors = entity.Colors.ToList();
+            ViewBag.Categories = entity.Categories.OrderBy(p=>p.Description).ToList();
+            ViewBag.Colors = entity.Colors.OrderBy(p => p.Description).ToList();
             ViewBag.Sizes = entity.Sizes.ToList();
             ViewBag.UOMS = entity.UnitOfMeasurements.ToList();
             ViewBag.Brands = entity.Brands.ToList();
@@ -282,8 +322,8 @@ namespace MoostBrand.Controllers
                 }
             }
 
-            ViewBag.Categories = entity.Categories.ToList();
-            ViewBag.Colors = entity.Colors.ToList();
+            ViewBag.Categories = entity.Categories.OrderBy(p => p.Description).ToList();
+            ViewBag.Colors = entity.Colors.OrderBy(p => p.Description).ToList();
             ViewBag.Sizes = entity.Sizes.ToList();
             ViewBag.UOMS = entity.UnitOfMeasurements.ToList();
             ViewBag.Brands = entity.Brands.ToList();
@@ -302,9 +342,9 @@ namespace MoostBrand.Controllers
           
 
             var item = entity.Items.Find(id);
-
-            ViewBag.CategoryID = new SelectList(entity.Categories.ToList(), "ID", "Description", item.ColorID);
-            ViewBag.ColorID = new SelectList(entity.Colors.ToList(), "ID", "Description", item.ColorID);
+          
+            ViewBag.CategoryID = new SelectList(entity.Categories.OrderBy(p => p.Description).ToList(), "ID", "Description", item.CategoryID);
+            ViewBag.ColorID = new SelectList(entity.Colors.OrderBy(p => p.Description).ToList(), "ID", "Description", item.ColorID);
             ViewBag.SizeID = new SelectList(entity.Sizes.ToList(), "ID", "Description", item.SizeID);
             ViewBag.UnitOfMeasurementID = new SelectList(entity.UnitOfMeasurements.ToList(), "ID", "Description", item.UnitOfMeasurementID);
             ViewBag.BrandID = new SelectList(entity.Brands.ToList(), "ID", "Description", item.BrandID);
@@ -342,12 +382,8 @@ namespace MoostBrand.Controllers
                     if (item.SubCategoryID == null || item.SubCategoryID == 0)
                         item.SubCategoryID = entity.SubCategories.FirstOrDefault(p => p.Description == "Not Available").ID;
 
-                    //if (item.SubCategory.SubCategoryTypeID == null || item.SubCategory.SubCategoryTypeID == 0)
-                    //    item.SubCategory.SubCategoryTypeID = entity.SubCategoriesTypes.FirstOrDefault(p => p.Description == "Not Available").ID;
 
                     item.Category = entity.Categories.Find(item.CategoryID);
-                    //item.SubCategory = entity.SubCategories.Find(item.SubCategoryID);
-                    //item.SubCategory.SubCategoriesTypes = entity.SubCategoriesTypes.Find(item.SubCategory.SubCategoryTypeID);
                     item.Brand = entity.Brands.Find(item.BrandID);
                     item.UnitOfMeasurement = entity.UnitOfMeasurements.Find(item.UnitOfMeasurementID);
                     item.Size = entity.Sizes.Find(item.SizeID);
@@ -378,8 +414,8 @@ namespace MoostBrand.Controllers
                     ModelState.AddModelError("", "Fill all fields");
                 }
             }
-            ViewBag.CategoryID = new SelectList(entity.Categories.ToList(), "ID", "Description", item.ColorID);
-            ViewBag.ColorID = new SelectList(entity.Colors.ToList(), "ID", "Description", item.ColorID);
+            ViewBag.CategoryID = new SelectList(entity.Categories.OrderBy(p => p.Description).ToList(), "ID", "Description", item.CategoryID);
+            ViewBag.ColorID = new SelectList(entity.Colors.OrderBy(p => p.Description).ToList(), "ID", "Description", item.ColorID);
             ViewBag.SizeID = new SelectList(entity.Sizes.ToList(), "ID", "Description", item.SizeID);
             ViewBag.UnitOfMeasurementID = new SelectList(entity.UnitOfMeasurements.ToList(), "ID", "Description", item.UnitOfMeasurementID);
             ViewBag.BrandID = new SelectList(entity.Brands.ToList(), "ID", "Description", item.BrandID);
@@ -423,222 +459,222 @@ namespace MoostBrand.Controllers
 
         #region PARTIAL
 
-        public ActionResult ItemViews(int id)
-        {
-            ViewBag.ItemID = id;
-            var itemDetails = entity.ItemDetail.Where(x => x.ItemID == id);
-            if (itemDetails != null)
-                return View(itemDetails.ToList());
-            else
-                return View();
-        }
+        //public ActionResult ItemViews(int id)
+        //{
+        //    ViewBag.ItemID = id;
+        //    var itemDetails = entity.ItemDetail.Where(x => x.ItemID == id);
+        //    if (itemDetails != null)
+        //        return View(itemDetails.ToList());
+        //    else
+        //        return View();
+        //}
 
-        public ActionResult ItemDetails(int id)
-        {
-            var item = entity.ItemDetail.Find(id);
-            return View(item);
-        }
+        //public ActionResult ItemDetails(int id)
+        //{
+        //    var item = entity.ItemDetail.Find(id);
+        //    return View(item);
+        //}
 
-        public ActionResult AddItem(int id)
-        {
-            var itemDetails = new ItemDetails();
-            itemDetails.ItemID = id;
-            itemDetails.Date = DateTime.Now;
-            return View(itemDetails);
-        }
+        //public ActionResult AddItem(int id)
+        //{
+        //    var itemDetails = new ItemDetails();
+        //    itemDetails.ItemID = id;
+        //    itemDetails.Date = DateTime.Now;
+        //    return View(itemDetails);
+        //}
 
-        [HttpPost]
-        public ActionResult AddItem(ItemDetails itmDetails)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var item = entity.Items.Where(i => i.ID == itmDetails.ItemID).FirstOrDefault();
-                    if (item.Quantity == null)
-                        item.Quantity = 0;
-                    item.Price = 0;
-                    item.LastUnitCost = 0;
-                    item.WeightedAverageCost = 0;
-                    item.ReOrderLevel = 0;
+        //[HttpPost]
+        //public ActionResult AddItem(ItemDetails itmDetails)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            var item = entity.Items.Where(i => i.ID == itmDetails.ItemID).FirstOrDefault();
+        //            if (item.Quantity == null)
+        //                item.Quantity = 0;
+        //            item.Price = 0;
+        //            item.LastUnitCost = 0;
+        //            item.WeightedAverageCost = 0;
+        //            item.ReOrderLevel = 0;
 
-                    entity.ItemDetail.Add(itmDetails);
-                    entity.SaveChanges();
+        //            entity.ItemDetail.Add(itmDetails);
+        //            entity.SaveChanges();
 
-                    #region WAC
-                    var itmDetail = from s in entity.ItemDetail
-                                    where s.ItemID == itmDetails.ItemID
-                                    select s;
+        //            #region WAC
+        //            var itmDetail = from s in entity.ItemDetail
+        //                            where s.ItemID == itmDetails.ItemID
+        //                            select s;
 
-                    item.Quantity += Convert.ToInt32(itmDetails.Quantity);
+        //            item.Quantity += Convert.ToInt32(itmDetails.Quantity);
 
-                    //Price
-                    decimal qtyCost = 0;
-                    foreach (var detail in itmDetail)
-                        qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
+        //            //Price
+        //            decimal qtyCost = 0;
+        //            foreach (var detail in itmDetail)
+        //                qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
 
-                    double Price = Convert.ToDouble((qtyCost) / item.Quantity);
-                    item.Price = Convert.ToDecimal(Price);
+        //            double Price = Convert.ToDouble((qtyCost) / item.Quantity);
+        //            item.Price = Convert.ToDecimal(Price);
 
-                    if (itmDetail.Count() > 1)
-                    {
-                        //WAC             
-                        int prevQty = Convert.ToInt32(item.Quantity - itmDetails.Quantity);
-                        item.WeightedAverageCost = Convert.ToDecimal((itmDetails.Quantity * itmDetails.Cost) / prevQty);
-                    }
+        //            if (itmDetail.Count() > 1)
+        //            {
+        //                //WAC             
+        //                int prevQty = Convert.ToInt32(item.Quantity - itmDetails.Quantity);
+        //                item.WeightedAverageCost = Convert.ToDecimal((itmDetails.Quantity * itmDetails.Cost) / prevQty);
+        //            }
 
-                    item.LastUnitCost = itmDetails.Cost;
-                    #endregion
+        //            item.LastUnitCost = itmDetails.Cost;
+        //            #endregion
 
-                    entity.Entry(item).State = EntityState.Modified;
-                    entity.SaveChanges();
+        //            entity.Entry(item).State = EntityState.Modified;
+        //            entity.SaveChanges();
 
-                    return RedirectToAction("ItemViews", new { id = itmDetails.ItemID });
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("", "There's an error");
-                }
-            }
-            return View(itmDetails);
-        }
+        //            return RedirectToAction("ItemViews", new { id = itmDetails.ItemID });
+        //        }
+        //        catch (Exception)
+        //        {
+        //            ModelState.AddModelError("", "There's an error");
+        //        }
+        //    }
+        //    return View(itmDetails);
+        //}
 
-        public ActionResult EditItem(int id)
-        {
-            var itm = entity.ItemDetail.Find(id);
-            return View(itm);
-        }
+        //public ActionResult EditItem(int id)
+        //{
+        //    var itm = entity.ItemDetail.Find(id);
+        //    return View(itm);
+        //}
 
-        [HttpPost]
-        public ActionResult EditItem(ItemDetails itmDetails, int ItemID)
-        {
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    var idetails = entity.ItemDetail.Find(itmDetails.ID);
+        //[HttpPost]
+        //public ActionResult EditItem(ItemDetails itmDetails, int ItemID)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            var idetails = entity.ItemDetail.Find(itmDetails.ID);
 
-                    int presentQty = Convert.ToInt32(itmDetails.Quantity);
-                    int previousQty = Convert.ToInt32(idetails.Quantity);
+        //            int presentQty = Convert.ToInt32(itmDetails.Quantity);
+        //            int previousQty = Convert.ToInt32(idetails.Quantity);
 
-                    if (presentQty != previousQty)
-                    {
-                        int itemID = Convert.ToInt32(entity.ItemDetail.Find(itmDetails.ItemID));
-                        var itm = entity.Items.Where(i => i.ID == itmDetails.ItemID).FirstOrDefault();
-                        #region WAC    
+        //            if (presentQty != previousQty)
+        //            {
+        //                int itemID = Convert.ToInt32(entity.ItemDetail.Find(itmDetails.ItemID));
+        //                var itm = entity.Items.Where(i => i.ID == itmDetails.ItemID).FirstOrDefault();
+        //                #region WAC    
 
-                        if (presentQty >= itm.Quantity)
-                        {
-                            var itmDetail = entity.ItemDetail.Where(i => i.ItemID == itm.ID).ToList();
-                            var itemDetail = entity.ItemDetail.Find(itm.ID);
+        //                if (presentQty >= itm.Quantity)
+        //                {
+        //                    var itmDetail = entity.ItemDetail.Where(i => i.ItemID == itm.ID).ToList();
+        //                    var itemDetail = entity.ItemDetail.Find(itm.ID);
 
-                            int prevSTItemQty = Convert.ToInt32(itm.Quantity + previousQty);
+        //                    int prevSTItemQty = Convert.ToInt32(itm.Quantity + previousQty);
 
-                            itm.Quantity = prevSTItemQty - presentQty;
+        //                    itm.Quantity = prevSTItemQty - presentQty;
 
-                            //Price
-                            decimal qtyCost = 0;
-                            foreach (var detail in itmDetail)
-                                /*
-                                 */
-                                qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
+        //                    //Price
+        //                    decimal qtyCost = 0;
+        //                    foreach (var detail in itmDetail)
+        //                        /*
+        //                         */
+        //                        qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
 
-                            double Price = Convert.ToDouble((qtyCost) / itm.Quantity);
-                            itm.Price = Convert.ToDecimal(Price);
+        //                    double Price = Convert.ToDouble((qtyCost) / itm.Quantity);
+        //                    itm.Price = Convert.ToDecimal(Price);
 
-                            if (itmDetail.Count() > 1)
-                            {
-                                //WAC             
-                                int prevQty = Convert.ToInt32(itm.Quantity - itmDetails.Quantity);
-                                itm.WeightedAverageCost = Convert.ToDecimal((itmDetails.Quantity * itmDetails.Cost) / prevQty);
-                            }
-                            itm.LastUnitCost = itmDetails.Cost;
+        //                    if (itmDetail.Count() > 1)
+        //                    {
+        //                        //WAC             
+        //                        int prevQty = Convert.ToInt32(itm.Quantity - itmDetails.Quantity);
+        //                        itm.WeightedAverageCost = Convert.ToDecimal((itmDetails.Quantity * itmDetails.Cost) / prevQty);
+        //                    }
+        //                    itm.LastUnitCost = itmDetails.Cost;
 
-                        }
-                        else
-                        {
-                            var itmDetail = entity.ItemDetail.Where(i => i.ItemID == itm.ID).ToList();
-                            var itemDetail = entity.ItemDetail.Find(itm.ID);
+        //                }
+        //                else
+        //                {
+        //                    var itmDetail = entity.ItemDetail.Where(i => i.ItemID == itm.ID).ToList();
+        //                    var itemDetail = entity.ItemDetail.Find(itm.ID);
 
-                            int prevItmQty = Convert.ToInt32(itm.Quantity - previousQty);
-                            itm.Quantity = prevItmQty + presentQty;
+        //                    int prevItmQty = Convert.ToInt32(itm.Quantity - previousQty);
+        //                    itm.Quantity = prevItmQty + presentQty;
 
-                            //Price
-                            decimal qtyCost = 0;
-                            foreach (var detail in itmDetail)
-                                qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
+        //                    //Price
+        //                    decimal qtyCost = 0;
+        //                    foreach (var detail in itmDetail)
+        //                        qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
 
-                            double Price = Convert.ToDouble((qtyCost) / itm.Quantity);
-                            itm.Price = Convert.ToDecimal(Price);
+        //                    double Price = Convert.ToDouble((qtyCost) / itm.Quantity);
+        //                    itm.Price = Convert.ToDecimal(Price);
 
-                            if (itmDetail.Count() > 1)
-                            {
-                                //WAC             
-                                int prevQty = Convert.ToInt32(itm.Quantity - itmDetails.Quantity);
-                                itm.WeightedAverageCost = Convert.ToDecimal((itmDetails.Quantity * itmDetails.Cost) / prevQty);
-                            }
-                            itm.LastUnitCost = itmDetails.Cost;
-                        }
-                        #endregion
-                    }
+        //                    if (itmDetail.Count() > 1)
+        //                    {
+        //                        //WAC             
+        //                        int prevQty = Convert.ToInt32(itm.Quantity - itmDetails.Quantity);
+        //                        itm.WeightedAverageCost = Convert.ToDecimal((itmDetails.Quantity * itmDetails.Cost) / prevQty);
+        //                    }
+        //                    itm.LastUnitCost = itmDetails.Cost;
+        //                }
+        //                #endregion
+        //            }
 
-                    entity.Entry(idetails).CurrentValues.SetValues(itmDetails);
-                    entity.SaveChanges();
+        //            entity.Entry(idetails).CurrentValues.SetValues(itmDetails);
+        //            entity.SaveChanges();
 
-                    return RedirectToAction("ItemViews", new { id = ItemID });
-                }
-                catch
-                {
-                    ModelState.AddModelError("", "Fill all fields");
-                }
-            }
-            return View(itmDetails);
-        }
+        //            return RedirectToAction("ItemViews", new { id = ItemID });
+        //        }
+        //        catch
+        //        {
+        //            ModelState.AddModelError("", "Fill all fields");
+        //        }
+        //    }
+        //    return View(itmDetails);
+        //}
 
-        public ActionResult DeleteItem(int id)
-        {
-            var itm = entity.ItemDetail.Find(id);
-            return View(itm);
-        }
+        //public ActionResult DeleteItem(int id)
+        //{
+        //    var itm = entity.ItemDetail.Find(id);
+        //    return View(itm);
+        //}
 
-        [HttpPost, ActionName("DeleteItem")]
-        public ActionResult DeleteItemConfirmed(int id, int ItemID)
-        {
-            try
-            {
-                var itmDtl = entity.ItemDetail.Find(id);
-                try
-                {
-                    entity.ItemDetail.Remove(itmDtl);
-                    entity.SaveChanges();
+        //[HttpPost, ActionName("DeleteItem")]
+        //public ActionResult DeleteItemConfirmed(int id, int ItemID)
+        //{
+        //    try
+        //    {
+        //        var itmDtl = entity.ItemDetail.Find(id);
+        //        try
+        //        {
+        //            entity.ItemDetail.Remove(itmDtl);
+        //            entity.SaveChanges();
 
-                    var item = entity.Items.Where(i => i.ID == ItemID).FirstOrDefault();
+        //            var item = entity.Items.Where(i => i.ID == ItemID).FirstOrDefault();
 
-                    #region WAC
-                    var itmDetail = from s in entity.ItemDetail
-                                    where s.ItemID == itmDtl.ItemID
-                                    select s;
+        //            #region WAC
+        //            var itmDetail = from s in entity.ItemDetail
+        //                            where s.ItemID == itmDtl.ItemID
+        //                            select s;
 
-                    int Qty = Convert.ToInt32(item.Quantity - itmDtl.Quantity);
-                    item.Quantity = Convert.ToInt32(Qty);
+        //            int Qty = Convert.ToInt32(item.Quantity - itmDtl.Quantity);
+        //            item.Quantity = Convert.ToInt32(Qty);
 
-                    int WAC = Convert.ToInt32(item.WeightedAverageCost - itmDtl.WeightedAverageCost);
-                    item.WeightedAverageCost = Convert.ToInt32(WAC);
+        //            int WAC = Convert.ToInt32(item.WeightedAverageCost - itmDtl.WeightedAverageCost);
+        //            item.WeightedAverageCost = Convert.ToInt32(WAC);
 
-                    item.LastUnitCost = itmDtl.Cost;
+        //            item.LastUnitCost = itmDtl.Cost;
 
-                    entity.Entry(item).State = EntityState.Modified;
-                    entity.SaveChanges();
-                    #endregion
-                }
-                catch { }
-                return RedirectToAction("ItemViews", new { id = ItemID });
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //            entity.Entry(item).State = EntityState.Modified;
+        //            entity.SaveChanges();
+        //            #endregion
+        //        }
+        //        catch { }
+        //        return RedirectToAction("ItemViews", new { id = ItemID });
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
 
         #endregion
 

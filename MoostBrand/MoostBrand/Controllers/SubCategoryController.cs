@@ -41,7 +41,7 @@ namespace MoostBrand.Controllers
             {
                 sub = sub.Where(c => c.Code.Contains(searchString)
                                        || c.Description.Contains(searchString)
-                                       /*|| c.Category.Description.Contains(searchString)*/);
+                                       || c.SubCategoriesType.Description.Contains(searchString));
             }
 
             switch (sortOrder)
@@ -52,9 +52,9 @@ namespace MoostBrand.Controllers
                 case "desc":
                     sub = sub.OrderByDescending(c => c.Description);
                     break;
-                //case "catdesc":
-                //    sub = sub.OrderByDescending(c => c.Category.Description);
-                //    break;
+                case "catdesc":
+                    sub = sub.OrderByDescending(c => c.SubCategoriesType.Description);
+                    break;
                 default:
                     sub = sub.OrderBy(c => c.ID);
                     break;
@@ -75,7 +75,7 @@ namespace MoostBrand.Controllers
         // GET: SubCategory/Create
         public ActionResult Create()
         {
-            ViewBag.Categories = entity.Categories.ToList();
+            ViewBag.SubTypes = entity.SubCategoriesTypes.ToList();
             return View();
         }
 
@@ -113,7 +113,7 @@ namespace MoostBrand.Controllers
         // GET: SubCategory/Edit/5
         public ActionResult Edit(int id)
         {
-            ViewBag.Categories = entity.Categories.ToList();
+            ViewBag.SubTypes = entity.SubCategoriesTypes.ToList();
 
             var sub = entity.SubCategories.Find(id);
 
@@ -138,7 +138,7 @@ namespace MoostBrand.Controllers
                 }
             }
 
-            ViewBag.Categories = entity.Categories.ToList();
+            ViewBag.SubTypes = entity.SubCategoriesTypes.ToList();
             return View(subcategory);
         }
 

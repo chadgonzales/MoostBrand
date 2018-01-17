@@ -150,7 +150,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownListFor(m => Model.CategoryID, new SelectList(ViewBag.Categories, "ID", "Description"), "", new { @id = "ddlcategory", @onchange = "javascript:GetSubCategory(this.value);" })
+                    @Html.DropDownListFor(m => Model.CategoryID, new SelectList(ViewBag.Categories, "ID", "Description"), "", new { @id = "ddlcategory" })
                     @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -535,14 +535,6 @@
 
         $('#Proceed').val(false);
 
-        $('#ddlsubcat').change(function () {
-            $('#selectedSubCatID').val($('#ddlsubcat').val());
-        });
-
-        $('#ddlsubcattypes').change(function () {
-            $('#selectedSubCatTypeID').val($('#ddlsubcattypes').val());
-        });
-
         $('#Img').change(function () {
             //var data;
             //if ($('#Img').val() != null)
@@ -580,52 +572,10 @@
         $("#editForm").unbind('submit').submit();
     }
 
-    function GetSubCategory(_categoryID) {
-        var procemessage = "<option value='0'> Please wait...</option>";
-        $("#ddlsubcat").html(procemessage).show();
-        var url = "/Item/GetSubCategory/";
 
-        $.ajax({
-            url: url,
-            data: { categoryID: _categoryID },
-            cache: false,
-            type: "POST",
-            success: function (data) {
-                var markup = "<option value='0'>Select SubCategory</option>";
-                for (var x = 0; x < data.length; x++) {
-                    markup += "<option value=" + data[x].ID + ">" + data[x].Description + "</option>";
-                }
-                $("#ddlsubcat").html(markup).show();
-            },
-            error: function (reponse) {
-                alert("error : " + reponse);
-            }
-        });
-    }
-
-    function GetSubCategoriesTypes(_subcategoryID) {
-        var procemessage = "<option value='0'> Please wait...</option>";
-        $("#ddlsubcattypes").html(procemessage).show();
-        var url = "/Item/GetSubCategoriesTypes/";
-
-        $.ajax({
-            url: url,
-            data: { subcategoryID: _subcategoryID },
-            cache: false,
-            type: "POST",
-            success: function (data) {
-                var markup = "<option value='0'>Select SubCategoryTypes</option>";
-                for (var x = 0; x < data.length; x++) {
-                    markup += "<option value=" + data[x].ID + ">" + data[x].Description + "</option>";
-                }
-                $("#ddlsubcattypes").html(markup).show();
-            },
-            error: function (reponse) {
-                alert("error : " + reponse);
-            }
-        });
-    }
 
 
 
 </script>
+
+

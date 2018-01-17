@@ -15,6 +15,7 @@ namespace MoostBrand.DAL
         public virtual DbSet<ApprovalStatu> ApprovalStatus { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<CategoryTagging> CategoryTaggings { get; set; }
         public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<Color> Colors { get; set; }
         public virtual DbSet<ContainerLocation> ContainerLocations { get; set; }
@@ -25,7 +26,6 @@ namespace MoostBrand.DAL
         public virtual DbSet<Helper> Helpers { get; set; }
         public virtual DbSet<Inventory> Inventories { get; set; }
         public virtual DbSet<InventoryStatu> InventoryStatus { get; set; }
-        public virtual DbSet<ItemDetails> ItemDetail { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<LocationType> LocationTypes { get; set; }
@@ -52,11 +52,11 @@ namespace MoostBrand.DAL
         public virtual DbSet<StockAdjustment> StockAdjustments { get; set; }
         public virtual DbSet<StockAllocationDetail> StockAllocationDetails { get; set; }
         public virtual DbSet<StockAllocation> StockAllocations { get; set; }
+        public virtual DbSet<StockLedger> StockLedgers { get; set; }
         public virtual DbSet<StockTransferDetail> StockTransferDetails { get; set; }
         public virtual DbSet<StockTransferDirect> StockTransferDirects { get; set; }
         public virtual DbSet<StockTransferHelper> StockTransferHelpers { get; set; }
         public virtual DbSet<StockTransferOperator> StockTransferOperators { get; set; }
-        public virtual DbSet<StockLedger> StockLedgers { get; set; }
         public virtual DbSet<StockTransfer> StockTransfers { get; set; }
         public virtual DbSet<StockTransferType> StockTransferTypes { get; set; }
         public virtual DbSet<SubCategory> SubCategories { get; set; }
@@ -276,14 +276,6 @@ namespace MoostBrand.DAL
                 .WithOptional(e => e.InventoryStatu)
                 .HasForeignKey(e => e.InventoryStatus);
 
-            modelBuilder.Entity<ItemDetails>()
-                .Property(e => e.Cost)
-                .HasPrecision(12, 2);
-
-            modelBuilder.Entity<ItemDetails>()
-                .Property(e => e.WeightedAverageCost)
-                .HasPrecision(12, 2);
-
             modelBuilder.Entity<Item>()
                 .Property(e => e.LastUnitCost)
                 .HasPrecision(12, 2);
@@ -380,11 +372,6 @@ namespace MoostBrand.DAL
                 .WithOptional(e => e.RequisitionDetail1)
                 .HasForeignKey(e => e.PreviousItemID);
 
-            //modelBuilder.Entity<Requisition>()
-            //    .HasMany(e => e.Receivings)
-            //    .WithRequired(e => e.Requisition)
-            //    .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<RequisitionType>()
                 .HasMany(e => e.Requisitions)
                 .WithRequired(e => e.RequisitionType)
@@ -427,9 +414,6 @@ namespace MoostBrand.DAL
                 .WillCascadeOnDelete(false);
 
 
-
-
-
             modelBuilder.Entity<UnitOfMeasurement>()
                 .Property(e => e.QuantityOfMeasure)
                 .HasPrecision(10, 2);
@@ -441,12 +425,34 @@ namespace MoostBrand.DAL
 
             //////////////////
 
+            modelBuilder.Entity<Category>()
+             .HasMany(e => e.CategoryTaggings)
+             .WithRequired(e => e.Category)
+             .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Category>()
+            .HasMany(e => e.Items)
+            .WithRequired(e => e.Category)
+            .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<SubCategory>()
+                .HasMany(e => e.CategoryTaggings)
+                .WithRequired(e => e.SubCategory)
+                .WillCascadeOnDelete(false);
+
+
             modelBuilder.Entity<SubCategoriesType>()
                 .HasMany(e => e.SubCategories)
-                .WithOptional(e => e.SubCategoriesTypes)
+                .WithOptional(e => e.SubCategoriesType)
                 .HasForeignKey(e => e.SubCategoryTypeID);
 
-        
+            modelBuilder.Entity<Item>()
+                .HasMany(e => e.CategoryTaggings)
+                .WithRequired(e => e.Item)
+                .WillCascadeOnDelete(false);
+
+    
+
         }
     }
 }

@@ -20,7 +20,7 @@
         </div>
 
         <div class="dataTables_filter">
-    @using (Html.BeginForm("Index", "SubCategoryType", FormMethod.Post))
+    @using (Html.BeginForm("Index", "SubCategoryTypes", FormMethod.Post))
     {
         <p>
             @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-sm", @placeholder = "Search" })
@@ -39,9 +39,6 @@
         <thead>
             <tr>
                 <th>
-                    @Html.ActionLink("SubCategoryType", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
-                </th>
-                <th>
                     @Html.ActionLink("Code", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                 </th>
                 <th>
@@ -54,9 +51,6 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SubCategory.Description)
-                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Code)
                     </td>

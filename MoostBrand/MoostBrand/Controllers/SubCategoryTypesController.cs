@@ -54,9 +54,6 @@ namespace MoostBrand.Controllers
                 case "desc":
                     sub = sub.OrderByDescending(c => c.Description);
                     break;
-                //case "catdesc":
-                //    sub = sub.OrderByDescending(c => c.SubCategory.Description);
-                //    break; 
                 default:
                     sub = sub.OrderBy(c => c.ID);
                     break;
@@ -75,7 +72,6 @@ namespace MoostBrand.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.SubCategories = entity.SubCategories.ToList();
             return View();
         }
 
@@ -83,12 +79,9 @@ namespace MoostBrand.Controllers
         public ActionResult Create(SubCategoriesType subcategoriestype)
         {
             if (ModelState.IsValid)
-            {
-               // subcategoriestype.Items = null;
-
+            {             
                 try
                 {
-                    //var subb = entity.SubCategoriesTypes.Where(r => r.Code == subcategoriestype.Code);
                     var subb = entity.SubCategoriesTypes.ToList().FindAll(b => b.Code == subcategoriestype.Code);
 
                     if (subb.Count() > 0)
@@ -100,7 +93,7 @@ namespace MoostBrand.Controllers
                     { 
                         entity.SubCategoriesTypes.Add(subcategoriestype);
                         entity.SaveChanges();
-                        return RedirectToAction("Create");
+                        return RedirectToAction("Index");
                     }
                 }
                 catch
@@ -115,8 +108,6 @@ namespace MoostBrand.Controllers
 
         public ActionResult Edit(int id)
         {
-            ViewBag.SubCategories = entity.SubCategories.ToList();
-
             var sub = entity.SubCategoriesTypes.Find(id);
 
             return View(sub);
@@ -140,7 +131,6 @@ namespace MoostBrand.Controllers
                 }
             }
 
-            ViewBag.SubCategories = entity.SubCategories.ToList();
             return View(subcategoriestype);
         }
 

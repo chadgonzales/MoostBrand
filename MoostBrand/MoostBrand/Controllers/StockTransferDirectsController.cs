@@ -543,15 +543,15 @@ namespace MoostBrand.Controllers
 
                     if (presentQty <= itm.Quantity)
                     {
-                        var itmDetail = entity.ItemDetail.Where(i => i.ItemID == itm.ID).ToList();
-                        var itemDetail = entity.ItemDetail.Find(itm.ID);
+                        //var itmDetail = entity.ItemDetail.Where(i => i.ItemID == itm.ID).ToList();
+                        //var itemDetail = entity.ItemDetail.Find(itm.ID);
 
                         int prevSTItemQty = Convert.ToInt32(itm.Quantity + previousQty);
 
                         decimal qtyCost = 0;
 
-                        foreach (var detail in itmDetail)
-                            qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
+                        //foreach (var detail in itmDetail)
+                        //    qtyCost += Convert.ToDecimal(detail.Quantity * detail.Cost);
 
                         itm.Quantity = prevSTItemQty - presentQty;
                         

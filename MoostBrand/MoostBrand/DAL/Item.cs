@@ -12,6 +12,7 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Item()
         {
+            CategoryTaggings = new HashSet<CategoryTagging>();
             RequisitionDetails = new HashSet<RequisitionDetail>();
             RequisitionDetails1 = new HashSet<RequisitionDetail>();
         }
@@ -88,6 +89,8 @@ namespace MoostBrand.DAL
 
         public virtual Size Size { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CategoryTagging> CategoryTaggings { get; set; }
 
         public virtual UnitOfMeasurement UnitOfMeasurement { get; set; }
 

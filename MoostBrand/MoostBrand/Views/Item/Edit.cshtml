@@ -3,9 +3,7 @@
 @{
     ViewBag.Title = "Edit";
 }
-@*<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-    <script src="~/Scripts/jquery.validate.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
+
 <script src="~/Scripts/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 
@@ -41,7 +39,72 @@
             },
 
         });
+   
+
+
+
+
+
+    $("#txtSubCategory").autocomplete({
+
+        source: function (request, response) {
+            $.ajax({
+                url:'@Url.Action("GetSubCat")',
+                type: "POST",
+                dataType: "json",
+                data: { subcat: request.term },
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {
+                            id: item.ID,
+                            label: item.SubCategory,
+                            value: item.SubCategory
+                        };
+                    }))
+                }
+            })
+        },
+        select: function (event, ui) {
+            var catID = $('#CategoryID').val();
+            var itemID = $('#ID').val();
+
+            var taggedid = ui.item.id;
+
+            if ($('#CategoryID').val() == 0)
+            { alert('Please choose Category First'); }
+            else
+            {
+                $.ajax({
+                    url: "/Item/AddTagging",
+                    type: "POST",
+                    data: "{'ItemID' : '" + itemID + "','CategoryID' : '" + catID + "','TaggedID' : '" + taggedid + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (r) {
+
+                        window.location.href = "/Item/Edit?ID=" + itemID;
+                    }
+                });
+            }
+
+            
+            $("#txtSubCategoryID").val('');
+            $("#txtSubCategory").val('');
+        },
+        messages: {
+            noResults: "", results: ""
+        },
+
+    });
+   
+
+  
+
+
+
+
+
     })
+   
 </script>
 
 @using (Html.BeginForm("Edit", "Item", FormMethod.Post, new { enctype = "multipart/form-data" }))
@@ -61,7 +124,6 @@
             @Html.HiddenFor(model => model.ID)
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.ItemID, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Item ID
                     <span class="symbol required"></span>
@@ -73,7 +135,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Code
                     <span class="symbol required"></span>
@@ -85,7 +146,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.Barcode, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Barcode
                     <span class="symbol required"></span>
@@ -97,7 +157,6 @@
             </div>
 
             <div class="form-group">
-                @* @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Description
                     <span class="symbol required"></span>
@@ -109,7 +168,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.DescriptionPurchase, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Sales Description
                     <span class="symbol required"></span>
@@ -135,41 +193,56 @@
                     @Html.ValidationMessageFor(model => model.ComplementaryField, "", new { @class = "text-danger" })
                 </div>
             </div>
-            @*<div class="form-group">
-                @Html.LabelFor(model => model.CategoryID, "CategoryID", htmlAttributes: new { @class = "control-label col-md-2" })
+
+            <div class="form-group">
                 <label class="control-label col-md-2">
                     Category
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("CategoryID", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.DropDownList("CategoryID", null, new { @id = "ddlcategory", @onchange = "javascript:GetSubCategory(this.value);" })
+                    @Html.DropDownList("CategoryID", null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
                 </div>
-            </div>*@
+            </div>
 
-            @*<div class="form-group">
-                <label class="control-label col-md-2">
-                   Sub Category
-                </label>
-                <div class="col-md-6">
-                    @Html.DropDownListFor(m => Model.SubCategoryID, Enumerable.Empty<SelectListItem>(), "", new { @id = "ddlsubcat", @onchange = "javascript:GetSubCategoriesTypes(this.value);" })
-                    @Html.ValidationMessageFor(model => model.SubCategoryID, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
 
-            @*<div class="form-group">
-                <label class="control-label col-md-2">
-                    Sub Category Type
-                </label>
-                <div class="col-md-6">
-                    @Html.DropDownListFor(m => Model.SubCategory.SubCategoryTypeID, Enumerable.Empty<SelectListItem>(), "", new { @id = "ddlsubcattypes" })
-                    @Html.ValidationMessageFor(model => model.SubCategory.SubCategoryTypeID, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    SubCategory
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.TextBox("txtSubCategory", ViewBag.SubCat as string, new { htmlAttributes = new { @class = "form-control", @placeholder = "Sub Category" } })
+                    <input type="text" id="txtSubCategoryID" hidden="hidden" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-6 col-md-offset-2">
+                    <table id="tblItems" class="table table-hover table-striped table-bordered">
+                        <thead>
+                            <th>Type</th>
+                            <th>SubCategory</th>
+                            <th></th>
+                        </thead>
+                        <tbody>
+
+
+
+                            @foreach (var subCat in Model.CategoryTaggings.Where(c => c.ItemID == Model.ID && c.CategoryID == Model.CategoryID))
+                            {
+
+                                Html.RenderPartial("_SubCategoryRow", subCat);
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
                 <label class="control-label col-md-2">
                     Year
                     <span class="symbol required"></span>
@@ -181,14 +254,12 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.BrandID, "BrandID", htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Brand
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("BrandID", null, new { @class= "form-control" })
-                    @*@Html.ValidationMessageFor(model => model.BrandID, "", new { @class = "text-danger" })*@
+                    @Html.DropDownList("BrandID", null, new { @class = "form-control" })
                 </div>
             </div>
 
@@ -204,7 +275,7 @@
 
             <div class="form-group">
                 <label class="control-label col-md-2">
-                   Size
+                    Size
                 </label>
                 <div class="col-md-6">
                     @Html.DropDownList("SizeID", null, new { @class = "form-control" })
@@ -213,7 +284,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.UnitOfMeasurementID, "UnitOfMeasurementID", htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Unit Of Measurement
                     <span class="symbol required"></span>
@@ -224,25 +294,9 @@
                 </div>
             </div>
 
-            @*<div class="form-group">
-                    @Html.LabelFor(model => model.LastUnitCost, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.LastUnitCost, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.LastUnitCost, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.WeightedAverageCost, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.WeightedAverageCost, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.WeightedAverageCost, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
 
             @Html.Hidden("VendorCoding")
             <div class="form-group">
-                @*@Html.LabelFor(model => model.VendorCoding, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Vendor Coding
                     <span class="symbol required"></span>
@@ -252,36 +306,9 @@
                     @Html.ValidationMessageFor(model => model.VendorCoding, "", new { @class = "text-danger" })
                 </div>
             </div>
-            @*<div class="form-group">
-             
-                <label class="control-label col-md-2">
-                    Re-order Level
-                    <span class="symbol required"></span>
-                </label>
-                <div class="col-md-6">
-                    @Html.EditorFor(model => model.ReOrderLevel, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ReOrderLevel, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
 
-            @*<div class="form-group">
-                    @Html.LabelFor(model => model.MinimumStock, "MinimumStock", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.MinimumStock, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.MinimumStock, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.MaximumStock, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.MaximumStock, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.MaximumStock, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.DailyAverageUsage, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Daily Average Usage
                     <span class="symbol required"></span>
@@ -293,7 +320,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.LeadTime, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Lead Time
                     <span class="symbol required"></span>
@@ -305,7 +331,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Quantity
                     <span class="symbol required"></span>
@@ -335,7 +360,9 @@
             </div>
 
         </div>
+
     </div>
+
 }
 
 
@@ -447,37 +474,7 @@
         //alert('test');
         var param = GetURLParameter();
 
-        var url = "/Item/GetItemById/";
-
-        $.ajax({
-            url: url,
-            data: { itemID: param },
-            cache: false,
-            type: "POST",
-            success: function (data) {
-                $.ajax({
-                    url: "/Item/GetSubCategory/",
-                    data: { categoryID: data.Category },
-                    cache: false,
-                    type: "POST",
-                    success: function (result) {
-                        var markup = "<option value='0'>Select SubCategory</option>";
-                        for (var x = 0; x < result.length; x++) {
-                            markup += "<option value=" + result[x].ID + ">" + result[x].Description + "</option>";
-                        }
-                        $("#ddlsubcat").html(markup).show();
-
-                        $("#ddlsubcat").val(data.SubCategory);
-                    },
-                    error: function (reponse) {
-                        alert("error : " + reponse);
-                    }
-                });
-            },
-            error: function (reponse) {
-                alert("error : " + reponse);
-            }
-        });
+        
     });
 
     function GetURLParameter() {
@@ -490,55 +487,9 @@
             return 0;
     }
 
-    function GetSubCategory(_categoryID) {
-        var procemessage = "<option value='0'> Please wait...</option>";
-        $("#ddlsubcat").html(procemessage).show();
-        var url = "/Item/GetSubCategory/";
-
-        $.ajax({
-            url: url,
-            data: { categoryID: _categoryID },
-            cache: false,
-            type: "POST",
-            success: function (data) {
-                var markup = "<option value='0'>Select SubCategory</option>";
-                for (var x = 0; x < data.length; x++) {
-                    markup += "<option value=" + data[x].ID + ">" + data[x].Description + "</option>";
-                }
-                $("#ddlsubcat").html(markup).show();
-            },
-            error: function (reponse) {
-                alert("error : " + reponse);
-            }
-        });
-
-    }
-
-    function GetSubCategoriesTypes(_subcategoryID) {
-        var procemessage = "<option value='0'> Please wait...</option>";
-        $("#ddlsubcattypes").html(procemessage).show();
-        var url = "/Item/GetSubCategoriesTypes/";
-
-        $.ajax({
-            url: url,
-            data: { subcategoryID: _subcategoryID },
-            cache: false,
-            type: "POST",
-            success: function (data) {
-                var markup = "<option value='0'>Select SubCategoryTypes</option>";
-                for (var x = 0; x < data.length; x++) {
-                    markup += "<option value=" + data[x].ID + ">" + data[x].Description + "</option>";
-                }
-                $("#ddlsubcattypes").html(markup).show();
-            },
-            error: function (reponse) {
-                alert("error : " + reponse);
-            }
-        });
-    }
-
 
 </script>
+
 <script language="javascript">
     $(function () {
 
@@ -662,3 +613,5 @@
         }
     });
 </script>
+
+
