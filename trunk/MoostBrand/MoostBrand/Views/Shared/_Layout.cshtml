@@ -1,21 +1,10 @@
 ﻿<!DOCTYPE html>
-<!-- Template Name: Rapido - Responsive Admin Template build with Twitter Bootstrap 3.x Version: 1.2 Author: ClipTheme -->
-<!--[if IE 8]><html class="ie8" lang="en"><![endif]-->
-<!--[if IE 9]><html class="ie9" lang="en"><![endif]-->
-<!--[if !IE]><!-->
+
 <html lang="en">
 <!--<![endif]-->
 <!-- start: HEAD -->
 <head>
     <title>Moostbrand - @ViewBag.Title</title>
-
-    @*<meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>@ViewBag.Title - My ASP.NET Application</title>*@
-    @*@Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>*@
 
     <script src="~/Scripts/jquery-1.12.4.min.js"></script>
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
@@ -81,11 +70,6 @@
 <!-- start: BODY -->
 <body>
 
-
-    @*<div class="preload">
-        <img src="@Url.Content("~/Content/loadingpage.gif")">
-    </div>*@
-
     <div class="main-wrapper">
         <!-- start: TOPBAR -->
         <header class="topbar navbar navbar-inverse navbar-fixed-top inner">
@@ -117,12 +101,6 @@
                                 </li>
                             </ul>
                         </li>
-                        <!-- end: USER DROPDOWN -->
-                        <!--<li class="right-menu-toggle">
-                            <a href="#" class="sb-toggle-right">
-                                <i class="fa fa-globe toggle-icon"></i> <i class="fa fa-caret-right"></i> <span class="notifications-count badge badge-default hide"> 3</span>
-                            </a>
-                        </li>-->
                     </ul>
                     <!-- end: TOP NAVIGATION MENU -->
                 </div>
@@ -221,6 +199,16 @@
                                         Categories
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="@Url.Action("Index", "SubCategoryTypes")">
+                                       SubCategory Types
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Index", "SubCategory")">
+                                       SubCategories 
+                                    </a>
+                                </li>
 								<li>
 									<a href="@Url.Action("Index", "Brand")">
 										Brands
@@ -280,9 +268,6 @@
             </div>
             <div class="slide-tools">
                 <div class="col-xs-6 text-left no-padding">
-                    @*<a class="btn btn-sm status" href="#">
-                        Status <i class="fa fa-dot-circle-o text-green"></i> <span>Online</span>
-                    </a>*@
                 </div>
                 <div class="col-xs-6 text-right no-padding">
                     <a class="btn btn-sm log-out text-right" href="@Url.Action("Logout", "Account")">
@@ -368,44 +353,12 @@
     </div>
 
 
-    @*<div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    </ul>
-                    @Html.Partial("_LoginPartial")
-                </div>
-            </div>
-        </div>
-        <div class="container body-content">
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>
-        </div>*@
+  
 
 
     @*@Scripts.Render("~/bundles/bootstrap")*@
     @RenderSection("scripts", required: false)
-    <!-- start: MAIN JAVASCRIPTS -->
-    <!--[if lt IE 9]>
-    <script src="../../Content/rapido/plugins/respond.min.js"></script>
-    <script src="../../Content/rapido/plugins/excanvas.min.js"></script>
-    <script type="text/javascript" src="../../Content/rapido/plugins/jQuery/jquery-1.11.1.min.js"></script>
-    <![endif]-->
-    <!--[if gte IE 9]><!-->
+
 
     <script src="@Url.Content("~/Content/rapido/plugins/blockUI/jquery.blockUI.js")"></script>
     <script src="@Url.Content("~/Content/rapido/plugins/iCheck/jquery.icheck.js")"></script>
@@ -463,54 +416,7 @@
     <!-- start: CORE JAVASCRIPTS  -->
     <script src="@Url.Content("~/Content/rapido/js/main.js")"></script>
 
-    @*
-    <script src="@Url.Content("~/Content/rapido/plugins/blockUI/jquery.blockUI.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/iCheck/jquery.icheck.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/moment/min/moment.min.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/perfect-scrollbar/src/jquery.mousewheel.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/perfect-scrollbar/src/perfect-scrollbar.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/bootbox/bootbox.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/jquery.scrollTo/jquery.scrollTo.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/ScrollToFixed/jquery-scrolltofixed.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/jquery.appear/jquery.appear.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/jquery-cookie/jquery.cookie.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/velocity/jquery.velocity.js")"></script>
-    @*<script src="@Url.Content("~/Content/rapido/plugins/TouchSwipe/jquery.touchSwipe.js")"></script>
-    <!-- end: MAIN JAVASCRIPTS -->
-    <!-- start: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS -->
-    <script src="@Url.Content("~/Content/rapido/plugins/owl-carousel/owl-carousel/owl.carousel.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/jquery-mockjax/jquery.mockjax.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/toastr/toastr.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/bootstrap-modal/js/bootstrap-modal.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/bootstrap-modal/js/bootstrap-modalmanager.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/fullcalendar/fullcalendar/fullcalendar.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/bootstrap-switch/dist/js/bootstrap-switch.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/bootstrap-select/bootstrap-select.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/jquery-validation/dist/jquery.validate.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/bootstrap-fileupload/bootstrap-fileupload.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/DataTables/media/js/jquery.dataTables.js")"></script>
-
-    <script src="@Url.Content("~/Content/rapido/plugins/truncate/jquery.truncate.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/summernote/dist/summernote.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/bootstrap-daterangepicker/daterangepicker.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/js/subview.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/js/subview-examples.js")"></script>
-    <!-- end: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS -->
-    <!-- start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
-    <script src="@Url.Content("~/Content/rapido/plugins/bootstrap-progressbar/bootstrap-progressbar.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/nvd3/lib/d3.v3.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/nvd3/nv.d3.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/nvd3/src/models/historicalBar.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/nvd3/src/models/historicalBarChart.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/nvd3/src/models/stackedArea.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/nvd3/src/models/stackedAreaChart.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/jquery.sparkline/jquery.sparkline.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/plugins/easy-pie-chart/dist/jquery.easypiechart.js")"></script>
-    <script src="@Url.Content("~/Content/rapido/js/index.js")"></script>
-    <!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
-    <!-- start: CORE JAVASCRIPTS  -->
-    <script src="@Url.Content("~/Content/rapido/js/main.js")"></script>*@
-    <!-- end: CORE JAVASCRIPTS  -->
+ 
     <script>
         jQuery(document).ready(function () {
             try {

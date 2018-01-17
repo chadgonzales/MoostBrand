@@ -19,10 +19,10 @@
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group">
-                @Html.LabelFor(model => model.CategoryID, "CategoryID", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.SubCategoryTypeID, "Sub Category Type", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
-                    @Html.DropDownListFor(model => Model.CategoryID, new SelectList(ViewBag.Categories, "ID", "Description"), "")
-                    @Html.ValidationMessageFor(model => model.CategoryID, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(model => Model.SubCategoryTypeID, new SelectList(ViewBag.SubTypes, "ID", "Description"), "")
+                    @Html.ValidationMessageFor(model => model.SubCategoryTypeID, "", new { @class = "text-danger" })
                 </div>
             </div>
 

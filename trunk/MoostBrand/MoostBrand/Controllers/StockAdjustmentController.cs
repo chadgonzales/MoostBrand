@@ -336,7 +336,7 @@ namespace MoostBrand.Controllers
 
                             StockLedger _stockledger = new StockLedger();
                             _stockledger.InventoryID = _inv.ID;
-                            _stockledger.Type = "Stock Adjustment";
+                            _stockledger.Type = "Variance";
                             _stockledger.Variance = _inv.Variance;
                             _stockledger.ReferenceNo = adjust.No;
                             _stockledger.BeginningBalance = _inv.OldQuantity;

@@ -39,7 +39,7 @@
         <thead>
             <tr>
                 <th>
-                    @Html.ActionLink("Category", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                    @Html.ActionLink("SubCategoryType", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                 </th>
                 <th>
                     @Html.ActionLink("Code", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
@@ -55,7 +55,7 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Category.Description)
+                        @Html.DisplayFor(modelItem => item.SubCategoriesType.Description)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Code)
@@ -75,7 +75,7 @@
                                 <i class="fa fa-file"></i>
                             </a>
 
-                            @Html.ActionLink("Sub Categories Type", "Index", "SubCategoryTypes", new { SearchString = item.Description }, new { @class = "btn btn-xs btn-orange tooltips subcat" })
+                            @Html.ActionLink("Sub Categories Type", "Index", "SubCategoryTypes", new { SearchString = item.SubCategoriesType.Description }, new { @class = "btn btn-xs btn-orange tooltips subcat" })
 
                             <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
                                 <i class="fa fa-times fa fa-white"></i>

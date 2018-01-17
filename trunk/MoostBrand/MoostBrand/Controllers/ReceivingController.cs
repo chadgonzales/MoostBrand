@@ -923,7 +923,7 @@ namespace MoostBrand.Controllers
                         entity.Entry(receving).State = EntityState.Modified;
                         entity.SaveChanges();
 
-                        if (Convert.ToInt32(Session["TypeID"]) != 6)
+                        if (receving.ReceivingTypeID != 6)
                         {
                             var rd = receving.Requisition.RequisitionDetails.Select(p => p.ItemID).ToList();
                             var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
@@ -1019,29 +1019,28 @@ namespace MoostBrand.Controllers
                         else
                         {
                             var rd = receving.ReceivingDetails.Select(p => p.RequisitionDetailID);
-                            var item = entity.StockTransferDetails.Where(i => rd.Contains(i.ID)).Select(p=>p.InventoryID);
+                         
 
                             var items = entity.StockTransferDetails.Where(i => rd.Contains(i.ID)).Select(p => p.Inventories.ItemID);
 
                             var stID = entity.StockTransferDetails.Where(i => rd.Contains(i.ID)).FirstOrDefault().StockTransferID;
 
-                            int loc = 0; int _qty = 0;
+                            int loc = 0; int _qty = 0; int source = 0;
                             loc = entity.StockTransfers.Find(stID).DestinationID.Value;
+                            source = entity.StockTransfers.Find(stID).LocationID;
 
-                            var inv = entity.Inventories.Where(i => item.Contains(i.ID)).ToList();
+                            var inv = entity.Inventories.Where(i => items.Contains(i.ItemID) && i.LocationCode == loc).ToList();
                             if (inv != null)
                             {
                                 foreach (var _inv in inv)
                                 {
                                     var i = entity.Inventories.Find(_inv.ID);
 
-                                    int _item = entity.StockTransferDetails.FirstOrDefault(t => t.StockTransferID == stID && t.InventoryID == i.ID).ID;
+                                    int invID = entity.Inventories.FirstOrDefault(t => t.LocationCode == source && t.ItemID == i.ItemID).ID;
+                                    int _item = entity.StockTransferDetails.FirstOrDefault(t => t.StockTransferID == stID && t.InventoryID == invID).ID;
 
                                     _qty =receving.ReceivingDetails.FirstOrDefault(p => p.RequisitionDetailID == _item && p.ReceivingID == id).Quantity.Value;
-                                    if (receving.Requisition.ReqTypeID == 1)
-                                    {
-                                        i.Ordered = i.Ordered - _qty;
-                                    }
+                                   
                                     i.InStock = i.InStock + _qty;
                                     i.Available = (i.InStock + i.Ordered) - i.Committed;
 
@@ -1313,7 +1312,7 @@ namespace MoostBrand.Controllers
 
                         item.InStock = reqDetailRepo.getInstockedReceiving(requisitionId, reqDetail.Item.Code) + item.Quantity;
                     }
-                    else if (stDetails != null && (item.Receiving.ReceivingTypeID != 6 || item.Receiving.ReceivingTypeID != 1))
+                    else if (stDetails != null && (item.Receiving.ReceivingTypeID != 6 ))
                     {
                         stDetails.Quantity = stDetails.Quantity - item.Quantity;
 

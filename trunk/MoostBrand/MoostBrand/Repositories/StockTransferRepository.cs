@@ -46,6 +46,11 @@ namespace MoostBrand.DAL
             return _committed;
         }
 
+        public Inventory getDirectInventory(int itemID, int loc)
+        {
+
+            return entity.Inventories.FirstOrDefault(i=>i.ItemID == itemID && i.LocationCode == loc);
+        }
 
         public int getCommited_Receiving(int reservationId, int itemID)
         {
