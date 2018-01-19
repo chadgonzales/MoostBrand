@@ -349,7 +349,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Remaining Balance</Value>
+                              <Value>Instock</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -761,7 +761,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>

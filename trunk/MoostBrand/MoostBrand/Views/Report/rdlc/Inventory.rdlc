@@ -12,7 +12,7 @@
               <Width>1.5625in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.95455in</Width>
+              <Width>1.77275in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.38793in</Width>
@@ -33,7 +33,7 @@
               <Width>1.06378in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.44792in</Width>
+              <Width>0.62972in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.73958in</Width>
@@ -358,7 +358,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>QOH</Value>
+                              <Value>Instock</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
