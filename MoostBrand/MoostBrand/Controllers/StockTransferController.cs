@@ -745,11 +745,11 @@ namespace MoostBrand.Controllers
 
                         
                       
-                       var rd = st.Requisition.RequisitionDetails.Select(p => p.ItemCode).ToList();
+                       var rd = st.Requisition.RequisitionDetails.Select(p => p.ItemID.ToString()).ToList();
 
                         if (rd == null)
                         {
-                            rd = st.Receiving.ReceivingDetails.Select(p => p.RequisitionDetail.ItemCode).ToList();
+                            rd = st.Receiving.ReceivingDetails.Select(p => p.RequisitionDetail.ItemID.ToString()).ToList();
                         }
                         
                        
@@ -764,7 +764,7 @@ namespace MoostBrand.Controllers
                                 var i = entity.Inventories.Find(_inv.ID);
                                 i.Committed = i.Committed - _qty;
                                 //  i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, st.LocationID);
-                                i.InStock = invRepo.getInstocked(st.RequisitionID.Value, _inv.ItemCode) - _qty;//stRepo.getStockTranfer(_itemid,id);
+                                i.InStock = i.InStock - _qty;//stRepo.getStockTranfer(_itemid,id);
                                 i.Available = (i.InStock + i.Ordered) - i.Committed;
 
                                 entity.Entry(i).State = EntityState.Modified;

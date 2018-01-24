@@ -49,7 +49,7 @@ namespace MoostBrand.Controllers
                 dtDateTo = Convert.ToDateTime(dateTo);
             }
 
-            var _lst = entity.Inventories.Where(p=>p.ItemCode == "000251").ToList();
+            var _lst = entity.Inventories.ToList();
 
             if(brand!=null)
             {
@@ -83,8 +83,9 @@ namespace MoostBrand.Controllers
               
             }
 
+            var sl = entity.StockLedgers.Where(p => p.Date >= dtDateFrom).ToList();
 
-            var lstInventory1 = (from p in entity.StockLedgers.Where(p => p.Date > dtDateFrom && p.Date <= dtDateTo).ToList()
+            var lstInventory1 = (from p in sl.Where(p => p.Date <= dtDateTo.AddDays(1)).ToList()
                                  group p by new { p.InventoryID, p.Type } into g
                                  select new
                                  {
@@ -120,10 +121,11 @@ namespace MoostBrand.Controllers
                                         TotalOrder = i.Ordered != null ? i.Ordered :0,                                                                                       
                                         ReservationName = lstInventory3.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode) != null ? lstInventory3.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode).ReservationName : " ",
                                         QOH =0,
-                                        PcsPerBox = i.Items.Quantity
+                                        PcsPerBox = i.Items.Quantity,
+                                        Instock = i.InStock != null ? i.InStock : 0,
 
 
-                                    }).ToList();
+                                }).ToList();
 
             var _lstInventory = (from i in lstInventory
                                  select new
@@ -140,8 +142,8 @@ namespace MoostBrand.Controllers
                                     CommittedQty = i.CommittedQty,
                                     TotalOrder = i.TotalOrder,
                                     ReservationName = i.ReservationName,
-                                    QOH = i.InQty - i.OutQty - i.CommittedQty + i.AdjustedQty,
-                                    PcsPerBox = i.PcsPerBox
+                                    QOH = i.Instock, // - i.OutQty - i.CommittedQty + i.AdjustedQty
+                                     PcsPerBox = i.PcsPerBox
                                   
 
                                  }).ToList();
