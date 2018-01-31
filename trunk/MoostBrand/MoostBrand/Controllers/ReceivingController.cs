@@ -986,8 +986,11 @@ namespace MoostBrand.Controllers
                                     inventory.ItemCode = _item.Code;
                                     inventory.POSBarCode = _item.Barcode;
                                     inventory.Description = _item.DescriptionPurchase;
+                                    inventory.SalesDescription = _item.Description != null ? _item.Description : "";
                                     inventory.Category = _item.Category.Description;
-                                    inventory.InventoryUoM = ""; //_item.UnitOfMeasurement.Description
+                                    inventory.InventoryUoM = _item.UnitOfMeasurement != null ? 
+                                                             _item.UnitOfMeasurement.Description != null ? _item.UnitOfMeasurement.Description: "" 
+                                                            : "";
                                     inventory.InventoryStatus = 2;
                                     inventory.LocationCode = loc;
                                     inventory.Committed = invRepo.getCommitedReceiving(loc, _item.Code);

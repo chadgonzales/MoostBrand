@@ -315,7 +315,7 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var adjust = entity.StockAdjustments.Find(id);
-                if (adjust.StockAdjustmentDetails.Count > 0)
+                 if (adjust.StockAdjustmentDetails.Count > 0)
                 {
                     adjust.ApprovalStatus = 2;
                     adjust.IsSync = false;
@@ -335,7 +335,7 @@ namespace MoostBrand.Controllers
                             entity.SaveChanges();
 
                             StockLedger _stockledger = new StockLedger();
-                            _stockledger.InventoryID = _inv.ID;
+                            _stockledger.InventoryID = i.ID;
                             _stockledger.Type = "Variance";
                             _stockledger.Variance = _inv.Variance;
                             _stockledger.ReferenceNo = adjust.No;
