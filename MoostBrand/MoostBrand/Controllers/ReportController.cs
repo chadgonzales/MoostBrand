@@ -32,7 +32,7 @@ namespace MoostBrand.Controllers
 
             ViewBag.Brand = new SelectList(entity.Items.Select(p=>p.Brand).Distinct(), "ID", "Description");
             ViewBag.Category = new SelectList(entity.Items.Select(p => p.Category).Distinct(), "ID", "Description");
-            ViewBag.Vendor = new SelectList(entity.Vendors, "ID", "GeneralName");
+            ViewBag.Vendor = new SelectList(entity.Vendors.OrderBy(v=>v.GeneralName), "ID", "GeneralName");
             ViewBag.Location = new SelectList(loc, "ID", "Description");
             #endregion
             DateTime dtDateFrom = DateTime.Now.Date;
@@ -150,10 +150,6 @@ namespace MoostBrand.Controllers
 
 
 
-            //  if(brand)
-
-
-
             ReportViewer reportViewer = new ReportViewer();
             reportViewer.ProcessingMode = ProcessingMode.Local;
 
@@ -201,7 +197,7 @@ namespace MoostBrand.Controllers
 
             ViewBag.Brand = new SelectList(entity.Items.Select(p => p.Brand).Distinct(), "ID", "Description");
             ViewBag.Category = new SelectList(entity.Items.Select(p => p.Category).Distinct(), "ID", "Description");
-            ViewBag.Vendor = new SelectList(entity.Vendors, "ID", "GeneralName");
+            ViewBag.Vendor = new SelectList(entity.Vendors.OrderBy(v => v.GeneralName), "ID", "GeneralName");
             ViewBag.Location = new SelectList(loc, "ID", "Description");
             #endregion
             DateTime dtDateFrom = DateTime.Now.Date;
@@ -410,5 +406,122 @@ namespace MoostBrand.Controllers
 
             return View();
         }
+
+        public ActionResult UnserveReport(string dateFrom, string dateTo, int? brand, int? category, int? vendor, int? location)
+        {
+            var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
+            #region DROPDOWNS
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Description = x.Description
+                            });
+
+            ViewBag.Brand = new SelectList(entity.Items.Select(p => p.Brand).Distinct(), "ID", "Description");
+            ViewBag.Category = new SelectList(entity.Items.Select(p => p.Category).Distinct(), "ID", "Description");
+            ViewBag.Vendor = new SelectList(entity.Vendors.OrderBy(v => v.GeneralName), "ID", "GeneralName");
+            ViewBag.Location = new SelectList(loc, "ID", "Description");
+            #endregion
+            DateTime dtDateFrom = DateTime.Now.Date;
+            DateTime dtDateTo = DateTime.Now;
+
+            string _sortbybrand = "Brand: ALL", _sortbycategory = "Category: ALL", _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
+            if (!String.IsNullOrEmpty(dateFrom))
+            {
+                dtDateFrom = Convert.ToDateTime(dateFrom).Date;
+            }
+
+            if (!String.IsNullOrEmpty(dateTo))
+            {
+                dtDateTo = Convert.ToDateTime(dateTo);
+            }
+
+            var _lst = entity.RequisitionDetails.Where(r=>r.Requisition.ReqTypeID == 1 && r.Quantity > 0).ToList();
+
+            _lst = _lst.Where(r => r.Requisition.RequestedDate >= dtDateFrom && r.Requisition.RequestedDate <= dtDateTo.AddDays(1)).ToList();
+
+            if (brand != null)
+            {               
+                _lst = _lst.Where(p => p.Item.BrandID == brand).ToList();
+                string _brand = entity.Brands.Find(brand).Description;
+                _sortbybrand = "Brand:" + _brand;
+            }
+
+            if (category != null)
+            {
+                _lst = _lst.Where(p => p.Item.CategoryID == category).ToList();
+                string _category = entity.Categories.Find(category).Description;
+                _sortbycategory = "Category:" + _category;
+            }
+
+            if (vendor != null)
+            {
+                _lst = _lst.Where(p => p.Item.VendorCoding == vendor).ToList();
+                string _vendor = entity.Vendors.Find(vendor).Name;
+                _sortbyvendor = "Vendor:" + _vendor;
+            }
+
+            if (location != null)
+            {
+                _lst = _lst.Where(p => p.Requisition.LocationID == location).ToList();
+                string _location = entity.Locations.Find(location).Description;
+                _sortbylocation = "Location:" + _location;
+
+            }
+
+           
+            var lstUnserve = (from i in _lst
+                                select new
+                                {
+                                    DateRequested = i.Requisition._RequestedDate,
+                                    PO = i.Requisition.PONumber != null ? i.Requisition.PONumber : "" ,
+                                    ItemCode = i.Item.Code,
+                                    ItemPurDesc =  i.Item.Description,
+                                    ItemSalesDesc = i.Item.DescriptionPurchase,
+                                    UOM =  i.Item.UnitOfMeasurement.Description,
+                                    Quantity = i.Quantity,
+                                    Location = i.Requisition.Location.Description,
+                                    ReOrderLevel =  entity.Inventories.FirstOrDefault(inv=>inv.ItemID == i.ItemID && inv.LocationCode == i.Requisition.LocationID) != null ?
+                                                    (entity.Inventories.FirstOrDefault(inv => inv.ItemID == i.ItemID && inv.LocationCode == i.Requisition.LocationID).ReOrder != null ?
+                                                    entity.Inventories.FirstOrDefault(inv => inv.ItemID == i.ItemID && inv.LocationCode == i.Requisition.LocationID).ReOrder : 0) : 0 , //from inventory
+                                    StatusOfOrder = ""
+
+                                }).ToList();
+
+   
+
+            ReportViewer reportViewer = new ReportViewer();
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+            ReportDataSource _rds = new ReportDataSource();
+            _rds.Name = "dsUnserve";
+            _rds.Value = lstUnserve.OrderBy(p => p.ItemSalesDesc);
+
+            reportViewer.KeepSessionAlive = false;
+            reportViewer.LocalReport.DataSources.Clear();
+            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Views\Report\rdlc\Unserve.rdlc";
+
+            List<ReportParameter> _parameter = new List<ReportParameter>();
+            _parameter.Add(new ReportParameter("DateRange", dtDateFrom.ToString("MMMM dd, yyyy") + " - " + dtDateTo.ToString("MMMM dd, yyyy")));
+            _parameter.Add(new ReportParameter("DateGenerated", DateTime.Now.ToString("h:mm tt")));
+            _parameter.Add(new ReportParameter("SortByBrand", _sortbybrand));
+            _parameter.Add(new ReportParameter("SortByCategory", _sortbycategory));
+            _parameter.Add(new ReportParameter("SortByVendor", _sortbyvendor));
+            _parameter.Add(new ReportParameter("SortByLocation", _sortbylocation));
+
+            reportViewer.LocalReport.DataSources.Add(_rds);
+            reportViewer.LocalReport.Refresh();
+            reportViewer.LocalReport.SetParameters(_parameter);
+
+            ViewBag.ReportViewer = reportViewer;
+
+            ViewBag.DateFrom = dtDateFrom.ToString("MM/dd/yyyy");
+            ViewBag.DateTo = dtDateTo.ToString("MM/dd/yyyy");
+
+            return View();
+        }
+
+
     }
 }

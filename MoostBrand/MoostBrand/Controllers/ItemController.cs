@@ -339,8 +339,7 @@ namespace MoostBrand.Controllers
         [AccessChecker(Action = 2, ModuleID = 11)]
         public ActionResult Edit(int id)
         {
-          
-
+        
             var item = entity.Items.Find(id);
           
             ViewBag.CategoryID = new SelectList(entity.Categories.OrderBy(p => p.Description).ToList(), "ID", "Description", item.CategoryID);
