@@ -55,7 +55,7 @@ namespace MoostBrand.Controllers
         #endregion
 
         // GET: Inventories
-
+        [AccessCheckerForDisablingButtons(ModuleID = 10)]
         [AccessChecker(Action = 1, ModuleID = 10)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {

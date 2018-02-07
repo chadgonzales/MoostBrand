@@ -168,7 +168,7 @@ namespace MoostBrand.Controllers
         // GET: Item/Edit/5
 
         #endregion
-
+        [AccessCheckerForDisablingButtons(ModuleID = 11)]
         [AccessChecker(Action = 1, ModuleID = 11)]
         // GET: Items
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)

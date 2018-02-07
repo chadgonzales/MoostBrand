@@ -16,6 +16,7 @@ namespace MoostBrand.Controllers
         MoostBrandEntities entity = new MoostBrandEntities();
         EmployeeRepository empRepo = new EmployeeRepository();
 
+        [AccessCheckerForDisablingButtons(ModuleID = 18)]
         [AccessChecker(Action = 1, ModuleID = 18)]
         // GET: Employee
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)

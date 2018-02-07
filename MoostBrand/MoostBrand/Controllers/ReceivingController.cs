@@ -523,6 +523,7 @@ namespace MoostBrand.Controllers
 
         #region ACTIONS
         // GET: Receiving
+        [AccessCheckerForDisablingButtons(ModuleID = 5)]
         [AccessChecker(Action = 1, ModuleID = 5)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {

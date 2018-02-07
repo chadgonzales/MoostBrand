@@ -313,6 +313,7 @@ namespace MoostBrand.Controllers
 
         #region Actions
         // GET: PR
+        [AccessCheckerForDisablingButtons(ModuleID = 3)]
         [AccessChecker(Action = 1, ModuleID = 3)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -1159,13 +1160,13 @@ namespace MoostBrand.Controllers
 
                 /*rd.Committed = getCommited(rd.ItemID) + rd.Quantity;*/ // COMMENT COMMENT dnagdgan ko + quantity kasi wala syang nkkuha kasi dpa nag ssave yung quantity haha gets mo
                 rd.ReferenceQuantity = rd.Quantity;
-                rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID); //getCommited(rd.ItemID);
-                
-                rd.Ordered = reqDetailRepo.getPurchaseOrder(req.LocationID.Value,rd.ItemID); //getPurchaseOrder(rd.ItemID); // di ko gets msyado ordered so ikaw na bahala haha
-
-                rd.InStock = reqDetailRepo.getInstocked(id, desc); //getInstocked(desc);
-
-                rd.Available = rd.InStock + rd.Ordered - rd.Committed;
+                //rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID); //getCommited(rd.ItemID);
+                //
+                //rd.Ordered = reqDetailRepo.getPurchaseOrder(req.LocationID.Value,rd.ItemID); //getPurchaseOrder(rd.ItemID); // di ko gets msyado ordered so ikaw na bahala haha
+                //
+                //rd.InStock = reqDetailRepo.getInstocked(id, desc); //getInstocked(desc);
+                //
+                //rd.Available = rd.InStock + rd.Ordered - rd.Committed;
 
                 var rd1 = entity.RequisitionDetails.Where(r => r.RequisitionID == rd.RequisitionID && r.ItemID == rd.ItemID).ToList();
 
@@ -1219,19 +1220,19 @@ namespace MoostBrand.Controllers
                 {
                     rd.PreviousItemID = prvrequiDetail.ItemID;
                     rd.PreviousQuantity = prvrequiDetail.Quantity;
-                    rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID);
-                    rd.Ordered = reqDetailRepo.getPurchaseOrder(prvrequiDetail.Requisition.LocationID.Value, rd.ItemID);
-                    rd.InStock = reqDetailRepo.getInstocked(id, itm.Description);
-
-                    rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                    //rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID);
+                    //rd.Ordered = reqDetailRepo.getPurchaseOrder(prvrequiDetail.Requisition.LocationID.Value, rd.ItemID);
+                    //rd.InStock = reqDetailRepo.getInstocked(id, itm.Description);
+                    //
+                    //rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
                     rd.Remarks = rd.Remarks;
                 }
                 else
                 {
-                    rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID);
-                    rd.Ordered = reqDetailRepo.getPurchaseOrder(prvrequiDetail.Requisition.LocationID.Value, rd.ItemID);
-                    rd.InStock = reqDetailRepo.getInstocked(id, itm.Description);
-                    rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
+                   // rd.Committed = reqDetailRepo.getCommited(id, rd.ItemID);
+                   // rd.Ordered = reqDetailRepo.getPurchaseOrder(prvrequiDetail.Requisition.LocationID.Value, rd.ItemID);
+                   // rd.InStock = reqDetailRepo.getInstocked(id, itm.Description);
+                   // rd.Available = (rd.InStock + rd.Ordered) - rd.Committed;
 
                     rd.Remarks = rd.Remarks;
                     rd.PreviousQuantity = prvrequiDetail.Quantity;

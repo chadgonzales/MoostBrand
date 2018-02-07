@@ -19,6 +19,7 @@ namespace MoostBrand.Controllers
 
         #region Action
         // GET: StockTransferDirects
+        [AccessCheckerForDisablingButtons(ModuleID = 4)]
         [AccessChecker(Action = 1, ModuleID = 4)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
