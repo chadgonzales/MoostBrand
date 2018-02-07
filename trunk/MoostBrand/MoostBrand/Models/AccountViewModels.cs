@@ -217,7 +217,9 @@ namespace MoostBrand.Models
                                     { "controller", "Home" },
                                     { "action", "Denied" }
                                     });
-                            }
+
+                                    Session["hideaccess"] = "hidden";
+                             }
                             break;
 
                         case 5: //CanDecide
@@ -241,6 +243,100 @@ namespace MoostBrand.Models
                                     });
                             break;
                     }
+                    }
+                    catch
+                    {
+                        filterContext.Result = new RedirectToRouteResult(
+                                    new RouteValueDictionary
+                                    {
+                                    { "controller", "Home" },
+                                    { "action", "Denied" }
+                                    });
+
+                    }
+
+                }
+
+            }
+
+        }
+    }
+    #endregion
+
+    #region User Access For Disabling of Buttons
+    public class AccessCheckerForDisablingButtons : ActionFilterAttribute
+    {
+        MoostBrandEntities entity = new MoostBrandEntities();
+        public int ModuleID { get; set; }
+
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (filterContext != null)
+            {
+                HttpSessionStateBase Session = filterContext.HttpContext.Session;
+                if (Session["sessionuid"] == null)
+                {
+                    filterContext.Result = new RedirectToRouteResult(
+                        new RouteValueDictionary
+                        {
+                            { "controller", "Account" },
+                            { "action", "Login" }
+                        });
+                }
+                else
+                {
+                    int UserID = System.Convert.ToInt32(Session["sessionuid"]);
+
+                    var access = entity.UserAccesses.FirstOrDefault(u => u.EmployeeID == UserID && u.ModuleID == ModuleID);
+                    try
+                    {
+                        entity.Entry(access).Reload();
+
+                        if (!access.CanView)
+                        {
+                            Session["canview"] = "hidden";
+                        }
+                        else
+                        {
+                            Session["canview"] = "";
+                        }
+               
+                        if (!access.CanEdit)
+                        {
+                            Session["canedit"] = "hidden";
+                        }
+                        else
+                        {
+                            Session["canedit"] = "";
+                        }
+
+                        if (!access.CanDelete)
+                        {
+                            Session["candelete"] = "hidden";
+                        }
+                        else
+                        {
+                            Session["candelete"] = "";
+                        }
+
+                        if (!access.CanRequest)
+                        {
+                            Session["canrequest"] = "hidden";
+                        }
+                        else
+                        {
+                            Session["canrequest"] = "";
+                        }
+
+                        if (!access.CanDecide)
+                        {
+                            Session["candecide"] = "hidden";
+                        }
+                        else
+                        {
+                            Session["candecide"] = "";
+                        }
+
                     }
                     catch
                     {

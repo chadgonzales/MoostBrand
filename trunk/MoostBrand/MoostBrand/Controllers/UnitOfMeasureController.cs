@@ -16,6 +16,7 @@ namespace MoostBrand.Controllers
         MoostBrandEntities entity = new MoostBrandEntities();
         // GET: UnitOfMeasures
 
+        [AccessCheckerForDisablingButtons(ModuleID = 13)]
         [AccessChecker(Action = 1, ModuleID = 13)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {

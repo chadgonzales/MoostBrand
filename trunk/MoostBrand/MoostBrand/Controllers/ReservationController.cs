@@ -322,6 +322,9 @@ namespace MoostBrand.Controllers
             return View(prs.ToPagedList(pageNumber, pageSize));
         }
 
+        [AccessCheckerForDisablingButtons(ModuleID = 9)]
+        [AccessChecker(Action = 1, ModuleID = 9)]
+
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
 
@@ -401,6 +404,7 @@ namespace MoostBrand.Controllers
             return View(pr);
         }
 
+        [AccessChecker(Action = 2, ModuleID = 9)]
         public ActionResult Create()
         {
             var pr = new Requisition();
@@ -442,6 +446,7 @@ namespace MoostBrand.Controllers
         }
 
         [HttpPost]
+        [AccessChecker(Action = 2, ModuleID = 9)]
         public ActionResult Create(Requisition req)
         {
             if (ModelState.IsValid)

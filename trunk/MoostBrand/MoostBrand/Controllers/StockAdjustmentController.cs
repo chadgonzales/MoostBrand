@@ -18,6 +18,7 @@ namespace MoostBrand.Controllers
         StockAdjustmentRepository stockadRepo = new StockAdjustmentRepository();
 
         // GET: StockAdjustment
+        [AccessCheckerForDisablingButtons(ModuleID = 8)]
         [AccessChecker(Action = 1, ModuleID = 8)]
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {

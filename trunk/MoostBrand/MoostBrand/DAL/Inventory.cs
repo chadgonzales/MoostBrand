@@ -57,6 +57,8 @@
         public int? LeadTime { get; set; }
         public int? ItemID { get; set; }
 
+        public int? BeginningInStock { get; set; }
+
         public virtual InventoryStatu InventoryStatu { get; set; }
         public virtual Location Location { get; set; }
 
