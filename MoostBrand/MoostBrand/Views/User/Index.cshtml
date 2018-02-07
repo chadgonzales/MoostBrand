@@ -16,7 +16,7 @@
 
     <div class="dataTables_wrapper no-footer">
         <div class="dataTables_length">
-            <a href="@Url.Action("Create")" class="btn btn-green" style="float:left;"> Create New <i class="fa fa-plus"></i></a>
+            <a href="@Url.Action("Create")" class="btn btn-green @Session["canedit"]" style="float:left;"> Create New <i class="fa fa-plus"></i></a>
         </div>
         <div class="dataTables_filter">
             @using (Html.BeginForm("Index", "User", FormMethod.Post))
@@ -86,13 +86,13 @@
                     </td>
                     <td>
                         <div class="custom-tools">
-                            <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
+                            <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips  @Session["canedit"]" data-placement="top" data-original-title="Edit">
                                 <i class="fa fa-edit"></i>
                             </a>
                             <a href='@Url.Action("Details", new { id = item.ID })' class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Details">
                                 <i class="fa fa-file"></i>
                             </a>
-                            <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                            <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips  @Session["candelete"]" data-placement="top" data-original-title="Delete">
                                 <i class="fa fa-times fa fa-white"></i>
                             </a>
                         </div>
