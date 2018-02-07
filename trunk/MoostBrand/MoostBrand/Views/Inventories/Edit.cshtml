@@ -73,7 +73,6 @@
             @Html.HiddenFor(model => model.ItemCode)
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.ItemCode, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Item Code
                     <span class="symbol required"></span>
@@ -85,7 +84,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.Year, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Year
                     <span class="symbol required"></span>
@@ -97,7 +95,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.POSBarCode, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     POS Bar Code
                     <span class="symbol required"></span>
@@ -109,7 +106,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Sales Description
                     <span class="symbol required"></span>
@@ -121,7 +117,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.Category, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Category
                     <span class="symbol required"></span>
@@ -133,7 +128,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.InventoryUoM, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Inventory UoM
                     <span class="symbol required"></span>
@@ -145,26 +139,22 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.InventoryStatus, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Inventory Status
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @*@Html.DropDownListFor(model => model.InventoryStatus, new { htmlAttributes = new { @class = "form-control" } })*@
                     @Html.DropDownList("InventoryStatus", null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.InventoryStatus, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.LocationCode, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Location Code
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @*@Html.EditorFor(model => model.LocationCode, new { htmlAttributes = new { @class = "form-control" } })*@
                     @Html.DropDownList("LocationCode", null, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.LocationCode, "", new { @class = "text-danger" })
                 </div>
@@ -179,7 +169,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.LeadTime, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Lead Time
                     <span class="symbol required"></span>
@@ -191,7 +180,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.ReOrder, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     ReOrder
                     <span class="symbol required"></span>
@@ -211,7 +199,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.Ordered, "Total Ordered", htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Ordered
                     <span class="symbol required"></span>
@@ -223,7 +210,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.Committed, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Committed
                     <span class="symbol required"></span>
@@ -235,7 +221,6 @@
             </div>
 
             <div class="form-group">
-                @*@Html.LabelFor(model => model.Available, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Available
                     <span class="symbol required"></span>
@@ -243,6 +228,16 @@
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.Available, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
                     @Html.ValidationMessageFor(model => model.Available, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Beginning Balance
+                    @*<span class="symbol required"></span>*@
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.BeginningInStock, new { htmlAttributes = new { @class = "form-control" , @readonly = true } })
+                    @Html.ValidationMessageFor(model => model.BeginningInStock, "", new { @class = "text-danger" })
                 </div>
             </div>
 

@@ -12,7 +12,7 @@
 <div class="panel-body">
     <div class="dataTables_wrapper no-footer">
         <div class="dataTables_length">
-            <a href="@Url.Action("Create")" class="btn btn-green" style="float:left;"> Create New <i class="fa fa-plus"></i></a>
+            <a href="@Url.Action("Create")" class="btn btn-green @Session["canedit"]" style="float:left;"> Create New <i class="fa fa-plus"></i></a>
         </div>
         <div class="dataTables_filter">
             @using (Html.BeginForm("Index", "Receiving", FormMethod.Post))
@@ -82,26 +82,26 @@
                                     if (item.ReceivingTypeID  == 1 || Convert.ToInt32(Session["sessionuid"]) == item.EncodedBy)
                                     //if (Convert.ToInt32(Session["sessionuid"]) == item.EncodedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                                     {
-                                        <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
+                                        <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips @Session["canedit"]" data-placement="top" data-original-title="Edit">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                                        <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips @Session["candelete"]" data-placement="top" data-original-title="Delete">
                                             <i class="fa fa-times fa fa-white"></i>
                                         </a>
                                     }
                                     //if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                                     //{
-                                        <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
+                                        <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips @Session["candecide"]" data-placement="top" data-original-title="Approve">
                                             <i class="fa fa-thumbs-up"></i>
                                         </a>
-                                        <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
+                                        <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips @Session["candecide"]" data-placement="top" data-original-title="Deny">
                                             <i class="fa fa-thumbs-down"></i>
                                         </a>
 
 
                                     if (item.ReceivingDetails.Where(p => p.AprovalStatusID == 2).Sum(p => p.Quantity) > 0 && item.ReceivingDetails.Where(p => p.AprovalStatusID == 2).Sum(p => p.Quantity) != item.ReceivingDetails.Sum(p => p.ReferenceQuantity) && item.ApprovalStatus != 5)
                                     {
-                                        <a href = "#" id = "force closed" onclick = "ForceClosed(@item.ID)" class="btn btn-xs btn-dark-grey tooltips" data-placement="top" data-original-title="Force Closed">
+                                        <a href = "#" id = "force closed" onclick = "ForceClosed(@item.ID)" class="btn btn-xs btn-dark-grey tooltips @Session["candecide"]" data-placement="top" data-original-title="Force Closed">
                                             <i class="fa fa-close"></i>
                                         </a>
                                     }
