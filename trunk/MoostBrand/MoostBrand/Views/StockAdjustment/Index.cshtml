@@ -101,6 +101,12 @@
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 </div>
 
+<div id="DenyWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div id="ShowDialogDeny" class="modal-dialog" role="document">
+
+    </div><!-- /.modal-dialog -->
+</div>
+
 <script type="text/javascript">
     function ReloadFunction() {
         location.reload();
@@ -117,13 +123,25 @@
         location.reload();
     }
 
-    function Deny() {
-        var prID = arguments[0];
+    function Deny(id) {
+        @*var prID = arguments[0];
 
         var url = '@Url.Action("Denied", "StockAdjustment")/' + prID;
 
         var frm = $("#action_form").serialize();
 
-        $.post(url, frm, ReloadFunction);
+        $.post(url, frm, ReloadFunction);*@
+
+        var url = '@Url.Action("DenyItemPartial", "StockAdjustment")';
+        $.get(url, { id: id }, function (data) {
+            $('#ShowDialogDeny').html(data);
+
+            $('#DenyWindow').modal('show');
+
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+        });
     }
 </script>

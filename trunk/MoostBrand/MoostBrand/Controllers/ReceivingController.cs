@@ -1374,6 +1374,55 @@ namespace MoostBrand.Controllers
             return RedirectToAction("PendingItems", "Receiving", new { id = id });
         }
 
+        public ActionResult DenyItemPartial(int id)
+        {
+            ViewBag.PRid = id;
+
+            return PartialView();
+        }
+
+        // POST: PR/DenyItemPartial/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DenyItemPartial(int id, string Reason)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(Reason))
+                {
+                    var rec = entity.Receivings.Find(id);
+                    rec.ApprovalStatus = 3;
+                    rec.Remarks = Reason;
+                    entity.Entry(rec).State = EntityState.Modified;
+
+                    entity.SaveChanges();
+
+
+                    var recdetails = entity.ReceivingDetails.Where(i => i.ReceivingID == id).ToList();
+                    if (recdetails != null)
+                    {
+                        foreach (var _rc in recdetails)
+                        {
+                            var rc = entity.ReceivingDetails.Find(_rc.ID);
+                            rc.AprovalStatusID = 3;
+
+                            entity.Entry(rc).State = EntityState.Modified;
+                            entity.SaveChanges();
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    TempData["Error"] = "Reason is required";
+                }
+            }
+            catch { TempData["Error"] = "There's an error"; }
+
+            return RedirectToAction("Index");
+        }
+
         #endregion
 
         #region PARTIAL

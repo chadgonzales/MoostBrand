@@ -122,8 +122,11 @@
 </div>
 
 
+<div id="DenyWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div id="ShowDialogDeny" class="modal-dialog" role="document">
 
-
+    </div><!-- /.modal-dialog -->
+</div>
 
 <script type="text/javascript">
     function Approve() {
@@ -145,15 +148,26 @@
         location.reload();
     }
 
-    function Deny() {
-        var prID = arguments[0];
+    function Deny(id) {
+        @*var prID = arguments[0];
 
         var url = '@Url.Action("Denied", "StockTransfer")/' + prID;
 
         var frm = $("#action_form").serialize();
 
         $.post(url, frm);
-        location.reload();
+        location.reload();*@
+        var url = '@Url.Action("DenyItemPartial", "StockTransfer")';
+        $.get(url, { id: id }, function (data) {
+            $('#ShowDialogDeny').html(data);
+
+            $('#DenyWindow').modal('show');
+
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+        });
     }
 
     function ForceClosed() {

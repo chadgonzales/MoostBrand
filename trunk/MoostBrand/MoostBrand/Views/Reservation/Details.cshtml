@@ -260,7 +260,7 @@
                 </tr>
             </thead>
 
-            @foreach (var item in Model.RequisitionDetails)
+            @foreach (var item in Model.RequisitionDetails.Where(r=>r.AprovalStatusID == 2))
             {
                 <tbody>
                     <tr>

@@ -468,10 +468,10 @@ namespace MoostBrand.Controllers
                     }
                     #endregion
 
-                    if(stocktransfer.StockTransferTypeID == 3)
-                    {
-                      stocktransfer.RequisitionID = Convert.ToInt32(Session["ReqID"]);
-                    }
+                    //if(stocktransfer.StockTransferTypeID == 3)
+                    //{
+                    //  stocktransfer.RequisitionID = Convert.ToInt32(Session["ReqID"]);
+                    //}
                     stocktransfer.ApprovedStatus = 1;
                     stocktransfer.ApprovedBy = Convert.ToInt32(Session["sessionuid"]);
                     stocktransfer.IsSync = false;
@@ -1441,6 +1441,55 @@ namespace MoostBrand.Controllers
                                .FirstOrDefault();
 
             return Json(computations, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DenyItemPartial(int id)
+        {
+            ViewBag.PRid = id;
+
+            return PartialView();
+        }
+
+        // POST: PR/DenyItemPartial/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DenyItemPartial(int id, string Reason)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(Reason))
+                {
+                    var st = entity.StockTransfers.Find(id);
+                    st.ApprovedStatus = 3;
+                    st.Remarks = Reason;
+                    entity.Entry(st).State = EntityState.Modified;
+
+                    entity.SaveChanges();
+
+
+                    var stdetails = entity.StockTransferDetails.Where(i => i.StockTransferID == id).ToList();
+                    if (stdetails != null)
+                    {
+                        foreach (var _st in stdetails)
+                        {
+                            var _stdetails = entity.StockTransferDetails.Find(_st.ID);
+                            _stdetails.AprovalStatusID = 3;
+
+                            entity.Entry(stdetails).State = EntityState.Modified;
+                            entity.SaveChanges();
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    TempData["Error"] = "Reason is required";
+                }
+            }
+            catch { TempData["Error"] = "There's an error"; }
+
+            return RedirectToAction("Index");
         }
 
         #endregion
