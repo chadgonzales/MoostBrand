@@ -326,9 +326,9 @@
                 </tr>
             </thead>
 
-            @foreach (var item in Model.requisitiondetails.Select(p=>p.RequisitionDetails))
+            @foreach (var item in Model.requisitiondetails.Select(p=>p.RequisitionDetails).Where(r => r.AprovalStatusID == 2))
             {
-                
+
                 <tbody>
                     <tr>
                         <td>

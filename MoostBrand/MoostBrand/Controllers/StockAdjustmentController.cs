@@ -616,6 +616,58 @@ namespace MoostBrand.Controllers
             return Json(items, JsonRequestBehavior.AllowGet);
         }
 
+
+        public ActionResult DenyItemPartial(int id)
+        {
+            ViewBag.PRid = id;
+
+            return PartialView();
+        }
+
+        // POST: PR/DenyItemPartial/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DenyItemPartial(int id, string Reason)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(Reason))
+                {
+                    var sa = entity.StockAdjustments.Find(id);
+                    sa.ApprovalStatus = 3;
+                    sa.Comments = Reason;
+                    entity.Entry(sa).State = EntityState.Modified;
+
+                    entity.SaveChanges();
+
+                    //var stdetails = entity.StockTransferDetails.Where(i => i.StockTransferID == id).ToList();
+                    //if (stdetails != null)
+                    //{
+                    //    foreach (var _st in stdetails)
+                    //    {
+                    //        var _stdetails = entity.StockTransferDetails.Find(_st.ID);
+                    //        _stdetails.AprovalStatusID = 3;
+
+                    //        entity.Entry(stdetails).State = EntityState.Modified;
+                    //        entity.SaveChanges();
+                    //    }
+
+                    //}
+
+                }
+                else
+                {
+                    TempData["Error"] = "Reason is required";
+                }
+            }
+            catch { TempData["Error"] = "There's an error"; }
+
+            return RedirectToAction("Index");
+        }
+
+
+                    
+
         #endregion
     }
 }

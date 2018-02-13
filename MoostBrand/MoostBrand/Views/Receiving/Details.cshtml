@@ -358,7 +358,7 @@
                 </tr>
             </thead>
 
-            @foreach (var item in Model.ReceivingDetails)
+            @foreach (var item in Model.ReceivingDetails.Where(r => r.AprovalStatusID == 2))
             {
                 <tbody>
                     <tr>

@@ -275,7 +275,7 @@
                 </tr>
             </thead>
 
-            @foreach (var item in Model.StockTransferDetails)
+            @foreach (var item in Model.StockTransferDetails.Where(r => r.AprovalStatusID == 2))
             {
                 <tbody>
                     <tr>

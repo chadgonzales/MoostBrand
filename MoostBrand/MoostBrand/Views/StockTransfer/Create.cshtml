@@ -330,7 +330,9 @@
 
 
     function HideOrShow() {
+
         var val = $("#StockTransferTypeID").val();
+      
         if (val == "") {
             $("#rc").hide();
             $("#rq").hide();
@@ -380,17 +382,19 @@
         });
     });
 
-    $('#ReservationID').change(function () {
-        $.ajax({
-            url: "/StockTransfer/ReqID",
-            type: "POST",
-            data: { reqID: $('#ReservationID').val() },
-            cache: false,
-            success: function (r) {
-            }
-        });
+    //$('#ReservationID').change(function () {
+
+    //    alert($('#ReservationID').val());
+    //    $.ajax({
+    //        url: "/StockTransfer/ReqID",
+    //        type: "POST",
+    //        data: { reqID: $('#ReservationID').val() },
+    //        cache: false,
+    //        success: function (r) {
+    //        }
+    //    });
        
-    });
+    //});
 
     function BindData(data) {
         $("#TransferID").val(data);
