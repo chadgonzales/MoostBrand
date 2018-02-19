@@ -2886,7 +2886,7 @@ namespace MoostBrand.Views.Report.rdlc {
             
             private global::System.Data.DataColumn columnDateCreated;
             
-            private global::System.Data.DataColumn _columnSTR_;
+            private global::System.Data.DataColumn columnSTR;
             
             private global::System.Data.DataColumn columnRequisitionID;
             
@@ -2949,9 +2949,9 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn _STR_Column {
+            public global::System.Data.DataColumn STRColumn {
                 get {
-                    return this._columnSTR_;
+                    return this.columnSTR;
                 }
             }
             
@@ -3064,11 +3064,11 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtStockTransferRow AdddtStockTransferRow(string DateCreated, string _STR_, string RequisitionID, string ItemCode, string ItemPurDesc, string ItemSalesDesc, string UOM, string QtyOut, string Location, string ReceivedBy, string CreatedBy) {
+            public dtStockTransferRow AdddtStockTransferRow(string DateCreated, string STR, string RequisitionID, string ItemCode, string ItemPurDesc, string ItemSalesDesc, string UOM, string QtyOut, string Location, string ReceivedBy, string CreatedBy) {
                 dtStockTransferRow rowdtStockTransferRow = ((dtStockTransferRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DateCreated,
-                        _STR_,
+                        STR,
                         RequisitionID,
                         ItemCode,
                         ItemPurDesc,
@@ -3101,7 +3101,7 @@ namespace MoostBrand.Views.Report.rdlc {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
                 this.columnDateCreated = base.Columns["DateCreated"];
-                this._columnSTR_ = base.Columns["STR#"];
+                this.columnSTR = base.Columns["STR"];
                 this.columnRequisitionID = base.Columns["RequisitionID"];
                 this.columnItemCode = base.Columns["ItemCode"];
                 this.columnItemPurDesc = base.Columns["ItemPurDesc"];
@@ -3118,10 +3118,8 @@ namespace MoostBrand.Views.Report.rdlc {
             private void InitClass() {
                 this.columnDateCreated = new global::System.Data.DataColumn("DateCreated", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnDateCreated);
-                this._columnSTR_ = new global::System.Data.DataColumn("STR#", typeof(string), null, global::System.Data.MappingType.Element);
-                this._columnSTR_.ExtendedProperties.Add("Generator_ColumnVarNameInTable", "_columnSTR_");
-                this._columnSTR_.ExtendedProperties.Add("Generator_UserColumnName", "STR#");
-                base.Columns.Add(this._columnSTR_);
+                this.columnSTR = new global::System.Data.DataColumn("STR", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSTR);
                 this.columnRequisitionID = new global::System.Data.DataColumn("RequisitionID", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRequisitionID);
                 this.columnItemCode = new global::System.Data.DataColumn("ItemCode", typeof(string), null, global::System.Data.MappingType.Element);
@@ -5348,17 +5346,17 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string _STR_ {
+            public string STR {
                 get {
                     try {
-                        return ((string)(this[this.tabledtStockTransfer._STR_Column]));
+                        return ((string)(this[this.tabledtStockTransfer.STRColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'STR#\' in table \'dtStockTransfer\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'STR\' in table \'dtStockTransfer\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledtStockTransfer._STR_Column] = value;
+                    this[this.tabledtStockTransfer.STRColumn] = value;
                 }
             }
             
@@ -5520,14 +5518,14 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is_STR_Null() {
-                return this.IsNull(this.tabledtStockTransfer._STR_Column);
+            public bool IsSTRNull() {
+                return this.IsNull(this.tabledtStockTransfer.STRColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set_STR_Null() {
-                this[this.tabledtStockTransfer._STR_Column] = global::System.Convert.DBNull;
+            public void SetSTRNull() {
+                this[this.tabledtStockTransfer.STRColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

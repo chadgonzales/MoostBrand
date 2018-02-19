@@ -143,7 +143,7 @@ namespace MoostBrand.Controllers
                                     TotalOrder = i.TotalOrder,
                                     ReservationName = i.ReservationName,
                                     QOH = i.Instock, // - i.OutQty - i.CommittedQty + i.AdjustedQty
-                                     PcsPerBox = i.PcsPerBox
+                                    PcsPerBox = i.PcsPerBox
                                   
 
                                  }).ToList();
@@ -254,6 +254,7 @@ namespace MoostBrand.Controllers
                                 select new
                                 {
                                     DateCreated = i.Requisition.RequestedDate != null ? i.Requisition.RequestedDate.ToString() : " ",
+                                    orderBydate = i.Requisition.RequestedDate,
                                     RefNumber = i.Requisition.RefNumber != null ? i.Requisition.RefNumber : " ",
                                     ItemCode = i.Item.Code != null ? i.Item.Code : " ",
                                     ItemSalesDesc = i.Item.DescriptionPurchase != null ? i.Item.DescriptionPurchase : " ",
@@ -276,7 +277,7 @@ namespace MoostBrand.Controllers
 
             ReportDataSource _rds = new ReportDataSource();
             _rds.Name = "dsReservation";
-            _rds.Value = lstReservation.OrderBy(p => p.ItemSalesDesc);
+            _rds.Value = lstReservation.OrderBy(p => p.orderBydate);
 
             reportViewer.KeepSessionAlive = false;
             reportViewer.LocalReport.DataSources.Clear();
@@ -372,7 +373,8 @@ namespace MoostBrand.Controllers
                                     RemainingBalance = i.RemainingBalance != null ? i.RemainingBalance : 0,
                                     BeginningBalance = i.BeginningBalance != null ? i.BeginningBalance : 0,
                                     Variance = i.Variance != null ? i.Variance : 0,
-                                    Date = i.Date != null ? i.Date.Value.ToString("MM/dd/yyyy") : "",
+                                    Date = i.Date != null ? i.Date.Value.ToString() : "",
+                                    orderBydate = i.Date.Value,
                                     Location = i.Inventories.LocationCode != null ? i.Inventories.Location.Description : " "
 
                                 }).ToList();
@@ -384,7 +386,7 @@ namespace MoostBrand.Controllers
 
             ReportDataSource _rds = new ReportDataSource();
             _rds.Name = "dsStockLedger";
-            _rds.Value = lstStockLedger.OrderBy(c => Convert.ToDateTime(c.Date));//.ThenBy(n => n.Type)
+            _rds.Value = lstStockLedger.OrderBy(c =>c.orderBydate);//.ThenBy(n => n.Type)
 
             reportViewer.KeepSessionAlive = false;
             reportViewer.LocalReport.DataSources.Clear();
@@ -495,6 +497,7 @@ namespace MoostBrand.Controllers
                                 select new
                                 {
                                     DateRequested = i.Requisition._RequestedDate,
+                                    orderByDate = i.Requisition.RequestedDate,
                                     PO = i.Requisition.PONumber != null ? i.Requisition.PONumber : "" ,
                                     ItemCode = i.Item.Code,
                                     ItemPurDesc =  i.Item.Description,
@@ -516,7 +519,7 @@ namespace MoostBrand.Controllers
 
             ReportDataSource _rds = new ReportDataSource();
             _rds.Name = "dsUnserve";
-            _rds.Value = lstUnserve.OrderBy(p => p.ItemSalesDesc);
+            _rds.Value = lstUnserve.OrderBy(p => p.orderByDate);
 
             reportViewer.KeepSessionAlive = false;
             reportViewer.LocalReport.DataSources.Clear();
@@ -562,7 +565,7 @@ namespace MoostBrand.Controllers
             DateTime dtDateFrom = DateTime.Now.Date;
             DateTime dtDateTo = DateTime.Now;
 
-            string  _sortbyvendor = "Vendor: ALL"; //_sortbylocation = "Location: ALL"
+            string _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
             if (!String.IsNullOrEmpty(dateFrom))
             {
                 dtDateFrom = Convert.ToDateTime(dateFrom).Date;
@@ -585,27 +588,28 @@ namespace MoostBrand.Controllers
                 _sortbyvendor = "Vendor:" + _vendor;
             }
 
-            //if (location != null)
-            //{
-            //    _lst = _lst.Where(p => p.Receiving.LocationID == location).ToList();
-            //    string _location = entity.Locations.Find(location).Description;
-            //    _sortbylocation = "Location:" + _location;
+            if (location != null)
+            {
+                _lst = _lst.Where(p => p.Receiving.LocationID == location).ToList();
+                string _location = entity.Locations.Find(location).Description;
+                _sortbylocation = "Location:" + _location;
 
-            //}
+            }
 
 
             var lstStockReceiving = (from i in _lst
                               select new
                               {
                                   DateCreated = i.Receiving.Requisition._RequestedDate,
+                                  orderByDate = i.Receiving.Requisition.RequestedDate,
                                   SRR = i.Receiving.ReceivingID != null ? i.Receiving.ReceivingID : "",
-                                  PO = "",
+                                  PO = i.RequisitionDetail.Requisition.PONumber,
                                   ItemCode = i.RequisitionDetail.Item.Code,
                                   ItemPurDesc = i.RequisitionDetail.Item.Description,
                                   ItemSalesDesc = i.RequisitionDetail.Item.DescriptionPurchase,
                                   UOM = i.RequisitionDetail.Item.UnitOfMeasurement.Description,
                                   Quantity = i.Quantity,
-                                  Location = i.Receiving.Location.Description,
+                                  Location = i.Receiving.GetLocation,
                                   ReceivedBy = i.Receiving.Employee2.FirstName+' '+i.Receiving.Employee2.LastName,
                                   CreatedBy = i.Receiving.Requisition.Employee1.FirstName +' ' + i.Receiving.Requisition.Employee1.LastName
 
@@ -618,7 +622,7 @@ namespace MoostBrand.Controllers
 
             ReportDataSource _rds = new ReportDataSource();
             _rds.Name = "dsStockReceiving";
-            _rds.Value = lstStockReceiving.OrderBy(p => p.ItemSalesDesc);
+            _rds.Value = lstStockReceiving.OrderBy(p => p.orderByDate);
 
             reportViewer.KeepSessionAlive = false;
             reportViewer.LocalReport.DataSources.Clear();
@@ -628,7 +632,7 @@ namespace MoostBrand.Controllers
             _parameter.Add(new ReportParameter("DateRange", dtDateFrom.ToString("MMMM dd, yyyy") + " - " + dtDateTo.ToString("MMMM dd, yyyy")));
             _parameter.Add(new ReportParameter("DateGenerated", DateTime.Now.ToString("h:mm tt")));
             _parameter.Add(new ReportParameter("SortByVendor", _sortbyvendor));
-            //_parameter.Add(new ReportParameter("SortByLocation", _sortbylocation));
+            _parameter.Add(new ReportParameter("SortByLocation", _sortbylocation));
 
             reportViewer.LocalReport.DataSources.Add(_rds);
             reportViewer.LocalReport.Refresh();
@@ -822,7 +826,7 @@ namespace MoostBrand.Controllers
             DateTime dtDateFrom = DateTime.Now.Date;
             DateTime dtDateTo = DateTime.Now;
 
-            string _sortbyvendor = "Vendor: ALL"; //_sortbylocation = "Location: ALL"
+            string _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
             if (!String.IsNullOrEmpty(dateFrom))
             {
                 dtDateFrom = Convert.ToDateTime(dateFrom).Date;
@@ -833,41 +837,51 @@ namespace MoostBrand.Controllers
                 dtDateTo = Convert.ToDateTime(dateTo);
             }
 
-            var _lst = entity.ReceivingDetails.ToList();
+            var _lst = entity.StockTransferDetails.ToList();
 
-            _lst = _lst.Where(r => r.Receiving.ReceivingDate >= dtDateFrom && r.Receiving.ReceivingDate <= dtDateTo.AddDays(1)).ToList();
+            _lst = _lst.Where(r => r.StockTransfer.STDAte >= dtDateFrom && r.StockTransfer.STDAte <= dtDateTo.AddDays(1)).ToList();
 
 
             if (vendor != null)
             {
-                _lst = _lst.Where(p => p.RequisitionDetail.Item.VendorCoding == vendor).ToList();
+                try
+                {
+                    _lst = _lst.Where(p => p.RequisitionDetail.Item.VendorCoding == vendor).ToList();
+                }
+                catch { }
                 string _vendor = entity.Vendors.Find(vendor).Name;
                 _sortbyvendor = "Vendor:" + _vendor;
             }
 
-            //if (location != null)
-            //{
-            //    _lst = _lst.Where(p => p.Receiving.LocationID == location).ToList();
-            //    string _location = entity.Locations.Find(location).Description;
-            //    _sortbylocation = "Location:" + _location;
+            if (location != null)
+            {
+                try
+                {
+                    _lst = _lst.Where(p => p.StockTransfer.LocationID == location).ToList();                 
+                }
+                catch { }
+                string _location = entity.Locations.Find(location).Description;
+                _sortbylocation = "Location:" + _location;
 
-            //}
+            }
 
 
             var lstStockReceiving = (from i in _lst
                                      select new
                                      {
-                                         DateCreated = i.Receiving.Requisition._RequestedDate,
-                                         SRR = i.Receiving.ReceivingID != null ? i.Receiving.ReceivingID : "",
-                                         PO = "",
-                                         ItemCode = i.RequisitionDetail.Item.Code,
-                                         ItemPurDesc = i.RequisitionDetail.Item.Description,
-                                         ItemSalesDesc = i.RequisitionDetail.Item.DescriptionPurchase,
-                                         UOM = i.RequisitionDetail.Item.UnitOfMeasurement.Description,
-                                         Quantity = i.Quantity,
-                                         Location = i.Receiving.Location.Description,
-                                         ReceivedBy = i.Receiving.Employee2.FirstName + ' ' + i.Receiving.Employee2.LastName,
-                                         CreatedBy = i.Receiving.Requisition.Employee1.FirstName + ' ' + i.Receiving.Requisition.Employee1.LastName
+
+                                         DateCreated = i.StockTransfer.Requisition != null ? i.StockTransfer.Requisition._RequestedDate : i.StockTransfer.STDAte.ToString("MM/dd/yyyy"),
+                                         orderbyDate = i.StockTransfer.Requisition != null ? i.StockTransfer.Requisition.RequestedDate : i.StockTransfer.STDAte,
+                                         STR = i.StockTransfer.TransferID != null ? i.StockTransfer.TransferID : "",
+                                         RequisitionID = i.RequisitionDetail != null ? i.RequisitionDetail.Requisition.RefNumber : "",
+                                         ItemCode = i.RequisitionDetail != null? i.RequisitionDetail.Item.Code : "",
+                                         ItemPurDesc = i.RequisitionDetail != null ? i.RequisitionDetail.Item.Description : "",
+                                         ItemSalesDesc = i.RequisitionDetail != null ? i.RequisitionDetail.Item.DescriptionPurchase : "",
+                                         UOM = i.RequisitionDetail !=null ? i.RequisitionDetail.Item.UnitOfMeasurement.Description : "",
+                                         QtyOut = i.Quantity,
+                                         Location = i.StockTransfer.Requisition.Location.Description,
+                                         ReceivedBy = i.StockTransfer.Employee3!=null ? i.StockTransfer.Employee3.FirstName + ' ' + i.StockTransfer.Employee3.LastName :"",
+                                         CreatedBy = i.StockTransfer.Employee6 !=null ? i.StockTransfer.Employee6.FirstName + ' ' + i.StockTransfer.Employee6.LastName :""
 
                                      }).ToList();
 
@@ -878,7 +892,7 @@ namespace MoostBrand.Controllers
 
             ReportDataSource _rds = new ReportDataSource();
             _rds.Name = "dsStockTransfer";
-            _rds.Value = lstStockReceiving.OrderBy(p => p.ItemSalesDesc);
+            _rds.Value = lstStockReceiving.OrderBy(p => p.orderbyDate);
 
             reportViewer.KeepSessionAlive = false;
             reportViewer.LocalReport.DataSources.Clear();
