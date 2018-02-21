@@ -1,0 +1,107 @@
+﻿@*@model IEnumerable<MoostBrand.DAL.SubCategory>*@
+
+@model PagedList.IPagedList<MoostBrand.DAL.SubCategory>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Sub Categories";
+}
+
+<div class="panel-heading">
+    <h4 class="panel-title">Sub Categories</h4>
+
+</div>
+<div class="panel-body">
+
+    <div class="dataTables_wrapper no-footer">
+        <div class="dataTables_length">
+            <a href="@Url.Action("Create")" class="btn btn-green" style="float:left;"> Create New <i class="fa fa-plus"></i></a>
+        </div>
+        <div class="dataTables_filter">
+            @using (Html.BeginForm("Index", "SubCategory", FormMethod.Post))
+            {
+                <p>
+                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-sm", @placeholder = "Search" })
+                    <input type="submit" value="Search" class="btn btn-green" />
+                    @*@Html.DropDownList("Categories", new SelectList(ViewBag.Categories, "ID", "Description"), new { onchange = @"form.submit();" });*@
+                </p>
+            }
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="clearfix"></div>
+
+    </div>
+
+    <table class="table table-striped table-bordered table-hover table-full-width dataTable no-footer">
+        <thead>
+            <tr>
+                <th>
+                    @Html.ActionLink("SubCategoryType", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Code", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Description", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th></th>
+            </tr>
+            </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubCategoriesType.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Code)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Picture)
+                    </td>*@
+                    <td>
+                        <div class="custom-tools">
+                            <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href='@Url.Action("Details", new { id = item.ID })' class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Details">
+                                <i class="fa fa-file"></i>
+                            </a>
+
+                            @Html.ActionLink("Sub Categories Type", "Index", "SubCategoryTypes", new { SearchString = item.SubCategoriesType.Description }, new { @class = "btn btn-xs btn-orange tooltips subcat" })
+
+                            <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                                <i class="fa fa-times fa fa-white"></i>
+                            </a>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+
+</div>
+
+<script language="javascript">
+    $(function () {
+        $(".subcat").text("").append('<i class="fa fa-times fa fa-files-o"></i>').attr("data-placement", "top").attr("data-original-title", "Sub Categories Type");
+
+    });
+
+</script>
+
+
+
+

@@ -1,0 +1,388 @@
+﻿@model MoostBrand.DAL.StockTransfer
+@using MoostBrand.DAL
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        $("#reqsearch").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetRequisition")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.RefNumber,
+                                value: item.RefNumber
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#RequisitionID").val(ui.item.id);
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+
+        $("#recsearch").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetReceiving")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.ReceivingID,
+                                value: item.ReceivingID
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#ReceivingID").val(ui.item.id);
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+
+        $("#ressearch").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetReservation")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.RefNumber,
+                                value: item.RefNumber
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#RequisitionID").val(ui.item.id);
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+    })
+
+</script>
+
+
+<div class="container">
+
+    @Html.HiddenFor(model => model.ID)
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Stock Transfer Type
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            @Html.DropDownList("StockTransferTypeID","")
+            @Html.ValidationMessageFor(model => model.StockTransferTypeID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div id="rc">
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Receiving ID
+                <span class="symbol required"></span>
+            </label>
+            <div class="col-md-6">
+                @Html.TextBox("recsearch", ViewBag.Receiving as string, new { @class = "form-control" })
+                @Html.Hidden("ReceivingID")
+                @Html.ValidationMessageFor(model => model.ReceivingID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div id="rq">
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Requisition ID
+                <span class="symbol required"></span>
+            </label>
+            <div class="col-md-6">
+                @Html.TextBox("reqsearch", ViewBag.Requisition as string, new { @class = "form-control" })
+                @Html.Hidden("RequisitionID")
+                @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div id="res">
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Requisition ID
+                <span class="symbol required"></span>
+            </label>
+            <div class="col-md-6">
+                @Html.TextBox("ressearch", ViewBag.Reservation as string, new { @class = "form-control" })
+                @Html.Hidden("ReservationID")
+                @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Destination
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            @Html.DropDownList("LocationID")
+            @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Transfer ID
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.TransferID, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TransferID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            ST Date
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.STDAte, new { htmlAttributes = new { @class = "form-control date-picker" } })
+            @Html.ValidationMessageFor(model => model.STDAte, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Time Started
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            <div class="input-group input-append bootstrap-timepicker">
+                @Html.EditorFor(model => model.TimeStarted, new { htmlAttributes = new { @class = "form-control time-picker" } })
+
+                <span class="input-group-addon add-on"><i class="fa fa-clock-o"></i></span>
+            </div>
+            @Html.ValidationMessageFor(model => model.TimeStarted, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Time Finish
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            <div class="input-group input-append bootstrap-timepicker">
+                @Html.EditorFor(model => model.TimeFinish, new { htmlAttributes = new { @class = "form-control time-picker" } })
+                <span class="input-group-addon add-on"><i class="fa fa-clock-o"></i></span>
+            </div>
+            @Html.ValidationMessageFor(model => model.TimeFinish, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Driver
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.Driver, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Driver, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Plate No.
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.PlateNo, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PlateNo, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Helpers
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            <div id="helper-fields">
+                @Html.EditorFor(model => model.Helpers, new { htmlAttributes = new { @class = "form-control _helper" } })
+                @Html.AddLink("Add", "#helper-fields", ".helper-field", "Helpers", typeof(MoostBrand.DAL.Helper))
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Requested By
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            @Html.DropDownList("RequestedBy")
+            @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Received By
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            @Html.DropDownList("ReceivedBy")
+            @Html.ValidationMessageFor(model => model.ReceivedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Released By
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            @Html.DropDownList("ReleasedBy")
+            @Html.ValidationMessageFor(model => model.ReleasedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Operators
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            <div id="operator-fields">
+                @Html.EditorFor(model => model.Operators, new { htmlAttributes = new { @class = "form-control _operator" } })
+                @Html.AddLink("Add", "#operator-fields", ".operator-field", "Operators", typeof(MoostBrand.DAL.Operator))
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Counter Checked By
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            @Html.DropDownList("CounterCheckedBy")
+            @Html.ValidationMessageFor(model => model.CounterCheckedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Encoded By
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            @Html.DropDownList("EncodedBy")
+            @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">
+            Posted By
+            <span class="symbol required"></span>
+        </label>
+        <div class="col-md-6">
+            @Html.DropDownList("PostedBy")
+            @Html.ValidationMessageFor(model => model.PostedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.ApprovedBy)
+    @Html.HiddenFor(model => model.ApprovedStatus)
+</div>
+
+
+<script language="javascript">
+    $(function () {
+
+        // add class form-control to textarea and select
+        $("input[disabled]").addClass("form-control");
+        $("textarea").addClass("form-control");
+        $("select").addClass("form-control");
+
+        $('.date-picker').datepicker({
+            autoclose: true
+        });
+    });
+
+</script>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+<script type="text/jscript">
+    jQuery.validator.unobtrusive.adapters.add("dropdown", function (options) {
+        if (options.element.tagName.toUpperCase() == "SELECT" && options.element.type.toUpperCase() == "SELECT-ONE") {
+            options.rules["required"] = true;
+            if (options.message) {
+                options.messages["required"] = options.message;
+            }
+        }
+    });
+
+    var x = 1
+    function appendRow() {
+        var d = document.getElementById('helper-fields');
+        d.innerHTML += "<input type='text' id='Helpers" + x++ + "'><br >";
+    }
+</script>
+
+<style>
+    .bootstrap-timepicker-widget.dropdown-menu.open{
+    width:50%;
+    }
+</style>
+

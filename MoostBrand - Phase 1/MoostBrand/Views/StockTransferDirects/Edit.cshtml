@@ -1,0 +1,93 @@
+﻿@model MoostBrand.DAL.StockTransfer
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+@using (Html.BeginForm("Edit", "StockTransferDirects", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel-heading">
+        <h4 class="panel-title">Create Stock Transfer</h4>
+        <hr />
+    </div>
+    <div class="panel-body">
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger alert alert-danger" })
+
+            @Html.EditorForModel()
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Create" class="btn btn-green" />
+                    <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+}
+
+<script src="~/Scripts/CustomJs.js"></script>
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+
+
+    $('#Quantity').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#TransferID').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#STDate').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#TimeStarted').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#TimeFinish').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Driver').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Helpers').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#TimeReceived').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Operators').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+
+
+    jQuery.validator.unobtrusive.adapters.add("dropdown", function (options) {
+        if (options.element.tagName.toUpperCase() == "SELECT" && options.element.type.toUpperCase() == "SELECT-ONE") {
+            options.rules["required"] = true;
+            if (options.message) {
+                options.messages["required"] = options.message;
+            }
+        }
+    });
+
+</script>

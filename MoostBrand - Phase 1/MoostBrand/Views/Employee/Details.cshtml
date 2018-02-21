@@ -1,0 +1,51 @@
+﻿@model MoostBrand.DAL.Employee
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="panel-heading">
+    <h4 class="panel-title">Employee Details</h4>
+    <hr />
+</div>
+
+<div class="panel-body">
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.LastName)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.LastName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.FirstName)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Position)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Position)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
+                    Edit
+                </a>
+                <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                    Back to List
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>

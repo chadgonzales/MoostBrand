@@ -1,0 +1,190 @@
+﻿@model MoostBrand.DAL.StockAdjustment
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Edit Stock Adjustment";
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ID)
+    @Html.HiddenFor(model => model.ApprovalStatus)
+    <div class="panel-heading">
+        <h4 class="panel-title">Edit Stock Adjustment</h4>
+    </div>
+    <div class="panel-body">
+        <div class="form-horizontal">
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    <small class="text-danger"><span class="symbol required"></span> Required Fields</small>
+                </label>
+            </div>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger alert alert-danger" })
+
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.No, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Stock Adjustment Number
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.No, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.No, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Location
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("LocationID")
+                    @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.TransactionTypeID, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Transaction Type
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("TransactionTypeID")
+                    @Html.ValidationMessageFor(model => model.TransactionTypeID, "", new { @class = "text-danger", @disabled = "disabled" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.ReferenceNo, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Reference Number
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.ReferenceNo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ReferenceNo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.PreparedBy, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Prepared By
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("PreparedBy")
+                    @Html.ValidationMessageFor(model => model.PreparedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.AdjustedBy, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Adjusted By
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("AdjustedBy")
+                    @Html.ValidationMessageFor(model => model.AdjustedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.ErrorDate, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Error Date
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @*@Html.EditorFor(model => model.ErrorDate, new { htmlAttributes = new { @class = "form-control" , @hidden = "hidden"} })*@
+                    @Html.EditorFor(model => model.ErrorDate, new { htmlAttributes = new { @class = "form-control date-picker", @Value = Model.ErrorDate.ToString("MM/dd/yyyy") } })
+                    @Html.ValidationMessageFor(model => model.ErrorDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Approved By
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("ApprovedBy")
+                    @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.PostedBy, htmlAttributes: new { @class = "control-label col-md-2"})*@
+                <label class="control-label col-md-2">
+                    Posted By
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("PostedBy")
+                    @Html.ValidationMessageFor(model => model.PostedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.PostedDate, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Posted Date
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.PostedDate, new { htmlAttributes = new { @class = "form-control date-picker" } })
+                    @*@Html.TextBox("PostedDate", (string)ViewBag.PostedDate)*@
+                    @Html.ValidationMessageFor(model => model.PostedDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.TextAreaFor(model => model.Comments, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Save" class="btn btn-green" />
+                    <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script language="javascript">
+    $(function () {
+        // add class form-control to textarea and select
+        $("input[disabled]").addClass("form-control");
+        $("textarea").addClass("form-control");
+        $("select").addClass("form-control");
+    });
+
+    $('#EncodedDate').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Reference').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Remarks').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+</script>

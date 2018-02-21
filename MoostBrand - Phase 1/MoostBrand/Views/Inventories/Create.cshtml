@@ -1,0 +1,486 @@
+﻿@model MoostBrand.DAL.Inventory
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@section Scripts{
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script>
+        $(function () {
+            var select = [];
+            var itemcode = $("#itemcode");
+            var action = "@Url.Action("GetItems")";
+            itemcode.autocomplete({
+                source: function (request, response) {
+                    $.get(action, { name: request.term }, function (results) {
+                        response($.map(results, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Code,
+                                value: item.Code,
+                                desc: item.Name,
+                                barcode: item.BarCode,
+                                uom: item.UOM,
+                                year: item.Year,
+                                cat: item.Categories
+
+                               
+                            };
+                        }));
+                    });
+                },
+                change: function (event, ui) {
+                  
+                    $("#ItemCode").val(ui.item.value)
+                    $("#InventoryUoM").val(ui.item.uom)
+                    $("#Year").val(ui.item.year)
+                    $("#POSBarCode").val(ui.item.barcode)
+                    $("#Category").val(ui.item.cat)
+                    $("#Description").val(ui.item.desc)
+                },
+                select: function (event, ui) {
+                    $("#ItemCode").val(ui.item.value)
+                    $("#InventoryUoM").val(ui.item.uom)
+                    $("#Year").val(ui.item.year)
+                    $("#POSBarCode").val(ui.item.barcode)
+                    $("#Category").val(ui.item.cat)
+                    $("#Description").val(ui.item.desc)
+                },
+                delay: 100
+            });
+
+
+        });
+
+        $(function () {
+            var select = [];
+            var itemdesc = $("#Description");
+            var action = "@Url.Action("GetItemsDesc")";
+            itemdesc.autocomplete({
+                source: function (request, response) {
+                    $.get(action, { name: request.term }, function (results) {
+                        response($.map(results, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Name,
+                                value: item.Name,
+                                code:item.Code,
+                                desc: item.Name,
+                                barcode: item.BarCode,
+                                uom: item.UOM,
+                                year: item.Year,
+                                cat: item.Categories
+                            };
+                        }));
+                    });
+                },
+                change: function (event, ui) {
+                    $("#ItemCode").val(ui.item.code)
+                    $("#itemcode").val(ui.item.code)
+                    $("#InventoryUoM").val(ui.item.uom)
+                    $("#Year").val(ui.item.year)
+                    $("#POSBarCode").val(ui.item.barcode)
+                    $("#Category").val(ui.item.cat)
+                    $("#Description").val(ui.item.desc)
+                },
+                select: function (event, ui) {
+                    $("#ItemCode").val(ui.item.code)
+                    $("#itemcode").val(ui.item.code)
+                    $("#InventoryUoM").val(ui.item.uom)
+                    $("#Year").val(ui.item.year)
+                    $("#POSBarCode").val(ui.item.barcode)
+                    $("#Category").val(ui.item.cat)
+                    $("#Description").val(ui.item.desc)
+                },
+                delay: 100
+            });
+
+
+        });
+    </script>
+}
+
+@using (Html.BeginForm("Create", "Inventories", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.ItemCode)
+    <div class="panel-heading">
+        <h4 class="panel-title">Create Inventory</h4>
+    </div>
+
+    <div class="panel-body">
+        <div class="form-horizontal">
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    <small class="text-danger"><span class="symbol required"></span> Required Fields</small>
+                </label>
+            </div>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Item Code
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.Hidden("ItemCode")
+                    @Html.TextBox("itemcode", ViewBag.ItemCode as string, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ItemCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Sales Description
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Year
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    POS Bar Code
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.POSBarCode, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.POSBarCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Category
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Category, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Inventory UoM
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.InventoryUoM, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.InventoryUoM, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Inventory Status
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("InventoryStatus", null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.InventoryStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Location Code
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("LocationCode", null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LocationCode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">@*  *@
+                @Html.LabelFor(model => model.DailyAverageUsage, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.DailyAverageUsage, new { htmlAttributes = new { @class = "form-control" ,@value = "0"} })
+                    @Html.ValidationMessageFor(model => model.DailyAverageUsage, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Lead Time
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.LeadTime, new { htmlAttributes = new { @class = "form-control", @value = "0" } })
+                    @Html.ValidationMessageFor(model => model.LeadTime, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    ReOrder
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.ReOrder, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                    @Html.ValidationMessageFor(model => model.ReOrder, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">@*  *@
+                @Html.LabelFor(model => model.InStock, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.InStock, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InStock, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Ordered
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Ordered, new { htmlAttributes = new { @class = "form-control", @Value = "0", @readonly = true } })
+                    @Html.ValidationMessageFor(model => model.Ordered, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Committed
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Committed, new { htmlAttributes = new { @class = "form-control", @Value = "0", @readonly = true } })
+                    @Html.ValidationMessageFor(model => model.Committed, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Available
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Available, new { htmlAttributes = new { @class = "form-control", @Value = "0", @readonly = true } })
+                    @Html.ValidationMessageFor(model => model.Available, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Beginning Balance
+                    @*<span class="symbol required"></span>*@
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.BeginningInStock, new { htmlAttributes = new { @class = "form-control", @Value = "0" } })
+                    @Html.ValidationMessageFor(model => model.BeginningInStock, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">@*  *@
+                @Html.LabelFor(model => model.MinimumInventory, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.MinimumInventory, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MinimumInventory, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">@*  *@
+                @Html.LabelFor(model => model.MaximumInventory, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.MaximumInventory, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MaximumInventory, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Create" class="btn btn-green hidden" id="submit" />
+                    <input type="button" value="Create" class="btn btn-green" id="btnCreate" />
+                    <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+
+    $('#btnCreate').click(function (event) {
+        var _variable = Validate();
+        if (_variable == "passed") {
+            $('#submit').click();
+        }
+        else { alert('kindly fill up required fields'); }
+
+    });
+
+
+
+    function Validate() {
+
+        var _passed;
+        //txtEmail
+        if ($('#itemcode').val() == '') {
+            $('#itemcode').css({ "border": "1px solid red" })
+            _passed = '1';
+        }
+        else if ($('#Description').val() == '') {
+            $('#Description').css({ "border": "1px solid red" })
+            _passed = '2';
+        }
+        else if ($('#Year').val() == '') {
+            $('#Year').css({ "border": "1px solid red" })
+            _passed = '3';
+        }
+        else if ($('#POSBarCode').val() == '') {
+            $('#POSBarCode').css({ "border": "1px solid red" })
+            _passed = '4';
+        }
+        else if ($('#Category').val() == '') {
+            $('#Category').css({ "border": "1px solid red" })
+            _passed = '5';
+        }
+        else if ($('#InventoryUoM').val() == '') {
+            $('#InventoryUoM').css({ "border": "1px solid red" })
+            _passed = '6';
+        }
+        else if ($('#InventoryStatus').val() == '') {
+            $('#InventoryStatus').css({ "border": "1px solid red" })
+            _passed = '7';
+        }
+        else if ($('#LocationCode').val() == '') {
+            $('#LocationCode').css({ "border": "1px solid red" })
+            _passed = '8';
+        }
+        else if ($('#LeadTime').val() == '') {
+            $('#LeadTime').css({ "border": "1px solid red" })
+            _passed = '9';
+        }
+
+        else if ($('#ReOrder').val() == '' ) {
+            $('#ReOrder').css({ "border": "1px solid red" })
+            _passed = '11';
+        }
+        else if ($('#Ordered').val() == '') {
+            $('#Ordered').css({ "border": "1px solid red" })
+            _passed = '12';
+        }
+        else if ($('#Committed').val() == '') {
+            $('#Committed').css({ "border": "1px solid red" })
+            _passed = '13';
+        }
+        else if ($('#Available').val() == '') {
+            $('#Available').css({ "border": "1px solid red" })
+            _passed = '14';
+        }
+
+
+            //else if ($('#Remarks').val() == '') {
+            //    $('#Remarks').css({ "border": "1px solid red" })
+            //    _passed = '22';
+            //}
+        else
+            _passed = "passed";
+
+       // alert(_passed);
+        return _passed;
+
+    }
+
+    $('#DailyAverageUsage').keyup(function () {
+        var daily = $(this).val();
+        var leadTime = $('#LeadTime').val();
+
+        $('#ReOrder').val(daily * leadTime);
+
+    })
+
+    $('#LeadTime').keyup(function () {
+        var leadTime = parseInt($(this).val());
+        var daily = parseInt($('#DailyAverageUsage').val());
+
+        $('#ReOrder').val(daily * leadTime);
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    })
+
+    var lead = parseInt($("#LeadTime").val());
+    var daily = parseInt($("#DailyAverageUsage").val());
+
+    $("#InStock").keyup(function () {
+
+        var instock = parseInt($("#InStock").val());
+        var ordered  = parseInt($("#Ordered").val());
+        var committed = parseInt($("#Committed").val());
+
+        $("#Available").val((instock + ordered) - committed);
+    });
+  
+
+    //$('#ItemID').change(function () {
+    //    var text = $(this).val();
+    //    $(this).val(text.toUpperCase());
+    //    if ($(this).val() != '') {
+    //        $(this).css({ "border": "unset" })
+    //    }
+    //});
+    $('#itemcode').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#POSBarCode').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#Description').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+   
+    $('#SubstituteItem').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#ComplementaryField').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Year').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#VendorCoding').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#LeadTime').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+</script>

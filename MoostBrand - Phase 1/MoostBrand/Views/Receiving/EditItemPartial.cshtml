@@ -1,0 +1,117 @@
+﻿@model MoostBrand.DAL.ReceivingDetail
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">Edit Item</h4>
+    </div>
+    @using (Html.BeginForm())
+            {
+        <div class="modal-body">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ReceivingID)
+            @Html.HiddenFor(model => model.RequisitionDetailID)
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.RequisitionDetail.Item, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.DisplayFor(model => model.RequisitionDetail.Item.DescriptionPurchase)
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <label id="editquantitymsg" class="text-danger col-md-8 col-md-offset-2 no-padding"></label>
+                <div class="clearfix"></div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.InStock, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.GetInstock, new { htmlAttributes = new { @class = "form-control", @placeholder = "0"} })
+                        @Html.ValidationMessageFor(model => model.InStock, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Ordered, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.GetOrdered, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" , @disabled = true} })
+                        @Html.ValidationMessageFor(model => model.Ordered, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Committed, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.GetCommited, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" , @disabled = true} })
+                        @Html.ValidationMessageFor(model => model.Committed, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Available, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.GetAvailable, new { htmlAttributes = new { @class = "form-control", @placeholder = "0" , @disabled = true} })
+                        @Html.ValidationMessageFor(model => model.Available, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AprovalStatusID, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.DropDownList("AprovalStatusID", String.Empty)
+                        @Html.ValidationMessageFor(model => model.AprovalStatusID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input type="submit" value="Edit Item" class="btn btn-green" />
+        </div>
+    }
+</div><!-- /.modal-content -->
+
+<script>
+
+
+    $('#Quantity').focusout(function () {
+
+        if ($("#Quantity").val() <= @ViewBag.Qty && $("#Quantity").val() > 0) {
+
+            $('#editquantitymsg').text('');
+        }
+        else
+        {
+
+            $('#editquantitymsg').text('invalid quantity');
+            var qty =@ViewBag.Qty;
+            $("#Quantity").val(qty);
+        }
+
+    });
+
+</script>

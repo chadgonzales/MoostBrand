@@ -1,0 +1,92 @@
+﻿@model PagedList.IPagedList<MoostBrand.DAL.ReceivingDetail>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Items";
+}
+
+
+<div class="panel-heading">
+    <h4 class="panel-title">Purchase Requisitions</h4>
+
+</div>
+<div class="panel-body">
+
+    <div class="dataTables_wrapper no-footer">
+        <div class="dataTables_length">
+            <a href="@Url.Action("AddItem")" class="btn btn-green" style="float:left;"> Add Item <i class="fa fa-plus"></i></a>
+        </div>
+        <div class="dataTables_filter">
+            @using (Html.BeginForm("Index", "Receiving", FormMethod.Post))
+            {
+                <p>
+                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-sm", @placeholder = "Search" })
+                    <input type="submit" value="Search" class="btn btn-green" />
+                </p>
+            }
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="clearfix"></div>
+
+    </div>
+
+    <table class="table table-striped table-bordered table-hover table-full-width dataTable no-footer">
+        <thead>
+            <tr>
+                <th>
+                    Item Name
+                </th>
+                <th>
+                    Quantity Ordered
+                </th>
+                <th>
+                    Quantity Received
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.DescriptionPurchase)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequisitionDetail.Quantity)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.QuantityReceived)
+                    </td>*@
+                    <td>
+                        <div class="custom-tools">
+                            <a href='@Url.Action("EditItem", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href='@Url.Action("DeleteItem", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                                <i class="fa fa-times fa fa-white"></i>
+                            </a>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Items",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+    <br /><br />
+    <a href='@Url.Action("Index")' class="btn btn-light-orange">
+        Back to Receiving List
+    </a>
+
+</div>
+
+
+
+
+
+
