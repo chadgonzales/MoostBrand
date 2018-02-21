@@ -1,0 +1,24 @@
+﻿@model MoostBrand.DAL.StockTransferHelper
+@using MoostBrand.Models
+@using MoostBrand.DAL
+
+@Html.HiddenFor(x => x.ID)
+@Html.HiddenFor(x => x.StockTransferDirectID)
+
+<div class="helper-field">
+    <div class="form-group">
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+        <div class="row">
+            @Html.HiddenFor(x => x.DeletedHelper, new { @class = "mark-for-delete" })
+            @Html.RemoveLink("Remove", "div.helper-field", "input.mark-for-delete")
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

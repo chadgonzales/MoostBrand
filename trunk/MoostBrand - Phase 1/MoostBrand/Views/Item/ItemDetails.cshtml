@@ -1,0 +1,52 @@
+﻿@model MoostBrand.DAL.ItemDetails
+
+@{
+    ViewBag.Title = "Item Details";
+}
+
+<div class="panel-heading">
+    <h4 class="panel-title">Item Details</h4>
+    <hr />
+</div>
+
+<div class="panel-body">
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Date</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Date)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Quantity</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Quantity)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Cost</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Cost)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                <a href='@Url.Action("EditItem", new { id = Model.ID })' class="btn btn-green">
+                    Edit
+                </a>
+                <a href='@Url.Action("ItemViews", new { id = Model.ItemID })' class="btn btn-light-orange">
+                    Back to List
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>

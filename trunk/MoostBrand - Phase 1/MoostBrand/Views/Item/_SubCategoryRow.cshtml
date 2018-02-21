@@ -1,0 +1,49 @@
+﻿@model MoostBrand.DAL.CategoryTagging
+
+
+<tr class="item-row">
+    <td>
+        <label class="id" hidden="hidden">@Model.ID</label>
+        @Model.SubCategory.SubCategoriesType.Description       
+    </td>
+    <td>
+        @Model.SubCategory.Description     
+    </td>
+    <td>
+        <a href="" data-toggle="tooltip" data-original-title="Remove" class="btnRemoveItem"><i class="fa fa-times fa fa-white"></i></a>
+    </td>
+</tr>
+
+@*</div>
+
+    </div>*@
+
+<script>
+        $(function () {
+            $('.btnRemoveItem').click(function () {
+
+                //var Ticket = new Object();
+                $row = $(this).closest('tr.item-row');
+
+                $id = $row.find('.id').text();
+
+                $.ajax({
+                    url: "/Item/DeleteTagging",
+                    type: "POST",
+                    data: "{'taggedid' : '" + $id + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (r) {
+
+                        window.location.href = "/Item/Edit?ID=" + @Model.ItemID;
+
+                    }
+                });
+
+
+            });
+
+        }); //  arrival
+
+
+</script>
+
