@@ -21,7 +21,7 @@ namespace MoostBrand.Controllers
         public ActionResult InventoryReport(string dateFrom, string dateTo, int? brand, int? category, int? vendor, int? location)
         {
 
-            var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
+          //  var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
             #region DROPDOWNS
             var loc = entity.Locations.Where(x => x.ID != 10)
                             .Select(x => new
@@ -69,8 +69,8 @@ namespace MoostBrand.Controllers
 
             if (vendor != null)
             {
-              //  var items = entity.Items.Where(p => p.VendorCoding == vendor).Select(p => p.Code);
-                _lst= _lst.Where(p => p.Items.VendorCoding == vendor).ToList();
+                //  var items = entity.Items.Where(p => p.VendorCoding == vendor).Select(p => p.Code);
+                _lst = _lst.Where(p => p.Items.VendorCoding == vendor && p.Items.VendorCoding != null).ToList();
                 string _vendor = entity.Vendors.Find(vendor).Name;
                 _sortbyvendor = "Vendor:"+ _vendor;
             }
@@ -93,6 +93,16 @@ namespace MoostBrand.Controllers
                                      InQty = g.Sum(p=>p.InQty),
                                      OutQty = g.Sum(p => p.OutQty),
                                      Variance = g.Sum(p => p.Variance)
+
+                                 }).ToList();
+
+            var lstInventory2 = (from p in sl.Where(p => p.Date <= dtDateTo.AddDays(1)).ToList()
+                                 group p by new { p.InventoryID } into g
+                                 select new
+                                 {
+                                     ItemId = g.Key,
+                                     Instock = g.OrderByDescending(p => p.Date).ThenBy(p=>p.ID).FirstOrDefault().RemainingBalance
+
                                  }).ToList();
 
 
@@ -122,7 +132,7 @@ namespace MoostBrand.Controllers
                                         ReservationName = lstInventory3.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode) != null ? lstInventory3.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode).ReservationName : " ",
                                         QOH =0,
                                         PcsPerBox = i.Items.Quantity,
-                                        Instock = i.InStock != null ? i.InStock : 0,
+                                        Instock = lstInventory2.FirstOrDefault(p => p.ItemId.InventoryID == i.ID ) != null ? lstInventory2.FirstOrDefault(p => p.ItemId.InventoryID == i.ID ).Instock : 0, //i.InStock != null ? i.InStock : 0,
 
 
                                 }).ToList();
@@ -142,7 +152,7 @@ namespace MoostBrand.Controllers
                                     CommittedQty = i.CommittedQty,
                                     TotalOrder = i.TotalOrder,
                                     ReservationName = i.ReservationName,
-                                    QOH = i.Instock, // - i.OutQty - i.CommittedQty + i.AdjustedQty
+                                    QOH = i.Instock,
                                     PcsPerBox = i.PcsPerBox
                                   
 
@@ -155,7 +165,7 @@ namespace MoostBrand.Controllers
 
             ReportDataSource _rds = new ReportDataSource();
             _rds.Name = "dsInventory";
-            _rds.Value = _lstInventory.OrderBy(p => p.ItemSalesDesc);
+            _rds.Value = _lstInventory.OrderBy(p => p.ItemSalesDesc).ThenBy(p=>p.Location);
 
             reportViewer.KeepSessionAlive = false;
             reportViewer.LocalReport.DataSources.Clear();
@@ -235,7 +245,7 @@ namespace MoostBrand.Controllers
             if (vendor != null)
             {
                 //  var items = entity.Items.Where(p => p.VendorCoding == vendor).Select(p => p.Code);
-                _lst = _lst.Where(p => p.Item.VendorCoding == vendor).ToList();
+                _lst = _lst.Where(p => p.Item.VendorCoding == vendor && p.Item.VendorCoding != null).ToList();
                 string _vendor = entity.Vendors.Find(vendor).Name;
                 _sortbyvendor = "Vendor:" + _vendor;
             }
@@ -386,7 +396,7 @@ namespace MoostBrand.Controllers
 
             ReportDataSource _rds = new ReportDataSource();
             _rds.Name = "dsStockLedger";
-            _rds.Value = lstStockLedger.OrderBy(c =>c.orderBydate);//.ThenBy(n => n.Type)
+            _rds.Value = lstStockLedger.OrderBy(c => c.orderBydate).ThenBy(n => n.Location);
 
             reportViewer.KeepSessionAlive = false;
             reportViewer.LocalReport.DataSources.Clear();
@@ -479,7 +489,7 @@ namespace MoostBrand.Controllers
 
             if (vendor != null)
             {
-                _lst = _lst.Where(p => p.Item.VendorCoding == vendor).ToList();
+                _lst = _lst.Where(p => p.Item.VendorCoding == vendor && p.Item.VendorCoding != null).ToList();
                 string _vendor = entity.Vendors.Find(vendor).Name;
                 _sortbyvendor = "Vendor:" + _vendor;
             }
@@ -496,7 +506,7 @@ namespace MoostBrand.Controllers
             var lstUnserve = (from i in _lst
                                 select new
                                 {
-                                    DateRequested = i.Requisition._RequestedDate,
+                                    DateRequested = i.Requisition.RequestedDate.ToString(),
                                     orderByDate = i.Requisition.RequestedDate,
                                     PO = i.Requisition.PONumber != null ? i.Requisition.PONumber : "" ,
                                     ItemCode = i.Item.Code,
@@ -583,7 +593,7 @@ namespace MoostBrand.Controllers
 
             if (vendor != null)
             {
-                _lst = _lst.Where(p => p.RequisitionDetail.Item.VendorCoding == vendor).ToList();
+                _lst = _lst.Where(p => p.RequisitionDetail.Item.VendorCoding == vendor && p.RequisitionDetail.Item.VendorCoding != null).ToList();
                 string _vendor = entity.Vendors.Find(vendor).Name;
                 _sortbyvendor = "Vendor:" + _vendor;
             }
@@ -601,7 +611,7 @@ namespace MoostBrand.Controllers
             var lstStockReceiving = (from i in _lst
                               select new
                               {
-                                  DateCreated = i.Receiving.Requisition._RequestedDate,
+                                  DateCreated = i.Receiving.Requisition.RequestedDate.ToString(),
                                   orderByDate = i.Receiving.Requisition.RequestedDate,
                                   SRR = i.Receiving.ReceivingID != null ? i.Receiving.ReceivingID : "",
                                   PO = i.RequisitionDetail.Requisition.PONumber,
@@ -609,7 +619,7 @@ namespace MoostBrand.Controllers
                                   ItemPurDesc = i.RequisitionDetail.Item.Description,
                                   ItemSalesDesc = i.RequisitionDetail.Item.DescriptionPurchase,
                                   UOM = i.RequisitionDetail.Item.UnitOfMeasurement.Description,
-                                  Quantity = i.Quantity,
+                                  Quantity = i.ReferenceQuantity,
                                   Location = i.Receiving.GetLocation,
                                   ReceivedBy = i.Receiving.Employee2.FirstName+' '+i.Receiving.Employee2.LastName,
                                   CreatedBy = i.Receiving.Requisition.Employee1.FirstName +' ' + i.Receiving.Requisition.Employee1.LastName
@@ -696,7 +706,7 @@ namespace MoostBrand.Controllers
 
             if (vendor != null)
             {
-                _lst = _lst.Where(p => p.Items.VendorCoding == vendor).ToList();
+                _lst = _lst.Where(p => p.Items.VendorCoding == vendor && p.Items.VendorCoding != null).ToList();
                 string _vendor = entity.Vendors.Find(vendor).Name;
                 _sortbyvendor = "Vendor:" + _vendor;
             }
@@ -847,7 +857,9 @@ namespace MoostBrand.Controllers
             {
                 try
                 {
-                    _lst = _lst.Where(p => p.RequisitionDetail.Item.VendorCoding == vendor).ToList();
+                    _lst = _lst.Where(p => (p.RequisitionDetail != null && p.RequisitionDetail.Item.VendorCoding == vendor && p.RequisitionDetail.Item.VendorCoding != null)
+                           || (p.Inventories != null && p.Inventories.Items.VendorCoding == vendor && p.Inventories.Items.VendorCoding != null)).ToList();
+                   
                 }
                 catch { }
                 string _vendor = entity.Vendors.Find(vendor).Name;
@@ -871,7 +883,7 @@ namespace MoostBrand.Controllers
                                      select new
                                      {
 
-                                         DateCreated = i.StockTransfer.Requisition != null ? i.StockTransfer.Requisition._RequestedDate : i.StockTransfer.STDAte.ToString("MM/dd/yyyy"),
+                                         DateCreated = i.StockTransfer.Requisition != null ? i.StockTransfer.Requisition.RequestedDate.ToString() : i.StockTransfer.STDAte.ToString(),
                                          orderbyDate = i.StockTransfer.Requisition != null ? i.StockTransfer.Requisition.RequestedDate : i.StockTransfer.STDAte,
                                          STR = i.StockTransfer.TransferID != null ? i.StockTransfer.TransferID : "",
                                          RequisitionID = i.RequisitionDetail != null ? i.RequisitionDetail.Requisition.RefNumber : "",
@@ -879,8 +891,8 @@ namespace MoostBrand.Controllers
                                          ItemPurDesc = i.RequisitionDetail != null ? i.RequisitionDetail.Item.Description : "",
                                          ItemSalesDesc = i.RequisitionDetail != null ? i.RequisitionDetail.Item.DescriptionPurchase : "",
                                          UOM = i.RequisitionDetail !=null ? i.RequisitionDetail.Item.UnitOfMeasurement.Description : "",
-                                         QtyOut = i.Quantity,
-                                         Location = i.StockTransfer.Requisition.Location.Description,
+                                         QtyOut = i.ReferenceQuantity,
+                                         Location = i.StockTransfer.Requisition != null ? i.StockTransfer.Requisition.Location.Description : i.StockTransfer.Location.Description,
                                          ReceivedBy = i.StockTransfer.Employee3!=null ? i.StockTransfer.Employee3.FirstName + ' ' + i.StockTransfer.Employee3.LastName :"",
                                          CreatedBy = i.StockTransfer.Employee6 !=null ? i.StockTransfer.Employee6.FirstName + ' ' + i.StockTransfer.Employee6.LastName :""
 

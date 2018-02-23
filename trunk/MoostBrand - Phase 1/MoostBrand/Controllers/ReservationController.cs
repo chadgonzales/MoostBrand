@@ -668,100 +668,103 @@ namespace MoostBrand.Controllers
                 //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var pr = entity.Requisitions.Find(id);
 
-                if (pr.RequisitionDetails.Count() > 0)
+                if (pr.ApprovalStatus == 1)
                 {
-                    foreach (var _details in pr.RequisitionDetails)
+                    if (pr.RequisitionDetails.Count() > 0)
                     {
-                        if (_details.AprovalStatusID != 1)
+                        foreach (var _details in pr.RequisitionDetails)
                         {
-                            approve++;
-                        }
-                    }
-
-                    if (approve == pr.RequisitionDetails.Count())
-                    {
-
-
-                        pr.ApprovalStatus = 2;
-                        pr.IsSync = false;
-
-                        entity.Entry(pr).State = EntityState.Modified;
-                        entity.SaveChanges();
-                        var rd = pr.RequisitionDetails.Select(p => p.ItemID).ToList();
-                        var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
-                        var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
-                        if (inv != null)
-                        {
-                            foreach (var _inv in inv)
+                            if (_details.AprovalStatusID != 1)
                             {
-                                var i = entity.Inventories.Find(_inv.ID);
-                                int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _inv.ItemCode && p.RequisitionID == id).Quantity.Value;
-                                if (pr.ReqTypeID == 2)
-                                {
-                                    i.Committed = i.Committed + _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
-                                }
-                                else
-                                {
-                                    i.Ordered = i.Ordered + _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
-                                }
-
-                                i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
-                                i.Available = (i.InStock + i.Ordered) - i.Committed;
-
-                                entity.Entry(i).State = EntityState.Modified;
-                                entity.SaveChanges();
-
+                                approve++;
                             }
                         }
 
-                        var invitems = entity.Items.Where(i => rd.Contains(i.ID)).ToList();
-
-                        foreach (var _item in invitems)
+                        if (approve == pr.RequisitionDetails.Count())
                         {
-                            int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _item.Code && p.RequisitionID == id).Quantity.Value;
 
-                            var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == pr.LocationID).ToList();
-                            if (inv1.Count == 0)
+
+                            pr.ApprovalStatus = 2;
+                            pr.IsSync = false;
+
+                            entity.Entry(pr).State = EntityState.Modified;
+                            entity.SaveChanges();
+                            var rd = pr.RequisitionDetails.Select(p => p.ItemID).ToList();
+                            var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
+                            var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
+                            if (inv != null)
                             {
-                                Inventory inventory = new Inventory();
-                                inventory.Year = _item.Year;
-                                inventory.ItemCode = _item.Code;
-                                inventory.POSBarCode = _item.Barcode;
-                                inventory.Description = _item.DescriptionPurchase;
-                                inventory.Category = _item.Category.Description;
-                                inventory.InventoryUoM = ""; //_item.UnitOfMeasurement.Description
-                                inventory.InventoryStatus = 2;
-                                inventory.LocationCode = pr.LocationID;
-                                if (pr.ReqTypeID == 2)
+                                foreach (var _inv in inv)
                                 {
-                                    inventory.Committed = _qty;
-                                    inventory.Ordered = 0;    //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
-                                }
-                                else
-                                {
-                                    inventory.Ordered = _qty;
-                                    inventory.Committed = 0;   //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
-                                }
-                                inventory.InStock = 0;
-                                inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
+                                    var i = entity.Inventories.Find(_inv.ID);
+                                    int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _inv.ItemCode && p.RequisitionID == id).Quantity.Value;
+                                    if (pr.ReqTypeID == 2)
+                                    {
+                                        i.Committed = i.Committed + _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                    }
+                                    else
+                                    {
+                                        i.Ordered = i.Ordered + _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                    }
 
+                                    i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
+                                    i.Available = (i.InStock + i.Ordered) - i.Committed;
 
-                                entity.Inventories.Add(inventory);
-                                entity.SaveChanges();
+                                    entity.Entry(i).State = EntityState.Modified;
+                                    entity.SaveChanges();
+
+                                }
                             }
+
+                            var invitems = entity.Items.Where(i => rd.Contains(i.ID)).ToList();
+
+                            foreach (var _item in invitems)
+                            {
+                                int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _item.Code && p.RequisitionID == id).Quantity.Value;
+
+                                var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == pr.LocationID).ToList();
+                                if (inv1.Count == 0)
+                                {
+                                    Inventory inventory = new Inventory();
+                                    inventory.Year = _item.Year;
+                                    inventory.ItemCode = _item.Code;
+                                    inventory.POSBarCode = _item.Barcode;
+                                    inventory.Description = _item.DescriptionPurchase;
+                                    inventory.Category = _item.Category.Description;
+                                    inventory.InventoryUoM = ""; //_item.UnitOfMeasurement.Description
+                                    inventory.InventoryStatus = 2;
+                                    inventory.LocationCode = pr.LocationID;
+                                    if (pr.ReqTypeID == 2)
+                                    {
+                                        inventory.Committed = _qty;
+                                        inventory.Ordered = 0;    //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                    }
+                                    else
+                                    {
+                                        inventory.Ordered = _qty;
+                                        inventory.Committed = 0;   //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                    }
+                                    inventory.InStock = 0;
+                                    inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
+
+
+                                    entity.Inventories.Add(inventory);
+                                    entity.SaveChanges();
+                                }
+                            }
+
+
+                            return RedirectToAction("Index");
                         }
-
-
-                        return RedirectToAction("Index");
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, "Not all items are approved");
+                        }
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, "Not all items are approved");
+                        ModelState.AddModelError(string.Empty, "There's no item");
                     }
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "There's no item");
                 }
             }
             catch

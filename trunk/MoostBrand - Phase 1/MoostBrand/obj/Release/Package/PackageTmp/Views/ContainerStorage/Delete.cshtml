@@ -1,0 +1,52 @@
+﻿@model MoostBrand.DAL.ContainerStorage
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="panel-heading">
+    <h4 class="panel-title">
+        Delete Container Storage
+        <br /><small>Are you sure you want to delete this?</small>
+    </h4>
+    <hr />
+</div>
+
+<div class="panel-body">
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Code)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Code)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">@Html.DisplayNameFor(model => model.Description)</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Description)
+                </label>
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Delete" class="btn btn-red" />
+                    <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                        Back to List
+                    </a>
+
+                </div>
+            </div>
+        }
+
+        
+    </div>
+</div>

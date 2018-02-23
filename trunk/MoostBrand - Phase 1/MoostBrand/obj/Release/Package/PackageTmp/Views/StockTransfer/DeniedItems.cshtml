@@ -1,0 +1,46 @@
+﻿@model PagedList.IPagedList<MoostBrand.DAL.StockTransferDetail>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Denied Items";
+}
+<div class="panel-heading">
+    <h4 class="panel-title">Denied Items</h4>
+    <hr />
+</div>
+<div class="panel-body">
+    <table class="table table-striped table-bordered table-hover table-full-width dataTable no-footer">
+        <tr>
+            <th>
+                Item Name
+            </th>
+            <th>
+                Quantity
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReceivingDetail.RequisitionDetail.Item.Description)
+                    @Html.DisplayFor(modelItem => item.RequisitionDetail.Item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+            </tr>
+        }
+
+    </table>
+    <br />
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("DeniedItems",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+    <br /><br />
+    <a href='@Url.Action("Details", new { id = ViewBag.STid })' class="btn btn-light-orange">
+        Back to List
+    </a>
+</div>

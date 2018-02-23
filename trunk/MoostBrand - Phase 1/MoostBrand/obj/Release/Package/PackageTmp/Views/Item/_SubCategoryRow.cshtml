@@ -1,0 +1,49 @@
+﻿@model MoostBrand.DAL.SubCategory
+
+@*  *@
+@*<div class="col-5 offset-2">
+    <div class="tag label label-info">*@
+<tr class="item-row">
+    <td>
+        @*<label class="module" hidden="hidden">@Model.UserAccessHeader.Category</label>*@
+        <label class="id" hidden="hidden">@Model.ID</label>
+        @Model.Description
+    </td>
+    <td>
+        <a href="" data-toggle="tooltip" data-original-title="Remove" class="btnRemoveItem"><i class="fa fa-times fa fa-white"></i></a>
+    </td>
+</tr>
+
+@*</div>
+
+    </div>*@
+
+@*<script>
+        $(function () {
+            $('.btnRemoveItem').click(function () {
+
+                //var Ticket = new Object();
+                $row = $(this).closest('tr.item-row');
+
+                $id = $row.find('.id').text();
+
+                $.ajax({
+                    url: "/UserTagging/DeleteTagging",
+                    type: "POST",
+                    data: "{'taggedid' : '" + $id + "'}",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (r) {
+
+                        window.location.href = "/UserTagging/Tagging/"+@Model.UserAccessHeader.UserID;
+
+                    }
+                });
+
+
+            });
+
+        }); //  arrival
+
+
+</script>*@
+

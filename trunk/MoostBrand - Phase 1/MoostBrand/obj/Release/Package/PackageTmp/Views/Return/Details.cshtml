@@ -1,0 +1,84 @@
+﻿@model MoostBrand.DAL.Return
+@{
+    ViewBag.Title = "Details";
+}
+<div class="panel-heading">
+    <h4 class="panel-title">Return Details</h4>
+    <hr />
+</div>
+<div class="panel-body">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-2">Transaction Type</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ReturnTransactionType.Type)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Return Type</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ReturnType.Type)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Date</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Date)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Approved Status</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ApprovalStatu.Status)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Approved By</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee.LastName), 
+                    @Html.DisplayFor(model => model.Employee.FirstName)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Remarks</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Remarks)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                @if (Convert.ToInt32(Session["sessionuid"]) == Model.ApprovedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                {
+                    <a href='@Url.Action("Items", new { id = Model.ID })' class="btn btn-dark-yellow">
+                        Items
+                    </a>
+
+                    <br /><br />
+
+                    <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
+                        Edit
+                    </a>
+                }
+
+                <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                    Back to List
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>

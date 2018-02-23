@@ -1,0 +1,421 @@
+﻿@model MoostBrand.DAL.StockTransfer
+
+@{
+    ViewBag.Title = "Edit Stock Transfer";
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+
+@using (Html.BeginForm("Edit", "StockTransfer", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel-heading">
+        <h4 class="panel-title">Edit Stock Transfer</h4>
+
+    </div>
+    <div class="panel-body">
+
+        <div class="form-horizontal">
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    <small class="text-danger"><span class="symbol required"></span> Required Fields</small>
+                </label>
+            </div>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger alert alert-danger" })
+
+            @Html.EditorForModel()
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Save" class="btn btn-green hidden" id="save" />
+                    <input type="button" value="Save" class="btn btn-green" id="btnUpdate" />
+                    <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+<script language="javascript">
+$(function () {
+
+    // add class form-control to textarea and select
+    $("input[disabled]").addClass("form-control");
+    $("textarea").addClass("form-control");
+    $("select").addClass("form-control");
+
+    $('.date-picker').datepicker({
+        autoclose: true
+    });
+});
+
+</script>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+<script type="text/jscript">
+    jQuery.validator.unobtrusive.adapters.add("dropdown", function (options) {
+        if (options.element.tagName.toUpperCase() == "SELECT" && options.element.type.toUpperCase() == "SELECT-ONE") {
+            options.rules["required"] = true;
+            if (options.message) {
+                options.messages["required"] = options.message;
+            }
+        }
+    });
+</script>
+
+<script src="~/Scripts/CustomJs.js"></script>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+
+@*<script src="~/Scripts/jquery-1.12.4.min.js"></script>*@
+<script type="text/javascript">
+
+    $('#btnUpdate').click(function (event) {
+      
+        var _variable = Validate();
+        if (_variable == "passed") {      
+            $('#save').click();
+        }
+        else if(_variable == "Helper")
+        {  alert("Kindly fill up field/s for Helpers");}
+        else if (_variable == "Operator")
+        { alert("Kindly fill up field/s for Operators"); }
+        else { alert('kindly fill up required fields'); }
+
+    });
+
+
+    function Validate() {
+
+        var _passed;
+        //txtEmail
+        if ($('#StockTransferTypeID').val() == '') {
+            $('#StockTransferTypeID').css({ "border": "1px solid red" })
+            _passed = '1';
+            
+        }
+        else if ($('#ReceivingID').val() == '' && $("#StockTransferTypeID").val() == 2) {
+            $('#ReceivingID').css({ "border": "1px solid red" })
+            _passed = '2';
+           
+        }
+        else if ($('#RequisitionID').val() == '' && $("#StockTransferTypeID").val() == 1) {
+            $('#RequisitionID').css({ "border": "1px solid red" })
+            _passed = '3';
+           
+        }
+        else if ($('#LocationID').val() == '') {
+            $('#LocationID').css({ "border": "1px solid red" })
+            _passed = '4';
+            
+        }
+        else if ($('#TransferID').val() == '') {
+            $('#TransferID').css({ "border": "1px solid red" })
+            _passed = '5';
+         
+        }
+        else if ($('#STDAte').val() == '') {
+            $('#STDAte').css({ "border": "1px solid red" })
+            _passed = '6';
+          
+        }
+        else if ($('#TimeStarted').val() == '') {
+            $('#TimeStarted').css({ "border": "1px solid red" })
+            _passed = '7';
+          
+        }
+        else if ($('#TimeFinish').val() == '') {
+            $(TimeFinish).css({ "border": "1px solid red" })
+            _passed = '8';
+         
+        }
+        else if ($('#Driver').val() == '') {
+            $('#Driver').css({ "border": "1px solid red" })
+            _passed = '9';
+         
+        }
+
+        else if ($('#PlateNo').val() == '') {
+            $('#PlateNo').css({ "border": "1px solid red" })
+            _passed = '11';
+          
+        }
+        else if ($('._helper').val() == '' || $('._helper').val() == null) {
+            //$('.helper-field').css({ "border": "1px solid red" })
+            _passed = "Helper";
+          
+            
+        }
+        else if ($('#RequestedBy').val() == '') {
+            $('#RequestedBy').css({ "border": "1px solid red" })
+            _passed = '13';
+         
+        }
+        else if ($('#ReceivedBy').val() == '') {
+            $('#ReceivedBy').css({ "border": "1px solid red" })
+            _passed = '14';
+            
+        }
+        else if ($('#ReleasedBy').val() == '') {
+            $('#ReleasedBy').css({ "border": "1px solid red" })
+            _passed = '15';
+          
+        }
+        else if ($('._operator').val() == '' || $('._operator').val() == null) {
+            //$('.operator-field').css({ "border": "1px solid red" })
+            _passed = "Operator";
+          
+           
+        }
+        else if ($('#CounterCheckedBy').val() == '' && $("#ReceivingTypeID").val() == 1) {
+            $('#CounterCheckedBy').css({ "border": "1px solid red" })
+            _passed = '18';
+          
+        }
+        else if ($('#EncodedBy').val() == '' && $("#ReceivingTypeID").val() == 1) {
+            $('#EncodedBy').css({ "border": "1px solid red" })
+            _passed = '19';
+          
+        }
+        else if ($('#PostedBy').val() == '' && $("#ReceivingTypeID").val() == 1) {
+            $('#PostedBy').css({ "border": "1px solid red" })
+            _passed = '20';
+           
+        }
+
+        else
+            _passed = "passed";
+
+        //alert(_passed);
+        return _passed;
+
+    }
+
+    $('#StockTransferTypeID').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ReceivingID').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#RequisitionID').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#TimeStarted').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#LocationID').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#TransferID').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#STDAte').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#TimeStarted').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#TimeFinish').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#Driver').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#RequestedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ReceivedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ReleasedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#CounterCheckedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#EncodedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#PostedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+
+
+    $(function () {
+        HideOrShow();
+    });
+
+    function HideOrShow() {
+        var val = $("#StockTransferTypeID").val();
+        if (val == "") {
+            $("#rc").hide();
+            $("#rq").hide();
+            $("#res").hide();
+        } else if (val == 1) {
+            $("#rc").hide();
+            $("#res").hide();
+            $("#rq").show();
+        } else if (val == 2) {
+            $("#rc").show();
+            $("#rq").hide();
+            $("#res").hide();
+        } else if (val == 3) {
+            $("#res").show();
+            $("#rq").hide();
+            $("#rc").hide();
+        }
+        else {
+            $("#rc").hide();
+            $("#rq").hide();
+            $("#res").hide();
+        }
+
+        $("#ReceivingID").select2({
+            data: null
+        });
+
+        $("#RequisitionID").select2({
+            data: null
+        });
+
+        $("#ReservationID").select2({
+            data: null
+        });
+    }
+
+    $("#StockTransferTypeID").change(function () {
+        HideOrShow();
+    });
+
+    $('#LocationID').change(function () {
+        _locID = $('#LocationID').val();
+        var url = "/StockTransfer/GetLocationCode/";
+
+        $.ajax({
+            url: url,
+            data: { locID: _locID },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                $.each(data, function (i, val) {
+                    $.get("@Url.Action("GenerateSTRNumber", "StockTransfer")/STR " + val.Code + "", null, BindData);
+                })
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+
+        $('.ddl-item').select2({
+            data: null
+
+        });
+
+    });
+
+    function BindData(data) {
+        $("#TransferID").val(data);
+    }
+
+    function GetLocationCode(_locID) {
+        var url = "/StockTransfer/GetLocationCode/";
+
+        $.ajax({
+            url: url,
+            data: { locID: _locID },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                $.get("@Url.Action("GenerateSTRNumber", "StockTransfer")/STR - '" + data.locID + "'", null, BindData);
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+
+    jQuery.validator.unobtrusive.adapters.add("dropdown", function (options) {
+        if (options.element.tagName.toUpperCase() == "SELECT" && options.element.type.toUpperCase() == "SELECT-ONE") {
+            options.rules["required"] = true;
+            if (options.message) {
+                options.messages["required"] = options.message;
+            }
+        }
+    });
+
+</script>
