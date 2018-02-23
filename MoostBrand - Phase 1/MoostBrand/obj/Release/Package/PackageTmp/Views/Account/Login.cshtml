@@ -1,0 +1,77 @@
+﻿@model MoostBrand.Models.LoginViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+@{
+    ViewBag.Title = "Login";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+
+    <!-- start: LOGIN BOX -->
+<div class="box-login">
+    <h3>Sign in to your account</h3>
+    <p>
+        Please enter your name and password to log in.
+    </p>
+    <div class="form-login">
+        @*<div class="errorHandler alert alert-danger no-display">
+            <i class="fa fa-remove-sign"></i>You have some form errors. Please check below.
+        </div>
+        *@
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+						<fieldset>
+                            <div class="form-group">
+                                <span class="input-icon">@Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", placeholder="Username" } })
+                                    <i class="fa fa-user"></i>
+                                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                                </span>
+                            </div>
+                            <div id="pr" class="form-group form-actions">
+                                <span class="input-icon">
+                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control password", placeholder="Password" } })
+                                    <i class="fa fa-lock"></i>
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                    </span>
+                            </div>
+                            <div class="form-actions">
+                                @*<label for="remember" class="checkbox-inline">
+                                    <input type="checkbox" class="grey remember" id="remember" name="remember">
+                                    Keep me signed in
+                                </label>*@
+                                <input type="submit" value="Login" class="btn btn-green pull-right" />
+                                @*<button type="submit" class="btn btn-green pull-right">
+                                    Login <i class="fa fa-arrow-circle-right"></i>
+                                </button>*@
+                            </div>
+                            <div class="new-account">
+                                @*Don't have an account yet?
+								<a href="#" class="register">Create an account
+                                </a>*@
+                            </div>
+                        </fieldset>
+    </div>
+    <!-- start: COPYRIGHT -->
+    <div class="copyright">
+        2016 &copy; Moostbrand by SDS.
+    </div>
+    <!-- end: COPYRIGHT -->
+</div>
+<!-- end: LOGIN BOX -->
+}
+
+<script>
+    $('#Username').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+    $('#Password').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+    });
+</script>

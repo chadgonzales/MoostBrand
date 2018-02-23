@@ -1,0 +1,565 @@
+﻿@model PagedList.IPagedList<MoostBrand.DAL.RequisitionDetail>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Pending Items";
+}
+
+@*@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}*@
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+    $(document).ajaxSuccess(function () {
+        $("#itemsearch").focusout(function () {
+            var itmID = $("#ItemID").val();
+            var itmCode = $("#itemsearch").val();
+            $.ajax({
+                url: '@Url.Action("getCommit","PR")',
+                type: "POST",
+                dataType: "json",
+                data: { ItemID: itmID },
+                success: function (data) {
+                    $("#Committed").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getPO", "PR")',
+                type: "POST",
+                dataType: "json",
+                data: { ItemID: itmID },
+                success: function (data) {
+                    $("#Ordered").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getInstock", "PR")',
+                type: "POST",
+                dataType: "json",
+                data: { Code: itmCode },
+                success: function (data) {
+                    $("#InStock").val(data);
+                }
+            });
+        });
+
+
+        // for PUR
+
+        $("#itemsearchSalesDesc").focusout(function () {
+            var itmID = $("#ItemID").val();
+            var itmCode = $("#itemsearchSalesDesc").val();
+            $.ajax({
+                url: '@Url.Action("getCommit","PR")',
+                type: "POST",
+                dataType: "json",
+                data: { ItemID: itmID },
+                success: function (data) {
+                    $("#Committed").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getPO", "PR")',
+                type: "POST",
+                dataType: "json",
+                data: { ItemID: itmID },
+                success: function (data) {
+                    $("#Ordered").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getInstock", "PR")',
+                type: "POST",
+                dataType: "json",
+                data: { Code: itmCode },
+                success: function (data) {
+                    $("#InStock").val(data);
+                }
+            });
+        });
+
+
+        //////  --- for PUR
+
+        $("#itemcode").focusout(function () {
+            var itmID = $("#ItemID").val();
+            var itmCode = $("#itemcode").val();
+
+            var reservationID = $('#ReservationID').val();
+            
+            //alert('ROBI ALERT GINALAW KO TO'); 
+            $.ajax({                                    //COMMENT COMMENT
+                url: '@Url.Action("getCommit", "PR")', //dati naka getCodeCommit eh pag gnun kasi knukuha lahat ng reserve not by ITEM dapat daw by ITEM haha
+                type: "GET",
+                dataType: "json",
+                data: { id: reservationID, ItemID: itmID },
+                success: function (data) {
+                    $("#Committed").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getPO", "PR")', // dati getCodePO same reason sa taas^
+                type: "GET",
+                dataType: "json",
+                data: { id: reservationID, ItemID: itmID },
+                success: function (data) {
+                    $("#Ordered").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getInstock", "PR")',
+                type: "GET",
+                dataType: "json",
+                data: { id: reservationID, Code: itmCode, ItemID: itmID },
+                success: function (data) {
+                    $("#InStock").val(data);
+                }
+            });
+        });
+
+        $("#catsearch").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetCategories")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Name,
+                                value: item.Name
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#CategoryID").val(ui.item.id);
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#catsearch").autocomplete("option", "appendTo", "#modalCat");
+        $("#itemsearch").autocomplete({
+            source: function (request, response) {
+                var catID = $("#CategoryID").val();
+                if(catID == '')
+                {
+                    catID = 0;
+                }
+                $.ajax({
+                    url: '@Url.Action("GetItems")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { catID: catID, name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Name,
+                                value: item.Name,
+                                code: item.Code,
+                                uom: item.UOM,
+                                category: item.Category
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#ItemID").val(ui.item.id);
+                $("#itemcode").val(ui.item.code);
+                $("#uom").html(ui.item.uom);
+                $("#catsearch").val(ui.item.category);
+                Get();
+
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#itemsearch").autocomplete("option", "appendTo", "#modalItem");
+        $("#itemsearch").keyup(function () {
+            if (!this.value) {
+                $('#ItemID').removeAttr('value');
+                $('#ItemCode').html('');
+                $("#uom").html('');
+
+            }
+        });
+
+        //--------------------- for PUR
+
+        $("#catsearch").autocomplete("option", "appendTo", "#modalCat");
+        $("#itemsearchSalesDesc").autocomplete({
+   
+            source: function (request, response) {
+                var catID = $("#CategoryID").val();
+                if(catID == '')
+                {
+                    catID = 0;
+                }
+                $.ajax({
+                    url: '@Url.Action("GetItems")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { catID: catID, name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.PURName,
+                                value: item.PURName,
+                                code: item.Code,
+                                uom: item.UOM,
+                                category: item.Category
+                                
+                            };
+                        }))
+
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#ItemID").val(ui.item.id);
+                $("#itemcode").val(ui.item.code);
+                $("#uom").html(ui.item.uom);
+                $("#catsearch").val(ui.item.category);
+                Get();
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#itemsearchSalesDesc").autocomplete("option", "appendTo", "#modalItem");
+        $("#itemsearchSalesDesc").keyup(function () {
+            if (!this.value) {
+                $('#ItemID').removeAttr('value');
+                $('#ItemCode').html('');
+                $("#uom").html('');
+            }
+        });
+
+
+
+
+
+        ///// item code
+
+        function Get() {
+          
+            var itmID = $("#ItemID").val();
+            var itmCode = $("#itemcode").val();
+
+            var reservationID = $('#ReservationID').val();
+            
+            //alert('ROBI ALERT GINALAW KO TO'); 
+            $.ajax({                                    //COMMENT COMMENT
+                url: '@Url.Action("getCommit", "PR")', //dati naka getCodeCommit eh pag gnun kasi knukuha lahat ng reserve not by ITEM dapat daw by ITEM haha
+                type: "GET",
+                dataType: "json",
+                data: { id: reservationID, ItemID: itmID },
+                success: function (data) {
+                    $("#Committed").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getPO", "PR")', // dati getCodePO same reason sa taas^
+                type: "GET",
+                dataType: "json",
+                data: { id: reservationID, ItemID: itmID },
+                success: function (data) {
+                    $("#Ordered").val(data);
+                }
+            });
+            $.ajax({
+                url: '@Url.Action("getInstock", "PR")',
+                type: "GET",
+                dataType: "json",
+                data: { id: reservationID, Code: itmCode, ItemID: itmID },
+                success: function (data) {
+                    $("#InStock").val(data);
+                }
+            });
+
+        }
+
+        $("#itemcode").autocomplete({
+
+            source: function (request, response) {
+                var catID = $("#CategoryID").val();
+                if(catID == '')
+                {
+                    catID = 0;
+                }
+
+                $.ajax({
+               
+                    url: '@Url.Action("GetItemCode")',
+                    type: "POST",
+                    dataType: "json",
+                    data: { catID: catID, name: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                id: item.ID,
+                                label: item.Code,
+                                value: item.Code,
+                                name: item.Name,
+                                purname: item.PURName,
+                                uom: item.UOM,
+                                category: item.Category
+                            };
+                        }))
+                    }
+                })
+            },
+            select: function (event, ui) {
+                $("#itemsearch").val(ui.item.name);
+                $("#itemsearchSalesDesc").val(ui.item.purname);
+                $("#ItemID").val(ui.item.id);
+                $("#ItemCode").val(ui.item.id);
+                $("#uom").html(ui.item.uom);
+                $("#catsearch").val(ui.item.category);
+                Get();
+            },
+            messages: {
+                noResults: "", results: ""
+            },
+
+        });
+        $("#itemcode").autocomplete("option", "appendTo", "#modalItem");
+        $("#itemcode").keyup(function () {
+            if (!this.value) {
+                $('#ItemID').html('');
+                $('#ItemCode').removeAttr('value');
+                $("#uom").html('');
+            }
+        });
+
+        var ins = parseInt($("#InStock").val());
+        var ord = parseInt($("#Ordered").val());
+        var com = parseInt($("#Committed").val());
+        var sum = ins + ord;
+        $("#Quantity").focusout(function () {
+            $("#Available").val(sum - com);
+        });
+    })
+</script>
+<div class="panel-heading">
+    <h4 class="panel-title">Pending Items</h4>
+    <hr />
+</div>
+<div class="panel-body">
+    <div class="alert alert-danger">@TempData["PartialError"]</div>
+    <table class="table table-striped table-bordered table-hover table-full-width dataTable no-footer">
+        <thead>
+            <tr>
+                <th>
+                    Item Name
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    In Stock
+                </th>
+                <th>
+                    Committed
+                </th>
+                <th>
+                    Ordered
+                </th>
+                <th>
+                    Available
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (ViewBag.ReqTypeID == "1")
+                        {
+                            @Html.DisplayFor(modelItem => item.Item.Description)
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.Item.DescriptionPurchase)
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReferenceQuantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GetInstock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GetCommited)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GetOrdered)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GetAvailable)
+                    </td>
+                    <td>
+                        <div class="custom-tools">
+                            <a href="#" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit" id="ShowPopopEdit" onclick="ShowEdit(@item.ID)"><i class="fa fa-edit"></i></a>
+                            <a href="#" class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete" id="ShowPopopDelete" onclick="ShowDelete(@item.ID)"><i class="fa fa-times fa fa-white"></i></a>
+                            <a href="#" id="approve_button" onclick="Approve(@ViewBag.PRid, @item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
+                                <i class="fa fa-thumbs-up"></i>
+                            </a>
+                            <a href="#" id="deny_button" onclick="Deny(@ViewBag.PRid, @item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
+                                <i class="fa fa-thumbs-down"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+
+    <br />
+
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @*@Html.PagedListPager(Model, page => Url.Action("PendingItems",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+
+
+    @Html.PagedListPager(Model, page => Url.Action("Details",
+      new { page, id = ViewBag.PRid  }))
+
+  
+  
+    <br /><br />
+  @if (ViewBag.IsApproved == 1)
+            
+    {
+        //if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
+
+            <a href = "#" id = "ShowPopop" class="btn btn-green">Add Item</a>
+
+
+    }
+
+    <a href = '@Url.Action("Index", new { id = ViewBag.PRid })' class="btn btn-light-orange">
+        Back to Details
+    </a>
+
+
+    <div id = "AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.PRid })">
+        <div id = "ShowDialogAdd" class="modal-dialog" role="document">
+
+
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id = "EditItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <div id = "ShowDialogEdit" class="modal-dialog" role="document">
+
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id = "DeleteItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <div id = "ShowDialogDelete" class="modal-dialog" role="document">
+
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</div>
+
+<script>
+    window.onload = function()
+  {
+      //$('#ShowPopop').click(function () {
+
+      var url = $('#AddItemWindow').data('url');
+        $.get(url, function(data) {
+            $('#ShowDialogAdd').html(data);
+          if (@ViewBag.Approved != "2")
+          {
+                $('#AddItemWindow').modal('show');
+          }
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+      });
+      //});
+  }
+
+    $('#ShowPopop').click(function ()
+  {
+
+      var url = $('#AddItemWindow').data('url');
+        $.get(url, function(data) {
+            $('#ShowDialogAdd').html(data);
+
+        //    if(@ViewBag.Approved != "2")
+          //  {
+                $('#AddItemWindow').modal('show');
+            //}
+
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+      });
+  });
+
+    function ShowEdit(id) {
+        var url = '@Url.Action("EditItemPartial", "PR")/' + id;
+        $.get(url, function (data) {
+            $('#ShowDialogEdit').html(data);
+
+            $('#EditItemWindow').modal('show');
+
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+        });
+    }
+
+    function ShowDelete(id) {
+        var url = '@Url.Action("DeleteItemPartial", "PR")/' + id;
+        $.get(url, function (data) {
+            $('#ShowDialogDelete').html(data);
+
+            $('#DeleteItemWindow').modal('show');
+
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+        });
+    }
+    function ReloadFunction() {
+        location.reload();
+    }
+    function Approve(id, itemID) {
+        var url = '@Url.Action("ApproveItem", "PR")/' + id;
+        $.post(url, { id: id, itemID: itemID }, ReloadFunction);
+    }
+    function Deny(id, itemID) {
+        var url = '@Url.Action("DenyItem", "PR")/' + id;
+        $.post(url, { id: id, itemID: itemID }, ReloadFunction);
+    }
+</script>

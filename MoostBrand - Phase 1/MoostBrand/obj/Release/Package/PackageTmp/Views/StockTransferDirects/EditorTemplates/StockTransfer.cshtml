@@ -1,0 +1,206 @@
+﻿@model MoostBrand.DAL.StockTransfer
+@using MoostBrand.DAL
+
+<script src="~/Scripts/CustomJs.js"></script>
+@*<script src="~/Scripts/jquery-1.12.4.min.js"></script>*@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@*<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>*@
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('.ddl-item').select2({
+            data: null
+        });
+
+
+    });
+</script>
+<div class="container">
+
+    @Html.HiddenFor(model => model.ID)
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.ItemName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.EditorFor(model => model.ItemName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ItemName, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.DropDownList("LocationID", String.Empty)
+            @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TransferID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.TransferID, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TransferID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.STDAte, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.STDAte, new { htmlAttributes = new { @class = "form-control date-picker" } })
+            @Html.ValidationMessageFor(model => model.STDAte, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.TimeStarted, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            <div class="input-group input-append bootstrap-timepicker">
+                @Html.EditorFor(model => model.TimeStarted, new { htmlAttributes = new { @class = "form-control time-picker" } })
+                <span class="input-group-addon add-on"><i class="fa fa-clock-o"></i></span>
+            </div>
+            @Html.ValidationMessageFor(model => model.TimeStarted, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TimeFinish, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            <div class="input-group input-append bootstrap-timepicker">
+                @Html.EditorFor(model => model.TimeFinish, new { htmlAttributes = new { @class = "form-control time-picker" } })
+                <span class="input-group-addon add-on"><i class="fa fa-clock-o"></i></span>
+            </div>
+            @Html.ValidationMessageFor(model => model.TimeFinish, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Driver, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.EditorFor(model => model.Driver, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Driver, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Helpers, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            <div id="helper-fields">
+                @Html.EditorFor(model => model.Helpers, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.AddLink("Add", "#helper-fields", ".helper-field", "Helpers", typeof(MoostBrand.DAL.Helper))
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ReceivedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.DropDownList("ReceivedBy", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ReceivedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.TimeReceived, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            <div class="input-group input-append bootstrap-timepicker">
+                @Html.EditorFor(model => model.TimeReceived, new { htmlAttributes = new { @class = "form-control time-picker" } })
+                <span class="input-group-addon add-on"><i class="fa fa-clock-o"></i></span>
+            </div>
+            @Html.ValidationMessageFor(model => model.TimeReceived, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.RequestedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.DropDownList("RequestedBy", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ReleasedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.DropDownList("ReleasedBy", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ReleasedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Operators, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            <div id="operator-fields">
+                @Html.EditorFor(model => model.Operators, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.AddLink("Add", "#operator-fields", ".operator-field", "Operators", typeof(MoostBrand.DAL.Operator))
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CounterCheckedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.DropDownList("CounterCheckedBy", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.CounterCheckedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.DropDownList("EncodedBy", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.PostedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.DropDownList("PostedBy", null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.PostedBy, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-6">
+            @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control"  })
+            @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @Html.HiddenFor(model => model.ApprovedBy)
+    @Html.HiddenFor(model => model.ApprovedStatus)
+</div>
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}
+
+<script type="text/jscript">
+    jQuery.validator.unobtrusive.adapters.add("dropdown", function (options) {
+        if (options.element.tagName.toUpperCase() == "SELECT" && options.element.type.toUpperCase() == "SELECT-ONE") {
+            options.rules["required"] = true;
+            if (options.message) {
+                options.messages["required"] = options.message;
+            }
+        }
+    });
+</script>
+
+<style>
+    .bootstrap-timepicker-widget.dropdown-menu.open {
+        width: 50%;
+    }
+</style>

@@ -734,82 +734,85 @@ namespace MoostBrand.Controllers
                         }
                     }
 
-                    if (approve == pr.RequisitionDetails.Count())
+                    if (pr.ApprovalStatus == 1)
                     {
-
-                        pr.ApprovalStatus = 2;
-                        pr.IsSync = false;
-
-                        entity.Entry(pr).State = EntityState.Modified;
-                        entity.SaveChanges();
-                        var rd = pr.RequisitionDetails.Select(p => p.ItemID).ToList();
-                        var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
-                        var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
-                        if (inv != null)
+                        if (approve == pr.RequisitionDetails.Count())
                         {
-                            foreach (var _inv in inv)
+
+                            pr.ApprovalStatus = 2;
+                            pr.IsSync = false;
+
+                            entity.Entry(pr).State = EntityState.Modified;
+                            entity.SaveChanges();
+                            var rd = pr.RequisitionDetails.Select(p => p.ItemID).ToList();
+                            var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
+                            var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
+                            if (inv != null)
                             {
-                                var i = entity.Inventories.Find(_inv.ID);
-                                int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _inv.ItemCode && p.RequisitionID == id).Quantity.Value;
-                                if (pr.ReqTypeID == 2)
+                                foreach (var _inv in inv)
                                 {
-                                    i.Committed = i.Committed + _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
-                                }
-                                else
-                                {
-                                    i.Ordered = i.Ordered + _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
-                                }
+                                    var i = entity.Inventories.Find(_inv.ID);
+                                    int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _inv.ItemCode && p.RequisitionID == id).Quantity.Value;
+                                    if (pr.ReqTypeID == 2)
+                                    {
+                                        i.Committed = i.Committed + _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                    }
+                                    else
+                                    {
+                                        i.Ordered = i.Ordered + _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                    }
 
-                                i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
-                                i.Available = (i.InStock + i.Ordered) - i.Committed;
+                                    i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
+                                    i.Available = (i.InStock + i.Ordered) - i.Committed;
 
-                                entity.Entry(i).State = EntityState.Modified;
-                                entity.SaveChanges();
+                                    entity.Entry(i).State = EntityState.Modified;
+                                    entity.SaveChanges();
+
+                                }
 
                             }
 
-                        }
+                            var invitems = entity.Items.Where(i => rd.Contains(i.ID)).ToList();
 
-                        var invitems = entity.Items.Where(i => rd.Contains(i.ID)).ToList();
-
-                        foreach (var _item in invitems)
-                        {
-                            int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _item.Code && p.RequisitionID == id).Quantity.Value;
-                            var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == pr.LocationID).ToList();
-                            if (inv1.Count == 0)
+                            foreach (var _item in invitems)
                             {
-                                Inventory inventory = new Inventory();
-                                inventory.Year = _item.Year;
-                                inventory.ItemCode = _item.Code;
-                                inventory.POSBarCode = _item.Barcode;
-                                inventory.Description = _item.DescriptionPurchase;
-                                inventory.Category = _item.Category.Description;
-                                inventory.InventoryUoM =  _item.UnitOfMeasurement.Description;
-                                inventory.InventoryStatus = 2;
-                                inventory.LocationCode = pr.LocationID;
-                                if (pr.ReqTypeID == 2)
+                                int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _item.Code && p.RequisitionID == id).Quantity.Value;
+                                var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == pr.LocationID).ToList();
+                                if (inv1.Count == 0)
                                 {
-                                    inventory.Committed =  _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
-                                }
-                                else
-                                {
-                                    inventory.Ordered =  _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
-                                }
-                                inventory.InStock = 0;
-                                inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
-                                inventory.ItemID = _item.ID;
+                                    Inventory inventory = new Inventory();
+                                    inventory.Year = _item.Year;
+                                    inventory.ItemCode = _item.Code;
+                                    inventory.POSBarCode = _item.Barcode;
+                                    inventory.Description = _item.DescriptionPurchase;
+                                    inventory.Category = _item.Category.Description;
+                                    inventory.InventoryUoM = _item.UnitOfMeasurement.Description;
+                                    inventory.InventoryStatus = 2;
+                                    inventory.LocationCode = pr.LocationID;
+                                    if (pr.ReqTypeID == 2)
+                                    {
+                                        inventory.Committed = _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                    }
+                                    else
+                                    {
+                                        inventory.Ordered = _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                    }
+                                    inventory.InStock = 0;
+                                    inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
+                                    inventory.ItemID = _item.ID;
 
-                                entity.Inventories.Add(inventory);
-                                entity.SaveChanges();
+                                    entity.Inventories.Add(inventory);
+                                    entity.SaveChanges();
+                                }
                             }
+                            return RedirectToAction("Index");
                         }
-                        return RedirectToAction("Index");
-                    }
 
-                    else
-                    {
-                        TempData["Error"] = "Not all items are approved";
-                        //ModelState.AddModelError(string.Empty, "Not all items are approved");
+                        else
+                        {
+                            TempData["Error"] = "Not all items are approved";
+                            //ModelState.AddModelError(string.Empty, "Not all items are approved");
+                        }
                     }
                 }
                 else

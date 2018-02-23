@@ -1,0 +1,191 @@
+﻿@model MoostBrand.DAL.StockTransfer
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="panel-heading">
+    <h4 class="panel-title">
+        Delete Stock Transfer
+        <br /><small>Are you sure you want to delete this?</small>
+    </h4>
+    <hr />
+</div>
+
+<div class="panel-body">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-md-4">StockTransfer #</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.TransferID)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Date</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.STDAte)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Time Started</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.TimeStarted)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Time End</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.TimeFinish)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Driver</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Driver)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Helper</label>
+            @foreach (var item in Model.Helpers)
+            {
+                <div class="col-md-8">
+                    <label class="custom-label">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </label>
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Operator</label>
+            @foreach (var item in Model.Operators)
+            {
+                <div class="col-md-8">
+                    <label class="custom-label">
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </label>
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Received By</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee.FirstName),
+                    @Html.DisplayFor(model => model.Employee.LastName)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Requested By</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee1.FirstName),
+                    @Html.DisplayFor(model => model.Employee1.LastName)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Released By</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee3.FirstName),
+                    @Html.DisplayFor(model => model.Employee3.LastName)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Checked By</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee4.FirstName),
+                    @Html.DisplayFor(model => model.Employee4.LastName)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Posted By</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee5.FirstName),
+                    @Html.DisplayFor(model => model.Employee5.LastName)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Encoded By</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee6.FirstName),
+                    @Html.DisplayFor(model => model.Employee6.LastName)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Approved By</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Employee2.FirstName),
+                    @Html.DisplayFor(model => model.Employee2.LastName)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Approval Status</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ApprovalStatu.Status)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-4">Remarks</label>
+            <div class="col-md-8">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.Remarks)
+                </label>
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="submit" value="Delete" class="btn btn-red" />
+                    <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
+                        Edit
+                    </a>
+                    <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>

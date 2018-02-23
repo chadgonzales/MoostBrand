@@ -1,0 +1,217 @@
+﻿@model PagedList.IPagedList<MoostBrand.DAL.Requisition>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Requisitions";
+}
+
+
+<div class="panel-heading">
+    <h4 class="panel-title">Requisitions</h4>
+</div>
+<div class="panel-body">
+
+    <div class="dataTables_wrapper no-footer">
+        <div class="dataTables_length">
+            <a href="@Url.Action("Create")" class="btn btn-green" style="float:left;"> Create New <i class="fa fa-plus"></i></a>
+        </div>
+        <div class="dataTables_filter">
+            @using (Html.BeginForm("Index", "PR", FormMethod.Post))
+            {
+                <p>
+                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-sm", @placeholder = "Search" })
+                    <input type="submit" value="Search" class="btn btn-green" />
+                </p>
+            }
+
+            <div class="clearfix"></div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <form id="action_form">
+            @Html.AntiForgeryToken()
+             <div class="alert alert-danger">@TempData["Error"]</div>
+            <table class="table table-striped table-bordered table-hover table-full-width dataTable no-footer">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.ActionLink("Ref #", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                        </th>
+                        <th>
+                            @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                        </th>
+                        <th>
+                            Location
+                        </th>
+                        <th>
+                            Approval Status
+                        </th>
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RefNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RequisitionType.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Location.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ApprovalStatu.Status)
+                            </td>
+                            <td>
+                                <div class="custom-tools">
+                                    <a href='@Url.Action("Details", new { id = item.ID })' class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Details">
+                                        <i class="fa fa-file"></i>
+                                    </a>
+                                    @if (item.ApprovalStatus == 1)
+                                    {
+                                        if (Convert.ToInt32(Session["sessionuid"]) == item.RequestedBy)
+                                        //if (Convert.ToInt32(Session["sessionuid"]) == item.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                        {
+                                            <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                                                <i class="fa fa-times fa fa-white"></i>
+                                            </a>
+                                        }
+                                        //if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                        //{
+                                                <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
+                                                    <i class="fa fa-thumbs-up"></i>
+                                                </a>
+                                                <a href="#" id="deny_button" onclick="ShowDeny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
+                                                    <i class="fa fa-thumbs-down"></i>
+                                                </a>
+                                                <a href="#" id="revise_button" onclick="Revise(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="For Revision">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                        // }
+                                    }
+                                    else if (item.ApprovalStatus == 4)
+                                    {
+                                        if (Convert.ToInt32(Session["sessionuid"]) == item.RequestedBy)
+                                        //if (Convert.ToInt32(Session["sessionuid"]) == item.RequestedBy || Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                        {
+                                            <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Edit">
+                                                <i class="fa fa-edit"></i>
+                                            </a>
+                                            <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips" data-placement="top" data-original-title="Delete">
+                                                <i class="fa fa-times fa fa-white"></i>
+                                            </a>
+                                        }
+                                        //if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
+                                        //{
+                                            <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips" data-placement="top" data-original-title="Approve">
+                                                <i class="fa fa-thumbs-up"></i>
+                                            </a>
+                                            <a href="#" id="deny_button" onclick="ShowDeny(@item.ID)" class="btn btn-xs btn-dark-red tooltips" data-placement="top" data-original-title="Deny">
+                                                <i class="fa fa-thumbs-down"></i>
+                                            </a>
+                                        // }
+                                    }
+                                    @if (item.RequisitionDetails.Where(p=>p.AprovalStatusID == 2).Sum(p => p.Quantity) > 0 && item.RequisitionDetails.Where(p => p.AprovalStatusID == 2).Sum(p => p.Quantity) != item.RequisitionDetails.Sum(p => p.ReferenceQuantity) && item.ApprovalStatus != 5 )
+                                    {
+                                    <a href="#" id="force closed" onclick="ForceClosed(@item.ID)" class="btn btn-xs btn-dark-grey tooltips" data-placement="top" data-original-title="Force Closed">
+                                        <i class="fa fa-close"></i>
+                                    </a>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </form>
+        
+
+
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+    </div>
+</div>
+<div id="DenyWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div id="ShowDialogDeny" class="modal-dialog" role="document">
+        
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+    function ReloadFunction() {
+        location.reload();
+    }
+
+    function Approve() {
+        var prID = arguments[0];
+     
+        var url = '@Url.Action("Approve", "PR")/' + prID;
+
+        var frm = $("#action_form").serialize();
+     
+        $.post(url, frm);
+        location.reload();
+    }
+
+    function Revise() {
+        var prID = arguments[0];
+
+        var url = '@Url.Action("Revise", "PR")/' + prID;
+
+        var frm = $("#action_form").serialize();
+
+        $.post(url, frm, ReloadFunction);
+    }
+
+    function Deny() {
+        var prID = arguments[0];
+
+        var url = '@Url.Action("Denied", "PR")/' + prID;
+
+        var frm = $("#action_form").serialize();
+
+        $.post(url, frm, ReloadFunction);
+    }
+
+    function ShowDeny(id) {
+        var url = '@Url.Action("DenyItemPartial", "PR")';
+        $.get(url, {id: id}, function (data) {
+            $('#ShowDialogDeny').html(data);
+
+            $('#DenyWindow').modal('show');
+
+            // add class form-control to textarea and select
+            $("input[disabled]").addClass("form-control");
+            $("textarea").addClass("form-control");
+            $("select").addClass("form-control");
+        });
+    }
+
+    function ForceClosed() {
+        var prID = arguments[0];
+
+        var url = '@Url.Action("ForceClosed", "PR")/' + prID;
+
+        var frm = $("#action_form").serialize();
+
+        $.post(url, frm, ReloadFunction);
+
+        function ReloadFunction() {
+            location.reload();
+        }
+    }
+</script>
