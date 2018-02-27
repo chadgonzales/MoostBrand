@@ -580,7 +580,7 @@ namespace MoostBrand.Controllers
             //else
             //    return View(rrs.ToPagedList(pageNumber, pageSize));
 
-            return View(rrs.ToPagedList(pageNumber, pageSize));
+            return View(rrs.OrderByDescending(p=>p.ID).ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Receiving/Details/5

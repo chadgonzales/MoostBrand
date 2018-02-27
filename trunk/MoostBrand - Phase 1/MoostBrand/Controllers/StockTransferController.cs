@@ -220,7 +220,7 @@ namespace MoostBrand.Controllers
             //else
             //    return View(sts.ToPagedList(pageNumber, pageSize));
 
-            return View(sts.ToPagedList(pageNumber, pageSize));
+            return View(sts.OrderByDescending(p=>p.ID).ToPagedList(pageNumber, pageSize));
         }
 
         // GET: StockTransfer/Details/5

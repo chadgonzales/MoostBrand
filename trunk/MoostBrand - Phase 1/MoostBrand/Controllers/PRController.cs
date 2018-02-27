@@ -368,7 +368,7 @@ namespace MoostBrand.Controllers
             //else
             //    return View(prs.ToPagedList(pageNumber, pageSize));
 
-            return View(prs.ToPagedList(pageNumber, pageSize));
+            return View(prs.OrderByDescending(p => p.ID).ToPagedList(pageNumber, pageSize));
         }
 
         // GET: PR/Details/5
@@ -785,6 +785,7 @@ namespace MoostBrand.Controllers
                                     inventory.ItemCode = _item.Code;
                                     inventory.POSBarCode = _item.Barcode;
                                     inventory.Description = _item.DescriptionPurchase;
+                                    inventory.SalesDescription = _item.Description;
                                     inventory.Category = _item.Category.Description;
                                     inventory.InventoryUoM = _item.UnitOfMeasurement.Description;
                                     inventory.InventoryStatus = 2;
@@ -792,10 +793,12 @@ namespace MoostBrand.Controllers
                                     if (pr.ReqTypeID == 2)
                                     {
                                         inventory.Committed = _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                        inventory.Ordered = 0;
                                     }
                                     else
                                     {
                                         inventory.Ordered = _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                        inventory.Committed = 0;
                                     }
                                     inventory.InStock = 0;
                                     inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
