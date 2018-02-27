@@ -192,5 +192,8 @@ namespace MoostBrand.DAL
                 }
             }
         }
+
+        public string GetDestination
+        { get { return Location1 == null ? "" : Location1.Description; } }
     }
 }

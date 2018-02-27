@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-3">Item Code</label>
                     <div class="col-md-6">
-                        @Html.DropDownList("itemcode", (IEnumerable<SelectListItem>)ViewBag.ItemCode, "", new { @class = "form-control ddl-item"})
+                        @Html.DropDownList("itemcode", (IEnumerable<SelectListItem>)ViewBag.ItemCode, "all", new { @class = "form-control ddl-item"})
                     </div>
                 </div>
             </div>
@@ -63,7 +63,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-3">Item Description</label>
                     <div class="col-md-6">
-                        @Html.DropDownList("itemdesc", (IEnumerable<SelectListItem>)ViewBag.ItemDesc, "", new { @class = "form-control ddl-item" })
+                        @Html.DropDownList("itemdesc", (IEnumerable<SelectListItem>)ViewBag.ItemDesc, "all", new { @class = "form-control ddl-item" })
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                 <div class="form-group">
                     <label class="control-label col-md-3">Location</label>
                     <div class="col-md-6">
-                        @Html.DropDownList("location", (IEnumerable<SelectListItem>)ViewBag.Location, "", new { @class = "form-control ddl-item" })
+                        @Html.DropDownList("location", (IEnumerable<SelectListItem>)ViewBag.Location, "all", new { @class = "form-control ddl-item" })
                     </div>
                 </div>
             </div>
