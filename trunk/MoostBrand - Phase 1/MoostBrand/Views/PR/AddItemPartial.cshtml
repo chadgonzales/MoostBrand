@@ -13,6 +13,7 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <input type="hidden" value="@ViewBag.PRid" id="ReservationID" />
+            <input type="hidden" value="@ViewBag.VendorID" id="vendorID" />
 
             @Html.Hidden("CategoryID")
             @Html.Hidden("ItemID")

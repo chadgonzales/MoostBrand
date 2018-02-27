@@ -34,37 +34,49 @@ namespace MoostBrand.Controllers
         #region PRIVATE METHODS
         private string Generator(string prefix)
         {
-        //Initiate objects & vars
-        startR: Random random = new Random();
-            string randomString = "";
-            int randNumber = 0;
+            startR: var cref = entity.Requisitions.Where(r => r.RefNumber.Contains(prefix)).Count();
 
-            //Loop ‘length’ times to generate a random number or character
-            for (int i = 0; i < 6; i++)
-            {
-                if (i == 0)
-                {
-                start: randNumber = random.Next(0, 9); //int {0-9}
-                    if (randNumber == 0)
-                        goto start;
-                }
-                else
-                {
-                    randNumber = random.Next(0, 9);
-                }
-                //append random char or digit to random string
-                randomString = randomString + randNumber.ToString();
-            }
+            string refnum = string.Format(prefix + "-{0:000000}", cref);
 
-            randomString = prefix + "-" + randomString;
-            var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == randomString);
+            var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == refnum);
             if (pr.Count() > 0)
             {
                 goto startR;
             }
 
-            //return the random string
-            return randomString;
+
+            return refnum;
+            ////Initiate objects & vars
+            //startR: Random random = new Random();
+            //string randomString = "";
+            //int randNumber = 0;
+
+            ////Loop ‘length’ times to generate a random number or character
+            //for (int i = 0; i < 6; i++)
+            //{
+            //    if (i == 0)
+            //    {
+            //        start: randNumber = random.Next(0, 9); //int {0-9}
+            //        if (randNumber == 0)
+            //            goto start;
+            //    }
+            //    else
+            //    {
+            //        randNumber = random.Next(0, 9);
+            //    }
+            //    //append random char or digit to random string
+            //    randomString = randomString + randNumber.ToString();
+            //}
+
+            //randomString = prefix + "-" + randomString;
+            //var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == randomString);
+            //if (pr.Count() > 0)
+            //{
+            //    goto startR;
+            //}
+
+            ////return the random string
+            //return randomString;
         }
 
         private Requisition SetNull(Requisition pr)
@@ -251,35 +263,70 @@ namespace MoostBrand.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetItems(int catID, string name)
+        public JsonResult GetItems(int catID, string name, int vendorid)
         {
-            var items = entity.Items.Where(x => x.CategoryID == catID || x.Description.Contains(name))
-                            .Select(x => new
-                            {
-                                ID = x.ID,
-                                Code = x.Code,
-                                Name = x.DescriptionPurchase,
-                                PURName = x.Description,
-                                UOM = x.UnitOfMeasurement.Description,
-                                Category = x.Category.Description
-                            });
-            return Json(items, JsonRequestBehavior.AllowGet);
+            if (vendorid != 0)
+            {
+                var items = entity.Items.Where(x => x.CategoryID == catID || x.Description.Contains(name) && x.VendorCoding == vendorid)
+                 .Select(x => new {
+                     ID = x.ID,
+                     Code = x.Code,
+                     Vendors = x.VendorCoding,
+                     Name = x.DescriptionPurchase,
+                     PURName = x.Description,
+                     UOM = x.UnitOfMeasurement.Description,
+                     Category = x.Category.Description
+                 });
+                return Json(items, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var items = entity.Items.Where(x => x.CategoryID == catID || x.Description.Contains(name))
+                 .Select(x => new {
+                     ID = x.ID,
+                     Code = x.Code,
+                     Vendors = x.VendorCoding,
+                     Name = x.DescriptionPurchase,
+                     PURName = x.Description,
+                     UOM = x.UnitOfMeasurement.Description,
+                     Category = x.Category.Description
+                 });
+                return Json(items, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]
-        public JsonResult GetItemCode(int catID, string name)
+        public JsonResult GetItemCode(int catID, string name, int vendorid)
         {
-            var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name))
-                            .Select(x => new
-                            {
-                                ID = x.ID,
-                                Code = x.Code,
-                                Name = x.DescriptionPurchase,
-                                PURName = x.Description,
-                                UOM = x.UnitOfMeasurement.Description,
-                                Category = x.Category.Description
-                            });
-            return Json(items, JsonRequestBehavior.AllowGet);
+            if (vendorid != 0)
+            {
+                var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name) && x.VendorCoding == vendorid)
+                 .Select(x => new {
+                     ID = x.ID,
+                     Code = x.Code,
+                     Vendors = x.VendorCoding,
+                     Name = x.DescriptionPurchase,
+                     PURName = x.Description,
+                     UOM = x.UnitOfMeasurement.Description,
+                     Category = x.Category.Description
+                 });
+                return Json(items, JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+                var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name))
+                 .Select(x => new {
+                     ID = x.ID,
+                     Code = x.Code,
+                     Vendors = x.VendorCoding,
+                     Name = x.DescriptionPurchase,
+                     PURName = x.Description,
+                     UOM = x.UnitOfMeasurement.Description,
+                     Category = x.Category.Description
+                 });
+                return Json(items, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpGet]
@@ -744,6 +791,7 @@ namespace MoostBrand.Controllers
 
                             entity.Entry(pr).State = EntityState.Modified;
                             entity.SaveChanges();
+
                             var rd = pr.RequisitionDetails.Select(p => p.ItemID).ToList();
                             var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
                             var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
@@ -1146,7 +1194,7 @@ namespace MoostBrand.Controllers
             ViewBag.ReqTypeID = _rd.ReqTypeID.Value.ToString();
             ViewBag.PRid = id;
             ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description");
-
+            ViewBag.VendorID = _rd.VendorID != null ? _rd.VendorID : 0;
 
             return PartialView();
         }

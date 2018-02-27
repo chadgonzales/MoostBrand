@@ -57,46 +57,72 @@ namespace MoostBrand.Controllers
         {
             entity = new MoostBrandEntities();
         }
-        private string Generator(string prefix)
-        {
-            //Initiate objects & vars
-            startR: Random random = new Random();
-            string randomString = "";
-            int randNumber = 0;
 
-            //Loop ‘length’ times to generate a random number or character
-            for (int i = 0; i < 6; i++)
+        private string CheckExistingRefNum(string referencenum)
+        {
+            var cref = entity.Requisitions.Where(r => r.RefNumber == referencenum);
+            if (cref == null)
             {
-                if (i == 0)
-                {
-                    start: randNumber = random.Next(0, 9); //int {0-9}
-                    if (randNumber == 0)
-                        goto start;
-                }
-                else
-                {
-                    randNumber = random.Next(0, 9);
-                }
-                //append random char or digit to random string
-                randomString = randomString + randNumber.ToString();
+
+            }
+            else
+            {
+                referencenum = Generator("CR");
             }
 
-            randomString = prefix + "-" + randomString;
-            var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == randomString);
+            return referencenum;
+        }
+        private string Generator(string prefix)
+        {
+            startR: var cref = entity.Requisitions.Where(r => r.RefNumber.Contains("CR")).Count();
+           
+            string refnum = string.Format(prefix + "-{0:000000}", cref);
+
+            var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == refnum);
             if (pr.Count() > 0)
             {
                 goto startR;
             }
+           
+           
+            return refnum;
+            //////Initiate objects & vars
+            ////startR: Random random = new Random();
+            ////string randomString = "";
+            ////int randNumber = 0;
 
-            //return the random string
-            return randomString;
+            //////Loop ‘length’ times to generate a random number or character
+            ////for (int i = 0; i < 6; i++)
+            ////{
+            ////    if (i == 0)
+            ////    {
+            ////        start: randNumber = random.Next(0, 9); //int {0-9}
+            ////        if (randNumber == 0)
+            ////            goto start;
+            ////    }
+            ////    else
+            ////    {
+            ////        randNumber = random.Next(0, 9);
+            ////    }
+            ////    //append random char or digit to random string
+            ////    randomString = randomString + randNumber.ToString();
+            ////}
+
+            ////randomString = prefix + "-" + randomString;
+            ////var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == randomString);
+            ////if (pr.Count() > 0)
+            ////{
+            ////    goto startR;
+            ////}
+
+            //////return the random string
+            ////return randomString;
         }
         private Requisition setValue(Requisition pr)
         {
             pr.VendorID = null;
             pr.ReqTypeID = 2;
             pr.RequisitionTypeID = 4;
-            pr.Destination = null;
             pr.PlateNumber = null;
             pr.Others = null;
             pr.TimeDeparted = null;
@@ -359,7 +385,7 @@ namespace MoostBrand.Controllers
                                                                     o.ReservationType.Type.Contains(searchString) ||
                                                                     o.InvoiceNumber.Contains(searchString) ||
                                                                     o.Location.Description.Contains(searchString) ||
-                                                                    o.Location.Description.Contains(searchString));
+                                                                    o.Location1.Description.Contains(searchString));
             }
 
             switch (sortOrder)
@@ -441,6 +467,7 @@ namespace MoostBrand.Controllers
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName");
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status");
+            ViewBag.Destination = new SelectList(loc, "ID", "Description");
 
             return View(pr);
         }
@@ -453,10 +480,12 @@ namespace MoostBrand.Controllers
             {
                 try
                 {
+                    req.RefNumber = CheckExistingRefNum(req.RefNumber);
                     req.ApprovalStatus = 1;
                     req.Status = false;
 
                     var newPR = setValue(req);
+                    
                     if (req.LocationID == req.Destination)
                     {
                         ModelState.AddModelError("", "Source location should not be the same with the destination.");
@@ -506,11 +535,12 @@ namespace MoostBrand.Controllers
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", req.AuthorizedPerson);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
+            ViewBag.Destination = new SelectList(loc, "ID", "Description", req.Destination);
             return View(req);
         }
 
         [AccessChecker(Action = 2, ModuleID = 9)]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
             //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
             var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id);
@@ -542,6 +572,7 @@ namespace MoostBrand.Controllers
                 ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
                 ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
                 ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", pr.AuthorizedPerson);
+                ViewBag.Destination = new SelectList(loc.Where(p => p.ID != pr.LocationID), "ID", "Description", pr.Destination);
                 #endregion
 
                 return View(pr);
@@ -611,6 +642,7 @@ namespace MoostBrand.Controllers
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", req.ApprovedBy);
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", req.AuthorizedPerson);
+            ViewBag.Destination = new SelectList(loc.Where(p => p.ID != req.LocationID), "ID", "Description", req.Destination);
             #endregion
 
             return View(req);
