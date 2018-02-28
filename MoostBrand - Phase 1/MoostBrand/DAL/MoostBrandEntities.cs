@@ -26,6 +26,7 @@ namespace MoostBrand.DAL
         public virtual DbSet<Helper> Helpers { get; set; }
         public virtual DbSet<Inventory> Inventories { get; set; }
         public virtual DbSet<InventoryStatu> InventoryStatus { get; set; }
+        public virtual DbSet<ItemStatu> ItemStatus { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<LocationType> LocationTypes { get; set; }
@@ -275,6 +276,13 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.Inventories)
                 .WithOptional(e => e.InventoryStatu)
                 .HasForeignKey(e => e.InventoryStatus);
+
+            modelBuilder.Entity<ItemStatu>()
+                .HasMany(e => e.Items)
+                .WithOptional(e => e.ItemStatu)
+                .HasForeignKey(e => e.ItemStatus);
+
+  
 
             modelBuilder.Entity<Item>()
                 .Property(e => e.LastUnitCost)
