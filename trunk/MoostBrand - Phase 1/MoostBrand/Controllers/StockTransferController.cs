@@ -88,7 +88,8 @@ namespace MoostBrand.Controllers
                     new ReqCustom
                     {
                         ID = _req.ID,
-                        RefNumber = refNumber
+                        RefNumber = refNumber,
+                        SourceLoc = _req.Location.Description
                     });
             }
 
@@ -246,6 +247,7 @@ namespace MoostBrand.Controllers
         public class ReqCustom {
             public int ID { get; set; }
             public string RefNumber { get; set; }
+            public string SourceLoc { get; internal set; }
         }
 
         public class RecCustom
@@ -259,8 +261,7 @@ namespace MoostBrand.Controllers
         public ActionResult Create()
         {
             var stocktransfer = new StockTransfer();
-            stocktransfer.STDAte = DateTime.Now;
-            
+
             #region DROPDOWNS
             var _types = entity.StockTransferTypes.Where(p=>p.ID != 2 && p.ID != 4).ToList();
             var _st = entity.StockTransfers.ToList();
@@ -922,6 +923,7 @@ namespace MoostBrand.Controllers
             // ViewBag.RequestedBy =
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;
+            ViewBag.IsApproved = stocktransfer.ApprovedStatus;
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);

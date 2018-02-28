@@ -196,6 +196,7 @@ namespace MoostBrand.Controllers
             {
                 items = items.Where(i => i.Code.Contains(searchString)
                                        || i.Description.Contains(searchString)
+                                      // ||i.Status.Contains(searchString)
                                        || i.DescriptionPurchase.Contains(searchString));
             }
 
@@ -238,8 +239,10 @@ namespace MoostBrand.Controllers
             ViewBag.Sizes = entity.Sizes.ToList();
             ViewBag.UOMS = entity.UnitOfMeasurements.ToList();
             ViewBag.Brands = entity.Brands.ToList();
+            ViewBag.ItemStatus = entity.ItemStatus.ToList();
 
             return View(item);
+       
         }
 
         [AccessChecker(Action = 2, ModuleID = 11)]
@@ -264,6 +267,8 @@ namespace MoostBrand.Controllers
                             ViewBag.Sizes = entity.Sizes.ToList();
                             ViewBag.UOMS = entity.UnitOfMeasurements.ToList();
                             ViewBag.Brands = entity.Brands.ToList();
+                            ViewBag.ItemStatus = entity.ItemStatus.ToList();
+
                             if (selectedSubCatID != null)
                                 ViewData["DDLSubCat"] = new SelectList(entity.SubCategories.ToList(), "ID", "Description", selectedSubCatID);
                             else
@@ -308,9 +313,7 @@ namespace MoostBrand.Controllers
                     item.UnitOfMeasurement = entity.UnitOfMeasurements.Find(item.UnitOfMeasurementID);
                     item.Size = entity.Sizes.Find(item.SizeID);
                     item.Color = entity.Colors.Find(item.ColorID);
-
-
-
+              
                     entity.Items.Add(item);
                     entity.SaveChanges();
                     return RedirectToAction("Index");
@@ -347,6 +350,7 @@ namespace MoostBrand.Controllers
             ViewBag.SizeID = new SelectList(entity.Sizes.ToList(), "ID", "Description", item.SizeID);
             ViewBag.UnitOfMeasurementID = new SelectList(entity.UnitOfMeasurements.ToList(), "ID", "Description", item.UnitOfMeasurementID);
             ViewBag.BrandID = new SelectList(entity.Brands.ToList(), "ID", "Description", item.BrandID);
+            //ViewBag.ItemStatusID = new SelectList(entity.ItemStatus.ToList(), "ID", "ItemStatus", item.ItemStatusID);
 
             ViewBag.VendorName = entity.Vendors.Find(item.VendorCoding) == null ? "" : entity.Vendors.Find(item.VendorCoding).GeneralName;
 
@@ -418,7 +422,7 @@ namespace MoostBrand.Controllers
             ViewBag.SizeID = new SelectList(entity.Sizes.ToList(), "ID", "Description", item.SizeID);
             ViewBag.UnitOfMeasurementID = new SelectList(entity.UnitOfMeasurements.ToList(), "ID", "Description", item.UnitOfMeasurementID);
             ViewBag.BrandID = new SelectList(entity.Brands.ToList(), "ID", "Description", item.BrandID);
-
+             //ViewBag.ItemStatusID = new SelectList(entity.ItemStatus.ToList(), "ID", "ItemStatus", item.ItemStatusID);
             ViewBag.VendorName = entity.Vendors.Find(item.VendorCoding) == null ? "" : entity.Vendors.Find(item.VendorCoding).GeneralName;
             return View(item);
         }
