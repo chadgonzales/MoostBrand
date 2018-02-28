@@ -21,7 +21,7 @@ namespace MoostBrand.Controllers
         public ActionResult SummaryReport(string dateFrom, string dateTo, int? brand, int? category, int? vendor, int? location)
         {
 
-          //  var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
+            var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
             #region DROPDOWNS
             var loc = entity.Locations.Where(x => x.ID != 10)
                             .Select(x => new
@@ -92,8 +92,16 @@ namespace MoostBrand.Controllers
                                      ItemId = g.Key,
                                      InQty = g.Sum(p=>p.InQty),
                                      OutQty = g.Sum(p => p.OutQty),
-                                     Variance = g.Sum(p => p.Variance),
-                                     BeginningInstock = g.Sum(p => p.BeginningBalance)
+                                     Variance = g.Sum(p => p.Variance)
+                                 }).ToList();
+
+
+            var lstInventory2 = (from p in sl.Where(p => p.Date <= dtDateTo.AddDays(1)).ToList()
+                                 group p by new { p.InventoryID } into g
+                                 select new
+                                 {
+                                     ItemId = g.Key,
+                                     BeginningInstock = g.OrderBy(p => p.Date).ThenBy(p => p.ID).FirstOrDefault().BeginningBalance
                                  }).ToList();
 
 
@@ -119,13 +127,13 @@ namespace MoostBrand.Controllers
                                     InQty = lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID && p.ItemId.Type.ToLower() == "stock in") != null ? lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID && p.ItemId.Type.ToLower() == "stock in").InQty : 0,
                                     OutQty = lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID && p.ItemId.Type.ToLower() == "stock out") != null ? lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID && p.ItemId.Type.ToLower() == "stock out").OutQty : 0, //invRepo.getTotalStockTranfer(i.ItemCode,i.LocationCode.Value, dtDateFrom, dtDateTo),
                                     AdjustedQty = lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID && p.ItemId.Type.ToLower() == "variance") != null ? lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID && p.ItemId.Type.ToLower() == "variance").Variance : 0,
-                                    BegInstock = lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID) != null ? lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID).BeginningInstock : 0,//invRepo.getTotalVariance(i.ID,i.LocationCode.Value, dtDateFrom, dtDateTo),
+                                    BegInstock = lstInventory2.FirstOrDefault(p => p.ItemId.InventoryID == i.ID) != null ? lstInventory2.FirstOrDefault(p => p.ItemId.InventoryID == i.ID).BeginningInstock : 0,//invRepo.getTotalVariance(i.ID,i.LocationCode.Value, dtDateFrom, dtDateTo),
                                     CommittedQty = i.Committed != null || i.Committed > 0 ? i.Committed : 0,
                                     TotalOrder = i.Ordered != null ? i.Ordered : 0,
                                     ReservationName = lstInventory3.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode) != null ? lstInventory3.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode).ReservationName : " ",
                                     QOH = 0,
                                     PcsPerBox = i.Items.Quantity,
-                                    Instock = 0
+                                    Instock = i.InStock != null || i.InStock > 0 ? i.InStock : 0
 
 
                                 }).ToList();
@@ -145,7 +153,7 @@ namespace MoostBrand.Controllers
                                     CommittedQty = i.CommittedQty,
                                     TotalOrder = i.TotalOrder,
                                     ReservationName = i.ReservationName,
-                                    QOH = i.BegInstock + (i.InQty - i.OutQty) + i.AdjustedQty, //i.Instock,
+                                    QOH = dtDateTo.Date.ToString() == DateTime.Now.Date.ToString() ? i.Instock : i.BegInstock + (i.InQty - i.OutQty) + i.AdjustedQty, //i.Instock,
                                     PcsPerBox = i.PcsPerBox
                                   
 
@@ -189,7 +197,7 @@ namespace MoostBrand.Controllers
         public ActionResult InventoryReport(int? brand, int? category, int? vendor, int? location)
         {
 
-            //  var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
+            var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
             #region DROPDOWNS
             var loc = entity.Locations.Where(x => x.ID != 10)
                             .Select(x => new
