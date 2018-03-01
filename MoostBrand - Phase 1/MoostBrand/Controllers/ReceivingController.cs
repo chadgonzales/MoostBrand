@@ -685,7 +685,7 @@ namespace MoostBrand.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("", "The Receiving ID already exists.");
+                        ModelState.AddModelError("", "The RR Number already exists.");
                     }
                 }
                 catch(Exception e)

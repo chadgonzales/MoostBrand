@@ -125,7 +125,8 @@ namespace MoostBrand.Controllers
                     new ReqCustom
                     {
                         ID = _req.ID,
-                        RefNumber = refNumber
+                        RefNumber = refNumber,
+                        SourceLoc = _req.Location.Description
                     });
             }
             return Json(_lstReqCustom, JsonRequestBehavior.AllowGet);
