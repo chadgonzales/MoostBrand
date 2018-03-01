@@ -350,7 +350,7 @@ namespace MoostBrand.Controllers
             ViewBag.SizeID = new SelectList(entity.Sizes.ToList(), "ID", "Description", item.SizeID);
             ViewBag.UnitOfMeasurementID = new SelectList(entity.UnitOfMeasurements.ToList(), "ID", "Description", item.UnitOfMeasurementID);
             ViewBag.BrandID = new SelectList(entity.Brands.ToList(), "ID", "Description", item.BrandID);
-            //ViewBag.ItemStatusID = new SelectList(entity.ItemStatus.ToList(), "ID", "ItemStatus", item.ItemStatusID);
+            ViewBag.ItemStatus = new SelectList(entity.ItemStatus.ToList(), "ID", "ItemStatus", item.ItemStatus);
 
             ViewBag.VendorName = entity.Vendors.Find(item.VendorCoding) == null ? "" : entity.Vendors.Find(item.VendorCoding).GeneralName;
 
@@ -422,7 +422,7 @@ namespace MoostBrand.Controllers
             ViewBag.SizeID = new SelectList(entity.Sizes.ToList(), "ID", "Description", item.SizeID);
             ViewBag.UnitOfMeasurementID = new SelectList(entity.UnitOfMeasurements.ToList(), "ID", "Description", item.UnitOfMeasurementID);
             ViewBag.BrandID = new SelectList(entity.Brands.ToList(), "ID", "Description", item.BrandID);
-             //ViewBag.ItemStatusID = new SelectList(entity.ItemStatus.ToList(), "ID", "ItemStatus", item.ItemStatusID);
+             ViewBag.ItemStatus = new SelectList(entity.ItemStatus.ToList(), "ID", "ItemStatus", item.ItemStatus);
             ViewBag.VendorName = entity.Vendors.Find(item.VendorCoding) == null ? "" : entity.Vendors.Find(item.VendorCoding).GeneralName;
             return View(item);
         }

@@ -532,7 +532,7 @@ namespace MoostBrand.Controllers
             ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", req.DropShipID);
             ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName", req.ReservedBy);
             ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", req.ValidatedBy);
-            ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
+             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", req.AuthorizedPerson);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.Destination = new SelectList(loc, "ID", "Description", req.Destination);
@@ -715,7 +715,6 @@ namespace MoostBrand.Controllers
                         if (approve == pr.RequisitionDetails.Count())
                         {
 
-
                             pr.ApprovalStatus = 2;
                             pr.IsSync = false;
 
@@ -723,37 +722,36 @@ namespace MoostBrand.Controllers
                             entity.SaveChanges();
                             var rd = pr.RequisitionDetails.Select(p => p.ItemID).ToList();
                             var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
-                            var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
-                            if (inv != null)
-                            {
-                                foreach (var _inv in inv)
+                                var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
+                                if (inv != null)
                                 {
-                                    var i = entity.Inventories.Find(_inv.ID);
-                                    int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _inv.ItemCode && p.RequisitionID == id).Quantity.Value;
-                                    if (pr.ReqTypeID == 2)
+                                    foreach (var _inv in inv)
                                     {
-                                        i.Committed = i.Committed + _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                        var i = entity.Inventories.Find(_inv.ID);
+                                        int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _inv.ItemCode && p.RequisitionID == id).Quantity.Value;
+                                        if (pr.ReqTypeID == 2)
+                                        {
+                                            i.Committed = i.Committed + _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                        }
+                                        else
+                                        {
+                                            i.Ordered = i.Ordered + _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                        }
+
+                                        i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
+                                        i.Available = (i.InStock + i.Ordered) - i.Committed;
+
+                                        entity.Entry(i).State = EntityState.Modified;
+                                        entity.SaveChanges();
+
                                     }
-                                    else
-                                    {
-                                        i.Ordered = i.Ordered + _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
-                                    }
-
-                                    i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
-                                    i.Available = (i.InStock + i.Ordered) - i.Committed;
-
-                                    entity.Entry(i).State = EntityState.Modified;
-                                    entity.SaveChanges();
-
                                 }
-                            }
-
+                          
                             var invitems = entity.Items.Where(i => rd.Contains(i.ID)).ToList();
 
                             foreach (var _item in invitems)
                             {
                                 int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _item.Code && p.RequisitionID == id).Quantity.Value;
-
                                 var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == pr.LocationID).ToList();
                                 if (inv1.Count == 0)
                                 {
@@ -799,8 +797,10 @@ namespace MoostBrand.Controllers
                     }
                 }
             }
-            catch
+            catch (Exception msg)
             {
+                msg.Message.ToString();
+
             }
             return View();
         }

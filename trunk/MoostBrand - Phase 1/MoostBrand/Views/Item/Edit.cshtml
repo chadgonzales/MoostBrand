@@ -339,7 +339,17 @@
                 </div>
             </div>
 
-           
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                   Item Status
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("ItemStatus", null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ItemStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
 
 
 
