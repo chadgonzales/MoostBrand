@@ -249,7 +249,7 @@ namespace MoostBrand.Controllers
         public class ReqCustom {
             public int ID { get; set; }
             public string RefNumber { get; set; }
-            public string SourceLoc { get; internal set; }
+            public string SourceLoc { get;  set; }
         }
 
         public class RecCustom
@@ -426,7 +426,7 @@ namespace MoostBrand.Controllers
 
             ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", stocktransfer.EncodedBy);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ReceivedBy);
-            ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stocktransfer.RequestedBy); ;
+            ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stocktransfer.RequestedBy); 
             ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ApprovedBy); ;
             ViewBag.ReleasedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ReleasedBy); ;
             ViewBag.CounterCheckedBy = new SelectList(empList, "ID", "FullName", stocktransfer.CounterCheckedBy); ;

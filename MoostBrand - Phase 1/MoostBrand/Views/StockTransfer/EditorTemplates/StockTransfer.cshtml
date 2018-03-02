@@ -88,6 +88,7 @@
             },
             select: function (event, ui) {
                 $("#RequisitionID").val(ui.item.id);
+                $("#sourceloc").val(ui.item.sourceloc);
             },
             messages: {
                 noResults: "", results: ""
@@ -149,13 +150,13 @@
     <div id="res">
         <div class="form-group">
             <label class="control-label col-md-2">
-                Requisition ID
+                Requisition Number
                 <span class="symbol required"></span>
             </label>
             <div class="col-md-6">
                 @Html.TextBox("ressearch", ViewBag.Reservation as string, new { @class = "form-control" })
-                @Html.Hidden("ReservationID")
-                @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
+                @Html.Hidden("RequisitionID")
+                @Html.ValidationMessageFor(model => model.Requisition, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
