@@ -10,6 +10,7 @@ using System.Web.Routing;
 using System.Collections.Generic;
 using MoostBrand.Helpers;
 using System.Data.Entity.Validation;
+using System.Linq.Dynamic;
 
 namespace MoostBrand.Controllers
 {
@@ -216,7 +217,6 @@ namespace MoostBrand.Controllers
             }
             return getIS;
         }
-
         #endregion
 
         #region JSON
@@ -362,66 +362,113 @@ namespace MoostBrand.Controllers
         // GET: PR
         [AccessCheckerForDisablingButtons(ModuleID = 3)]
         [AccessChecker(Action = 1, ModuleID = 3)]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString,int? page)
+        public ActionResult Index(string sortOrder,string sortColumn, string currentFilter, string filterFrom, string filterTo, string searchString, string dateFrom, string dateTo, int? page)
         {
-
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "type" : "";
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "reqno" : "";
+            //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "type" : "";
+            //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "reqno" : "";
+            //ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
 
-            if (searchString != null )
+            ViewBag.CurrentSort = sortColumn;
+            ViewBag.SortOrder = sortOrder == "asc" ? "desc" : "asc";
+
+            DateTime dtDateFrom = DateTime.Now.Date;
+            DateTime dtDateTo = DateTime.Now;
+
+            if (!String.IsNullOrEmpty(filterFrom))
+            {
+                dtDateFrom = Convert.ToDateTime(filterFrom);
+            }
+
+            if (!String.IsNullOrEmpty(filterTo))
+            {
+                dtDateTo = Convert.ToDateTime(filterTo);
+            }
+
+
+
+            if (searchString != null || dateFrom !=null && dateTo != null)
             {
                 page = 1;
             }
             else
             {
                 searchString = currentFilter;
-               
+                dateFrom = filterFrom;
+                dateTo = filterTo;
             }
 
+            ViewBag.FilterFrom = dateFrom;
+            ViewBag.FilterTo = dateTo;
             ViewBag.CurrentFilter = searchString;
-         
+            
             //int locID = Convert.ToInt32(Session["locationID"]);
             //int UserID = Convert.ToInt32(Session["userID"]);
 
             //var user = entity.Users.FirstOrDefault(x => x.ID == UserID);
-
-
-            var prs = entity.Requisitions.Where(x => x.Status == false && ( x.ID != 4 && x.ID != 5)); //active
+           // var prs = entity.Requisitions.Where(x => x.Status == false && ( x.ID != 4 && x.ID != 5)); //active
+            IQueryable<Requisition> prs = reqDetailRepo.List().Where(x => x.Status == false && (x.ID != 4 && x.ID != 5));
 
             if (!String.IsNullOrEmpty(searchString))
             {
                 prs = prs.Where(o => o.RequisitionType.Type.Contains(searchString)
                                        || o.RefNumber.Contains(searchString));
             }
+          
 
-           
+            //if (!String.IsNullOrEmpty(dateFrom) && !String.IsNullOrEmpty(dateTo))
+            //{
+                //dtDateFrom = Convert.ToDateTime(dateFrom);
+                //dtDateTo = Convert.ToDateTime(dateTo);
+                prs = prs.Where(p => DbFunctions.TruncateTime(p.RequestedDate) >= dtDateFrom && DbFunctions.TruncateTime(p.RequestedDate) <= dtDateTo);
+          //  }
 
-            switch (sortOrder)
+            //switch (sortOrder)
+            //{
+            //    case "type":
+            //        prs = prs.OrderByDescending(o => o.RequisitionType.Type);
+            //        break;
+            //    case "reqno":
+            //        prs = prs.OrderByDescending(o => o.RefNumber);
+            //        break;
+            //    case "Date":
+            //        prs = prs.OrderBy(o => o.RequestedDate);
+            //        break;
+            //    case "date_desc":
+            //        prs = prs.OrderByDescending(o => o.RequestedDate);
+            //        break;
+            //    default:
+            //        prs = prs.OrderByDescending(o => o.ID);
+            //        break;
+            //}
+
+            if (String.IsNullOrEmpty(sortColumn))
             {
-                case "type":
-                    prs = prs.OrderByDescending(o => o.RequisitionType.Type);
-                    break;
-                case "reqno":
-                    prs = prs.OrderByDescending(o => o.RefNumber);
-                    break;
-                default:
-                    prs = prs.OrderBy(o => o.ID);
-                    break;
+                prs = prs.OrderBy(p => p.ID);
+            }
+            else
+            {
+                prs = prs.OrderBy(sortColumn + " " + sortOrder);
             }
 
-            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            ViewBag.DateFrom = dtDateFrom.ToString("MM/dd/yyyy");
+            ViewBag.DateTo = dtDateTo.ToString("MM/dd/yyyy");
+
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
+            return View(prs.ToPagedList(pageNumber, pageSize));
+            //int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            //int pageNumber = (page ?? 1);
 
-            //if (user.LocationID != 10)
-            //{
-            //    prs = prs.Where(x => x.LocationID == locID);
-            //    return View(prs.ToPagedList(pageNumber, pageSize));
-            //}
-            //else
-            //    return View(prs.ToPagedList(pageNumber, pageSize));
+            ////if (user.LocationID != 10)
+            ////{
+            ////    prs = prs.Where(x => x.LocationID == locID);
+            ////    return View(prs.ToPagedList(pageNumber, pageSize));
+            ////}
+            ////else
+            ////    return View(prs.ToPagedList(pageNumber, pageSize));
 
-            return View(prs.OrderByDescending(p => p.ID).ToPagedList(pageNumber, pageSize));
+            //return View(prs.OrderBy(p => p.ID).ToPagedList(pageNumber, pageSize));
         }
 
         // GET: PR/Details/5

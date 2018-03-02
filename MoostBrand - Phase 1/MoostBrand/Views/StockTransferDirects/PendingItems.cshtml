@@ -127,14 +127,14 @@
         //alert($("#Hidden_Quantity").val());
         var url = $('#AddItemWindow').data('url');
         $.get(url, function (data) {
-           
+
             $('#ShowDialogAdd').html(data);
-          
-            @*alert(@ViewBag.Approved);*@
-            if(@ViewBag.Approved != 2)
-            { 
+
+            //alert(@ViewBag.Approved);
+           if (@ViewBag.Approved != "2")
+          {
                 $('#AddItemWindow').modal('show');
-            }
+          }
 
             var addItemPartial = $("#addItemPartial");
             addItemPartial.submit(function (e) {
@@ -147,11 +147,11 @@
                 return true;
             });
 
-        
+
             $("#InventoryID").change(function () {
-             
+
                 var val = $("#InventoryID").val();
-              
+
                 $.ajax({
                     url: '@Url.Action("DisplayComputations", "StockTransferDirects")',
                     data: { recID: val },
@@ -162,13 +162,13 @@
                         $("#InStock").val(data.InStock);
                         $("#Quantity").val(data.Quantity);
                         $("#Hidden_Quantity").val(data.Quantity);
-                        
+
                     }
                 })
             });
 
             $('#Quantity').focusout(function () {
-              
+
                 if (parseInt($("#Quantity").val()) <= parseInt($("#Hidden_Quantity").val()) && parseInt($("#Quantity").val()) > 0) {
                    // var ordered = parseInt($('#Ordered').val());
                    // var committed = parseInt($('#Committed').val());
@@ -203,7 +203,7 @@
             $('#ShowDialogAdd').html(data);
 
            // if(@ViewBag.Approved != "2")
-            //{ 
+            //{
                 $('#AddItemWindow').modal('show');
             //}
 
