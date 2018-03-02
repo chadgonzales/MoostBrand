@@ -234,6 +234,7 @@
             $(this).css({ "border": "unset" })
         }
     });
+
     $('#TimeStarted').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
@@ -345,27 +346,32 @@
             $("#res").hide();
             $("#rq").show();
             $("#sl").show();
+            $('#sourceloc').val('');
         } else if (val == 2) {
             $("#rc").show();
             $("#rq").hide();
             $("#res").hide();
             $("#sl").show();
+            $('#sourceloc').val('');
         } else if (val == 3) {
             $("#res").show();
             $("#rq").hide();
             $("#rc").hide();
             $("#sl").show();
+            $('#sourceloc').val('');
         }
         else {
             $("#rc").hide();
             $("#rq").hide();
             $("#res").hide();
             $("#sl").hide();
+            $('#sourceloc').val('');
         }
 
     }
     $("#StockTransferTypeID").change(function () {
         HideOrShow();
+
     });
 
     $('#LocationID').change(function () {
@@ -391,7 +397,8 @@
         else
         {
             $('#TransferID').val('');
-         
+
+          
         }
     });
 
