@@ -375,15 +375,25 @@ namespace MoostBrand.Controllers
             DateTime dtDateFrom = DateTime.Now.Date;
             DateTime dtDateTo = DateTime.Now;
 
-            if (!String.IsNullOrEmpty(filterFrom))
+            if (!String.IsNullOrEmpty(dateFrom))
             {
-                dtDateFrom = Convert.ToDateTime(filterFrom);
+                dtDateFrom = Convert.ToDateTime(dateFrom);
             }
 
-            if (!String.IsNullOrEmpty(filterTo))
+            if (!String.IsNullOrEmpty(dateTo))
             {
-                dtDateTo = Convert.ToDateTime(filterTo);
+                dtDateTo = Convert.ToDateTime(dateTo);
             }
+
+            //if (!String.IsNullOrEmpty(filterFrom))
+            //{
+            //    dtDateFrom = Convert.ToDateTime(filterFrom);
+            //}
+
+            //if (!String.IsNullOrEmpty(filterTo))
+            //{
+            //    dtDateTo = Convert.ToDateTime(filterTo);
+            //}
 
 
 
