@@ -362,27 +362,31 @@ namespace MoostBrand.Controllers
         // GET: PR
         [AccessCheckerForDisablingButtons(ModuleID = 3)]
         [AccessChecker(Action = 1, ModuleID = 3)]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString,int? page)
         {
+
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "type" : "";
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "reqno" : "";
 
-            if (searchString != null)
+            if (searchString != null )
             {
                 page = 1;
             }
             else
             {
                 searchString = currentFilter;
+               
             }
 
             ViewBag.CurrentFilter = searchString;
-            
+         
             //int locID = Convert.ToInt32(Session["locationID"]);
             //int UserID = Convert.ToInt32(Session["userID"]);
 
             //var user = entity.Users.FirstOrDefault(x => x.ID == UserID);
+
+
             var prs = entity.Requisitions.Where(x => x.Status == false && ( x.ID != 4 && x.ID != 5)); //active
 
             if (!String.IsNullOrEmpty(searchString))
@@ -390,6 +394,8 @@ namespace MoostBrand.Controllers
                 prs = prs.Where(o => o.RequisitionType.Type.Contains(searchString)
                                        || o.RefNumber.Contains(searchString));
             }
+
+           
 
             switch (sortOrder)
             {

@@ -76,7 +76,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("PreparedBy", String.Empty)
+                    @Html.DropDownList("PreparedBy")
                     @Html.ValidationMessageFor(model => model.PreparedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -101,8 +101,9 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
+                    @*Model.ErrorDate.ToString("MM/dd/yyyy")*@
                     @*@Html.EditorFor(model => model.ErrorDate, new { htmlAttributes = new { @class = "form-control" , @hidden="hidden"} })*@
-                    @Html.EditorFor(model => model.ErrorDate, new { htmlAttributes = new { @class = "form-control date-picker", @Value = Model.ErrorDate.ToString("MM/dd/yyyy") } })
+                    @Html.EditorFor(model => model.ErrorDate, new { htmlAttributes = new { @class = "form-control date-picker", @Value = "" } })
                     @Html.ValidationMessageFor(model => model.ErrorDate, "", new { @class = "text-danger" })
                 </div>
             </div>

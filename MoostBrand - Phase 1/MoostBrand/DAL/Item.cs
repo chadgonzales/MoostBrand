@@ -63,6 +63,7 @@ namespace MoostBrand.DAL
 
         public int? MaximumStock { get; set; }
         public int? ItemStatus { get; set; }
+        
         [NotMapped]
         public bool Proceed { get; set; }
 
@@ -105,6 +106,7 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequisitionDetail> RequisitionDetails1 { get; set; }
+
 
         [Display(Name = "Upload Image")]
         [ValidateImage]

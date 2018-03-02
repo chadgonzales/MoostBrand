@@ -185,10 +185,10 @@
                     Old Quantity
                 </th>
                 <th>
-                   New Quantity
+                    New Quantity
                 </th>
                 <th>
-                   Variance
+                    Variance
                 </th>
                 <th>
                     Action
@@ -198,10 +198,10 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>       
-                     <td>
+                <tr>
+                    <td>
                         @Html.DisplayFor(modelItem => item.GetItem)
-                     </td>
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Notes)
                     </td>
@@ -231,10 +231,18 @@
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
     @Html.PagedListPager(Model, page => Url.Action("Items",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
     <br /><br />
-    <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
+    @if (ViewBag.isApproved == 1)
+    {
+
+        <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
+
+    }
+
+
+
 
     <a href='@Url.Action("Details", new { id = ViewBag.STTAid })' class="btn btn-light-orange">
         Back to Details

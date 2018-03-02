@@ -13,6 +13,12 @@
     <UseIISExpress>true</UseIISExpress>
     <ProjectView>ShowAllFiles</ProjectView>
     <NameOfLastUsedPublishProfile>MoostBrand</NameOfLastUsedPublishProfile>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>

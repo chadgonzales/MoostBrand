@@ -18,12 +18,13 @@
         </div>
         <div class="dataTables_filter">
             @using (Html.BeginForm("Index", "PR", FormMethod.Post))
-            {
-                <p>
-                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-sm", @placeholder = "Search" })
-                    <input type="submit" value="Search" class="btn btn-green" />
-                </p>
-            }
+    {
+
+        <p>
+            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-sm", @placeholder = "Search" })
+            <input type="submit" value="Search" class="btn btn-green" />
+        </p>
+}
 
             <div class="clearfix"></div>
         </div>
@@ -224,4 +225,7 @@
     function ReloadFunction() {
         location.reload();
     }
+   
+
+
 </script>
