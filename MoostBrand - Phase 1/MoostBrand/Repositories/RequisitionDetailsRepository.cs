@@ -12,6 +12,10 @@ namespace MoostBrand.DAL
 
         int _instock, _ordered, _committed = 0;
 
+        public IQueryable<Requisition> List()
+        {
+            return entity.Requisitions;
+        }
         public int getCommited(int reservationId, int itemID)
         {
             try
