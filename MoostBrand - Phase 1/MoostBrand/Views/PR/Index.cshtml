@@ -65,24 +65,24 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.ActionLink("RefNumber", "Index", new { sortColumn = "RefNumber", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
+                            @Html.ActionLink("RefNumber", "Index", new {sortColumn = "RefNumber", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo })
                         </th>
                         <th>
-                            @Html.ActionLink("Type", "Index", new { sortColumn = "RequisitionType.Type", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
+                            @Html.ActionLink("Type", "Index", new { sortColumn = "RequisitionType.Type", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo })
                         </th>
                         <th>
-                            @Html.ActionLink("RequestedDate", "Index", new { sortColumn = "RequestedDate", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
+                            @Html.ActionLink("RequestedDate", "Index", new { sortColumn = "RequestedDate", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo })
                         </th>
                         <th>
-                            @Html.ActionLink("Location", "Index", new { sortColumn = "Location.Description", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
+                            @Html.ActionLink("Location", "Index", new { sortColumn = "Location.Description", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo })
                           
                         </th>
                         <th>
-                            @Html.ActionLink("Destination", "Index", new { sortColumn = "GetDestination", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
+                            @Html.ActionLink("Destination", "Index", new { sortColumn = "GetDestination", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo })
                        
                         </th>
                         <th>
-                            @Html.ActionLink("ApprovalStatus", "Index", new { sortColumn = "ApprovalStatu.Status", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
+                            @Html.ActionLink("ApprovalStatus", "Index", new { sortColumn = "ApprovalStatu.Status", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo })
                            
                         </th>
                         <th>
@@ -183,7 +183,7 @@
 
 
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, filterFrom = ViewBag.FilterFrom, filterTo = ViewBag.FilterTo }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, nextpage = "next",sortOrder = ViewBag.SortOrder,sortColumn = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo }))
 
     </div>
 </div>
