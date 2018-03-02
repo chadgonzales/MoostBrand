@@ -235,6 +235,7 @@ namespace MoostBrand.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.isApproved = stocktransfer.ApprovedStatus;
             ViewBag.Page = page;
             return View(stocktransfer);
         }

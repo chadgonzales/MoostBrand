@@ -111,11 +111,12 @@
                     </a>
 
                     <br /><br />
-
+                    if(ViewBag.isApproved==1) {
                     <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
                         Edit
                     </a>
-                }
+                        }
+                    }
 
                 <a href='@Url.Action("Index")' class="btn btn-light-orange">
                     Back to List

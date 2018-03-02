@@ -596,6 +596,7 @@ namespace MoostBrand.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.isApproved = r.ApprovalStatus;
             ViewBag.Page = page;
             return View(r);
         }
@@ -1278,6 +1279,7 @@ namespace MoostBrand.Controllers
             catch { ViewBag.Approved = 1; }
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;
+            ViewBag.IsApproved = receiving.ApprovalStatus;
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);

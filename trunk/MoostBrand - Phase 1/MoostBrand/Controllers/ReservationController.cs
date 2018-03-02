@@ -419,13 +419,13 @@ namespace MoostBrand.Controllers
             Session["requisitionId"] = id;
 
             //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
-
+        
             var pr = entity.Requisitions.Find(id);
             if (pr == null)
             {
                 return HttpNotFound();
             }
-
+            ViewBag.isApproved = pr.ApprovalStatus;
             ViewBag.Page = page;
             return View(pr);
         }

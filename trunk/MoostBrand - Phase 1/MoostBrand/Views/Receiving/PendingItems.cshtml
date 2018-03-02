@@ -123,15 +123,19 @@
 
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-   
-  
+
+
     @Html.PagedListPager(Model, page => Url.Action("Details",
-      new { page, id = ViewBag.Rid }))
+          new { page, id = ViewBag.Rid }))
 
     <br /><br />
-   
 
-    <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
+    @if (ViewBag.isApproved == 1)
+    {
+        <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
+
+    }
+
 
     <a href='@Url.Action("Details", new { id = ViewBag.Rid })' class="btn btn-light-orange">
         Back to List

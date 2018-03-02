@@ -71,7 +71,7 @@ namespace MoostBrand.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.isApproved = r.ApprovalStatus;
             return View(r);
         }
 
@@ -104,6 +104,7 @@ namespace MoostBrand.Controllers
             ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type","");
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName","");
             ViewBag.PostedBy = new SelectList(employees, "ID", "FullName","");
+            ViewBag.ErrorDate = DateTime.Now.ToString("MM / dd / yyyy");
             ViewBag.Date = DateTime.Now.ToString("MMM/dd/yyyy");
             #endregion
 
@@ -399,14 +400,15 @@ namespace MoostBrand.Controllers
             int UserID = Convert.ToInt32(Session["sessionuid"]);
             int UserType = Convert.ToInt32(Session["usertype"]);
 
-          
-                var items = entity.StockAdjustmentDetails
+            var stockadjustment = entity.StockAdjustments.FirstOrDefault(r => r.ID == id);
+
+            var items = entity.StockAdjustmentDetails
                             .Where(p=>p.StockAdjustmentID == id)
                             .ToList();
            
 
             ViewBag.STTAid = id;
-
+            ViewBag.isApproved = stockadjustment.ApprovalStatus;
             
             try
             {
