@@ -18,17 +18,31 @@
         </div>
         <div class="dataTables_filter">
             @using (Html.BeginForm("Index", "PR", FormMethod.Post))
-    {
-
-        <p>
-            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-sm", @placeholder = "Search" })
-            <input type="submit" value="Search" class="btn btn-green" />
-        </p>
-}
+            {
+                <p>
+                    <div class="form-group">
+                        @*<label class="control-label col-md-3">Date From</label>*@
+                        <div class="col-md-6">
+                            @Html.TextBox("DateFrom", ViewBag.FilterFrom as string, new { @class = "date-picker form-control", @placeholder = "Date From" })
+                            @*<input type="text" name="DateFrom" class="date-picker form-control" value="@ViewBag.DateFrom" />*@
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @*<label class="control-label col-md-3">Date To</label>*@
+                        <div class="col-md-6">
+                            @Html.TextBox("DateTo", ViewBag.FilterTo as string, new { @class = "date-picker form-control", @placeholder = "Date To" })
+                            @*<input type="text" name="DateTo" class="date-picker form-control" value="@ViewBag.DateTo" />*@
+                        </div>
+                    </div>
+                    <br />
+                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-sm", @placeholder = "Search" })
+                    <input type="submit" value="Search" class="btn btn-green" />
+                </p>
+            }
 
             <div class="clearfix"></div>
         </div>
-
+           
         <div class="clearfix"></div>
 
         <form id="action_form">
@@ -38,19 +52,25 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.ActionLink("Ref #", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                            @Html.ActionLink("RefNumber", "Index", new { sortColumn = "RefNumber", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
                         </th>
                         <th>
-                            @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                            @Html.ActionLink("Type", "Index", new { sortColumn = "RequisitionType.Type", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
                         </th>
                         <th>
-                            Location
+                            @Html.ActionLink("RequestedDate", "Index", new { sortColumn = "RequestedDate", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
                         </th>
                         <th>
-                            Destination
+                            @Html.ActionLink("Location", "Index", new { sortColumn = "Location.Description", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
+                          
                         </th>
                         <th>
-                            Approval Status
+                            @Html.ActionLink("Destination", "Index", new { sortColumn = "GetDestination", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
+                       
+                        </th>
+                        <th>
+                            @Html.ActionLink("ApprovalStatus", "Index", new { sortColumn = "ApprovalStatu.Status", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter })
+                           
                         </th>
                         <th>
                             Action
@@ -67,6 +87,9 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.RequisitionType.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RequestedDate)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Location.Description)
@@ -147,8 +170,7 @@
 
 
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-        @Html.PagedListPager(Model, page => Url.Action("Index",
-        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, filterFrom = ViewBag.FilterFrom, filterTo = ViewBag.FilterTo }))
 
     </div>
 </div>
@@ -225,7 +247,4 @@
     function ReloadFunction() {
         location.reload();
     }
-   
-
-
 </script>
