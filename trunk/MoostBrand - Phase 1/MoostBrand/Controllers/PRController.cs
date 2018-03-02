@@ -362,7 +362,7 @@ namespace MoostBrand.Controllers
         // GET: PR
         [AccessCheckerForDisablingButtons(ModuleID = 3)]
         [AccessChecker(Action = 1, ModuleID = 3)]
-        public ActionResult Index(string sortOrder,string sortColumn, string currentFilter, string filterFrom, string filterTo, string searchString, string dateFrom, string dateTo, int? page)
+        public ActionResult Index(string sortOrder,string sortColumn, string currentFilter, string nextpage, string searchString, string dateFrom, string dateTo, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
             //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "type" : "";
@@ -370,8 +370,12 @@ namespace MoostBrand.Controllers
             //ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
 
             ViewBag.CurrentSort = sortColumn;
-            ViewBag.SortOrder = sortOrder == "asc" ? "desc" : "asc";
 
+            if (nextpage == null)
+                sortOrder = sortOrder == "asc" ? "desc" : "asc";
+
+
+            ViewBag.SortOrder = sortOrder;
             DateTime dtDateFrom = DateTime.Now.Date;
             DateTime dtDateTo = DateTime.Now;
 
@@ -397,16 +401,16 @@ namespace MoostBrand.Controllers
 
 
 
-            if (searchString != null || dateFrom !=null && dateTo != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
-                dateFrom = filterFrom;
-                dateTo = filterTo;
-            }
+            //if (searchString != null || dateFrom !=null && dateTo != null)
+            //{
+            //    page = 1;
+            //}
+            //else
+            //{
+            //    searchString = currentFilter;
+            //    dateFrom = filterFrom;
+            //    dateTo = filterTo;
+            //}
 
             ViewBag.FilterFrom = dateFrom;
             ViewBag.FilterTo = dateTo;
@@ -424,14 +428,17 @@ namespace MoostBrand.Controllers
                 prs = prs.Where(o => o.RequisitionType.Type.Contains(searchString)
                                        || o.RefNumber.Contains(searchString));
             }
-          
 
-            //if (!String.IsNullOrEmpty(dateFrom) && !String.IsNullOrEmpty(dateTo))
+            //DateTime dtDateFrom = DateTime.Now.Date;
+            //DateTime dtDateTo = DateTime.Now;
+
+            //if (!String.IsNullOrEmpty(dateFrom) || !String.IsNullOrEmpty(dateTo))
             //{
-                //dtDateFrom = Convert.ToDateTime(dateFrom);
-                //dtDateTo = Convert.ToDateTime(dateTo);
-                prs = prs.Where(p => DbFunctions.TruncateTime(p.RequestedDate) >= dtDateFrom && DbFunctions.TruncateTime(p.RequestedDate) <= dtDateTo);
-          //  }
+            //    dtDateFrom = Convert.ToDateTime(dateFrom);
+            //    dtDateTo = Convert.ToDateTime(dateTo);
+            prs = prs.Where(p => DbFunctions.TruncateTime(p.RequestedDate) >= dtDateFrom && DbFunctions.TruncateTime(p.RequestedDate) <= dtDateTo);
+            //}
+
 
             //switch (sortOrder)
             //{
@@ -466,7 +473,7 @@ namespace MoostBrand.Controllers
 
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            return View(prs.ToPagedList(pageNumber, pageSize));
+           return View(prs.ToPagedList(pageNumber, pageSize));
             //int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             //int pageNumber = (page ?? 1);
 
