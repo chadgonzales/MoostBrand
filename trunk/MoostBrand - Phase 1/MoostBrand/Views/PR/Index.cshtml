@@ -2,6 +2,19 @@
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
+<script type="text/javascript">
+    function DateCheck() {
+        var StartDate = document.getElementById('txtStartDate').value;
+        var EndDate = document.getElementById('txtEndDate').value;
+        var eDate = new Date(EndDate);
+        var sDate = new Date(StartDate);
+        if (StartDate != '' && EndDate != '' && sDate > eDate) {
+            alert("Please ensure that the End Date is greater than or equal to the Start Date.");
+            return false;
+        }
+    }
+</script>
+
 @{
     ViewBag.Title = "Requisitions";
 }
@@ -23,14 +36,14 @@
                     <div class="form-group">
                         @*<label class="control-label col-md-3">Date From</label>*@
                         <div class="col-md-6">
-                            @Html.TextBox("DateFrom", ViewBag.FilterFrom as string, new { @class = "date-picker form-control", @placeholder = "Date From" })
+                            @Html.TextBox("DateFrom", ViewBag.FilterFrom as string, new { @class = "date-picker form-control", @placeholder = "Date From", @id = "txtStartDate" })
                             @*<input type="text" name="DateFrom" class="date-picker form-control" value="@ViewBag.DateFrom" />*@
                         </div>
                     </div>
                     <div class="form-group">
                         @*<label class="control-label col-md-3">Date To</label>*@
                         <div class="col-md-6">
-                            @Html.TextBox("DateTo", ViewBag.FilterTo as string, new { @class = "date-picker form-control", @placeholder = "Date To" })
+                            @Html.TextBox("DateTo", ViewBag.FilterTo as string, new { @class = "date-picker form-control", @placeholder = "Date To", @id = "txtEndDate", @onchange = "DateCheck()" })
                             @*<input type="text" name="DateTo" class="date-picker form-control" value="@ViewBag.DateTo" />*@
                         </div>
                     </div>
