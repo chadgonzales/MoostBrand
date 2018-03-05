@@ -488,7 +488,7 @@ namespace MoostBrand.Controllers
             var st = entity.StockTransfers.Where(s => s.ApprovedStatus == 2 
                                                         && s.Requisition.LocationID == loc.ID 
                                                         && s.RequisitionID == _ReqID
-                                                        && s.StockTransferDetails.Sum(p => p.Quantity) > 0)
+                                                        && s.StockTransferDetails.Any(p => p.Quantity > 0))
                      .Select(r => new
                      {
                          ID = r.RequisitionID.Value,
@@ -499,7 +499,7 @@ namespace MoostBrand.Controllers
             var _requisitions = entity.Requisitions.Where(r => r.ApprovalStatus == 2 & r.ReqTypeID == 1 
                                                                 && r.LocationID == loc.ID 
                                                                 && r.ID == _ReqID
-                                                                && r.RequisitionDetails.Sum(p => p.Quantity) > 0)
+                                                                && r.RequisitionDetails.Any(p => p.Quantity > 0))
                 .Select(r => new
                 {
                     ID = r.ID,

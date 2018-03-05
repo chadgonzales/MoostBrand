@@ -38,6 +38,8 @@ namespace MoostBrand.Views.Report.rdlc {
         
         private dtStockTransferDataTable tabledtStockTransfer;
         
+        private dtDiscrepancyDataTable tabledtDiscrepancy;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -86,6 +88,9 @@ namespace MoostBrand.Views.Report.rdlc {
                 }
                 if ((ds.Tables["dtStockTransfer"] != null)) {
                     base.Tables.Add(new dtStockTransferDataTable(ds.Tables["dtStockTransfer"]));
+                }
+                if ((ds.Tables["dtDiscrepancy"] != null)) {
+                    base.Tables.Add(new dtDiscrepancyDataTable(ds.Tables["dtDiscrepancy"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -177,6 +182,16 @@ namespace MoostBrand.Views.Report.rdlc {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public dtDiscrepancyDataTable dtDiscrepancy {
+            get {
+                return this.tabledtDiscrepancy;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.BrowsableAttribute(true)]
         [global::System.ComponentModel.DesignerSerializationVisibilityAttribute(global::System.ComponentModel.DesignerSerializationVisibility.Visible)]
         public override global::System.Data.SchemaSerializationMode SchemaSerializationMode {
@@ -263,6 +278,9 @@ namespace MoostBrand.Views.Report.rdlc {
                 if ((ds.Tables["dtStockTransfer"] != null)) {
                     base.Tables.Add(new dtStockTransferDataTable(ds.Tables["dtStockTransfer"]));
                 }
+                if ((ds.Tables["dtDiscrepancy"] != null)) {
+                    base.Tables.Add(new dtDiscrepancyDataTable(ds.Tables["dtDiscrepancy"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -338,6 +356,12 @@ namespace MoostBrand.Views.Report.rdlc {
                     this.tabledtStockTransfer.InitVars();
                 }
             }
+            this.tabledtDiscrepancy = ((dtDiscrepancyDataTable)(base.Tables["dtDiscrepancy"]));
+            if ((initTable == true)) {
+                if ((this.tabledtDiscrepancy != null)) {
+                    this.tabledtDiscrepancy.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -362,6 +386,8 @@ namespace MoostBrand.Views.Report.rdlc {
             base.Tables.Add(this.tabledtNonMovingItem);
             this.tabledtStockTransfer = new dtStockTransferDataTable();
             base.Tables.Add(this.tabledtStockTransfer);
+            this.tabledtDiscrepancy = new dtDiscrepancyDataTable();
+            base.Tables.Add(this.tabledtDiscrepancy);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -403,6 +429,12 @@ namespace MoostBrand.Views.Report.rdlc {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private bool ShouldSerializedtStockTransfer() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        private bool ShouldSerializedtDiscrepancy() {
             return false;
         }
         
@@ -481,6 +513,9 @@ namespace MoostBrand.Views.Report.rdlc {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public delegate void dtStockTransferRowChangeEventHandler(object sender, dtStockTransferRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public delegate void dtDiscrepancyRowChangeEventHandler(object sender, dtDiscrepancyRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -3265,6 +3300,644 @@ namespace MoostBrand.Views.Report.rdlc {
         }
         
         /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class dtDiscrepancyDataTable : global::System.Data.TypedTableBase<dtDiscrepancyRow> {
+            
+            private global::System.Data.DataColumn columnItemCode;
+            
+            private global::System.Data.DataColumn columnbrand;
+            
+            private global::System.Data.DataColumn columnitemsalesdescription;
+            
+            private global::System.Data.DataColumn columnuom;
+            
+            private global::System.Data.DataColumn columnreqtype;
+            
+            private global::System.Data.DataColumn columndateRequested;
+            
+            private global::System.Data.DataColumn columnorderbydate;
+            
+            private global::System.Data.DataColumn columnreqno;
+            
+            private global::System.Data.DataColumn columnrequestedby;
+            
+            private global::System.Data.DataColumn columnreqEncodedby;
+            
+            private global::System.Data.DataColumn columnreqApprovedBy;
+            
+            private global::System.Data.DataColumn columnreqQty;
+            
+            private global::System.Data.DataColumn columndateReceived;
+            
+            private global::System.Data.DataColumn columnrecno;
+            
+            private global::System.Data.DataColumn columnrecQty;
+            
+            private global::System.Data.DataColumn columnreceivedby;
+            
+            private global::System.Data.DataColumn columnrecEncodedby;
+            
+            private global::System.Data.DataColumn columnrecApprovedBy;
+            
+            private global::System.Data.DataColumn columndateTransferred;
+            
+            private global::System.Data.DataColumn columnstNo;
+            
+            private global::System.Data.DataColumn columnstQty;
+            
+            private global::System.Data.DataColumn columnreleasedby;
+            
+            private global::System.Data.DataColumn columnstEncodedby;
+            
+            private global::System.Data.DataColumn columnstApprovedBy;
+            
+            private global::System.Data.DataColumn columndiscrepancy;
+            
+            private global::System.Data.DataColumn columnlocation;
+            
+            private global::System.Data.DataColumn columnremarks;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public dtDiscrepancyDataTable() {
+                this.TableName = "dtDiscrepancy";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal dtDiscrepancyDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected dtDiscrepancyDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ItemCodeColumn {
+                get {
+                    return this.columnItemCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn brandColumn {
+                get {
+                    return this.columnbrand;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn itemsalesdescriptionColumn {
+                get {
+                    return this.columnitemsalesdescription;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn uomColumn {
+                get {
+                    return this.columnuom;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn reqtypeColumn {
+                get {
+                    return this.columnreqtype;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn dateRequestedColumn {
+                get {
+                    return this.columndateRequested;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn orderbydateColumn {
+                get {
+                    return this.columnorderbydate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn reqnoColumn {
+                get {
+                    return this.columnreqno;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn requestedbyColumn {
+                get {
+                    return this.columnrequestedby;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn reqEncodedbyColumn {
+                get {
+                    return this.columnreqEncodedby;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn reqApprovedByColumn {
+                get {
+                    return this.columnreqApprovedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn reqQtyColumn {
+                get {
+                    return this.columnreqQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn dateReceivedColumn {
+                get {
+                    return this.columndateReceived;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn recnoColumn {
+                get {
+                    return this.columnrecno;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn recQtyColumn {
+                get {
+                    return this.columnrecQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn receivedbyColumn {
+                get {
+                    return this.columnreceivedby;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn recEncodedbyColumn {
+                get {
+                    return this.columnrecEncodedby;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn recApprovedByColumn {
+                get {
+                    return this.columnrecApprovedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn dateTransferredColumn {
+                get {
+                    return this.columndateTransferred;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn stNoColumn {
+                get {
+                    return this.columnstNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn stQtyColumn {
+                get {
+                    return this.columnstQty;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn releasedbyColumn {
+                get {
+                    return this.columnreleasedby;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn stEncodedbyColumn {
+                get {
+                    return this.columnstEncodedby;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn stApprovedByColumn {
+                get {
+                    return this.columnstApprovedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn discrepancyColumn {
+                get {
+                    return this.columndiscrepancy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn locationColumn {
+                get {
+                    return this.columnlocation;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn remarksColumn {
+                get {
+                    return this.columnremarks;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public dtDiscrepancyRow this[int index] {
+                get {
+                    return ((dtDiscrepancyRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event dtDiscrepancyRowChangeEventHandler dtDiscrepancyRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event dtDiscrepancyRowChangeEventHandler dtDiscrepancyRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event dtDiscrepancyRowChangeEventHandler dtDiscrepancyRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public event dtDiscrepancyRowChangeEventHandler dtDiscrepancyRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void AdddtDiscrepancyRow(dtDiscrepancyRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public dtDiscrepancyRow AdddtDiscrepancyRow(
+                        string ItemCode, 
+                        string brand, 
+                        string itemsalesdescription, 
+                        string uom, 
+                        string reqtype, 
+                        string dateRequested, 
+                        string orderbydate, 
+                        string reqno, 
+                        string requestedby, 
+                        string reqEncodedby, 
+                        string reqApprovedBy, 
+                        string reqQty, 
+                        string dateReceived, 
+                        string recno, 
+                        string recQty, 
+                        string receivedby, 
+                        string recEncodedby, 
+                        string recApprovedBy, 
+                        string dateTransferred, 
+                        string stNo, 
+                        string stQty, 
+                        string releasedby, 
+                        string stEncodedby, 
+                        string stApprovedBy, 
+                        string discrepancy, 
+                        string location, 
+                        string remarks) {
+                dtDiscrepancyRow rowdtDiscrepancyRow = ((dtDiscrepancyRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        ItemCode,
+                        brand,
+                        itemsalesdescription,
+                        uom,
+                        reqtype,
+                        dateRequested,
+                        orderbydate,
+                        reqno,
+                        requestedby,
+                        reqEncodedby,
+                        reqApprovedBy,
+                        reqQty,
+                        dateReceived,
+                        recno,
+                        recQty,
+                        receivedby,
+                        recEncodedby,
+                        recApprovedBy,
+                        dateTransferred,
+                        stNo,
+                        stQty,
+                        releasedby,
+                        stEncodedby,
+                        stApprovedBy,
+                        discrepancy,
+                        location,
+                        remarks};
+                rowdtDiscrepancyRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowdtDiscrepancyRow);
+                return rowdtDiscrepancyRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                dtDiscrepancyDataTable cln = ((dtDiscrepancyDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new dtDiscrepancyDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal void InitVars() {
+                this.columnItemCode = base.Columns["ItemCode"];
+                this.columnbrand = base.Columns["brand"];
+                this.columnitemsalesdescription = base.Columns["itemsalesdescription"];
+                this.columnuom = base.Columns["uom"];
+                this.columnreqtype = base.Columns["reqtype"];
+                this.columndateRequested = base.Columns["dateRequested"];
+                this.columnorderbydate = base.Columns["orderbydate"];
+                this.columnreqno = base.Columns["reqno"];
+                this.columnrequestedby = base.Columns["requestedby"];
+                this.columnreqEncodedby = base.Columns["reqEncodedby"];
+                this.columnreqApprovedBy = base.Columns["reqApprovedBy"];
+                this.columnreqQty = base.Columns["reqQty"];
+                this.columndateReceived = base.Columns["dateReceived"];
+                this.columnrecno = base.Columns["recno"];
+                this.columnrecQty = base.Columns["recQty"];
+                this.columnreceivedby = base.Columns["receivedby"];
+                this.columnrecEncodedby = base.Columns["recEncodedby"];
+                this.columnrecApprovedBy = base.Columns["recApprovedBy"];
+                this.columndateTransferred = base.Columns["dateTransferred"];
+                this.columnstNo = base.Columns["stNo"];
+                this.columnstQty = base.Columns["stQty"];
+                this.columnreleasedby = base.Columns["releasedby"];
+                this.columnstEncodedby = base.Columns["stEncodedby"];
+                this.columnstApprovedBy = base.Columns["stApprovedBy"];
+                this.columndiscrepancy = base.Columns["discrepancy"];
+                this.columnlocation = base.Columns["location"];
+                this.columnremarks = base.Columns["remarks"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            private void InitClass() {
+                this.columnItemCode = new global::System.Data.DataColumn("ItemCode", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnItemCode);
+                this.columnbrand = new global::System.Data.DataColumn("brand", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnbrand);
+                this.columnitemsalesdescription = new global::System.Data.DataColumn("itemsalesdescription", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnitemsalesdescription);
+                this.columnuom = new global::System.Data.DataColumn("uom", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnuom);
+                this.columnreqtype = new global::System.Data.DataColumn("reqtype", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnreqtype);
+                this.columndateRequested = new global::System.Data.DataColumn("dateRequested", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndateRequested);
+                this.columnorderbydate = new global::System.Data.DataColumn("orderbydate", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnorderbydate);
+                this.columnreqno = new global::System.Data.DataColumn("reqno", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnreqno);
+                this.columnrequestedby = new global::System.Data.DataColumn("requestedby", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnrequestedby);
+                this.columnreqEncodedby = new global::System.Data.DataColumn("reqEncodedby", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnreqEncodedby);
+                this.columnreqApprovedBy = new global::System.Data.DataColumn("reqApprovedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnreqApprovedBy);
+                this.columnreqQty = new global::System.Data.DataColumn("reqQty", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnreqQty);
+                this.columndateReceived = new global::System.Data.DataColumn("dateReceived", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndateReceived);
+                this.columnrecno = new global::System.Data.DataColumn("recno", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnrecno);
+                this.columnrecQty = new global::System.Data.DataColumn("recQty", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnrecQty);
+                this.columnreceivedby = new global::System.Data.DataColumn("receivedby", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnreceivedby);
+                this.columnrecEncodedby = new global::System.Data.DataColumn("recEncodedby", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnrecEncodedby);
+                this.columnrecApprovedBy = new global::System.Data.DataColumn("recApprovedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnrecApprovedBy);
+                this.columndateTransferred = new global::System.Data.DataColumn("dateTransferred", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndateTransferred);
+                this.columnstNo = new global::System.Data.DataColumn("stNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnstNo);
+                this.columnstQty = new global::System.Data.DataColumn("stQty", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnstQty);
+                this.columnreleasedby = new global::System.Data.DataColumn("releasedby", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnreleasedby);
+                this.columnstEncodedby = new global::System.Data.DataColumn("stEncodedby", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnstEncodedby);
+                this.columnstApprovedBy = new global::System.Data.DataColumn("stApprovedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnstApprovedBy);
+                this.columndiscrepancy = new global::System.Data.DataColumn("discrepancy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndiscrepancy);
+                this.columnlocation = new global::System.Data.DataColumn("location", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnlocation);
+                this.columnremarks = new global::System.Data.DataColumn("remarks", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnremarks);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public dtDiscrepancyRow NewdtDiscrepancyRow() {
+                return ((dtDiscrepancyRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new dtDiscrepancyRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(dtDiscrepancyRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.dtDiscrepancyRowChanged != null)) {
+                    this.dtDiscrepancyRowChanged(this, new dtDiscrepancyRowChangeEvent(((dtDiscrepancyRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.dtDiscrepancyRowChanging != null)) {
+                    this.dtDiscrepancyRowChanging(this, new dtDiscrepancyRowChangeEvent(((dtDiscrepancyRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.dtDiscrepancyRowDeleted != null)) {
+                    this.dtDiscrepancyRowDeleted(this, new dtDiscrepancyRowChangeEvent(((dtDiscrepancyRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.dtDiscrepancyRowDeleting != null)) {
+                    this.dtDiscrepancyRowDeleting(this, new dtDiscrepancyRowChangeEvent(((dtDiscrepancyRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void RemovedtDiscrepancyRow(dtDiscrepancyRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                Inventory ds = new Inventory();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "dtDiscrepancyDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class dtInventoryRow : global::System.Data.DataRow {
@@ -5638,6 +6311,777 @@ namespace MoostBrand.Views.Report.rdlc {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class dtDiscrepancyRow : global::System.Data.DataRow {
+            
+            private dtDiscrepancyDataTable tabledtDiscrepancy;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            internal dtDiscrepancyRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tabledtDiscrepancy = ((dtDiscrepancyDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string ItemCode {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.ItemCodeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ItemCode\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.ItemCodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string brand {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.brandColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'brand\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.brandColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string itemsalesdescription {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.itemsalesdescriptionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'itemsalesdescription\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.itemsalesdescriptionColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string uom {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.uomColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'uom\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.uomColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string reqtype {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.reqtypeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'reqtype\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.reqtypeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string dateRequested {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.dateRequestedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'dateRequested\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.dateRequestedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string orderbydate {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.orderbydateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'orderbydate\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.orderbydateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string reqno {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.reqnoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'reqno\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.reqnoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string requestedby {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.requestedbyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'requestedby\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.requestedbyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string reqEncodedby {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.reqEncodedbyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'reqEncodedby\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.reqEncodedbyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string reqApprovedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.reqApprovedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'reqApprovedBy\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.reqApprovedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string reqQty {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.reqQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'reqQty\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.reqQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string dateReceived {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.dateReceivedColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'dateReceived\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.dateReceivedColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string recno {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.recnoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'recno\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.recnoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string recQty {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.recQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'recQty\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.recQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string receivedby {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.receivedbyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'receivedby\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.receivedbyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string recEncodedby {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.recEncodedbyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'recEncodedby\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.recEncodedbyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string recApprovedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.recApprovedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'recApprovedBy\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.recApprovedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string dateTransferred {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.dateTransferredColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'dateTransferred\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.dateTransferredColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string stNo {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.stNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'stNo\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.stNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string stQty {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.stQtyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'stQty\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.stQtyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string releasedby {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.releasedbyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'releasedby\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.releasedbyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string stEncodedby {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.stEncodedbyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'stEncodedby\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.stEncodedbyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string stApprovedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.stApprovedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'stApprovedBy\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.stApprovedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string discrepancy {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.discrepancyColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'discrepancy\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.discrepancyColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string location {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.locationColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'location\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.locationColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string remarks {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtDiscrepancy.remarksColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'remarks\' in table \'dtDiscrepancy\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtDiscrepancy.remarksColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsItemCodeNull() {
+                return this.IsNull(this.tabledtDiscrepancy.ItemCodeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetItemCodeNull() {
+                this[this.tabledtDiscrepancy.ItemCodeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsbrandNull() {
+                return this.IsNull(this.tabledtDiscrepancy.brandColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetbrandNull() {
+                this[this.tabledtDiscrepancy.brandColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsitemsalesdescriptionNull() {
+                return this.IsNull(this.tabledtDiscrepancy.itemsalesdescriptionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetitemsalesdescriptionNull() {
+                this[this.tabledtDiscrepancy.itemsalesdescriptionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsuomNull() {
+                return this.IsNull(this.tabledtDiscrepancy.uomColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetuomNull() {
+                this[this.tabledtDiscrepancy.uomColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsreqtypeNull() {
+                return this.IsNull(this.tabledtDiscrepancy.reqtypeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetreqtypeNull() {
+                this[this.tabledtDiscrepancy.reqtypeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsdateRequestedNull() {
+                return this.IsNull(this.tabledtDiscrepancy.dateRequestedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetdateRequestedNull() {
+                this[this.tabledtDiscrepancy.dateRequestedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsorderbydateNull() {
+                return this.IsNull(this.tabledtDiscrepancy.orderbydateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetorderbydateNull() {
+                this[this.tabledtDiscrepancy.orderbydateColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsreqnoNull() {
+                return this.IsNull(this.tabledtDiscrepancy.reqnoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetreqnoNull() {
+                this[this.tabledtDiscrepancy.reqnoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsrequestedbyNull() {
+                return this.IsNull(this.tabledtDiscrepancy.requestedbyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetrequestedbyNull() {
+                this[this.tabledtDiscrepancy.requestedbyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsreqEncodedbyNull() {
+                return this.IsNull(this.tabledtDiscrepancy.reqEncodedbyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetreqEncodedbyNull() {
+                this[this.tabledtDiscrepancy.reqEncodedbyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsreqApprovedByNull() {
+                return this.IsNull(this.tabledtDiscrepancy.reqApprovedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetreqApprovedByNull() {
+                this[this.tabledtDiscrepancy.reqApprovedByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsreqQtyNull() {
+                return this.IsNull(this.tabledtDiscrepancy.reqQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetreqQtyNull() {
+                this[this.tabledtDiscrepancy.reqQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsdateReceivedNull() {
+                return this.IsNull(this.tabledtDiscrepancy.dateReceivedColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetdateReceivedNull() {
+                this[this.tabledtDiscrepancy.dateReceivedColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsrecnoNull() {
+                return this.IsNull(this.tabledtDiscrepancy.recnoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetrecnoNull() {
+                this[this.tabledtDiscrepancy.recnoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsrecQtyNull() {
+                return this.IsNull(this.tabledtDiscrepancy.recQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetrecQtyNull() {
+                this[this.tabledtDiscrepancy.recQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsreceivedbyNull() {
+                return this.IsNull(this.tabledtDiscrepancy.receivedbyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetreceivedbyNull() {
+                this[this.tabledtDiscrepancy.receivedbyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsrecEncodedbyNull() {
+                return this.IsNull(this.tabledtDiscrepancy.recEncodedbyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetrecEncodedbyNull() {
+                this[this.tabledtDiscrepancy.recEncodedbyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsrecApprovedByNull() {
+                return this.IsNull(this.tabledtDiscrepancy.recApprovedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetrecApprovedByNull() {
+                this[this.tabledtDiscrepancy.recApprovedByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsdateTransferredNull() {
+                return this.IsNull(this.tabledtDiscrepancy.dateTransferredColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetdateTransferredNull() {
+                this[this.tabledtDiscrepancy.dateTransferredColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsstNoNull() {
+                return this.IsNull(this.tabledtDiscrepancy.stNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetstNoNull() {
+                this[this.tabledtDiscrepancy.stNoColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsstQtyNull() {
+                return this.IsNull(this.tabledtDiscrepancy.stQtyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetstQtyNull() {
+                this[this.tabledtDiscrepancy.stQtyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsreleasedbyNull() {
+                return this.IsNull(this.tabledtDiscrepancy.releasedbyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetreleasedbyNull() {
+                this[this.tabledtDiscrepancy.releasedbyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsstEncodedbyNull() {
+                return this.IsNull(this.tabledtDiscrepancy.stEncodedbyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetstEncodedbyNull() {
+                this[this.tabledtDiscrepancy.stEncodedbyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsstApprovedByNull() {
+                return this.IsNull(this.tabledtDiscrepancy.stApprovedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetstApprovedByNull() {
+                this[this.tabledtDiscrepancy.stApprovedByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsdiscrepancyNull() {
+                return this.IsNull(this.tabledtDiscrepancy.discrepancyColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetdiscrepancyNull() {
+                this[this.tabledtDiscrepancy.discrepancyColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IslocationNull() {
+                return this.IsNull(this.tabledtDiscrepancy.locationColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetlocationNull() {
+                this[this.tabledtDiscrepancy.locationColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsremarksNull() {
+                return this.IsNull(this.tabledtDiscrepancy.remarksColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetremarksNull() {
+                this[this.tabledtDiscrepancy.remarksColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -5861,6 +7305,40 @@ namespace MoostBrand.Views.Report.rdlc {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public dtStockTransferRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+        public class dtDiscrepancyRowChangeEvent : global::System.EventArgs {
+            
+            private dtDiscrepancyRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public dtDiscrepancyRowChangeEvent(dtDiscrepancyRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public dtDiscrepancyRow Row {
                 get {
                     return this.eventRow;
                 }
