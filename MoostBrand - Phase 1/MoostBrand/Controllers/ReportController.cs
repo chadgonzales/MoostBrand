@@ -1065,6 +1065,176 @@ namespace MoostBrand.Controllers
             return View();
         }
 
+        public ActionResult DiscrepancyReport(string dateFrom, string dateTo, int? vendor, int? location)
+        {
+            var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
+            #region DROPDOWNS
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Description = x.Description
+                            });
+
+
+            ViewBag.Vendor = new SelectList(entity.Vendors.OrderBy(v => v.GeneralName), "ID", "GeneralName");
+            ViewBag.Location = new SelectList(loc, "ID", "Description");
+            #endregion
+            DateTime dtDateFrom = DateTime.Now.Date;
+            DateTime dtDateTo = DateTime.Now;
+
+            string _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
+            if (!String.IsNullOrEmpty(dateFrom))
+            {
+                dtDateFrom = Convert.ToDateTime(dateFrom).Date;
+            }
+
+            if (!String.IsNullOrEmpty(dateTo))
+            {
+                dtDateTo = Convert.ToDateTime(dateTo);
+            }
+
+            var _lstReq = entity.RequisitionDetails.Where(p => p.Requisition.ApprovalStatus == 3).ToList();
+
+            _lstReq = _lstReq.Where(r => r.Requisition.RequestedDate >= dtDateFrom && r.Requisition.RequestedDate <= dtDateTo.AddDays(1)).ToList();
+
+
+            //if (vendor != null)
+            //{
+            //    try
+            //    {
+            //        _lst = _lst.Where(p => (p.RequisitionDetail != null && p.RequisitionDetail.Item.VendorCoding == vendor && p.RequisitionDetail.Item.VendorCoding != null)
+            //               || (p.Inventories != null && p.Inventories.Items.VendorCoding == vendor && p.Inventories.Items.VendorCoding != null)).ToList();
+
+            //    }
+            //    catch { }
+            //    string _vendor = entity.Vendors.Find(vendor).Name;
+            //    _sortbyvendor = "Vendor:" + _vendor;
+            //}
+
+            //if (location != null)
+            //{
+            //    try
+            //    {
+            //        _lst = _lst.Where(p => p.StockTransfer.Requisition.LocationID == location).ToList();
+            //    }
+            //    catch { }
+            //    string _location = entity.Locations.Find(location).Description;
+            //    _sortbylocation = "Location:" + _location;
+
+            //}
+
+
+            var lstDiscrepancy1 = (from req in _lstReq.Where(r=>r.Requisition.ReqTypeID == 2)
+                                   join st in entity.StockTransferDetails.Where(r => r.StockTransfer.ApprovedStatus == 2 && r.RequisitionDetailID != null) on new { a1 =req.ID, b1 = req.Requisition.ID } equals new { a1 = st.RequisitionDetailID.Value, b1 = st.StockTransfer.RequisitionID.Value }
+                                   select new
+                                   {
+                                       ItemCode = req.Item.Code,
+                                       brand = req.Item.Brand.Description,
+                                       itemsalesdescription = req.Item.Description,
+                                       uom = req.Item.UnitOfMeasurement != null ? req.Item.UnitOfMeasurement.Description : "",
+
+                                       reqtype = req.Requisition.ReqType.Type,
+                                       dateRequested = "",//req.Requisition.RequestedDate.ToString("MM/dd/yyyy"),
+                                       orderbydate = req.Requisition.RequestedDate,
+                                       reqno = req.Requisition.RefNumber,
+                                       requestedby = req.Requisition.Employee1 != null ? req.Requisition.Employee1.FirstName + " " + req.Requisition.Employee1.LastName : "",
+                                       reqEncodedby = "",
+                                       reqApprovedBy = "",
+                                       reqQty = req.ReferenceQuantity.Value,
+
+
+                                       dateReceived = "",
+                                       recno = "",
+                                       recQty = 0,
+                                       receivedby = "",
+                                       recEncodedby = "",
+                                       recApprovedBy = "",
+
+                                       dateTransferred ="",// st.StockTransfer.STDAte.ToString("MM/dd/yyyy"),
+                                       stNo = st.StockTransfer.TransferID,
+                                       stQty = st.ReferenceQuantity.Value,     
+                                       releasedby = st.StockTransfer.Employee4 != null ? st.StockTransfer.Employee4.FirstName + " " + st.StockTransfer.Employee4.LastName : "",
+                                       stEncodedby = st.StockTransfer.Employee6 != null ? st.StockTransfer.Employee6.FirstName + " " + st.StockTransfer.Employee6.LastName : "",
+                                       stApprovedBy = st.StockTransfer.Employee != null ? st.StockTransfer.Employee.FirstName + " " + st.StockTransfer.Employee.LastName : "",
+
+                                       discrepancy = req.ReferenceQuantity - st.ReferenceQuantity,
+                                       location = req.Requisition.Location.Description,
+                                       remarks =  ""
+
+
+                                   }).Where(r=>r.discrepancy > 0).ToList();
+
+            var lstDiscrepancy2 = (from req in _lstReq.Where(r => r.Requisition.ReqTypeID ==1)
+                                   join rec in entity.ReceivingDetails.Where(r=>r.Receiving.ApprovalStatus == 2 && r.Receiving.RequisitionID != null) on new { a1 = req.ID, b1 = req.Requisition.ID } equals new { a1 = rec.RequisitionDetailID.Value, b1 = rec.Receiving.RequisitionID.Value }
+                                   select new
+                                   {
+                                       ItemCode = req.Item.Code,
+                                       brand = req.Item.Brand.Description,
+                                       itemsalesdescription = req.Item.Description,
+                                       uom = req.Item.UnitOfMeasurement != null ? req.Item.UnitOfMeasurement.Description : "",
+
+                                       reqtype = req.Requisition.ReqType.Type,
+                                       dateRequested = "",// req.Requisition.RequestedDate.ToString("MM/dd/yyyy"),
+                                       orderbydate = req.Requisition.RequestedDate,
+                                       reqno = req.Requisition.RefNumber,
+                                       requestedby = req.Requisition.Employee1 != null ? req.Requisition.Employee1.FirstName + " " + req.Requisition.Employee1.LastName : "",
+                                       reqEncodedby = "",
+                                       reqApprovedBy = "",
+                                       reqQty = req.ReferenceQuantity.Value,
+
+
+                                       dateReceived = "",//rec.Receiving.ReceivingDate.ToString("MM/dd/yyyy"),
+                                       recno = rec.Receiving.ReceivingID,
+                                       recQty = rec.ReferenceQuantity.Value,
+                                       receivedby = rec.Receiving.Employee2 != null ? rec.Receiving.Employee2.FirstName + " " + rec.Receiving.Employee2.LastName : "",
+                                       recEncodedby = rec.Receiving.Employee != null ? rec.Receiving.Employee.FirstName + " " + rec.Receiving.Employee.LastName : "",     
+                                       recApprovedBy = rec.Receiving.Employee3 != null ? rec.Receiving.Employee3.FirstName + " " + rec.Receiving.Employee3.LastName : "",
+                                       
+                                       dateTransferred ="",
+                                       stNo ="",
+                                       stQty =0,
+                                       releasedby = "",
+                                       stEncodedby = "",
+                                       stApprovedBy ="",
+
+                                       discrepancy = req.ReferenceQuantity - rec.ReferenceQuantity,
+                                       location = req.Requisition.Location.Description,
+                                       remarks = ""
+
+
+                                   }).Where(r => r.discrepancy > 0).ToList();
+
+            var lstDiscrepancy3 = (from p in lstDiscrepancy1 select p).Union(from q in lstDiscrepancy2 select q);
+
+
+
+
+            ReportViewer reportViewer = new ReportViewer();
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+            ReportDataSource _rds = new ReportDataSource();
+            _rds.Name = "dsDiscrepancy";
+            _rds.Value = lstDiscrepancy3.OrderBy(p => p.orderbydate);
+
+            reportViewer.KeepSessionAlive = false;
+            reportViewer.LocalReport.DataSources.Clear();
+            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Views\Report\rdlc\Discrepancy.rdlc";
+
+            List<ReportParameter> _parameter = new List<ReportParameter>();
+            _parameter.Add(new ReportParameter("DateRange", dtDateFrom.ToString("MMMM dd, yyyy") + " - " + dtDateTo.ToString("MMMM dd, yyyy")));
+
+            reportViewer.LocalReport.DataSources.Add(_rds);
+            reportViewer.LocalReport.Refresh();
+            reportViewer.LocalReport.SetParameters(_parameter);
+
+            ViewBag.ReportViewer = reportViewer;
+
+            ViewBag.DateFrom = dtDateFrom.ToString("MM/dd/yyyy");
+            ViewBag.DateTo = dtDateTo.ToString("MM/dd/yyyy");
+
+            return View();
+        }
 
 
     }

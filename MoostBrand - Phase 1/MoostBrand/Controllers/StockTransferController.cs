@@ -62,10 +62,10 @@ namespace MoostBrand.Controllers
             List<ReqCustom> lstReqCustom = new List<ReqCustom>();
             
             var lstReq = (from  r in entity.Requisitions.Where(r => r.RefNumber.Contains(name)).ToList()
-                          //where r.ApprovalStatus == 2 &&
-                          //      r.RequisitionDetails.Sum(p => p.Quantity) > 0 
-                               
-                         select r).ToList();
+                          where r.ApprovalStatus == 2 &&
+                                r.RequisitionDetails.Any(p => p.Quantity > 0)
+
+                          select r).ToList();
 
             foreach (var _req in lstReq)
             {
@@ -104,7 +104,7 @@ namespace MoostBrand.Controllers
 
             var _lstReq = (from  r in entity.Requisitions.Where(x => x.RefNumber.Contains("CR") && x.RefNumber.Contains(name)).ToList()
                            where r.ApprovalStatus == 2
-                              && r.RequisitionDetails.Sum(p => p.Quantity) > 0
+                              && r.RequisitionDetails.Any(p => p.Quantity > 0)
                              
                           select r).ToList();
 
@@ -139,7 +139,7 @@ namespace MoostBrand.Controllers
 
             var _receivings = (from  r in entity.Receivings.Where(x => x.ReceivingID.Contains(name)).ToList()
                                where r.ApprovalStatus == 2 &&  
-                                     r.ReceivingDetails.Sum(p => p.Quantity) > 0
+                                     r.ReceivingDetails.Any(p => p.Quantity > 0)
                               select r).ToList();
 
 
