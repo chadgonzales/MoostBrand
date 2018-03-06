@@ -255,13 +255,15 @@ namespace MoostBrand.Controllers
                 try
                 {
 
-                    var itm = entity.Items.ToList().FindAll(b => b.Description == item.Description);
+                    var itm = entity.Items.ToList().FindAll(b => b.Code == item.Code);
+                    //var codecheck = entity.Items.ToList().FindAll(b => b.Description == item.Description);
 
                     if (item.Proceed == false)
                     {
                         if (itm.Count() > 0)
                         {
-                            ViewBag.Error = "Would you like to proceed in adding the same items?";
+                            //  ViewBag.Error = "Would you like to proceed in adding the same items?";
+                            ModelState.AddModelError("", "The ItemCode already exists.");
                             ViewBag.Categories = entity.Categories.ToList();
                             ViewBag.Colors = entity.Colors.ToList();
                             ViewBag.Sizes = entity.Sizes.ToList();
@@ -281,6 +283,8 @@ namespace MoostBrand.Controllers
 
                             return View(item);
                         }
+                       
+                      
                     }
 
                     if (item.Img != null)
@@ -331,6 +335,10 @@ namespace MoostBrand.Controllers
             ViewBag.UOMS = entity.UnitOfMeasurements.ToList();
             ViewBag.Brands = entity.Brands.ToList();
 
+            
+          
+
+
             if (item.VendorCoding != null)
             {
                 ViewBag.VendorName = entity.Vendors.FirstOrDefault(x => x.ID == item.VendorCoding).Name;
@@ -339,7 +347,9 @@ namespace MoostBrand.Controllers
             return View(item);
         }
 
-        [AccessChecker(Action = 2, ModuleID = 11)]
+   
+
+[AccessChecker(Action = 2, ModuleID = 11)]
         public ActionResult Edit(int id)
         {
         
