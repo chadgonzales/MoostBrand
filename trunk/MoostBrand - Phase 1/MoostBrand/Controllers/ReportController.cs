@@ -1094,7 +1094,7 @@ namespace MoostBrand.Controllers
                 dtDateTo = Convert.ToDateTime(dateTo);
             }
 
-            var _lstReq = entity.RequisitionDetails.Where(p => p.Requisition.ApprovalStatus == 3).ToList();
+            var _lstReq = entity.RequisitionDetails.Where(p => p.Requisition.ApprovalStatus == 5).ToList();
 
             _lstReq = _lstReq.Where(r => r.Requisition.RequestedDate >= dtDateFrom && r.Requisition.RequestedDate <= dtDateTo.AddDays(1)).ToList();
 
