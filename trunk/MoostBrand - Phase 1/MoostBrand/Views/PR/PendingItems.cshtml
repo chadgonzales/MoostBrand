@@ -458,6 +458,7 @@
     {
         //if (ViewBag.RequestedBy == Convert.ToInt32(ViewBag.UserID) || ViewBag.AcctType == 1 || ViewBag.AcctType == 4)
 
+
             <a href = "#" id = "ShowPopop" class="btn btn-green">Add Item</a>
 
 
@@ -491,7 +492,7 @@
 <script>
     window.onload = function()
   {
-      //$('#ShowPopop').click(function () {
+      $('#ShowPopop').click(function () {
 
       var url = $('#AddItemWindow').data('url');
         $.get(url, function(data) {
@@ -505,7 +506,7 @@
             $("textarea").addClass("form-control");
             $("select").addClass("form-control");
       });
-      //});
+      });
   }
 
     $('#ShowPopop').click(function ()
