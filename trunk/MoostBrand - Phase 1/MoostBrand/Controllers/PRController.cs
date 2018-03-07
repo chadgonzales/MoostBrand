@@ -511,11 +511,11 @@ namespace MoostBrand.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.isApproved = req.Requisitions.ApprovalStatus;
             ViewBag.Page = page;
             Session["ReqTypeID"] = req.Requisitions.ReqTypeID.ToString();
             ViewBag.ReqTypeID =   req.Requisitions.ReqTypeID.ToString();
-
+    
             var pager = new Pager(reqdetails.Count(),page);
 
             var viewModel = new requsitionModel
