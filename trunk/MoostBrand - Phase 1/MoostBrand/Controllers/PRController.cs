@@ -267,7 +267,7 @@ namespace MoostBrand.Controllers
         {
             if (vendorid != 0)
             {
-                var items = entity.Items.Where(x => x.CategoryID == catID || x.Description.Contains(name) && x.VendorCoding == vendorid)
+                var items = entity.Items.Where(x => x.CategoryID == catID || x.Description.Contains(name) && x.VendorCoding == vendorid && x.ItemStatus == 1)
                  .Select(x => new {
                      ID = x.ID,
                      Code = x.Code,
@@ -281,7 +281,7 @@ namespace MoostBrand.Controllers
             }
             else
             {
-                var items = entity.Items.Where(x => x.CategoryID == catID || x.Description.Contains(name))
+                var items = entity.Items.Where(x => x.CategoryID == catID || x.Description.Contains(name) && x.ItemStatus == 1)
                  .Select(x => new {
                      ID = x.ID,
                      Code = x.Code,
@@ -300,7 +300,7 @@ namespace MoostBrand.Controllers
         {
             if (vendorid != 0)
             {
-                var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name) && x.VendorCoding == vendorid)
+                var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name) && x.VendorCoding == vendorid && x.ItemStatus == 1)
                  .Select(x => new {
                      ID = x.ID,
                      Code = x.Code,
@@ -315,7 +315,7 @@ namespace MoostBrand.Controllers
             }
             else
             {
-                var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name))
+                var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name) && x.ItemStatus == 1)
                  .Select(x => new {
                      ID = x.ID,
                      Code = x.Code,

@@ -610,7 +610,7 @@ namespace MoostBrand.Controllers
         {
             int loc = Convert.ToInt32(Session["locationID"]);
             var items = entity.Inventories.Where(x => x.LocationCode == loc
-                                                      && (x.Category == catID || x.ItemCode.Contains(name)))
+                                                      && (x.Category == catID || x.ItemCode.Contains(name)) && x.Items.ItemStatus==1 )
                         .Select(x => new
                         {
                             ID = x.ID,

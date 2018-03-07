@@ -1025,7 +1025,7 @@ namespace MoostBrand.Controllers
 
             int requisitionId = Convert.ToInt32(Session["reqIDs"]);
 
-            var _items = entity.RequisitionDetails.Where(rd => rd.RequisitionID == requisitionId && rd.AprovalStatusID == 2 && rd.Item.DescriptionPurchase.Contains(code))
+            var _items = entity.RequisitionDetails.Where(rd => rd.RequisitionID == requisitionId && rd.AprovalStatusID == 2 && rd.Item.DescriptionPurchase.Contains(code) && rd.Item.ItemStatus==1)
                        .ToList()
                        .FindAll(rd =>  rd.Quantity > 0)  /*!_stdetails1.Contains(rd.ID)*/
                        .Select(ed => new
@@ -1056,7 +1056,7 @@ namespace MoostBrand.Controllers
 
             int requisitionId = Convert.ToInt32(Session["recIDs"]);
 
-            var items = entity.ReceivingDetails.Where(rd => rd.ReceivingID == requisitionId && rd.AprovalStatusID == 2 && rd.RequisitionDetail.Item.Description.Contains(code))
+            var items = entity.ReceivingDetails.Where(rd => rd.ReceivingID == requisitionId && rd.AprovalStatusID == 2 && rd.RequisitionDetail.Item.Description.Contains(code) )
                          .ToList()
                          .FindAll(rd => rd.Quantity > 0) /*!_stdetails.Contains(rd.ID)*/
                          .Select(ed => new

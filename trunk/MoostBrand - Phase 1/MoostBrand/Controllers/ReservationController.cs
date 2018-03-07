@@ -266,7 +266,7 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult GetItemCode(int catID, string name)
         {
-            var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name))
+            var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name) && x.ItemStatus == 1)
                             .Select(x => new
                             {
                                 ID = x.ID,
