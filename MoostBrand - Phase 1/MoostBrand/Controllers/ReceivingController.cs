@@ -222,7 +222,7 @@ namespace MoostBrand.Controllers
 
             int requisitionId = Convert.ToInt32(Session["reqID"]);
 
-            var _items1 = entity.RequisitionDetails.Where(rd => rd.RequisitionID == requisitionId && rd.AprovalStatusID == 2 && rd.Item.DescriptionPurchase.Contains(Code))
+            var _items1 = entity.RequisitionDetails.Where(rd => rd.RequisitionID == requisitionId && rd.AprovalStatusID == 2 && rd.Item.DescriptionPurchase.Contains(Code) && rd.Item.ItemStatus==1)
                         .ToList()
                         .FindAll(rd => rd.Quantity > 0)
                         .Select(ed => new
