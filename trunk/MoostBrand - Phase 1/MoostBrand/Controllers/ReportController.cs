@@ -1135,23 +1135,23 @@ namespace MoostBrand.Controllers
                                        uom = req.Item.UnitOfMeasurement != null ? req.Item.UnitOfMeasurement.Description : "",
 
                                        reqtype = req.Requisition.ReqType.Type,
-                                       dateRequested = "",//req.Requisition.RequestedDate.ToString("MM/dd/yyyy"),
+                                       dateRequested = req.Requisition.RequestedDate,//req.Requisition.RequestedDate.ToString("MM/dd/yyyy"),
                                        orderbydate = req.Requisition.RequestedDate,
                                        reqno = req.Requisition.RefNumber,
                                        requestedby = req.Requisition.Employee1 != null ? req.Requisition.Employee1.FirstName + " " + req.Requisition.Employee1.LastName : "",
                                        reqEncodedby = "",
-                                       reqApprovedBy = "",
+                                       reqApprovedBy = req.Requisition.Employee != null ? req.Requisition.Employee.FirstName + " " + req.Requisition.Employee.LastName : "",
                                        reqQty = req.ReferenceQuantity.Value,
 
 
-                                       dateReceived = "",
+                                       dateReceived = DateTime.Now,
                                        recno = "",
                                        recQty = 0,
                                        receivedby = "",
                                        recEncodedby = "",
                                        recApprovedBy = "",
 
-                                       dateTransferred ="",// st.StockTransfer.STDAte.ToString("MM/dd/yyyy"),
+                                       dateTransferred = st.StockTransfer.STDAte,// st.StockTransfer.STDAte.ToString("MM/dd/yyyy"),
                                        stNo = st.StockTransfer.TransferID,
                                        stQty = st.ReferenceQuantity.Value,     
                                        releasedby = st.StockTransfer.Employee4 != null ? st.StockTransfer.Employee4.FirstName + " " + st.StockTransfer.Employee4.LastName : "",
@@ -1175,7 +1175,7 @@ namespace MoostBrand.Controllers
                                        uom = req.Item.UnitOfMeasurement != null ? req.Item.UnitOfMeasurement.Description : "",
 
                                        reqtype = req.Requisition.ReqType.Type,
-                                       dateRequested = "",// req.Requisition.RequestedDate.ToString("MM/dd/yyyy"),
+                                       dateRequested = req.Requisition.RequestedDate,// req.Requisition.RequestedDate.ToString("MM/dd/yyyy"),
                                        orderbydate = req.Requisition.RequestedDate,
                                        reqno = req.Requisition.RefNumber,
                                        requestedby = req.Requisition.Employee1 != null ? req.Requisition.Employee1.FirstName + " " + req.Requisition.Employee1.LastName : "",
@@ -1184,14 +1184,14 @@ namespace MoostBrand.Controllers
                                        reqQty = req.ReferenceQuantity.Value,
 
 
-                                       dateReceived = "",//rec.Receiving.ReceivingDate.ToString("MM/dd/yyyy"),
+                                       dateReceived = rec.Receiving.ReceivingDate,//rec.Receiving.ReceivingDate.ToString("MM/dd/yyyy"),
                                        recno = rec.Receiving.ReceivingID,
                                        recQty = rec.ReferenceQuantity.Value,
                                        receivedby = rec.Receiving.Employee2 != null ? rec.Receiving.Employee2.FirstName + " " + rec.Receiving.Employee2.LastName : "",
                                        recEncodedby = rec.Receiving.Employee != null ? rec.Receiving.Employee.FirstName + " " + rec.Receiving.Employee.LastName : "",     
                                        recApprovedBy = rec.Receiving.Employee3 != null ? rec.Receiving.Employee3.FirstName + " " + rec.Receiving.Employee3.LastName : "",
                                        
-                                       dateTransferred ="",
+                                       dateTransferred =DateTime.Now,
                                        stNo ="",
                                        stQty =0,
                                        releasedby = "",
@@ -1207,7 +1207,43 @@ namespace MoostBrand.Controllers
 
             var lstDiscrepancy3 = (from p in lstDiscrepancy1 select p).Union(from q in lstDiscrepancy2 select q);
 
+            var lstDiscrepancy4 = (from i in lstDiscrepancy3
+                                 select new
+                                 {
+                                     ItemCode = i.ItemCode,
+                                     brand = i.brand,
+                                     itemsalesdescription = i.itemsalesdescription,
+                                     uom =i.uom,
 
+                                     reqtype = i.reqtype,
+                                     dateRequested = i.dateRequested.ToString("MM/dd/yyyy"),// req.Requisition.RequestedDate.ToString("MM/dd/yyyy"),
+                                     orderbydate =i.orderbydate,
+                                     reqno =i.reqno,
+                                     requestedby = i.requestedby,
+                                     reqEncodedby = i.reqEncodedby,
+                                     reqApprovedBy = i.reqApprovedBy,
+                                     reqQty = i.reqQty,
+
+
+                                     dateReceived = i.recQty > 0 ? i.dateReceived.ToString("MM/dd/yyyy") : "",//rec.Receiving.ReceivingDate.ToString("MM/dd/yyyy"),
+                                     recno = i.recno,
+                                     recQty = i.recQty,
+                                     receivedby = i.receivedby,
+                                     recEncodedby = i.recEncodedby,
+                                     recApprovedBy =i.recApprovedBy,
+
+                                     dateTransferred = i.stQty > 0 ? i.dateTransferred.ToString("MM/dd/yyyy") : "",
+                                     stNo = i.stNo,
+                                     stQty = i.stQty,
+                                     releasedby = i.releasedby,
+                                     stEncodedby = i.stEncodedby,
+                                     stApprovedBy = i.stApprovedBy,
+
+                                     discrepancy = i.discrepancy,
+                                     location = i.location,
+                                     remarks = ""
+
+                                 }).ToList();
 
 
             ReportViewer reportViewer = new ReportViewer();
