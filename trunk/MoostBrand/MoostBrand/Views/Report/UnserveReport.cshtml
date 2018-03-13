@@ -1,0 +1,151 @@
+﻿@using ReportViewerForMvc
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".ddl-item").select2({
+            data: null
+        });
+    });
+
+    function DateCheck() {
+        var StartDate = document.getElementById('txtStartDate').value;
+        var EndDate = document.getElementById('txtEndDate').value;
+        var eDate = new Date(EndDate);
+        var sDate = new Date(StartDate);
+        if (StartDate != '' && EndDate != '' && sDate > eDate) {
+            alert("Please ensure that the End Date is greater than or equal to the Start Date.");
+            $("#btn").addClass('disabled');
+            return false;
+        } else {
+            $("#btn").removeClass('disabled');
+        }
+    }
+</script>
+@{
+    ViewBag.Title = "UnserveReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="panel-heading">
+    <h4 class="panel-title">Unserve Report</h4>
+</div>
+
+
+<div class="panel-body">
+
+    <div class="clearfix"></div>
+
+    @using (Html.BeginForm())
+    {
+        <div class="form-horizontal" style="margin-bottom:16px;">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Date From</label>
+                    <div class="col-md-6">
+                        <input type="text" id="txtStartDate" name="DateFrom" class="date-picker form-control" value="@ViewBag.DateFrom" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Date To</label>
+                    <div class="col-md-6">
+                        <input type="text" id="txtEndDate" name="DateTo" class="date-picker form-control" value="@ViewBag.DateTo" onchange="DateCheck()"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Brand</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("brand", (IEnumerable<SelectListItem>)ViewBag.Brand, "all", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Category</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("category", (IEnumerable<SelectListItem>)ViewBag.Category, "all", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Vendor</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("vendor", (IEnumerable<SelectListItem>)ViewBag.Vendor, "all", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Location</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("location", (IEnumerable<SelectListItem>)ViewBag.Location, "all", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Item Code</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("itemcode", (IEnumerable<SelectListItem>)ViewBag.ItemCode, "all", new { @class = "form-control ddl-item" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Item Description</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("itemdesc", (IEnumerable<SelectListItem>)ViewBag.ItemDesc, "all", new { @class = "form-control ddl-item" })
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-4 col-md-push-6 no-padding">
+                <div class="form-group">
+                    <input type="submit" id="btn" value="Submit" class="btn btn-dark-blue pull-right" />
+                </div>
+            </div>
+
+
+            <div class="clearfix"></div>
+
+        </div>
+    }
+
+    <!--#ReportViewer1-->
+    <div class="report-viewer">
+        @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { @style = "border: none; width:100% !important;" })
+    </div>
+
+</div>
+<script>
+
+    $("#itemcode").change(function () {
+        var x = $("#itemcode").val();
+
+        $('#itemdesc').val(x);
+    });
+
+
+
+</script>
