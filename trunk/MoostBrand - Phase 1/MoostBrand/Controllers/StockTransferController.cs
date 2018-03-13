@@ -176,7 +176,7 @@ namespace MoostBrand.Controllers
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "stid" : "";
-
+            //stledger();
 
             if (searchString != null)
             {
@@ -765,7 +765,7 @@ namespace MoostBrand.Controllers
                                 foreach (var _inv in inv)
                                 {
                                     int _itemid = entity.Items.FirstOrDefault(p => p.Code == _inv.ItemCode).ID;
-                                    int _qty = st.StockTransferDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _itemid && p.StockTransferID == id).Quantity.Value;
+                                    int _qty = st.StockTransferDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _itemid && p.StockTransferID == id).ReferenceQuantity.Value;
                                     var i = entity.Inventories.Find(_inv.ID);
                                     i.Committed = i.Committed - _qty;
                                     //  i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, st.LocationID);
@@ -779,6 +779,8 @@ namespace MoostBrand.Controllers
                                     _stockledger.InventoryID = _inv.ID;
                                     _stockledger.Type = "Stock Out";
                                     _stockledger.OutQty = _qty;
+                                    _stockledger.InQty = 0;
+                                    _stockledger.Variance = 0;
                                     _stockledger.ReferenceNo = st.TransferID;
                                     _stockledger.BeginningBalance = _inv.InStock + _stockledger.OutQty;
                                     _stockledger.RemainingBalance = _inv.InStock;
@@ -804,6 +806,63 @@ namespace MoostBrand.Controllers
                 e.Message.ToString();
             }
             return View();
+        }
+
+
+        public void stledger()
+        {
+            foreach (var _st in entity.StockTransfers.Where(p => p.ApprovedStatus == 2 && !entity.StockLedgers.Select(x => x.ReferenceNo).Contains(p.TransferID)).ToList())
+            {
+                var st = entity.StockTransfers.Find(_st.ID);
+
+                var rd = st.Requisition.RequisitionDetails.Select(p => p.ItemID.ToString()).ToList();
+
+                if (rd == null)
+                {
+                    rd = st.Receiving.ReceivingDetails.Select(p => p.RequisitionDetail.ItemID.ToString()).ToList();
+                }
+
+
+                var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
+                var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == st.Requisition.LocationID).ToList();
+                if (inv != null)
+                {
+                    foreach (var _inv in inv)
+                    {
+                        try
+                        {
+                            int _itemid = entity.Items.FirstOrDefault(p => p.Code == _inv.ItemCode).ID;
+                            int _qty = st.StockTransferDetails.FirstOrDefault(p => p.AprovalStatusID == 2 && p.RequisitionDetail.ItemID == _itemid && p.StockTransferID == st.ID).ReferenceQuantity.Value;
+                            var i = entity.Inventories.Find(_inv.ID);
+                            i.Committed = i.Committed - _qty;
+                            //  i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, st.LocationID);
+                            i.InStock = i.InStock - _qty;//stRepo.getStockTranfer(_itemid,id);
+                            i.Available = (i.InStock + i.Ordered) - i.Committed;
+
+                            entity.Entry(i).State = EntityState.Modified;
+                            entity.SaveChanges();
+
+                            StockLedger _stockledger = new StockLedger();
+                            _stockledger.InventoryID = _inv.ID;
+                            _stockledger.Type = "Stock Out";
+                            _stockledger.OutQty = _qty;
+                            _stockledger.InQty = 0;
+                            _stockledger.Variance = 0;
+                            _stockledger.ReferenceNo = st.TransferID;
+                            _stockledger.BeginningBalance = _inv.InStock + _stockledger.OutQty;
+                            _stockledger.RemainingBalance = _inv.InStock;
+                            _stockledger.Date = DateTime.Now;
+
+                            entity.StockLedgers.Add(_stockledger);
+                            entity.SaveChanges();
+                        }
+                        catch { }
+                    }
+
+                }
+
+            }
+
         }
 
         // POST: StockTransfer/Denied/5

@@ -1096,7 +1096,7 @@ namespace MoostBrand.Controllers
 
             var _lstReq = entity.RequisitionDetails.Where(p => p.Requisition.ApprovalStatus == 5).ToList();
 
-            _lstReq = _lstReq.Where(r => r.Requisition.RequestedDate >= dtDateFrom && r.Requisition.RequestedDate <= dtDateTo.AddDays(1)).ToList();
+            _lstReq = _lstReq.Where(r => r.Requisition.RequestedDate >= dtDateFrom && r.Requisition.RequestedDate <= dtDateTo).ToList();
 
 
             //if (vendor != null)
@@ -1127,6 +1127,7 @@ namespace MoostBrand.Controllers
 
             var lstDiscrepancy1 = (from req in _lstReq.Where(r=>r.Requisition.ReqTypeID == 2)
                                    join st in entity.StockTransferDetails.Where(r => r.StockTransfer.ApprovedStatus == 2 && r.RequisitionDetailID != null) on new { a1 =req.ID, b1 = req.Requisition.ID } equals new { a1 = st.RequisitionDetailID.Value, b1 = st.StockTransfer.RequisitionID.Value }
+                                   join rec in entity.ReceivingDetails.Where(r => r.Receiving.ApprovalStatus == 2 && r.RequisitionDetailID != null) on new { a1 = req.ID, b1 = req.Requisition.ID } equals new { a1 = rec.RequisitionDetailID.Value, b1 = rec.Receiving.RequisitionID.Value }
                                    select new
                                    {
                                        ItemCode = req.Item.Code,
@@ -1144,21 +1145,21 @@ namespace MoostBrand.Controllers
                                        reqQty = req.ReferenceQuantity.Value,
 
 
-                                       dateReceived = DateTime.Now,
-                                       recno = "",
-                                       recQty = 0,
-                                       receivedby = "",
-                                       recEncodedby = "",
-                                       recApprovedBy = "",
+                                       dateReceived = rec != null ? rec.Receiving.ReceivingDate : DateTime.Now,//rec.Receiving.ReceivingDate.ToString("MM/dd/yyyy"),
+                                       recno = rec != null ? rec.Receiving.ReceivingID : "",
+                                       recQty = rec != null ? rec.ReferenceQuantity.Value : 0,
+                                       receivedby = rec != null ? rec.Receiving.Employee2 != null ? rec.Receiving.Employee2.FirstName + " " + rec.Receiving.Employee2.LastName : "" : "",
+                                       recEncodedby = rec != null ? rec.Receiving.Employee != null ? rec.Receiving.Employee.FirstName + " " + rec.Receiving.Employee.LastName : "":"",
+                                       recApprovedBy = rec != null ? rec.Receiving.Employee3 != null ? rec.Receiving.Employee3.FirstName + " " + rec.Receiving.Employee3.LastName : "":"",
 
-                                       dateTransferred = st.StockTransfer.STDAte,// st.StockTransfer.STDAte.ToString("MM/dd/yyyy"),
-                                       stNo = st.StockTransfer.TransferID,
-                                       stQty = st.ReferenceQuantity.Value,     
-                                       releasedby = st.StockTransfer.Employee4 != null ? st.StockTransfer.Employee4.FirstName + " " + st.StockTransfer.Employee4.LastName : "",
-                                       stEncodedby = st.StockTransfer.Employee6 != null ? st.StockTransfer.Employee6.FirstName + " " + st.StockTransfer.Employee6.LastName : "",
-                                       stApprovedBy = st.StockTransfer.Employee != null ? st.StockTransfer.Employee.FirstName + " " + st.StockTransfer.Employee.LastName : "",
+                                       dateTransferred = st != null? st.StockTransfer.STDAte : DateTime.Now,// st.StockTransfer.STDAte.ToString("MM/dd/yyyy"),
+                                       stNo = st != null ? st.StockTransfer.TransferID : "",
+                                       stQty = st != null ? st.ReferenceQuantity.Value: 0,     
+                                       releasedby = st != null ? st.StockTransfer.Employee4 != null ? st.StockTransfer.Employee4.FirstName + " " + st.StockTransfer.Employee4.LastName : "":"",
+                                       stEncodedby = st != null ? st.StockTransfer.Employee6 != null ? st.StockTransfer.Employee6.FirstName + " " + st.StockTransfer.Employee6.LastName : "":"",
+                                       stApprovedBy = st != null ? st.StockTransfer.Employee != null ? st.StockTransfer.Employee.FirstName + " " + st.StockTransfer.Employee.LastName : "":"",
 
-                                       discrepancy = req.ReferenceQuantity - st.ReferenceQuantity,
+                                       discrepancy = rec != null ? st.ReferenceQuantity - rec.ReferenceQuantity:0,
                                        location = req.Requisition.Location.Description,
                                        remarks =  ""
 
@@ -1180,7 +1181,7 @@ namespace MoostBrand.Controllers
                                        reqno = req.Requisition.RefNumber,
                                        requestedby = req.Requisition.Employee1 != null ? req.Requisition.Employee1.FirstName + " " + req.Requisition.Employee1.LastName : "",
                                        reqEncodedby = "",
-                                       reqApprovedBy = "",
+                                       reqApprovedBy = req.Requisition.Employee != null ? req.Requisition.Employee.FirstName + " " + req.Requisition.Employee.LastName : "",
                                        reqQty = req.ReferenceQuantity.Value,
 
 
