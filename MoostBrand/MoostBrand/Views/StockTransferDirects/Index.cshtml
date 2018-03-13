@@ -4,7 +4,7 @@
     ViewBag.Title = "Stock Transfer";
 }
 <div class="panel-heading">
-    <h4 class="panel-title">Direct Transfer</h4>
+    <h4 class="panel-title">Direct Stock Transfer</h4>
 
 </div>
 <div class="panel-body">
@@ -12,6 +12,7 @@
     <div class="dataTables_wrapper no-footer">
         <div class="dataTables_length">
             <a href="@Url.Action("Create")" class="btn btn-green @Session["canedit"]" style="float:left;"> Create New <i class="fa fa-plus"></i></a>
+            <a href="@Url.Action("Index", "StockTransfer")" class="btn btn-green" style="float:left;"> Stock Transfer <i class="fa fa-plus"></i></a>
         </div>
         <div class="dataTables_filter">
             @using (Html.BeginForm("Index", "StockTransferDirects", FormMethod.Post))
@@ -74,9 +75,9 @@
                                         <a href='@Url.Action("Edit", new { id = item.ID })' class="btn btn-xs btn-blue tooltips @Session["canedit"]" data-placement="top" data-original-title="Edit">
                                             <i class="fa fa-edit"></i>
                                         </a>
-                                        <a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips @Session["candelete"]" data-placement="top" data-original-title="Delete">
-                                            <i class="fa fa-times fa fa-white"></i>
-                                        </a>
+                                        //<a href='@Url.Action("Delete", new { id = item.ID })' class="btn btn-xs btn-red tooltips @Session["candelete"]" data-placement="top" data-original-title="Delete">
+                                            //<i class="fa fa-times fa fa-white"></i>
+                                        //</a>
                                     //}
                                     //if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                                     //{

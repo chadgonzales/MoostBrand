@@ -186,16 +186,23 @@
 
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-  
+
 
     @Html.PagedListPager(Model, page => Url.Action("Details",
-      new { page, id = ViewBag.STid }))
-   
+                              new { page, id = ViewBag.STid }))
+
 
     <br /><br />
-  
 
-    <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
+
+    @if (ViewBag.IsApproved == 1)
+    {
+        <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
+
+    }
+
+
+
     <a href='@Url.Action("Details", new { id = ViewBag.STid })' class="btn btn-light-orange">
         Back to List
     </a>
@@ -222,7 +229,7 @@
 
 <script>
     window.onload = function () {
-     
+        $('#ShowPopop').click(function () {
         var url = $('#AddItemWindow').data('url');
         $.get(url, function (data) {
            
@@ -304,7 +311,7 @@
             $("textarea").addClass("form-control");
             $("select").addClass("form-control");
         });
-        //});
+        });
     }
 
 

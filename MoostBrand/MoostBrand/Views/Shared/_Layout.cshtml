@@ -134,12 +134,12 @@
                         <li @ViewBag.StockTransferActive>
                             <a href="@Url.Action("Index", "StockTransfer")"><i class="fa fa-exchange"></i> <span class="title">Stock Transfer</span> </a>
                         </li>
-                        <li @ViewBag.StockAllocationActive>
+                        @*<li @ViewBag.StockAllocationActive>
                             <a href="@Url.Action("Index", "StockAllocation")"><i class="fa fa-hand-o-up"></i> <span class="title">Stock Allocation</span> </a>
-                        </li>
-                        <li @ViewBag.ReturnActive>
+                        </li>*@
+                        @*<li @ViewBag.ReturnActive>
                             <a href="@Url.Action("Index", "Return")"><i class="fa fa-retweet"></i> <span class="title">Return</span> </a>
-                        </li>
+                        </li>*@
                         <li @ViewBag.StockAdjustmentActive>
                             <a href="@Url.Action("Index", "StockAdjustment")"><i class="fa fa-bar-chart-o"></i> <span class="title">Stock Adjustment</span> </a>
                         </li>
@@ -149,14 +149,20 @@
                         <li>
                             <a href="javascript:void(0)"><i class="fa fa-desktop"></i> <span class="title"> Reports </span><i class="icon-arrow"></i> </a>
                             <ul class="sub-menu">
+                                
                                 <li>
                                     <a href="@Url.Action("InventoryReport", "Report")">
-                                       Inventory Report
+                                        Inventory Report
                                     </a>
                                 </li>
                                 <li>
                                     <a href="@Url.Action("ReservationReport", "Report")">
                                         Reservation Report
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("SummaryReport", "Report")">
+                                        Stock Ledger Summary Report
                                     </a>
                                 </li>
                                 <li>
@@ -182,6 +188,11 @@
                                 <li>
                                     <a href="@Url.Action("StockTransferReport", "Report")">
                                         Stock Transfer Report
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("DiscrepancyReport", "Report")">
+                                       Discrepancy Report
                                     </a>
                                 </li>
                             </ul>
@@ -224,7 +235,7 @@
                                         Colors
                                     </a>
                                 </li>
-                                <li>
+                                @*<li>
                                     <a href="@Url.Action("Index", "ContainerLocation")">
                                         Container Location
                                     </a>
@@ -233,7 +244,7 @@
                                     <a href="@Url.Action("Index", "ContainerStorage")">
                                     Container Storage
                                     </a>
-                                </li>
+                                </li>*@
                                 <li>
                                     <a href="@Url.Action("Index", "Vendor")">
                                         Vendor

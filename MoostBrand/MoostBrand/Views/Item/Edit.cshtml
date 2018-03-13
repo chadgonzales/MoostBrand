@@ -222,25 +222,23 @@
                 <div class="col-md-6 col-md-offset-2">
                     <table id="tblItems" class="table table-hover table-striped table-bordered">
                         <thead>
-                            <th>Type</th>
-                            <th>SubCategory</th>
-                            <th></th>
+                        <th>Type</th>
+                        <th>SubCategory</th>
+                        <th></th>
                         </thead>
                         <tbody>
 
 
 
                             @foreach (var subCat in Model.CategoryTaggings.Where(c => c.ItemID == Model.ID && c.CategoryID == Model.CategoryID))
-                            {
+                    {
 
-                                Html.RenderPartial("_SubCategoryRow", subCat);
-                            }
+                        Html.RenderPartial("_SubCategoryRow", subCat);
+                    }
                         </tbody>
                     </table>
                 </div>
             </div>
-
-
 
             <div class="form-group">
                 <label class="control-label col-md-2">
@@ -340,6 +338,21 @@
                     @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                 </div>
             </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                   Item Status
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("ItemStatus", null, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ItemStatus, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Img, htmlAttributes: new { @class = "control-label col-md-2" })

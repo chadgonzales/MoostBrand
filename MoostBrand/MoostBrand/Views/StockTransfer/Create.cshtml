@@ -211,6 +211,8 @@
 
     }
 
+ 
+
     $('#StockTransferTypeID').change(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
@@ -232,6 +234,7 @@
             $(this).css({ "border": "unset" })
         }
     });
+
     $('#TimeStarted').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
@@ -337,49 +340,66 @@
             $("#rc").hide();
             $("#rq").hide();
             $("#res").hide();
+            $("#sl").hide();
         } else if (val == 1) {
             $("#rc").hide();
             $("#res").hide();
             $("#rq").show();
+            $("#sl").show();
+            $('#sourceloc').val('');
         } else if (val == 2) {
             $("#rc").show();
             $("#rq").hide();
             $("#res").hide();
+            $("#sl").show();
+            $('#sourceloc').val('');
         } else if (val == 3) {
             $("#res").show();
             $("#rq").hide();
             $("#rc").hide();
+            $("#sl").show();
+            $('#sourceloc').val('');
         }
         else {
             $("#rc").hide();
             $("#rq").hide();
             $("#res").hide();
+            $("#sl").hide();
+            $('#sourceloc').val('');
         }
-      
-    }
 
+    }
     $("#StockTransferTypeID").change(function () {
         HideOrShow();
+
     });
 
     $('#LocationID').change(function () {
         _locID = $('#LocationID').val();
         var url = "/StockTransfer/GetLocationCode/";
 
-        $.ajax({
-            url: url,
-            data: { locID: _locID },
-            cache: false,
-            type: "POST",
-            success: function (data) {
-                $.each(data, function (i, val) {
-                    $.get("@Url.Action("GenerateSTRNumber", "StockTransfer")/STR " + val.Code + "", null, BindData);
-                })
-            },
-            error: function (reponse) {
-                alert("error : " + reponse);
-            }
-        });
+        if ($('#LocationID').val() != '') {
+            $.ajax({
+                url: url,
+                data: { locID: _locID },
+                cache: false,
+                type: "POST",
+                success: function (data) {
+                    $.each(data, function (i, val) {
+                        $.get("@Url.Action("GenerateSTRNumber", "StockTransfer")/STR " + val.Code + "", null, BindData);
+                    })
+                },
+                error: function (reponse) {
+                    alert("error : " + reponse);
+                }
+            });
+        }
+        else
+        {
+            $('#TransferID').val('');
+
+          
+        }
     });
 
     //$('#ReservationID').change(function () {

@@ -2,6 +2,22 @@
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
+<script type="text/javascript">
+    function DateCheck() {
+        var StartDate = document.getElementById('txtStartDate').value;
+        var EndDate = document.getElementById('txtEndDate').value;
+        var eDate = new Date(EndDate);
+        var sDate = new Date(StartDate);
+        if (StartDate != '' && EndDate != '' && sDate > eDate) {
+            alert("Please ensure that the End Date is greater than or equal to the Start Date.");
+            $("#btn").addClass('disabled');
+            return false;
+        } else {
+            $("#btn").removeClass('disabled');
+        }
+    }
+</script>
+
 @{
     ViewBag.Title = "Requisitions";
 }
@@ -20,14 +36,29 @@
             @using (Html.BeginForm("Index", "PR", FormMethod.Post))
             {
                 <p>
+                    <div class="form-group">
+                        @*<label class="control-label col-md-3">Date From</label>*@
+                        <div class="col-md-6">
+                            @Html.TextBox("DateFrom", ViewBag.FilterFrom as string, new { @class = "date-picker form-control", @placeholder = "Date From", @id = "txtStartDate" })
+                            @*<input type="text" name="DateFrom" class="date-picker form-control" value="@ViewBag.DateFrom" />*@
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @*<label class="control-label col-md-3">Date To</label>*@
+                        <div class="col-md-6">
+                            @Html.TextBox("DateTo", ViewBag.FilterTo as string, new { @class = "date-picker form-control", @placeholder = "Date To", @id = "txtEndDate", @onchange = "DateCheck()" })
+                            @*<input type="text" name="DateTo" class="date-picker form-control" value="@ViewBag.DateTo" />*@
+                        </div>
+                    </div>
+                    <br />
                     @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-sm", @placeholder = "Search" })
-                    <input type="submit" value="Search" class="btn btn-green" />
+                    <input type="submit" id="btn" value="Search" class="btn btn-green" />
                 </p>
             }
 
             <div class="clearfix"></div>
         </div>
-
+           
         <div class="clearfix"></div>
 
         <form id="action_form">
@@ -37,16 +68,25 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.ActionLink("Ref #", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                            @Html.ActionLink("RefNumber", "Index", new {sortColumn = "RefNumber", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo })
                         </th>
                         <th>
-                            @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                            @Html.ActionLink("Type", "Index", new { sortColumn = "RequisitionType.Type", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo })
                         </th>
                         <th>
-                            Location
+                            @Html.ActionLink("RequestedDate", "Index", new { sortColumn = "RequestedDate", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo })
                         </th>
                         <th>
-                            Approval Status
+                            @Html.ActionLink("Location", "Index", new { sortColumn = "Location.Description", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo })
+                          
+                        </th>
+                        <th>
+                            @Html.ActionLink("Destination", "Index", new { sortColumn = "Location1.Description", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo })
+                       
+                        </th>
+                        <th>
+                            @Html.ActionLink("ApprovalStatus", "Index", new { sortColumn = "ApprovalStatu.Status", sortOrder = ViewBag.SortOrder, currentFilter = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo })
+                           
                         </th>
                         <th>
                             Action
@@ -65,7 +105,13 @@
                                 @Html.DisplayFor(modelItem => item.RequisitionType.Type)
                             </td>
                             <td>
+                                @Html.DisplayFor(modelItem => item.RequestedDate)
+                            </td>
+                            <td>
                                 @Html.DisplayFor(modelItem => item.Location.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.GetDestination)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ApprovalStatu.Status)
@@ -140,8 +186,7 @@
 
 
         Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-        @Html.PagedListPager(Model, page => Url.Action("Index",
-        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, nextpage = "next",sortOrder = ViewBag.SortOrder,sortColumn = ViewBag.CurrentSort, searchString = ViewBag.CurrentFilter, dateFrom = ViewBag.FilterFrom, dateTo = ViewBag.FilterTo }))
 
     </div>
 </div>
