@@ -1,0 +1,143 @@
+﻿@model MoostBrand.DAL.Receiving
+
+@{ 
+    Layout = null;
+}
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
+
+@{
+    ViewBag.Title = "Create Receiving";
+}
+@using (Html.BeginForm("Create", "Receiving", FormMethod.Post, new { enctype = "multipart/form-data", id = "editForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="panel-heading">
+        <h4 class="panel-title">Create Receiving</h4>
+    </div>
+    <div class="panel-body">
+
+        <div class="form-horizontal">
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    <small class="text-danger"><span class="symbol required"></span> Required Fields</small>
+                </label>
+            </div>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger alert alert-danger" })
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.ReceivingType, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Receiving Type
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("ReceivingTypeID", String.Empty)
+                    @Html.ValidationMessageFor(model => model.ReceivingTypeID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div id="loc">
+                <div class="form-group">
+                    @*@Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    <label class="control-label col-md-2">
+                        Location
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("LocationID", String.Empty)
+                        @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.ReceivingID, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Receiving ID
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.ReceivingID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ReceivingID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Requisition ID
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("RequisitionID", Enumerable.Empty<SelectListItem>(), "", new { @class = "form-control ddl-item" })
+                </div>
+            </div>
+
+          
+    </div>
+</div>
+
+
+
+<div class="form-group">
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-6">
+                <input type="button" id="save" value="Create" class="btn btn-green" />
+                <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                    Back to List
+                </a>
+            </div>
+        </div>
+   
+</div>
+                        <!-- MODAL -->
+
+}
+
+<script language="javascript">
+
+
+
+    $(document).ready(function () {
+
+        //$(".ddl-item").select2({
+        //    //data: null
+        //});
+        ////alert('a');
+        //var val = $("#LocationID option:selected").val();
+
+
+        alert('a');
+
+
+        var country = ["Australia", "Bangladesh", "Denmark", "Hong Kong", "Indonesia", "Netherlands", "New Zealand", "South Africa"];
+        //$(".ddl-item").select2({
+        //    data: country
+        //});
+
+        console.log('aaa');
+        $('.ddl-item').select2({
+            data: country
+            
+        });
+
+
+    });
+
+   
+    //$(document).ready(function () {
+    //    $(".ddl-item").select2({
+    //        data: null
+    //    });
+    //});
+
+</script>
