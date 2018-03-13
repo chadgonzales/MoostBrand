@@ -48,6 +48,9 @@
 
         public int? Available { get; set; }
 
+        public int? GetAvailable
+        { get { return (InStock + Ordered) - Committed; } }
+
         public int? MinimumInventory { get; set; }
 
         public int? MaximumInventory { get; set; }
