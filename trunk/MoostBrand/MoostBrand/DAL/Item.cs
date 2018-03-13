@@ -7,6 +7,8 @@ namespace MoostBrand.DAL
     using System.Linq;
     using System.Web;
 
+
+    [Table("Items")]
     public partial class Item
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,8 +22,9 @@ namespace MoostBrand.DAL
         public int ID { get; set; }
 
         public string ItemID { get; set; }
-
+      
         public int? Quantity { get; set; }
+      
 
         public decimal? Price { get; set; }
 
@@ -35,6 +38,7 @@ namespace MoostBrand.DAL
         [Display(Name = "Description")]
         [Required]
         public string Description { get; set; }
+        //public string Status { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Sales Description")]
@@ -46,7 +50,7 @@ namespace MoostBrand.DAL
         public int? SubCategoryID { get; set; }
 
         public int? BrandID { get; set; }
-
+      
         public int? ColorID { get; set; }
 
         public int? SizeID { get; set; }
@@ -58,7 +62,8 @@ namespace MoostBrand.DAL
         public int? MinimumStock { get; set; }
 
         public int? MaximumStock { get; set; }
-
+        public int? ItemStatus { get; set; }
+        
         [NotMapped]
         public bool Proceed { get; set; }
 
@@ -81,13 +86,15 @@ namespace MoostBrand.DAL
         public string Year { get; set; }
         public string Image { get; set; }
 
+        public virtual ItemStatu ItemStatu { get; set; }
         public virtual Brand Brand { get; set; }
-
+      
         public virtual Category Category { get; set; }
 
         public virtual Color Color { get; set; }
 
         public virtual Size Size { get; set; }
+  
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CategoryTagging> CategoryTaggings { get; set; }
@@ -99,6 +106,7 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RequisitionDetail> RequisitionDetails1 { get; set; }
+
 
         [Display(Name = "Upload Image")]
         [ValidateImage]
