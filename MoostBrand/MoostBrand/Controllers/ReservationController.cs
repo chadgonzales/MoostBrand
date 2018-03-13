@@ -57,46 +57,72 @@ namespace MoostBrand.Controllers
         {
             entity = new MoostBrandEntities();
         }
-        private string Generator(string prefix)
-        {
-            //Initiate objects & vars
-            startR: Random random = new Random();
-            string randomString = "";
-            int randNumber = 0;
 
-            //Loop ‘length’ times to generate a random number or character
-            for (int i = 0; i < 6; i++)
+        private string CheckExistingRefNum(string referencenum)
+        {
+            var cref = entity.Requisitions.Where(r => r.RefNumber == referencenum);
+            if (cref == null)
             {
-                if (i == 0)
-                {
-                    start: randNumber = random.Next(0, 9); //int {0-9}
-                    if (randNumber == 0)
-                        goto start;
-                }
-                else
-                {
-                    randNumber = random.Next(0, 9);
-                }
-                //append random char or digit to random string
-                randomString = randomString + randNumber.ToString();
+
+            }
+            else
+            {
+                referencenum = Generator("CR");
             }
 
-            randomString = prefix + "-" + randomString;
-            var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == randomString);
+            return referencenum;
+        }
+        private string Generator(string prefix)
+        {
+            startR: var cref = entity.Requisitions.Where(r => r.RefNumber.Contains("CR")).Count();
+           
+            string refnum = string.Format(prefix + "-{0:000000}", cref);
+
+            var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == refnum);
             if (pr.Count() > 0)
             {
                 goto startR;
             }
+           
+           
+            return refnum;
+            //////Initiate objects & vars
+            ////startR: Random random = new Random();
+            ////string randomString = "";
+            ////int randNumber = 0;
 
-            //return the random string
-            return randomString;
+            //////Loop ‘length’ times to generate a random number or character
+            ////for (int i = 0; i < 6; i++)
+            ////{
+            ////    if (i == 0)
+            ////    {
+            ////        start: randNumber = random.Next(0, 9); //int {0-9}
+            ////        if (randNumber == 0)
+            ////            goto start;
+            ////    }
+            ////    else
+            ////    {
+            ////        randNumber = random.Next(0, 9);
+            ////    }
+            ////    //append random char or digit to random string
+            ////    randomString = randomString + randNumber.ToString();
+            ////}
+
+            ////randomString = prefix + "-" + randomString;
+            ////var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == randomString);
+            ////if (pr.Count() > 0)
+            ////{
+            ////    goto startR;
+            ////}
+
+            //////return the random string
+            ////return randomString;
         }
         private Requisition setValue(Requisition pr)
         {
             pr.VendorID = null;
             pr.ReqTypeID = 2;
             pr.RequisitionTypeID = 4;
-            pr.Destination = null;
             pr.PlateNumber = null;
             pr.Others = null;
             pr.TimeDeparted = null;
@@ -240,7 +266,7 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public JsonResult GetItemCode(int catID, string name)
         {
-            var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name))
+            var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name) && x.ItemStatus == 1)
                             .Select(x => new
                             {
                                 ID = x.ID,
@@ -359,7 +385,7 @@ namespace MoostBrand.Controllers
                                                                     o.ReservationType.Type.Contains(searchString) ||
                                                                     o.InvoiceNumber.Contains(searchString) ||
                                                                     o.Location.Description.Contains(searchString) ||
-                                                                    o.Location.Description.Contains(searchString));
+                                                                    o.Location1.Description.Contains(searchString));
             }
 
             switch (sortOrder)
@@ -393,13 +419,13 @@ namespace MoostBrand.Controllers
             Session["requisitionId"] = id;
 
             //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
-
+        
             var pr = entity.Requisitions.Find(id);
             if (pr == null)
             {
                 return HttpNotFound();
             }
-
+            ViewBag.isApproved = pr.ApprovalStatus;
             ViewBag.Page = page;
             return View(pr);
         }
@@ -441,6 +467,7 @@ namespace MoostBrand.Controllers
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName");
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status");
+            ViewBag.Destination = new SelectList(loc, "ID", "Description");
 
             return View(pr);
         }
@@ -453,10 +480,12 @@ namespace MoostBrand.Controllers
             {
                 try
                 {
+                    req.RefNumber = CheckExistingRefNum(req.RefNumber);
                     req.ApprovalStatus = 1;
                     req.Status = false;
 
                     var newPR = setValue(req);
+                    
                     if (req.LocationID == req.Destination)
                     {
                         ModelState.AddModelError("", "Source location should not be the same with the destination.");
@@ -503,14 +532,15 @@ namespace MoostBrand.Controllers
             ViewBag.DropShipID = new SelectList(entity.DropShipTypes, "ID", "Type", req.DropShipID);
             ViewBag.ReservedBy = new SelectList(employees, "ID", "FullName", req.ReservedBy);
             ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", req.ValidatedBy);
-            ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
+             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", req.AuthorizedPerson);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
+            ViewBag.Destination = new SelectList(loc, "ID", "Description", req.Destination);
             return View(req);
         }
 
         [AccessChecker(Action = 2, ModuleID = 9)]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
             //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
             var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id);
@@ -542,6 +572,7 @@ namespace MoostBrand.Controllers
                 ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
                 ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
                 ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", pr.AuthorizedPerson);
+                ViewBag.Destination = new SelectList(loc.Where(p => p.ID != pr.LocationID), "ID", "Description", pr.Destination);
                 #endregion
 
                 return View(pr);
@@ -611,6 +642,7 @@ namespace MoostBrand.Controllers
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", req.ApprovedBy);
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", req.AuthorizedPerson);
+            ViewBag.Destination = new SelectList(loc.Where(p => p.ID != req.LocationID), "ID", "Description", req.Destination);
             #endregion
 
             return View(req);
@@ -668,104 +700,107 @@ namespace MoostBrand.Controllers
                 //var pr = db.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var pr = entity.Requisitions.Find(id);
 
-                if (pr.RequisitionDetails.Count() > 0)
+                if (pr.ApprovalStatus == 1)
                 {
-                    foreach (var _details in pr.RequisitionDetails)
+                    if (pr.RequisitionDetails.Count() > 0)
                     {
-                        if (_details.AprovalStatusID != 1)
+                        foreach (var _details in pr.RequisitionDetails)
                         {
-                            approve++;
-                        }
-                    }
-
-                    if (approve == pr.RequisitionDetails.Count())
-                    {
-
-
-                        pr.ApprovalStatus = 2;
-                        pr.IsSync = false;
-
-                        entity.Entry(pr).State = EntityState.Modified;
-                        entity.SaveChanges();
-                        var rd = pr.RequisitionDetails.Select(p => p.ItemID).ToList();
-                        var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
-                        var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
-                        if (inv != null)
-                        {
-                            foreach (var _inv in inv)
+                            if (_details.AprovalStatusID != 1)
                             {
-                                var i = entity.Inventories.Find(_inv.ID);
-                                int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _inv.ItemCode && p.RequisitionID == id).Quantity.Value;
-                                if (pr.ReqTypeID == 2)
-                                {
-                                    i.Committed = i.Committed + _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
-                                }
-                                else
-                                {
-                                    i.Ordered = i.Ordered + _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
-                                }
-
-                                i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
-                                i.Available = (i.InStock + i.Ordered) - i.Committed;
-
-                                entity.Entry(i).State = EntityState.Modified;
-                                entity.SaveChanges();
-
+                                approve++;
                             }
                         }
 
-                        var invitems = entity.Items.Where(i => rd.Contains(i.ID)).ToList();
-
-                        foreach (var _item in invitems)
+                        if (approve == pr.RequisitionDetails.Count())
                         {
-                            int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _item.Code && p.RequisitionID == id).Quantity.Value;
 
-                            var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == pr.LocationID).ToList();
-                            if (inv1.Count == 0)
+                            pr.ApprovalStatus = 2;
+                            pr.IsSync = false;
+
+                            entity.Entry(pr).State = EntityState.Modified;
+                            entity.SaveChanges();
+                            var rd = pr.RequisitionDetails.Select(p => p.ItemID).ToList();
+                            var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
+                                var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
+                                if (inv != null)
+                                {
+                                    foreach (var _inv in inv)
+                                    {
+                                        var i = entity.Inventories.Find(_inv.ID);
+                                        int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _inv.ItemCode && p.RequisitionID == id).Quantity.Value;
+                                        if (pr.ReqTypeID == 2)
+                                        {
+                                            i.Committed = i.Committed + _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                        }
+                                        else
+                                        {
+                                            i.Ordered = i.Ordered + _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                        }
+
+                                        i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
+                                        i.Available = (i.InStock + i.Ordered) - i.Committed;
+
+                                        entity.Entry(i).State = EntityState.Modified;
+                                        entity.SaveChanges();
+
+                                    }
+                                }
+                          
+                            var invitems = entity.Items.Where(i => rd.Contains(i.ID)).ToList();
+
+                            foreach (var _item in invitems)
                             {
-                                Inventory inventory = new Inventory();
-                                inventory.Year = _item.Year;
-                                inventory.ItemCode = _item.Code;
-                                inventory.POSBarCode = _item.Barcode;
-                                inventory.Description = _item.DescriptionPurchase;
-                                inventory.Category = _item.Category.Description;
-                                inventory.InventoryUoM = ""; //_item.UnitOfMeasurement.Description
-                                inventory.InventoryStatus = 2;
-                                inventory.LocationCode = pr.LocationID;
-                                if (pr.ReqTypeID == 2)
+                                int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _item.Code && p.RequisitionID == id).Quantity.Value;
+                                var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == pr.LocationID).ToList();
+                                if (inv1.Count == 0)
                                 {
-                                    inventory.Committed = _qty;
-                                    inventory.Ordered = 0;    //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
-                                }
-                                else
-                                {
-                                    inventory.Ordered = _qty;
-                                    inventory.Committed = 0;   //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
-                                }
-                                inventory.InStock = 0;
-                                inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
+                                    Inventory inventory = new Inventory();
+                                    inventory.Year = _item.Year;
+                                    inventory.ItemCode = _item.Code;
+                                    inventory.POSBarCode = _item.Barcode;
+                                    inventory.Description = _item.DescriptionPurchase;
+                                    inventory.Category = _item.Category.Description;
+                                    inventory.InventoryUoM = ""; //_item.UnitOfMeasurement.Description
+                                    inventory.InventoryStatus = 2;
+                                    inventory.LocationCode = pr.LocationID;
+                                    if (pr.ReqTypeID == 2)
+                                    {
+                                        inventory.Committed = _qty;
+                                        inventory.Ordered = 0;    //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                    }
+                                    else
+                                    {
+                                        inventory.Ordered = _qty;
+                                        inventory.Committed = 0;   //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                    }
+                                    inventory.InStock = 0;
+                                    inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
 
 
-                                entity.Inventories.Add(inventory);
-                                entity.SaveChanges();
+                                    entity.Inventories.Add(inventory);
+                                    entity.SaveChanges();
+                                }
                             }
+
+
+                            return RedirectToAction("Index");
                         }
-
-
-                        return RedirectToAction("Index");
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, "Not all items are approved");
+                        }
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, "Not all items are approved");
+                        ModelState.AddModelError(string.Empty, "There's no item");
                     }
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "There's no item");
-                }
             }
-            catch
+            catch (Exception msg)
             {
+                msg.Message.ToString();
+
             }
             return View();
         }

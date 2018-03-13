@@ -789,57 +789,62 @@ namespace MoostBrand.Controllers
                 int approve = 0;
                 var st = entity.StockTransfers.Find(id);
 
-                if (st.StockTransferDetails.Count > 0)
+                if (st.ApprovedStatus == 1)
                 {
-
-                    foreach (var _details in st.StockTransferDetails)
-                    {
-                        if (_details.AprovalStatusID != 1)
-                        {
-                            approve++;
-                            qty += _details.Quantity.Value;
-                        }
-                    }
-
-                    if (approve == st.StockTransferDetails.Count())
+                    if (st.StockTransferDetails.Count > 0)
                     {
 
-                        st.ApprovedStatus = 2;
-                        st.IsSync = false;
-
-                        entity.Entry(st).State = EntityState.Modified;
-                        entity.SaveChanges();
-
-
-
-
-                        foreach (var _inv in st.StockTransferDetails)
+                        foreach (var _details in st.StockTransferDetails)
                         {
-
-                            var i = entity.Inventories.Find(_inv.InventoryID);
-                            i.InStock = Convert.ToInt32(i.InStock) - Convert.ToInt32(_inv.Quantity);
-                            i.Available = (i.InStock + i.Ordered) - i.Committed;
-
-                            entity.Entry(i).State = EntityState.Modified;
-                            entity.SaveChanges();
-
-                            StockLedger _stockledger = new StockLedger();
-                            _stockledger.InventoryID = _inv.InventoryID.Value;
-                            _stockledger.Type = "Stock Out";
-                            _stockledger.OutQty = _inv.Quantity;
-                            _stockledger.ReferenceNo = st.TransferID;
-                            _stockledger.BeginningBalance = i.InStock + _stockledger.OutQty;
-                            _stockledger.RemainingBalance = i.InStock;
-                            _stockledger.Date = DateTime.Now;
-                            //_stockledger.Inventories = 
-
-                            entity.StockLedgers.Add(_stockledger);
-                            entity.SaveChanges();
+                            if (_details.AprovalStatusID != 1)
+                            {
+                                approve++;
+                                qty += _details.Quantity.Value;
+                            }
                         }
 
-                    }
+                        if (approve == st.StockTransferDetails.Count())
+                        {
 
-                    return RedirectToAction("Index");
+                            st.ApprovedStatus = 2;
+                            st.IsSync = false;
+
+                            entity.Entry(st).State = EntityState.Modified;
+                            entity.SaveChanges();
+
+
+
+
+                            foreach (var _inv in st.StockTransferDetails)
+                            {
+
+                                var i = entity.Inventories.Find(_inv.InventoryID);
+                                i.InStock = Convert.ToInt32(i.InStock) - Convert.ToInt32(_inv.Quantity);
+                                i.Available = (i.InStock + i.Ordered) - i.Committed;
+
+                                entity.Entry(i).State = EntityState.Modified;
+                                entity.SaveChanges();
+
+                                StockLedger _stockledger = new StockLedger();
+                                _stockledger.InventoryID = _inv.InventoryID.Value;
+                                _stockledger.Type = "Stock Out";
+                                _stockledger.OutQty = _inv.Quantity;
+                                _stockledger.InQty = 0;
+                                _stockledger.Variance = 0;
+                                _stockledger.ReferenceNo = st.TransferID;
+                                _stockledger.BeginningBalance = i.InStock + _stockledger.OutQty;
+                                _stockledger.RemainingBalance = i.InStock;
+                                _stockledger.Date = DateTime.Now;
+                                //_stockledger.Inventories = 
+
+                                entity.StockLedgers.Add(_stockledger);
+                                entity.SaveChanges();
+                            }
+
+                        }
+
+                        return RedirectToAction("Index");
+                    }
                 }
                 else
                 {

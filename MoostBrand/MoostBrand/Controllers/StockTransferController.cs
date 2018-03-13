@@ -62,10 +62,10 @@ namespace MoostBrand.Controllers
             List<ReqCustom> lstReqCustom = new List<ReqCustom>();
             
             var lstReq = (from  r in entity.Requisitions.Where(r => r.RefNumber.Contains(name)).ToList()
-                          //where r.ApprovalStatus == 2 &&
-                          //      r.RequisitionDetails.Sum(p => p.Quantity) > 0 
-                               
-                         select r).ToList();
+                          where r.ApprovalStatus == 2 &&
+                                r.RequisitionDetails.Any(p => p.Quantity > 0)
+
+                          select r).ToList();
 
             foreach (var _req in lstReq)
             {
@@ -88,7 +88,8 @@ namespace MoostBrand.Controllers
                     new ReqCustom
                     {
                         ID = _req.ID,
-                        RefNumber = refNumber
+                        RefNumber = refNumber,
+                        SourceLoc = _req.Location.Description
                     });
             }
 
@@ -103,7 +104,7 @@ namespace MoostBrand.Controllers
 
             var _lstReq = (from  r in entity.Requisitions.Where(x => x.RefNumber.Contains("CR") && x.RefNumber.Contains(name)).ToList()
                            where r.ApprovalStatus == 2
-                              && r.RequisitionDetails.Sum(p => p.Quantity) > 0
+                              && r.RequisitionDetails.Any(p => p.Quantity > 0)
                              
                           select r).ToList();
 
@@ -124,7 +125,8 @@ namespace MoostBrand.Controllers
                     new ReqCustom
                     {
                         ID = _req.ID,
-                        RefNumber = refNumber
+                        RefNumber = refNumber,
+                        SourceLoc = _req.Location.Description
                     });
             }
             return Json(_lstReqCustom, JsonRequestBehavior.AllowGet);
@@ -137,7 +139,7 @@ namespace MoostBrand.Controllers
 
             var _receivings = (from  r in entity.Receivings.Where(x => x.ReceivingID.Contains(name)).ToList()
                                where r.ApprovalStatus == 2 &&  
-                                     r.ReceivingDetails.Sum(p => p.Quantity) > 0
+                                     r.ReceivingDetails.Any(p => p.Quantity > 0)
                               select r).ToList();
 
 
@@ -174,7 +176,7 @@ namespace MoostBrand.Controllers
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "stid" : "";
-
+            //stledger();
 
             if (searchString != null)
             {
@@ -220,7 +222,7 @@ namespace MoostBrand.Controllers
             //else
             //    return View(sts.ToPagedList(pageNumber, pageSize));
 
-            return View(sts.ToPagedList(pageNumber, pageSize));
+            return View(sts.OrderByDescending(p=>p.ID).ToPagedList(pageNumber, pageSize));
         }
 
         // GET: StockTransfer/Details/5
@@ -233,6 +235,7 @@ namespace MoostBrand.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.isApproved = stocktransfer.ApprovedStatus;
             ViewBag.Page = page;
             return View(stocktransfer);
         }
@@ -246,6 +249,7 @@ namespace MoostBrand.Controllers
         public class ReqCustom {
             public int ID { get; set; }
             public string RefNumber { get; set; }
+            public string SourceLoc { get;  set; }
         }
 
         public class RecCustom
@@ -259,8 +263,7 @@ namespace MoostBrand.Controllers
         public ActionResult Create()
         {
             var stocktransfer = new StockTransfer();
-            stocktransfer.STDAte = DateTime.Now;
-            
+
             #region DROPDOWNS
             var _types = entity.StockTransferTypes.Where(p=>p.ID != 2 && p.ID != 4).ToList();
             var _st = entity.StockTransfers.ToList();
@@ -423,7 +426,7 @@ namespace MoostBrand.Controllers
 
             ViewBag.EncodedBy = new SelectList(empList, "ID", "FullName", stocktransfer.EncodedBy);
             ViewBag.ReceivedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ReceivedBy);
-            ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stocktransfer.RequestedBy); ;
+            ViewBag.RequestedBy = new SelectList(empList, "ID", "FullName", stocktransfer.RequestedBy); 
             ViewBag.ApprovedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ApprovedBy); ;
             ViewBag.ReleasedBy = new SelectList(empList, "ID", "FullName", stocktransfer.ReleasedBy); ;
             ViewBag.CounterCheckedBy = new SelectList(empList, "ID", "FullName", stocktransfer.CounterCheckedBy); ;
@@ -722,75 +725,79 @@ namespace MoostBrand.Controllers
                 var st = entity.StockTransfers.Find(id);
 
 
-               
-                if (st.StockTransferDetails.Count > 0)
+                if (st.ApprovedStatus == 1)
                 {
-
-                    foreach (var _details in st.StockTransferDetails)
-                    {
-                        if (_details.AprovalStatusID != 1)
-                        {
-                            approve++;
-                            qty += _details.Quantity.Value;
-                        }
-                    }
-
-                    if (approve == st.StockTransferDetails.Count())
+                    if (st.StockTransferDetails.Count > 0)
                     {
 
-                        st.ApprovedStatus = 2;
-                        st.IsSync = false;
-
-                        entity.Entry(st).State = EntityState.Modified;
-                        entity.SaveChanges();
-
-                        
-                      
-                       var rd = st.Requisition.RequisitionDetails.Select(p => p.ItemID.ToString()).ToList();
-
-                        if (rd == null)
+                        foreach (var _details in st.StockTransferDetails)
                         {
-                            rd = st.Receiving.ReceivingDetails.Select(p => p.RequisitionDetail.ItemID.ToString()).ToList();
-                        }
-                        
-                       
-                        var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
-                        var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == st.Requisition.LocationID).ToList();
-                        if (inv != null)
-                        {
-                            foreach (var _inv in inv)
+                            if (_details.AprovalStatusID != 1)
                             {
-                                int _itemid = entity.Items.FirstOrDefault(p => p.Code == _inv.ItemCode).ID;
-                                int _qty = st.StockTransferDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _itemid && p.StockTransferID == id).Quantity.Value;
-                                var i = entity.Inventories.Find(_inv.ID);
-                                i.Committed = i.Committed - _qty;
-                                //  i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, st.LocationID);
-                                i.InStock = i.InStock - _qty;//stRepo.getStockTranfer(_itemid,id);
-                                i.Available = (i.InStock + i.Ordered) - i.Committed;
+                                approve++;
+                                qty += _details.Quantity.Value;
+                            }
+                        }
 
-                                entity.Entry(i).State = EntityState.Modified;
-                                entity.SaveChanges();
+                        if (approve == st.StockTransferDetails.Count())
+                        {
 
-                                StockLedger _stockledger = new StockLedger();
-                                _stockledger.InventoryID = _inv.ID;
-                                _stockledger.Type = "Stock Out";
-                                _stockledger.OutQty = _qty;
-                                _stockledger.ReferenceNo = st.TransferID;
-                                _stockledger.BeginningBalance = _inv.InStock + _stockledger.OutQty;
-                                _stockledger.RemainingBalance = _inv.InStock;
-                                _stockledger.Date = DateTime.Now;
+                            st.ApprovedStatus = 2;
+                            st.IsSync = false;
 
-                                entity.StockLedgers.Add(_stockledger);
-                                entity.SaveChanges();
+                            entity.Entry(st).State = EntityState.Modified;
+                            entity.SaveChanges();
+
+
+
+                            var rd = st.Requisition.RequisitionDetails.Select(p => p.ItemID.ToString()).ToList();
+
+                            if (rd == null)
+                            {
+                                rd = st.Receiving.ReceivingDetails.Select(p => p.RequisitionDetail.ItemID.ToString()).ToList();
                             }
 
-                        }
 
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "Not all items are approved");
+                            var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
+                            var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == st.Requisition.LocationID).ToList();
+                            if (inv != null)
+                            {
+                                foreach (var _inv in inv)
+                                {
+                                    int _itemid = entity.Items.FirstOrDefault(p => p.Code == _inv.ItemCode).ID;
+                                    int _qty = st.StockTransferDetails.FirstOrDefault(p => p.RequisitionDetail.ItemID == _itemid && p.StockTransferID == id).ReferenceQuantity.Value;
+                                    var i = entity.Inventories.Find(_inv.ID);
+                                    i.Committed = i.Committed - _qty;
+                                    //  i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, st.LocationID);
+                                    i.InStock = i.InStock - _qty;//stRepo.getStockTranfer(_itemid,id);
+                                    i.Available = (i.InStock + i.Ordered) - i.Committed;
+
+                                    entity.Entry(i).State = EntityState.Modified;
+                                    entity.SaveChanges();
+
+                                    StockLedger _stockledger = new StockLedger();
+                                    _stockledger.InventoryID = _inv.ID;
+                                    _stockledger.Type = "Stock Out";
+                                    _stockledger.OutQty = _qty;
+                                    _stockledger.InQty = 0;
+                                    _stockledger.Variance = 0;
+                                    _stockledger.ReferenceNo = st.TransferID;
+                                    _stockledger.BeginningBalance = _inv.InStock + _stockledger.OutQty;
+                                    _stockledger.RemainingBalance = _inv.InStock;
+                                    _stockledger.Date = DateTime.Now;
+
+                                    entity.StockLedgers.Add(_stockledger);
+                                    entity.SaveChanges();
+                                }
+
+                            }
+
+                            return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, "Not all items are approved");
+                        }
                     }
                 }
             }
@@ -799,6 +806,63 @@ namespace MoostBrand.Controllers
                 e.Message.ToString();
             }
             return View();
+        }
+
+
+        public void stledger()
+        {
+            foreach (var _st in entity.StockTransfers.Where(p => p.ApprovedStatus == 2 && !entity.StockLedgers.Select(x => x.ReferenceNo).Contains(p.TransferID)).ToList())
+            {
+                var st = entity.StockTransfers.Find(_st.ID);
+
+                var rd = st.Requisition.RequisitionDetails.Select(p => p.ItemID.ToString()).ToList();
+
+                if (rd == null)
+                {
+                    rd = st.Receiving.ReceivingDetails.Select(p => p.RequisitionDetail.ItemID.ToString()).ToList();
+                }
+
+
+                var item = entity.Items.Where(i => rd.Contains(i.ID.ToString())).Select(i => i.Code);
+                var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == st.Requisition.LocationID).ToList();
+                if (inv != null)
+                {
+                    foreach (var _inv in inv)
+                    {
+                        try
+                        {
+                            int _itemid = entity.Items.FirstOrDefault(p => p.Code == _inv.ItemCode).ID;
+                            int _qty = st.StockTransferDetails.FirstOrDefault(p => p.AprovalStatusID == 2 && p.RequisitionDetail.ItemID == _itemid && p.StockTransferID == st.ID).ReferenceQuantity.Value;
+                            var i = entity.Inventories.Find(_inv.ID);
+                            i.Committed = i.Committed - _qty;
+                            //  i.Ordered = invRepo.getPurchaseOrder(_inv.ItemCode, st.LocationID);
+                            i.InStock = i.InStock - _qty;//stRepo.getStockTranfer(_itemid,id);
+                            i.Available = (i.InStock + i.Ordered) - i.Committed;
+
+                            entity.Entry(i).State = EntityState.Modified;
+                            entity.SaveChanges();
+
+                            StockLedger _stockledger = new StockLedger();
+                            _stockledger.InventoryID = _inv.ID;
+                            _stockledger.Type = "Stock Out";
+                            _stockledger.OutQty = _qty;
+                            _stockledger.InQty = 0;
+                            _stockledger.Variance = 0;
+                            _stockledger.ReferenceNo = st.TransferID;
+                            _stockledger.BeginningBalance = _inv.InStock + _stockledger.OutQty;
+                            _stockledger.RemainingBalance = _inv.InStock;
+                            _stockledger.Date = DateTime.Now;
+
+                            entity.StockLedgers.Add(_stockledger);
+                            entity.SaveChanges();
+                        }
+                        catch { }
+                    }
+
+                }
+
+            }
+
         }
 
         // POST: StockTransfer/Denied/5
@@ -920,6 +984,7 @@ namespace MoostBrand.Controllers
             // ViewBag.RequestedBy =
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;
+            ViewBag.IsApproved = stocktransfer.ApprovedStatus;
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);
@@ -1019,7 +1084,7 @@ namespace MoostBrand.Controllers
 
             int requisitionId = Convert.ToInt32(Session["reqIDs"]);
 
-            var _items = entity.RequisitionDetails.Where(rd => rd.RequisitionID == requisitionId && rd.AprovalStatusID == 2 && rd.Item.DescriptionPurchase.Contains(code))
+            var _items = entity.RequisitionDetails.Where(rd => rd.RequisitionID == requisitionId && rd.AprovalStatusID == 2 && rd.Item.DescriptionPurchase.Contains(code) && rd.Item.ItemStatus==1)
                        .ToList()
                        .FindAll(rd =>  rd.Quantity > 0)  /*!_stdetails1.Contains(rd.ID)*/
                        .Select(ed => new
@@ -1050,7 +1115,7 @@ namespace MoostBrand.Controllers
 
             int requisitionId = Convert.ToInt32(Session["recIDs"]);
 
-            var items = entity.ReceivingDetails.Where(rd => rd.ReceivingID == requisitionId && rd.AprovalStatusID == 2 && rd.RequisitionDetail.Item.Description.Contains(code))
+            var items = entity.ReceivingDetails.Where(rd => rd.ReceivingID == requisitionId && rd.AprovalStatusID == 2 && rd.RequisitionDetail.Item.Description.Contains(code) )
                          .ToList()
                          .FindAll(rd => rd.Quantity > 0) /*!_stdetails.Contains(rd.ID)*/
                          .Select(ed => new
