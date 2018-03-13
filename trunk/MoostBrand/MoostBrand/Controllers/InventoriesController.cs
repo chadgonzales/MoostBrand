@@ -22,7 +22,7 @@ namespace MoostBrand.Controllers
         #region JSON
         public JsonResult GetItems(string name)
         {
-            var items = entity.Items.Where(x => x.Code.Contains(name))
+            var items = entity.Items.Where(x => x.Code.Contains(name) && x.ItemStatus ==1)
                             .Select(x => new
                             {
                                 ID = x.ID,

@@ -7,12 +7,15 @@ using MoostBrand.DAL;
 using PagedList;
 using System.Configuration;
 using System.Data.Entity;
+using MoostBrand.Models;
 
 namespace MoostBrand.Controllers
 {
     public class SubCategoryController : Controller
     {
         MoostBrandEntities entity = new MoostBrandEntities();
+        [AccessCheckerForDisablingButtons(ModuleID = 24)]
+        [AccessChecker(Action = 1, ModuleID = 24)]
         // GET: SubCategory
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
@@ -111,6 +114,7 @@ namespace MoostBrand.Controllers
         }
 
         // GET: SubCategory/Edit/5
+        [AccessChecker(Action = 2, ModuleID = 24)]
         public ActionResult Edit(int id)
         {
             ViewBag.SubTypes = entity.SubCategoriesTypes.ToList();
@@ -119,7 +123,7 @@ namespace MoostBrand.Controllers
 
             return View(sub);
         }
-
+        [AccessChecker(Action = 2, ModuleID = 24)]
         // POST: SubCategory/Edit/5
         [HttpPost]
         public ActionResult Edit(SubCategory subcategory)
@@ -141,14 +145,14 @@ namespace MoostBrand.Controllers
             ViewBag.SubTypes = entity.SubCategoriesTypes.ToList();
             return View(subcategory);
         }
-
+        [AccessChecker(Action = 3, ModuleID = 24)]
         // GET: SubCategory/Delete/5
         public ActionResult Delete(int id = 0)
         {
             var sub = entity.SubCategories.Find(id);
             return View(sub);
         }
-
+         [AccessChecker(Action = 3, ModuleID = 24)]
         // POST: SubCategory/Delete/5
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id = 0)

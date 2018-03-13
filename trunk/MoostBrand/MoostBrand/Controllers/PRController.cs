@@ -10,6 +10,7 @@ using System.Web.Routing;
 using System.Collections.Generic;
 using MoostBrand.Helpers;
 using System.Data.Entity.Validation;
+using System.Linq.Dynamic;
 
 namespace MoostBrand.Controllers
 {
@@ -34,37 +35,49 @@ namespace MoostBrand.Controllers
         #region PRIVATE METHODS
         private string Generator(string prefix)
         {
-        //Initiate objects & vars
-        startR: Random random = new Random();
-            string randomString = "";
-            int randNumber = 0;
+            startR: var cref = entity.Requisitions.Where(r => r.RefNumber.Contains(prefix)).Count();
 
-            //Loop ‘length’ times to generate a random number or character
-            for (int i = 0; i < 6; i++)
-            {
-                if (i == 0)
-                {
-                start: randNumber = random.Next(0, 9); //int {0-9}
-                    if (randNumber == 0)
-                        goto start;
-                }
-                else
-                {
-                    randNumber = random.Next(0, 9);
-                }
-                //append random char or digit to random string
-                randomString = randomString + randNumber.ToString();
-            }
+            string refnum = string.Format(prefix + "-{0:000000}", cref);
 
-            randomString = prefix + "-" + randomString;
-            var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == randomString);
+            var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == refnum);
             if (pr.Count() > 0)
             {
                 goto startR;
             }
 
-            //return the random string
-            return randomString;
+
+            return refnum;
+            ////Initiate objects & vars
+            //startR: Random random = new Random();
+            //string randomString = "";
+            //int randNumber = 0;
+
+            ////Loop ‘length’ times to generate a random number or character
+            //for (int i = 0; i < 6; i++)
+            //{
+            //    if (i == 0)
+            //    {
+            //        start: randNumber = random.Next(0, 9); //int {0-9}
+            //        if (randNumber == 0)
+            //            goto start;
+            //    }
+            //    else
+            //    {
+            //        randNumber = random.Next(0, 9);
+            //    }
+            //    //append random char or digit to random string
+            //    randomString = randomString + randNumber.ToString();
+            //}
+
+            //randomString = prefix + "-" + randomString;
+            //var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == randomString);
+            //if (pr.Count() > 0)
+            //{
+            //    goto startR;
+            //}
+
+            ////return the random string
+            //return randomString;
         }
 
         private Requisition SetNull(Requisition pr)
@@ -204,7 +217,6 @@ namespace MoostBrand.Controllers
             }
             return getIS;
         }
-
         #endregion
 
         #region JSON
@@ -251,35 +263,70 @@ namespace MoostBrand.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetItems(int catID, string name)
+        public JsonResult GetItems(int catID, string name, int vendorid)
         {
-            var items = entity.Items.Where(x => x.CategoryID == catID || x.Description.Contains(name))
-                            .Select(x => new
-                            {
-                                ID = x.ID,
-                                Code = x.Code,
-                                Name = x.DescriptionPurchase,
-                                PURName = x.Description,
-                                UOM = x.UnitOfMeasurement.Description,
-                                Category = x.Category.Description
-                            });
-            return Json(items, JsonRequestBehavior.AllowGet);
+            if (vendorid != 0)
+            {
+                var items = entity.Items.Where(x => x.CategoryID == catID || x.Description.Contains(name) && x.VendorCoding == vendorid && x.ItemStatus == 1)
+                 .Select(x => new {
+                     ID = x.ID,
+                     Code = x.Code,
+                     Vendors = x.VendorCoding,
+                     Name = x.DescriptionPurchase,
+                     PURName = x.Description,
+                     UOM = x.UnitOfMeasurement.Description,
+                     Category = x.Category.Description
+                 });
+                return Json(items, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var items = entity.Items.Where(x => x.CategoryID == catID || x.Description.Contains(name) && x.ItemStatus == 1)
+                 .Select(x => new {
+                     ID = x.ID,
+                     Code = x.Code,
+                     Vendors = x.VendorCoding,
+                     Name = x.DescriptionPurchase,
+                     PURName = x.Description,
+                     UOM = x.UnitOfMeasurement.Description,
+                     Category = x.Category.Description
+                 });
+                return Json(items, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]
-        public JsonResult GetItemCode(int catID, string name)
+        public JsonResult GetItemCode(int catID, string name, int vendorid)
         {
-            var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name))
-                            .Select(x => new
-                            {
-                                ID = x.ID,
-                                Code = x.Code,
-                                Name = x.DescriptionPurchase,
-                                PURName = x.Description,
-                                UOM = x.UnitOfMeasurement.Description,
-                                Category = x.Category.Description
-                            });
-            return Json(items, JsonRequestBehavior.AllowGet);
+            if (vendorid != 0)
+            {
+                var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name) && x.VendorCoding == vendorid && x.ItemStatus == 1)
+                 .Select(x => new {
+                     ID = x.ID,
+                     Code = x.Code,
+                     Vendors = x.VendorCoding,
+                     Name = x.DescriptionPurchase,
+                     PURName = x.Description,
+                     UOM = x.UnitOfMeasurement.Description,
+                     Category = x.Category.Description
+                 });
+                return Json(items, JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+                var items = entity.Items.Where(x => x.CategoryID == catID || x.Code.Contains(name) && x.ItemStatus == 1)
+                 .Select(x => new {
+                     ID = x.ID,
+                     Code = x.Code,
+                     Vendors = x.VendorCoding,
+                     Name = x.DescriptionPurchase,
+                     PURName = x.Description,
+                     UOM = x.UnitOfMeasurement.Description,
+                     Category = x.Category.Description
+                 });
+                return Json(items, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpGet]
@@ -315,28 +362,66 @@ namespace MoostBrand.Controllers
         // GET: PR
         [AccessCheckerForDisablingButtons(ModuleID = 3)]
         [AccessChecker(Action = 1, ModuleID = 3)]
-        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        public ActionResult Index(string sortOrder,string sortColumn, string currentFilter, string nextpage, string searchString, string dateFrom, string dateTo, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "type" : "";
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "reqno" : "";
+            //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "type" : "";
+            //ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "reqno" : "";
+            //ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
 
-            if (searchString != null)
+            ViewBag.CurrentSort = sortColumn;
+
+            if (nextpage == null)
+                sortOrder = sortOrder == "asc" ? "desc" : "asc";
+
+
+            ViewBag.SortOrder = sortOrder;
+            DateTime dtDateFrom = DateTime.Now.Date;
+            DateTime dtDateTo = DateTime.Now;
+
+            if (!String.IsNullOrEmpty(dateFrom))
             {
-                page = 1;
-            }
-            else
-            {
-                searchString = currentFilter;
+                dtDateFrom = Convert.ToDateTime(dateFrom);
             }
 
+            if (!String.IsNullOrEmpty(dateTo))
+            {
+                dtDateTo = Convert.ToDateTime(dateTo);
+            }
+
+            //if (!String.IsNullOrEmpty(filterFrom))
+            //{
+            //    dtDateFrom = Convert.ToDateTime(filterFrom);
+            //}
+
+            //if (!String.IsNullOrEmpty(filterTo))
+            //{
+            //    dtDateTo = Convert.ToDateTime(filterTo);
+            //}
+
+
+
+            //if (searchString != null || dateFrom !=null && dateTo != null)
+            //{
+            //    page = 1;
+            //}
+            //else
+            //{
+            //    searchString = currentFilter;
+            //    dateFrom = filterFrom;
+            //    dateTo = filterTo;
+            //}
+
+            ViewBag.FilterFrom = dateFrom;
+            ViewBag.FilterTo = dateTo;
             ViewBag.CurrentFilter = searchString;
             
             //int locID = Convert.ToInt32(Session["locationID"]);
             //int UserID = Convert.ToInt32(Session["userID"]);
 
             //var user = entity.Users.FirstOrDefault(x => x.ID == UserID);
-            var prs = entity.Requisitions.Where(x => x.Status == false && ( x.ID != 4 && x.ID != 5)); //active
+           // var prs = entity.Requisitions.Where(x => x.Status == false && ( x.ID != 4 && x.ID != 5)); //active
+            IQueryable<Requisition> prs = reqDetailRepo.List().Where(x => x.Status == false && (x.ID != 4 && x.ID != 5));
 
             if (!String.IsNullOrEmpty(searchString))
             {
@@ -344,31 +429,63 @@ namespace MoostBrand.Controllers
                                        || o.RefNumber.Contains(searchString));
             }
 
-            switch (sortOrder)
+            //DateTime dtDateFrom = DateTime.Now.Date;
+            //DateTime dtDateTo = DateTime.Now;
+
+            //if (!String.IsNullOrEmpty(dateFrom) || !String.IsNullOrEmpty(dateTo))
+            //{
+            //    dtDateFrom = Convert.ToDateTime(dateFrom);
+            //    dtDateTo = Convert.ToDateTime(dateTo);
+            prs = prs.Where(p => DbFunctions.TruncateTime(p.RequestedDate) >= dtDateFrom && DbFunctions.TruncateTime(p.RequestedDate) <= dtDateTo);
+            //}
+
+
+            //switch (sortOrder)
+            //{
+            //    case "type":
+            //        prs = prs.OrderByDescending(o => o.RequisitionType.Type);
+            //        break;
+            //    case "reqno":
+            //        prs = prs.OrderByDescending(o => o.RefNumber);
+            //        break;
+            //    case "Date":
+            //        prs = prs.OrderBy(o => o.RequestedDate);
+            //        break;
+            //    case "date_desc":
+            //        prs = prs.OrderByDescending(o => o.RequestedDate);
+            //        break;
+            //    default:
+            //        prs = prs.OrderByDescending(o => o.ID);
+            //        break;
+            //}
+
+            if (String.IsNullOrEmpty(sortColumn))
             {
-                case "type":
-                    prs = prs.OrderByDescending(o => o.RequisitionType.Type);
-                    break;
-                case "reqno":
-                    prs = prs.OrderByDescending(o => o.RefNumber);
-                    break;
-                default:
-                    prs = prs.OrderBy(o => o.ID);
-                    break;
+                prs = prs.OrderBy(p => p.ID);
+            }
+            else
+            {
+                prs = prs.OrderBy(sortColumn + " " + sortOrder);
             }
 
-            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            ViewBag.DateFrom = dtDateFrom.ToString("MM/dd/yyyy");
+            ViewBag.DateTo = dtDateTo.ToString("MM/dd/yyyy");
+
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
+           return View(prs.ToPagedList(pageNumber, pageSize));
+            //int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            //int pageNumber = (page ?? 1);
 
-            //if (user.LocationID != 10)
-            //{
-            //    prs = prs.Where(x => x.LocationID == locID);
-            //    return View(prs.ToPagedList(pageNumber, pageSize));
-            //}
-            //else
-            //    return View(prs.ToPagedList(pageNumber, pageSize));
+            ////if (user.LocationID != 10)
+            ////{
+            ////    prs = prs.Where(x => x.LocationID == locID);
+            ////    return View(prs.ToPagedList(pageNumber, pageSize));
+            ////}
+            ////else
+            ////    return View(prs.ToPagedList(pageNumber, pageSize));
 
-            return View(prs.ToPagedList(pageNumber, pageSize));
+            //return View(prs.OrderBy(p => p.ID).ToPagedList(pageNumber, pageSize));
         }
 
         // GET: PR/Details/5
@@ -394,11 +511,11 @@ namespace MoostBrand.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.isApproved = req.Requisitions.ApprovalStatus;
             ViewBag.Page = page;
             Session["ReqTypeID"] = req.Requisitions.ReqTypeID.ToString();
             ViewBag.ReqTypeID =   req.Requisitions.ReqTypeID.ToString();
-
+    
             var pager = new Pager(reqdetails.Count(),page);
 
             var viewModel = new requsitionModel
@@ -734,82 +851,89 @@ namespace MoostBrand.Controllers
                         }
                     }
 
-                    if (approve == pr.RequisitionDetails.Count())
+                    if (pr.ApprovalStatus == 1)
                     {
-
-                        pr.ApprovalStatus = 2;
-                        pr.IsSync = false;
-
-                        entity.Entry(pr).State = EntityState.Modified;
-                        entity.SaveChanges();
-                        var rd = pr.RequisitionDetails.Select(p => p.ItemID).ToList();
-                        var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
-                        var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
-                        if (inv != null)
+                        if (approve == pr.RequisitionDetails.Count())
                         {
-                            foreach (var _inv in inv)
+
+                            pr.ApprovalStatus = 2;
+                            pr.IsSync = false;
+
+                            entity.Entry(pr).State = EntityState.Modified;
+                            entity.SaveChanges();
+
+                            var rd = pr.RequisitionDetails.Select(p => p.ItemID).ToList();
+                            var item = entity.Items.Where(i => rd.Contains(i.ID)).Select(i => i.Code);
+                            var inv = entity.Inventories.Where(i => item.Contains(i.ItemCode) && i.LocationCode == pr.LocationID).ToList();
+                            if (inv != null)
                             {
-                                var i = entity.Inventories.Find(_inv.ID);
-                                int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _inv.ItemCode && p.RequisitionID == id).Quantity.Value;
-                                if (pr.ReqTypeID == 2)
+                                foreach (var _inv in inv)
                                 {
-                                    i.Committed = i.Committed + _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
-                                }
-                                else
-                                {
-                                    i.Ordered = i.Ordered + _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
-                                }
+                                    var i = entity.Inventories.Find(_inv.ID);
+                                    int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _inv.ItemCode && p.RequisitionID == id).Quantity.Value;
+                                    if (pr.ReqTypeID == 2)
+                                    {
+                                        i.Committed = i.Committed + _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                    }
+                                    else
+                                    {
+                                        i.Ordered = i.Ordered + _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                    }
 
-                                i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
-                                i.Available = (i.InStock + i.Ordered) - i.Committed;
+                                    i.InStock = invRepo.getInstocked(pr.ID, _inv.ItemCode);
+                                    i.Available = (i.InStock + i.Ordered) - i.Committed;
 
-                                entity.Entry(i).State = EntityState.Modified;
-                                entity.SaveChanges();
+                                    entity.Entry(i).State = EntityState.Modified;
+                                    entity.SaveChanges();
+
+                                }
 
                             }
 
-                        }
+                            var invitems = entity.Items.Where(i => rd.Contains(i.ID)).ToList();
 
-                        var invitems = entity.Items.Where(i => rd.Contains(i.ID)).ToList();
-
-                        foreach (var _item in invitems)
-                        {
-                            int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _item.Code && p.RequisitionID == id).Quantity.Value;
-                            var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == pr.LocationID).ToList();
-                            if (inv1.Count == 0)
+                            foreach (var _item in invitems)
                             {
-                                Inventory inventory = new Inventory();
-                                inventory.Year = _item.Year;
-                                inventory.ItemCode = _item.Code;
-                                inventory.POSBarCode = _item.Barcode;
-                                inventory.Description = _item.DescriptionPurchase;
-                                inventory.Category = _item.Category.Description;
-                                inventory.InventoryUoM =  _item.UnitOfMeasurement.Description;
-                                inventory.InventoryStatus = 2;
-                                inventory.LocationCode = pr.LocationID;
-                                if (pr.ReqTypeID == 2)
+                                int _qty = pr.RequisitionDetails.FirstOrDefault(p => p.Item.Code == _item.Code && p.RequisitionID == id).Quantity.Value;
+                                var inv1 = entity.Inventories.Where(i => i.ItemCode == _item.Code && i.LocationCode == pr.LocationID).ToList();
+                                if (inv1.Count == 0)
                                 {
-                                    inventory.Committed =  _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
-                                }
-                                else
-                                {
-                                    inventory.Ordered =  _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
-                                }
-                                inventory.InStock = 0;
-                                inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
-                                inventory.ItemID = _item.ID;
+                                    Inventory inventory = new Inventory();
+                                    inventory.Year = _item.Year;
+                                    inventory.ItemCode = _item.Code;
+                                    inventory.POSBarCode = _item.Barcode;
+                                    inventory.Description = _item.DescriptionPurchase;
+                                    inventory.SalesDescription = _item.Description;
+                                    inventory.Category = _item.Category.Description;
+                                    inventory.InventoryUoM = _item.UnitOfMeasurement.Description;
+                                    inventory.InventoryStatus = 2;
+                                    inventory.LocationCode = pr.LocationID;
+                                    if (pr.ReqTypeID == 2)
+                                    {
+                                        inventory.Committed = _qty; //invRepo.getCommited(_inv.ItemCode,pr.LocationID.Value);
+                                        inventory.Ordered = 0;
+                                    }
+                                    else
+                                    {
+                                        inventory.Ordered = _qty; //invRepo.getPurchaseOrder(_inv.ItemCode, pr.LocationID.Value);
+                                        inventory.Committed = 0;
+                                    }
+                                    inventory.InStock = 0;
+                                    inventory.Available = (inventory.InStock + inventory.Ordered) - inventory.Committed;
+                                    inventory.ItemID = _item.ID;
 
-                                entity.Inventories.Add(inventory);
-                                entity.SaveChanges();
+                                    entity.Inventories.Add(inventory);
+                                    entity.SaveChanges();
+                                }
                             }
+                            return RedirectToAction("Index");
                         }
-                        return RedirectToAction("Index");
-                    }
 
-                    else
-                    {
-                        TempData["Error"] = "Not all items are approved";
-                        //ModelState.AddModelError(string.Empty, "Not all items are approved");
+                        else
+                        {
+                            TempData["Error"] = "Not all items are approved";
+                            //ModelState.AddModelError(string.Empty, "Not all items are approved");
+                        }
                     }
                 }
                 else
@@ -1140,7 +1264,7 @@ namespace MoostBrand.Controllers
             ViewBag.ReqTypeID = _rd.ReqTypeID.Value.ToString();
             ViewBag.PRid = id;
             ViewBag.ItemID = new SelectList(entity.Items, "ID", "Description");
-
+            ViewBag.VendorID = _rd.VendorID != null ? _rd.VendorID : 0;
 
             return PartialView();
         }

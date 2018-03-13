@@ -26,6 +26,8 @@ namespace MoostBrand.Controllers
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "type" : "";
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "trans" : "";
 
+            stledger();
+
             if (searchString != null)
             {
                 page = 1;
@@ -71,7 +73,7 @@ namespace MoostBrand.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.isApproved = r.ApprovalStatus;
             return View(r);
         }
 
@@ -98,12 +100,13 @@ namespace MoostBrand.Controllers
                             Description = x.Description
                         });
 
-            ViewBag.LocationID = new SelectList(loc, "ID", "Description");
-            ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName");
-            ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName");
-            ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type");
-            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
-            ViewBag.PostedBy = new SelectList(employees, "ID", "FullName");
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description","");
+            ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName","");
+            ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName","");
+            ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type","");
+            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName","");
+            ViewBag.PostedBy = new SelectList(employees, "ID", "FullName","");
+            ViewBag.ErrorDate = DateTime.Now.ToString("MM / dd / yyyy");
             ViewBag.Date = DateTime.Now.ToString("MMM/dd/yyyy");
             #endregion
 
@@ -157,12 +160,12 @@ namespace MoostBrand.Controllers
                             Description = x.Description
                         });
 
-            ViewBag.LocationID = new SelectList(loc, "ID", "Description");
-            ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName", adjust.PreparedBy);
-            ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName", adjust.AdjustedBy);
-            ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", adjust.TransactionTypeID);
-            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", adjust.ApprovedBy);
-            ViewBag.PostedBy = new SelectList(employees, "ID", "FullName", adjust.PostedBy);
+            ViewBag.LocationID = new SelectList(loc, "ID", "Description","");
+            ViewBag.PreparedBy = new SelectList(employees, "ID", "FullName","");
+            ViewBag.AdjustedBy = new SelectList(employees, "ID", "FullName","");
+            ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type","");
+            ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName","");
+            ViewBag.PostedBy = new SelectList(employees, "ID", "FullName","");
             ViewBag.Date = DateTime.Now.ToString("MMM/dd/yyyy");
             ViewBag.PostedDate = DateTime.Now.ToString("MMM/dd/yyyy");
             #endregion
@@ -316,17 +319,72 @@ namespace MoostBrand.Controllers
                 // TODO: Add delete logic here
                 //var pr = entity.Requisitions.FirstOrDefault(r => r.ID == id && (r.RequestedBy == UserID || AcctType == 1 || AcctType == 4));
                 var adjust = entity.StockAdjustments.Find(id);
-                 if (adjust.StockAdjustmentDetails.Count > 0)
+
+                if (adjust.ApprovalStatus == 1)
                 {
-                    adjust.ApprovalStatus = 2;
-                    adjust.IsSync = false;
+                    if (adjust.StockAdjustmentDetails.Count > 0)
+                    {
+                        adjust.ApprovalStatus = 2;
+                        adjust.IsSync = false;
 
-                    entity.Entry(adjust).State = EntityState.Modified;
-                    entity.SaveChanges();
+                        entity.Entry(adjust).State = EntityState.Modified;
+                        entity.SaveChanges();
 
 
-                    var inv = entity.StockAdjustmentDetails.Where(p => p.StockAdjustmentID == id).ToList();
-                    if (inv != null)
+                        var inv = entity.StockAdjustmentDetails.Where(p => p.StockAdjustmentID == id).ToList();
+                        if (inv != null)
+                        {
+                            foreach (var _inv in inv)
+                            {
+                                var i = entity.Inventories.Find(_inv.ItemID);
+                                i.InStock = _inv.NewQuantity;
+                                entity.Entry(i).State = EntityState.Modified;
+                                entity.SaveChanges();
+
+                                StockLedger _stockledger = new StockLedger();
+                                _stockledger.InventoryID = i.ID;
+                                _stockledger.Type = "Variance";
+                                _stockledger.Variance = _inv.Variance;
+                                _stockledger.InQty = 0;
+                                _stockledger.OutQty = 0;
+                                _stockledger.ReferenceNo = adjust.No;
+                                _stockledger.BeginningBalance = _inv.OldQuantity;
+                                _stockledger.RemainingBalance = _inv.NewQuantity;
+                                _stockledger.Date = DateTime.Now;
+
+                                entity.StockLedgers.Add(_stockledger);
+                                entity.SaveChanges();
+                            }
+
+                        }
+
+                        return RedirectToAction("Index");
+                    }
+                }
+                else
+                {
+                    TempData["Error"] = "No Items to Approve";
+                }
+            }
+            catch
+            {
+                TempData["Error"] = "No Items to Approve";
+            }
+
+            return View();
+        }
+
+        public void stledger()
+        {
+            foreach (var _st in entity.StockAdjustments.Where(p => p.ApprovalStatus == 2 && !entity.StockLedgers.Select(x => x.ReferenceNo).Contains(p.ReferenceNo)).ToList())
+            {
+                var adjust = entity.StockAdjustments.Find(_st.ID);
+
+
+                var inv = entity.StockAdjustmentDetails.Where(p => p.StockAdjustmentID == _st.ID).ToList();
+                if (inv != null)
+                {
+                    try
                     {
                         foreach (var _inv in inv)
                         {
@@ -339,6 +397,8 @@ namespace MoostBrand.Controllers
                             _stockledger.InventoryID = i.ID;
                             _stockledger.Type = "Variance";
                             _stockledger.Variance = _inv.Variance;
+                            _stockledger.InQty = 0;
+                            _stockledger.OutQty = 0;
                             _stockledger.ReferenceNo = adjust.No;
                             _stockledger.BeginningBalance = _inv.OldQuantity;
                             _stockledger.RemainingBalance = _inv.NewQuantity;
@@ -347,22 +407,14 @@ namespace MoostBrand.Controllers
                             entity.StockLedgers.Add(_stockledger);
                             entity.SaveChanges();
                         }
-
                     }
+                    catch { }
 
-                    return RedirectToAction("Index");
                 }
-                else
-                {
-                     TempData["Error"] = "No Items to Approve";
-                }
-            }
-            catch
-            {
-                TempData["Error"] = "No Items to Approve";
+
             }
 
-            return View();
+
         }
 
         // POST: StockAdjustment/Denied/5
@@ -395,14 +447,15 @@ namespace MoostBrand.Controllers
             int UserID = Convert.ToInt32(Session["sessionuid"]);
             int UserType = Convert.ToInt32(Session["usertype"]);
 
-          
-                var items = entity.StockAdjustmentDetails
+            var stockadjustment = entity.StockAdjustments.FirstOrDefault(r => r.ID == id);
+
+            var items = entity.StockAdjustmentDetails
                             .Where(p=>p.StockAdjustmentID == id)
                             .ToList();
            
 
             ViewBag.STTAid = id;
-
+            ViewBag.isApproved = stockadjustment.ApprovalStatus;
             
             try
             {
@@ -604,7 +657,7 @@ namespace MoostBrand.Controllers
         {
             int loc = Convert.ToInt32(Session["locationID"]);
             var items = entity.Inventories.Where(x => x.LocationCode == loc
-                                                      && (x.Category == catID || x.ItemCode.Contains(name)))
+                                                      && (x.Category == catID || x.ItemCode.Contains(name)) && x.Items.ItemStatus==1 )
                         .Select(x => new
                         {
                             ID = x.ID,
