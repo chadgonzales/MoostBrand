@@ -829,6 +829,8 @@ namespace MoostBrand.Controllers
                                 _stockledger.InventoryID = _inv.InventoryID.Value;
                                 _stockledger.Type = "Stock Out";
                                 _stockledger.OutQty = _inv.Quantity;
+                                _stockledger.InQty = 0;
+                                _stockledger.Variance = 0;
                                 _stockledger.ReferenceNo = st.TransferID;
                                 _stockledger.BeginningBalance = i.InStock + _stockledger.OutQty;
                                 _stockledger.RemainingBalance = i.InStock;

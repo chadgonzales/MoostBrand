@@ -26,6 +26,8 @@ namespace MoostBrand.Controllers
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "type" : "";
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "trans" : "";
 
+            stledger();
+
             if (searchString != null)
             {
                 page = 1;
@@ -343,6 +345,8 @@ namespace MoostBrand.Controllers
                                 _stockledger.InventoryID = i.ID;
                                 _stockledger.Type = "Variance";
                                 _stockledger.Variance = _inv.Variance;
+                                _stockledger.InQty = 0;
+                                _stockledger.OutQty = 0;
                                 _stockledger.ReferenceNo = adjust.No;
                                 _stockledger.BeginningBalance = _inv.OldQuantity;
                                 _stockledger.RemainingBalance = _inv.NewQuantity;
@@ -368,6 +372,49 @@ namespace MoostBrand.Controllers
             }
 
             return View();
+        }
+
+        public void stledger()
+        {
+            foreach (var _st in entity.StockAdjustments.Where(p => p.ApprovalStatus == 2 && !entity.StockLedgers.Select(x => x.ReferenceNo).Contains(p.ReferenceNo)).ToList())
+            {
+                var adjust = entity.StockAdjustments.Find(_st.ID);
+
+
+                var inv = entity.StockAdjustmentDetails.Where(p => p.StockAdjustmentID == _st.ID).ToList();
+                if (inv != null)
+                {
+                    try
+                    {
+                        foreach (var _inv in inv)
+                        {
+                            var i = entity.Inventories.Find(_inv.ItemID);
+                            i.InStock = _inv.NewQuantity;
+                            entity.Entry(i).State = EntityState.Modified;
+                            entity.SaveChanges();
+
+                            StockLedger _stockledger = new StockLedger();
+                            _stockledger.InventoryID = i.ID;
+                            _stockledger.Type = "Variance";
+                            _stockledger.Variance = _inv.Variance;
+                            _stockledger.InQty = 0;
+                            _stockledger.OutQty = 0;
+                            _stockledger.ReferenceNo = adjust.No;
+                            _stockledger.BeginningBalance = _inv.OldQuantity;
+                            _stockledger.RemainingBalance = _inv.NewQuantity;
+                            _stockledger.Date = DateTime.Now;
+
+                            entity.StockLedgers.Add(_stockledger);
+                            entity.SaveChanges();
+                        }
+                    }
+                    catch { }
+
+                }
+
+            }
+
+
         }
 
         // POST: StockAdjustment/Denied/5
