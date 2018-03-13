@@ -1127,7 +1127,7 @@ namespace MoostBrand.Controllers
 
             var lstDiscrepancy1 = (from req in _lstReq.Where(r=>r.Requisition.ReqTypeID == 2)
                                    join st in entity.StockTransferDetails.Where(r => r.StockTransfer.ApprovedStatus == 2 && r.RequisitionDetailID != null) on new { a1 =req.ID, b1 = req.Requisition.ID } equals new { a1 = st.RequisitionDetailID.Value, b1 = st.StockTransfer.RequisitionID.Value }
-                                   join rec in entity.ReceivingDetails.Where(r => r.Receiving.ApprovalStatus == 2 && r.RequisitionDetailID != null) on new { a1 = req.ID, b1 = req.Requisition.ID } equals new { a1 = rec.RequisitionDetailID.Value, b1 = rec.Receiving.RequisitionID.Value }
+                                   join rec in entity.ReceivingDetails.Where(r => r.Receiving.ApprovalStatus == 2 && r.RequisitionDetailID != null) on new { a1 = st.RequisitionDetailID.Value, b1 = st.StockTransfer.RequisitionID.Value } equals new { a1 = rec.RequisitionDetailID.Value, b1 = rec.Receiving.RequisitionID.Value }
                                    select new
                                    {
                                        ItemCode = req.Item.Code,
