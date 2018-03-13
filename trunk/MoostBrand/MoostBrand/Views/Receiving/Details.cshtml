@@ -37,10 +37,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="control-label col-md-4">Requisition ID</label>
+                    <label class="control-label col-md-4">Requisition Number</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.Requisition.RefNumber)
+                            @Html.DisplayFor(model => model.RequisitionID)
                         </label>
                     </div>
                 </div>
@@ -300,23 +300,25 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-6">
-                    <a href='@Url.Action("ApprovedItems", new { id = Model.ID })' class="btn btn-dark-green">
-                        Approved Items
-                    </a>
-                    <a href='@Url.Action("DeniedItems", new { id = Model.ID })' class="btn btn-dark-red">
-                        Denied Items
-                    </a>
+                <a href='@Url.Action("ApprovedItems", new { id = Model.ID })' class="btn btn-dark-green">
+                    Approved Items
+                </a>
+                <a href='@Url.Action("DeniedItems", new { id = Model.ID })' class="btn btn-dark-red">
+                    Denied Items
+                </a>
 
-                    <br /><br />
-
-                    <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
-                        Edit
-                    </a>
+                <br /><br />
+                @if (ViewBag.isApproved == 1)
+                {
+                <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
+                    Edit
+                </a>
+                }
                 @*}*@
 
-                <a href='@Url.Action("Index")' class="btn btn-light-orange">
-                    Back to List
-                </a>
+                <!-- <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                         Back to List
+                     </a>-->
             </div>
         </div>
         

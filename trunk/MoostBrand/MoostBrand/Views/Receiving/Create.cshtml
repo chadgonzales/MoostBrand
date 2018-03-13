@@ -31,7 +31,7 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger alert alert-danger" })
 
             <div class="form-group">
-                
+
                 <label class="control-label col-md-2">
                     Receiving Type
                     <span class="symbol required"></span>
@@ -44,7 +44,7 @@
 
             <div id="loc">
                 <div class="form-group">
-                
+
                     <label class="control-label col-md-2">
                         Location (Origin)
                         <span class="symbol required"></span>
@@ -57,9 +57,9 @@
             </div>
 
             <div class="form-group">
-               
+
                 <label class="control-label col-md-2">
-                   RR Number
+                    RR Number
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
@@ -68,12 +68,12 @@
                 </div>
             </div>
 
-        
+
 
             <div class="form-group">
-              
+
                 <label class="control-label col-md-2 _requisition">
-                    Requisition ID
+                    Requisition Number
                     <span class="symbol required"></span>
                 </label>
                 <label class="control-label col-md-2 directstr">
@@ -81,14 +81,14 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                  
-                    @Html.DropDownList("RequisitionID", Enumerable.Empty<SelectListItem>(), "",  new { @class = "form-control ddl-item" })
+
+                    @Html.DropDownList("RequisitionID", Enumerable.Empty<SelectListItem>(), "", new { @class = "form-control ddl-item" })
                     @Html.ValidationMessageFor(model => model.RequisitionID, "", new { @class = "text-danger" })
-                    
+
                 </div>
             </div>
 
-          
+
 
             <div class="form-group">
                 <label class="control-label col-md-2">
@@ -101,7 +101,7 @@
             </div>
 
             <div class="form-group">
-               
+
                 <label class="control-label col-md-2">
                     Receiving Date
                     <span class="symbol required"></span>
@@ -133,10 +133,10 @@
                     </div>
                 </div>
 
-             
+
 
                 <div class="form-group">
-                   
+
                     <label class="control-label col-md-2">
                         Encoded By
                         <span class="symbol required"></span>
@@ -148,7 +148,7 @@
                 </div>
 
                 <div class="form-group">
-                   
+
                     <label class="control-label col-md-2">
                         Checked By
                         <span class="symbol required"></span>
@@ -161,7 +161,7 @@
             </div>
 
             <div class="form-group">
-              
+
                 <label class="control-label col-md-2">
                     Received By
                     <span class="symbol required"></span>
@@ -173,10 +173,10 @@
             </div>
 
             <div class="form-group pnumber">
-                
+
                 <label class="control-label col-md-2">
                     PO Number
-                  
+
                 </label>
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.PONumber, new { htmlAttributes = new { @class = "form-control" } })
@@ -188,7 +188,7 @@
                 <div class="form-group pnumber">
                     <label class="control-label col-md-2">
                         PO Date
-                    
+
                     </label>
                     <div class="col-md-6">
                         <div class="col-md-6">
@@ -199,7 +199,7 @@
             </div>
 
             <div class="form-group">
-               
+
                 <label class="control-label col-md-2">
                     DR Number
                     <span class="symbol required invoice"></span>
@@ -211,7 +211,7 @@
             </div>
 
             <div class="form-group">
-            
+
                 <label class="control-label col-md-2">
                     Invoice Reference
                     <span class="symbol required invoice"></span>
@@ -225,7 +225,7 @@
 
             <div id="pos">
                 <div class="form-group">
-                 
+
                     <label class="control-label col-md-2">
                         Invoice Number
                         <span class="symbol required"></span>
@@ -236,7 +236,7 @@
                     </div>
                 </div>
 
- 
+
 
             </div>
 
@@ -262,157 +262,157 @@
                 </div>
 
                 <div class="form-group">
-                @Html.LabelFor(model => model.VesselNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.EditorFor(model => model.VesselNumber, new { htmlAttributes = new { @class = "form-control" } }) @*not required*@
-                    @Html.ValidationMessageFor(model => model.VesselNumber, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.VesselNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.VesselNumber, new { htmlAttributes = new { @class = "form-control" } }) @*not required*@
+                        @Html.ValidationMessageFor(model => model.VesselNumber, "", new { @class = "text-danger" })
+                    </div>
                 </div>
+
+                <div class="form-group">
+
+                    <label class="control-label col-md-2">
+                        Waybill Number
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.WaybillNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.WaybillNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @**@
+                    @Html.LabelFor(model => model.VoyageNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.VoyageNumber, new { htmlAttributes = new { @class = "form-control" } })@*not required*@
+                        @Html.ValidationMessageFor(model => model.VoyageNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <label class="control-label col-md-2">
+                        Shipping Line
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.ShippingLine, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ShippingLine, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <label class="control-label col-md-2">
+                        Forwarder
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.Forwarder, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Forwarder, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @**@
+                    @Html.LabelFor(model => model.VanNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.VanNumber, new { htmlAttributes = new { @class = "form-control" } })@*not required*@
+                        @Html.ValidationMessageFor(model => model.VesselNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div id="cr">
+                <div class="form-group">
+                    <label class="control-label col-md-2">
+                        Customer Name
+                        @*<span class="symbol required"></span>*@
+                    </label>
+                    <div class="col-md-6">
+                        @Html.Editor("CustName", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2">
+                        Shipment Type
+                        <span class="symbol required"></span>
+                    </label>
+                    <div class="col-md-6">
+                        @Html.Editor("ShipmentType", new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+
+
             </div>
 
             <div class="form-group">
 
                 <label class="control-label col-md-2">
-                    Waybill Number
+                    Approved By
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.WaybillNumber, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.WaybillNumber, "", new { @class = "text-danger" })
+                    @Html.DropDownList("ApprovedBy")
+                    @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
                 @**@
-            @Html.LabelFor(model => model.VoyageNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.VoyageNumber, new { htmlAttributes = new { @class = "form-control" } })@*not required*@
-                @Html.ValidationMessageFor(model => model.VoyageNumber, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            <label class="control-label col-md-2">
-                Shipping Line
-                <span class="symbol required"></span>
-            </label>
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.ShippingLine, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ShippingLine, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-
-            <label class="control-label col-md-2">
-                Forwarder
-                <span class="symbol required"></span>
-            </label>
-            <div class="col-md-6">
-                @Html.EditorFor(model => model.Forwarder, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Forwarder, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @**@
-        @Html.LabelFor(model => model.VanNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-6">
-            @Html.EditorFor(model => model.VanNumber, new { htmlAttributes = new { @class = "form-control" } })@*not required*@
-            @Html.ValidationMessageFor(model => model.VesselNumber, "", new { @class = "text-danger" })
-        </div>
-    </div>
-</div>
-
-<div id="cr">
-    <div class="form-group">
-        <label class="control-label col-md-2">
-            Customer Name
-            @*<span class="symbol required"></span>*@
-        </label>
-        <div class="col-md-6">
-            @Html.Editor("CustName", new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <label class="control-label col-md-2">
-            Shipment Type
-            <span class="symbol required"></span>
-        </label>
-        <div class="col-md-6">
-            @Html.Editor("ShipmentType", new { htmlAttributes = new { @class = "form-control" } })
-        </div>
-    </div>
-
-
-</div>
-
-<div class="form-group">
-  
-    <label class="control-label col-md-2">
-        Approved By
-        <span class="symbol required"></span>
-    </label>
-    <div class="col-md-6">
-        @Html.DropDownList("ApprovedBy")
-        @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
-    </div>
-</div>
-
-<div class="form-group">
-    @**@
-        @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-6">
-            @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })@*not required*@
-            @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @**@
-            @Html.LabelFor(model => model.Img, htmlAttributes: new { @class = "control-label col-md-2" })
-            
-            <div class="col-md-6">
-                @Html.TextBoxFor(model => model.Img, new { type = "file", htmlAttributes = new { @class = "form-control" } })@*not required*@
-                @Html.ValidationMessageFor(model => model.Img)
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-6">
-                <input type="button" id="save" value="Create" class="btn btn-green" />
-                <a href='@Url.Action("Index")' class="btn btn-light-orange">
-                    Back to List
-                </a>
-            </div>
-        </div>
-   
-</div>
-</div>
-                        <!-- MODAL -->
-    <div id="SaveWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
-        <div id="ShowDialogSave" class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">
-                        Would you like to proceed?
-                    </h4>
+                @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })@*not required*@
+                    @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">CLOSE</button>
-                    <button type="submit" class="btn btn-primary" onclick="Submit()" id="save">SUBMIT</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-}
+            </div>
 
-<script language="javascript">
+            <div class="form-group">
+                @**@
+                @Html.LabelFor(model => model.Img, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                <div class="col-md-6">
+                    @Html.TextBoxFor(model => model.Img, new { type = "file", htmlAttributes = new { @class = "form-control" } })@*not required*@
+                    @Html.ValidationMessageFor(model => model.Img)
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-6">
+                    <input type="button" id="save" value="Create" class="btn btn-green" />
+                    <!--  <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                        Back to List
+                    </a> -->
+        </div>
+    </div> 
+
+                </div>
+    </div>
+                            <!-- MODAL -->
+            <div id="SaveWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+                <div id="ShowDialogSave" class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title">
+                                Would you like to proceed?
+                            </h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">CLOSE</button>
+                            <button type="submit" class="btn btn-primary" onclick="Submit()" id="save">SUBMIT</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+            }
+
+            <script language="javascript">
 
     $(document).ready(function () {
 
@@ -789,8 +789,8 @@
             $('._requisition').hide();
             $('._str').hide();
             $('.directstr').show();
-            
-            
+
+
         } else if (val == 5) { //OR
             $.get("@Url.Action("GenerateRefNumber", "Receiving")/RROR", null, BindData);
             $("#_PODate").hide();
@@ -822,10 +822,10 @@
         }
     }
 
- 
-</script>
 
-<script type="text/jscript">
+            </script>
+
+            <script type="text/jscript">
     jQuery.validator.unobtrusive.adapters.add("dropdown", function (options) {
         if (options.element.tagName.toUpperCase() == "SELECT" && options.element.type.toUpperCase() == "SELECT-ONE") {
             options.rules["required"] = true;
@@ -866,4 +866,4 @@
 
     });
 
-</script>
+            </script>

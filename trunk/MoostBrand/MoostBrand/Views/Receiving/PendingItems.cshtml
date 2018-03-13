@@ -123,19 +123,23 @@
 
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-   
-  
+
+
     @Html.PagedListPager(Model, page => Url.Action("Details",
-      new { page, id = ViewBag.Rid }))
+              new { page, id = ViewBag.Rid }))
 
     <br /><br />
-   
 
-    <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
+    @if (ViewBag.isApproved == 1)
+    {
+        <a href="#" id="ShowPopop" class="btn btn-green">Add Item</a>
 
-    <a href='@Url.Action("Details", new { id = ViewBag.Rid })' class="btn btn-light-orange">
-        Back to List
-    </a>
+    }
+
+
+    <!-- <a href='@Url.Action("Details", new { id = ViewBag.Rid })' class="btn btn-light-orange">
+         Back to List
+     </a>-->
 
     <div id="AddItemWindow" class="modal fade" data-backdrop="static" data-keyboard="false" data-url="@Url.Action("AddItemPartial", new { id = ViewBag.Rid })">
         <div id="ShowDialogAdd" class="modal-dialog" role="document">
@@ -157,7 +161,7 @@
 </div>
 <script>
     window.onload = function () {
-     
+        $('#ShowPopop').click(function () {
 
             var url = $('#AddItemWindow').data('url');
             $.get(url, function (data) {
@@ -174,9 +178,8 @@
                     return true;
                 });
 
-                if(@ViewBag.Approved != "2")
-                {
-                
+                if (@ViewBag.Approved != "2") {
+
                     $('#AddItemWindow').modal('show');
                 }
 
@@ -197,11 +200,11 @@
                     })
                 });
 
-             
+
 
                 $('#Quantity').focusout(function () {
-                   
-                    if (parseInt($("#Quantity").val()) <= parseInt( $("#Hidden_Quantity").val()) && parseInt($("#Quantity").val()) > 0) {
+
+                    if (parseInt($("#Quantity").val()) <= parseInt($("#Hidden_Quantity").val()) && parseInt($("#Quantity").val()) > 0) {
                         var ordered = parseInt($('#Ordered').val());
                         var committed = parseInt($('#Committed').val());
                         var instock = parseInt($('#InStock').val());
@@ -211,19 +214,19 @@
                         $('#quantitymsg').text('');
                     }
                     else {
-                        
+
                         $('#quantitymsg').text('invalid quantity');
                         $("#Quantity").val($("#Hidden_Quantity").val());
                     }
                 })
 
-               
+
                 // add class form-control to textarea and select
                 $("input[disabled]").addClass("form-control");
                 $("textarea").addClass("form-control");
                 $("select").addClass("form-control");
             });
-       
+        });
     }
 
     $('#ShowPopop').click(function () {

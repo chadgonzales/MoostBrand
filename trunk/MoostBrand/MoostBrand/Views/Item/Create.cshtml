@@ -54,6 +54,7 @@
 
         </script>
     }
+ 
 
     @Html.AntiForgeryToken()
     <div class="panel-heading">
@@ -128,7 +129,8 @@
                 </div>
             </div>
 
-            <div class="form-group">@*  *@
+            <div class="form-group">
+                @*  *@
                 @Html.LabelFor(model => model.SubstituteItem, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.SubstituteItem, new { htmlAttributes = new { @class = "form-control" } })
@@ -136,7 +138,8 @@
                 </div>
             </div>
 
-            <div class="form-group">@*  *@
+            <div class="form-group">
+                @*  *@
                 @Html.LabelFor(model => model.ComplementaryField, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
                     @Html.EditorFor(model => model.ComplementaryField, new { htmlAttributes = new { @class = "form-control" } })
@@ -155,7 +158,7 @@
                 </div>
             </div>
 
-            
+
             <div class="form-group">
                 <label class="control-label col-md-2">
                     Year
@@ -178,17 +181,19 @@
                 </div>
             </div>
 
-            <div class="form-group">@*  *@
+            <div class="form-group">
+                @*  *@
                 <label class="control-label col-md-2">
                     Color
                 </label>
-                    <div class="col-md-6">
-                        @Html.DropDownListFor(model => Model.ColorID, new SelectList(ViewBag.Colors, "ID", "Description"), "")
-                        @Html.ValidationMessageFor(model => model.ColorID, "", new { @class = "text-danger" })
-                    </div>
-             </div>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => Model.ColorID, new SelectList(ViewBag.Colors, "ID", "Description"), "")
+                    @Html.ValidationMessageFor(model => model.ColorID, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
-            <div class="form-group">@*  *@
+            <div class="form-group">
+                @*  *@
                 <label class="control-label col-md-2">
                     Size
                 </label>
@@ -221,7 +226,7 @@
                 </div>
             </div>
 
-       
+
 
             <div class="form-group">
                 <label class="control-label col-md-2">
@@ -254,10 +259,23 @@
                     @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control", @Value = "0" } })
                     @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    Item Status
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownListFor(model => Model.ItemStatus, new SelectList(ViewBag.ItemStatus, "ID", "ItemStatus"), "")
+                    @Html.ValidationMessageFor(model => model.ItemStatus, "", new { @class = "text-danger" })
                 </div>
+            </div>
 
 
-            <div class="form-group">@*  *@
+
+            <div class="form-group">
+                @*  *@
                 @Html.LabelFor(model => model.Img, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
                     @Html.TextBoxFor(model => model.Img, new { type = "file", htmlAttributes = new { @class = "form-control", @required = "required" } })
@@ -269,7 +287,7 @@
                     <div class="col-md-offset-2 col-md-6">
                         <input type="button" value="Create" class="btn btn-green hidden" id="save" />
                         <input type="button" value="Create" class="btn btn-green" id="btnSave" />
-                    
+
                         <a href='@Url.Action("Index")' class="btn btn-light-orange">
                             Back to List
                         </a>
@@ -398,6 +416,10 @@
             $('#Quantity').css({ "border": "1px solid red" })
             _passed = '13';
         }
+        else if ($('#ItemStatus').val() == '') {
+            $('#ItemStatus').css({ "border": "1px solid red" })
+            _passed = '14';
+        }
 
         else
             _passed = "passed";
@@ -492,6 +514,13 @@
         }
     });
     $('#Quantity').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ItemStatus').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
         if ($(this).val() != '') {

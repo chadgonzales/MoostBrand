@@ -44,7 +44,7 @@
                         Type
                     </th>
                     <th>
-                       Destination
+                        Destination
                     </th>
                     <th>
                         Status
@@ -56,14 +56,14 @@
             </thead>
             <tbody>
                 @foreach (var item in Model)
-            {
+                {
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.TransferID)
                         </td>
                         <td>
                             @*@Html.DisplayFor(modelItem => item.Requisition.RequisitionType.Type)
-                            @Html.DisplayFor(modelItem => item.Receiving.ReceivingType.Type)*@
+                                @Html.DisplayFor(modelItem => item.Receiving.ReceivingType.Type)*@
                             @Html.DisplayFor(modelItem => item.StockTransferType.Name)
                         </td>
                         <td>
@@ -91,12 +91,12 @@
                                     }
                                     //if (Convert.ToInt32(Session["usertype"]) == 1 || Convert.ToInt32(Session["usertype"]) == 4)
                                     //{
-                                        <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips  @Session["candecide"]" data-placement="top" data-original-title="Approve">
-                                            <i class="fa fa-thumbs-up"></i>
-                                        </a>
-                                        <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips @Session["candecide"]" data-placement="top" data-original-title="Deny">
-                                            <i class="fa fa-thumbs-down"></i>
-                                        </a>
+                                    <a href="#" id="approve_button" onclick="Approve(@item.ID)" class="btn btn-xs btn-dark-green tooltips  @Session["candecide"]" data-placement="top" data-original-title="Approve">
+                                        <i class="fa fa-thumbs-up"></i>
+                                    </a>
+                                    <a href="#" id="deny_button" onclick="Deny(@item.ID)" class="btn btn-xs btn-dark-red tooltips @Session["candecide"]" data-placement="top" data-original-title="Deny">
+                                        <i class="fa fa-thumbs-down"></i>
+                                    </a>
 
                                     if (item.StockTransferDetails.Where(p => p.AprovalStatusID == 2).Sum(p => p.Quantity) > 0 && item.StockTransferDetails.Where(p => p.AprovalStatusID == 2).Sum(p => p.Quantity) != item.StockTransferDetails.Sum(p => p.ReferenceQuantity) && item.ApprovedStatus != 5)
                                     {
@@ -109,7 +109,7 @@
                             </div>
                         </td>
                     </tr>
-                                }
+                }
             </tbody>
         </table>
     </form>
@@ -117,7 +117,7 @@
     Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
     @Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
 </div>
 

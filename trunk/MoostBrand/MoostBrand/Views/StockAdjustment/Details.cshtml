@@ -94,7 +94,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-2">Comments</label>
+            <label class="control-label col-md-2">Notes</label>
             <div class="col-md-6">
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.Comments)
@@ -111,11 +111,12 @@
                     </a>
 
                     <br /><br />
-
+                    if(ViewBag.isApproved==1) {
                     <a href='@Url.Action("Edit", new { id = Model.ID })' class="btn btn-green">
                         Edit
                     </a>
-                }
+                        }
+                    }
 
                 <a href='@Url.Action("Index")' class="btn btn-light-orange">
                     Back to List
