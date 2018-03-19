@@ -203,6 +203,11 @@ namespace MoostBrand.DAL
                 .HasForeignKey(e => e.ValidatedBy);
 
             modelBuilder.Entity<Employee>()
+                .HasMany(e => e.Requisitions4)
+                .WithOptional(e => e.Employee4)
+                .HasForeignKey(e => e.EncodedBy);
+
+            modelBuilder.Entity<Employee>()
                 .HasMany(e => e.Returns)
                 .WithOptional(e => e.Employee)
                 .HasForeignKey(e => e.ApprovedBy);
@@ -226,6 +231,11 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.StockAdjustments3)
                 .WithOptional(e => e.Employee3)
                 .HasForeignKey(e => e.PostedBy);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.StockAdjustments4)
+                .WithOptional(e => e.Employee4)
+                .HasForeignKey(e => e.EncodedBy);
 
             modelBuilder.Entity<Employee>()
                 .HasMany(e => e.StockTransferDirects)
@@ -282,8 +292,6 @@ namespace MoostBrand.DAL
                 .WithOptional(e => e.ItemStatu)
                 .HasForeignKey(e => e.ItemStatus);
 
-  
-
             modelBuilder.Entity<Item>()
                 .Property(e => e.LastUnitCost)
                 .HasPrecision(12, 2);
@@ -306,6 +314,16 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.RequisitionDetails1)
                 .WithOptional(e => e.Item1)
                 .HasForeignKey(e => e.PreviousItemID);
+
+            modelBuilder.Entity<Item>()
+               .HasMany(e => e.StockAdjustmentDetails)
+               .WithRequired(e => e.Items)
+               .HasForeignKey(e => e.ItemID);
+
+            modelBuilder.Entity<Inventory>()
+                .HasMany(e => e.StockAdjustmentDetails)
+                .WithRequired(e => e.Inventory)
+                .HasForeignKey(e => e.ItemID);
 
             modelBuilder.Entity<Location>()
                 .HasMany(e => e.Inventories)

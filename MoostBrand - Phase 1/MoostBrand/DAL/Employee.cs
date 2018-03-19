@@ -26,11 +26,13 @@ namespace MoostBrand.DAL
             Requisitions1 = new HashSet<Requisition>();
             Requisitions2 = new HashSet<Requisition>();
             Requisitions3 = new HashSet<Requisition>();
+            Requisitions4 = new HashSet<Requisition>();
             Returns = new HashSet<Return>();
             StockAdjustments = new HashSet<StockAdjustment>();
             StockAdjustments1 = new HashSet<StockAdjustment>();
             StockAdjustments2 = new HashSet<StockAdjustment>();
             StockAdjustments3 = new HashSet<StockAdjustment>();
+            StockAdjustments4 = new HashSet<StockAdjustment>();
             StockTransferDirects = new HashSet<StockTransferDirect>();
             StockTransferDirects1 = new HashSet<StockTransferDirect>();
             StockTransferDirects2 = new HashSet<StockTransferDirect>();
@@ -107,6 +109,8 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Requisition> Requisitions3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Requisition> Requisitions4 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Return> Returns { get; set; }
@@ -122,6 +126,8 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAdjustment> StockAdjustments3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockAdjustment> StockAdjustments4 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransferDirect> StockTransferDirects { get; set; }

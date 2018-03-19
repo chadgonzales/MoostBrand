@@ -50,6 +50,8 @@ namespace MoostBrand.DAL
 
         public string Comments { get; set; }
 
+        public int? EncodedBy { get; set; }
+
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
         public virtual Employee Employee { get; set; }
@@ -61,6 +63,8 @@ namespace MoostBrand.DAL
         public virtual Employee Employee2 { get; set; }
 
         public virtual Employee Employee3 { get; set; }
+
+        public virtual Employee Employee4 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAdjustmentDetail> StockAdjustmentDetails { get; set; }

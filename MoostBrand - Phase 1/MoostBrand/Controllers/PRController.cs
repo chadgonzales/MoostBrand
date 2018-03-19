@@ -565,6 +565,7 @@ namespace MoostBrand.Controllers
             ViewBag.Destination = new SelectList(loc, "ID", "Description");
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status");
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
+            ViewBag.EncodedBy = new SelectList(employees,"ID","FullName");
             #endregion
 
             return View(pr);
@@ -653,6 +654,7 @@ namespace MoostBrand.Controllers
             ViewBag.Destination = new SelectList(entity.Locations, "ID", "Description", pr.Destination);
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
+            ViewBag.EncodedBy = new SelectList(employees,"ID","FullName",pr.EncodedBy);
 
             if(pr.VendorID != null)
             {
@@ -692,6 +694,7 @@ namespace MoostBrand.Controllers
                 ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
                 ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
                 ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status", pr.PaymentStatusID);
+                ViewBag.EncodedBy = new SelectList(employees,"ID","FullName",pr.EncodedBy);
                 if (pr.VendorID != null)
                 {
                     ViewBag.VendorName = entity.Vendors.FirstOrDefault(x => x.ID == pr.VendorID).Name;
@@ -777,6 +780,7 @@ namespace MoostBrand.Controllers
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
             ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status", pr.PaymentStatusID);
+            ViewBag.EncodedBy = new SelectList(employees,"ID","FullName",pr.EncodedBy);
             if (pr.VendorID != null)
             {
                 ViewBag.VendorName = entity.Vendors.FirstOrDefault(x => x.ID == pr.VendorID).Name;

@@ -17,6 +17,8 @@ namespace MoostBrand.Controllers
     {
         private MoostBrandEntities entity = new MoostBrandEntities();
 
+        
+
         #region Action
         // GET: StockTransferDirects
         [AccessCheckerForDisablingButtons(ModuleID = 4)]
@@ -252,14 +254,13 @@ namespace MoostBrand.Controllers
             var recID = entity.StockTransfers.Find(id);
             var items = entity.Inventories
                         .ToList()
-                        .FindAll(rd => rd.LocationCode == recID.LocationID && rd.InStock > 0) 
+                        .FindAll(rd => rd.LocationCode == recID.LocationID && rd.InStock > 0)
                         .Select(ed => new
                         {
                             ID = ed.ID,
                             Description = ed.Description
-                        }).OrderBy(p=>p.Description);
+                        }).OrderBy(p => p.Description);
 
-     
             ViewBag.InventoryID = new SelectList(items, "ID", "Description");
 
             return PartialView();
@@ -268,36 +269,33 @@ namespace MoostBrand.Controllers
       
         [AccessChecker(Action = 2, ModuleID = 4)]
         [HttpPost]
-        public ActionResult AddItemPartial(int id, StockTransferDetail stocktransferdetail)
+        public ActionResult AddItemPartial(int id, StockTransferDetail std)
         {
             try
             {
 
-                stocktransferdetail.StockTransferID = id;
-                stocktransferdetail.AprovalStatusID = 1;
-
-                #region COMMENT
-              
-                #endregion
-
-                var st1 = entity.StockTransferDetails.Where(s => s.StockTransferID == stocktransferdetail.StockTransferID && s.InventoryID == stocktransferdetail.InventoryID).ToList();
+                std.StockTransferID = id;
+                std.AprovalStatusID = 1;
 
 
-                if (stocktransferdetail.InventoryID != null)
+                var st1 = entity.StockTransferDetails.Where(s => s.StockTransferID == id && s.InventoryID == std.InventoryID).ToList();
+
+
+                if (std.InventoryID != null)
                 {
-                    if (st1.Count() >= 1)
+                    if (st1.Count() >=1)
                     {
                         TempData["PartialError"] = "Item is already in the list.";
                     }
                     else
                     {
-                        stocktransferdetail.IsSync = false;
-                        stocktransferdetail.ReferenceQuantity = stocktransferdetail.Quantity;
-                        entity.StockTransferDetails.Add(stocktransferdetail);
+                        std.IsSync = false;
+                        std.ReferenceQuantity = std.Quantity;
+                        entity.StockTransferDetails.Add(std);
                         entity.SaveChanges();
                     }
                 }
-               
+
 
             }
             catch (Exception ex)
@@ -705,6 +703,7 @@ namespace MoostBrand.Controllers
             // ViewBag.RequestedBy =
             ViewBag.UserID = UserID;
             ViewBag.AcctType = UserType;
+            ViewBag.IsApproved = stocktransfer.ApprovalStatu;
 
             int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
             int pageNumber = (page ?? 1);

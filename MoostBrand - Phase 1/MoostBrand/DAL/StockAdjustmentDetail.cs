@@ -26,7 +26,8 @@ namespace MoostBrand.DAL
 
         public bool? IsSync { get; set; }
 
-      
+        public virtual Item Items { get; set; }
+        public virtual Inventory Inventory { get; set; }
         public virtual StockAdjustment StockAdjustment { get; set; }
 
         public string GetItem

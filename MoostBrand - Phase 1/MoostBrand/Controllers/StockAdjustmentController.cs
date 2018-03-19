@@ -106,6 +106,7 @@ namespace MoostBrand.Controllers
             ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type","");
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName","");
             ViewBag.PostedBy = new SelectList(employees, "ID", "FullName","");
+            ViewBag.EncodedBy = new SelectList(employees,"ID","FullName","");
             ViewBag.ErrorDate = DateTime.Now.ToString("MM / dd / yyyy");
             ViewBag.Date = DateTime.Now.ToString("MMM/dd/yyyy");
             #endregion
@@ -166,6 +167,7 @@ namespace MoostBrand.Controllers
             ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type","");
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName","");
             ViewBag.PostedBy = new SelectList(employees, "ID", "FullName","");
+            ViewBag.EncodedBy = new SelectList(employees,"ID","FullName","");
             ViewBag.Date = DateTime.Now.ToString("MMM/dd/yyyy");
             ViewBag.PostedDate = DateTime.Now.ToString("MMM/dd/yyyy");
             #endregion
@@ -207,6 +209,7 @@ namespace MoostBrand.Controllers
                 ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type",adjust.TransactionTypeID);
                 ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", adjust.ApprovedBy);
                 ViewBag.PostedBy = new SelectList(employees, "ID", "FullName", adjust.PostedBy);
+                ViewBag.EncodedBy = new SelectList(employees,"ID","FullName",adjust.EncodedBy);
                 ViewBag.Date = DateTime.Now.ToString("MMM/dd/yyyy");
                 #endregion
 
@@ -259,6 +262,7 @@ namespace MoostBrand.Controllers
             ViewBag.TransactionTypeID = new SelectList(entity.TransactionTypes, "ID", "Type", adjust.TransactionTypeID);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", adjust.ApprovedBy);
             ViewBag.PostedBy = new SelectList(employees, "ID", "FullName", adjust.PostedBy);
+            ViewBag.EncodedBy = new SelectList(employees,"ID","FullName",adjust.EncodedBy);
             ViewBag.Date = DateTime.Now.ToString("MMM/dd/yyyy");
             ViewBag.PostedDate = DateTime.Now.ToString("MMM/dd/yyyy");
             #endregion
