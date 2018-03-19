@@ -45,7 +45,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("RequestedBy")
+                    @Html.DropDownList("RequestedBy",String.Empty)
                     @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -69,7 +69,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("LocationID")
+                    @Html.DropDownList("LocationID",String.Empty)
                     @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -81,7 +81,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("Destination")
+                    @Html.DropDownList("Destination",string.Empty)
                     @Html.ValidationMessageFor(model => model.Destination, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -117,7 +117,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("ReservationTypeID")
+                    @Html.DropDownList("ReservationTypeID",String.Empty)
                     @Html.ValidationMessageFor(model => model.ReservationTypeID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -129,7 +129,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("ReservedBy")
+                    @Html.DropDownList("ReservedBy",String.Empty)
                     @Html.ValidationMessageFor(model => model.ReservedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -142,7 +142,7 @@
                 </label>
                 <div class="col-md-6">
                     @*@Html.EditorFor(model => model.PaymentStatus, new { htmlAttributes = new { @class = "form-control" } })*@
-                    @Html.DropDownList("PaymentStatusID")
+                    @Html.DropDownList("PaymentStatusID",String.Empty)
                     @Html.ValidationMessageFor(model => model.PaymentStatusID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -180,7 +180,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("AuthorizedPerson")
+                    @Html.DropDownList("AuthorizedPerson",String.Empty)
                     @Html.ValidationMessageFor(model => model.AuthorizedPerson, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -192,7 +192,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("ValidatedBy")
+                    @Html.DropDownList("ValidatedBy",String.Empty)
                     @Html.ValidationMessageFor(model => model.ValidatedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -203,7 +203,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("ShipmentTypeID")
+                    @Html.DropDownList("ShipmentTypeID",String.Empty)
                     @Html.ValidationMessageFor(model => model.ShipmentTypeID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -233,7 +233,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("ApprovalStatus")
+                    @Html.DropDownList("ApprovalStatus",String.Empty)
                     @Html.ValidationMessageFor(model => model.ApprovalStatus, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -245,7 +245,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("ApprovedBy")
+                    @Html.DropDownList("ApprovedBy",String.Empty)
                     @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
                 </div>
             </div>

@@ -149,6 +149,18 @@
             </div>
 
             <div class="form-group">
+                @*@Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Encoded By
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("EncodedBy", String.Empty)
+                    @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
                 @*@Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <label class="control-label col-md-2">
                     Notes
@@ -317,6 +329,11 @@
         else if ($('#PostedDate').val() == '') {
             $('#PostedDate').css({ "border": "1px solid red" })
             _passed = '9';
+
+        }
+        else if ($('#EncodedBy').val() == '') {
+            $('#EncodedBy').css({ "border": "1px solid red" })
+            _passed = '10';
 
         }
 

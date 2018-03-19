@@ -107,7 +107,7 @@
                 </label>
                 @*@Html.LabelFor(model => model.RequestedDate, htmlAttributes: new { @class = "control-label col-md-2" })*@
                 <div class="col-md-6">
-                    @Html.EditorFor(model => model.RequestedDate, new { htmlAttributes = new { @class = "form-control date-picker" , @Value = Model.RequestedDate.ToString("MM/dd/yyyy") } })
+                    @Html.EditorFor(model => model.RequestedDate, new { htmlAttributes = new { @class = "form-control date-picker", @Value = Model.RequestedDate.ToString("MM/dd/yyyy") } })
                     @Html.ValidationMessageFor(model => model.RequestedDate, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -137,12 +137,12 @@
             </div>
 
             @*<div class="form-group">
-                @Html.LabelFor(model => model.DateRequired, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.TextBox("DateRequired", (string)ViewBag.DateRequired)
-                    @Html.ValidationMessageFor(model => model.DateRequired, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
+            @Html.LabelFor(model => model.DateRequired, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.TextBox("DateRequired", (string)ViewBag.DateRequired)
+                @Html.ValidationMessageFor(model => model.DateRequired, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
 
             <div id="pr">
                 @Html.Hidden("VendorID")
@@ -294,12 +294,12 @@
                 </div>
 
                 @*<div class="form-group">
-                    @Html.LabelFor(model => model.PlateNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.PlateNumber, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.PlateNumber, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+                @Html.LabelFor(model => model.PlateNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.PlateNumber, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PlateNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
                 <div class="form-group">
                     @*@Html.LabelFor(model => model.Others, htmlAttributes: new { @class = "control-label col-md-2" })*@
@@ -314,39 +314,39 @@
                 </div>
 
                 @*<div class="form-group">
-                    @Html.LabelFor(model => model.TimeDeparted, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.TimeDeparted, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.TimeDeparted, "", new { @class = "text-danger" })
-                    </div>
+                @Html.LabelFor(model => model.TimeDeparted, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.TimeDeparted, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TimeDeparted, "", new { @class = "text-danger" })
                 </div>
+            </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TimeArrived, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.TimeArrived, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.TimeArrived, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
+            <div class="form-group">
+                @Html.LabelFor(model => model.TimeArrived, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.TimeArrived, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TimeArrived, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
             </div>
 
             @*<div id="brcr">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Driver, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.Driver, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Driver, "", new { @class = "text-danger" })
-                    </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Driver, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.EditorFor(model => model.Driver, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Driver, "", new { @class = "text-danger" })
                 </div>
-            </div>*@
+            </div>
+        </div>*@
 
             @*<div class="form-group">
-                @Html.LabelFor(model => model.ApprovalStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.DropDownList("ApprovalStatus", String.Empty)
-                    @Html.ValidationMessageFor(model => model.ApprovalStatus, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
+            @Html.LabelFor(model => model.ApprovalStatus, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @Html.DropDownList("ApprovalStatus", String.Empty)
+                @Html.ValidationMessageFor(model => model.ApprovalStatus, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
 
             <div class="form-group">
                 @*@Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })*@
@@ -361,6 +361,18 @@
             </div>
 
             <div class="form-group">
+                @*@Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Encoded By
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("EncodedBy")
+                    @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-6">
                     @Html.TextAreaFor(model => model.Remarks, new { htmlAttributes = new { @class = "form-control" } })
@@ -371,7 +383,7 @@
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
                     <input type="button" value="Save" id="save" class="btn btn-green" />
-                    <input type="submit" value="Save" id ="submit" class="btn btn-green hidden" />
+                    <input type="submit" value="Save" id="submit" class="btn btn-green hidden" />
                     <a href='@Url.Action("Index")' class="btn btn-light-orange">
                         Back to List
                     </a>
@@ -490,6 +502,10 @@
         //    $('#Remarks').css({ "border": "1px solid red" })
         //    _passed = '23';
         //}
+        else if ($('#EncodedBy').val() == '') {
+            $('#EncodedBy').css({ "border": "1px solid red" })
+            _passed = '24';
+        }
         else
             _passed = "passed";
 

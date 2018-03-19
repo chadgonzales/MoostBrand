@@ -176,7 +176,7 @@ namespace MoostBrand.DAL
                     string refnumber = "";
                     if (Requisition.RefNumber != null)
                     {
-                        refnumber = entity.StockTransfers.FirstOrDefault(r=>r.RequisitionID ==RequisitionID.Value).TransferID;
+                        refnumber = entity.StockTransfers.FirstOrDefault(r=> r.RequisitionID == RequisitionID.Value).TransferID;
                     }
                    
                     return refnumber;

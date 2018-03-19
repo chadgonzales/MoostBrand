@@ -106,7 +106,8 @@ namespace MoostBrand.DAL
 
         public int? ApprovalStatus { get; set; }
 
-      
+        public int? EncodedBy { get; set; }
+
         public int? ApprovedBy { get; set; }
 
         public string Remarks { get; set; }
@@ -135,6 +136,8 @@ namespace MoostBrand.DAL
         public virtual Employee Employee2 { get; set; }
 
         public virtual Employee Employee3 { get; set; }
+
+        public virtual Employee Employee4 { get; set; }
 
         public virtual Location Location { get; set; }
 
