@@ -69,6 +69,7 @@ namespace MoostBrand.DAL
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAdjustmentDetail> StockAdjustmentDetails { get; set; }
 
+       
         public virtual TransactionType TransactionType { get; set; }
     }
 }

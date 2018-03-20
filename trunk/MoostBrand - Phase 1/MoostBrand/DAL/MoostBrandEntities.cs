@@ -310,6 +310,12 @@ namespace MoostBrand.DAL
                 .HasForeignKey(e => e.ItemID)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Inventory>()
+              .HasMany(e => e.StockAdjustmentDetails)
+              .WithRequired(e => e.Inventory)
+              .HasForeignKey(e => e.ItemID);
+
+
             modelBuilder.Entity<Item>()
                 .HasMany(e => e.RequisitionDetails1)
                 .WithOptional(e => e.Item1)
