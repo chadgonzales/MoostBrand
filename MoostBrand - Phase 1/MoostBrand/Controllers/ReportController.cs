@@ -1065,9 +1065,10 @@ namespace MoostBrand.Controllers
             return View();
         }
 
-        public ActionResult DiscrepancyReport(string dateFrom, string dateTo, int? vendor, int? location)
+        public ActionResult DiscrepancyReport(string dateFrom, string dateTo, int? brand,int? category, int? vendor, int? location, string itemcode, string itemdesc, int? encodedby,string refnum)
         {
             var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
+
             #region DROPDOWNS
             var loc = entity.Locations.Where(x => x.ID != 10)
                             .Select(x => new
@@ -1076,14 +1077,46 @@ namespace MoostBrand.Controllers
                                 Description = x.Description
                             });
 
+            //var itemcodes = from s in entity.Items
+            //                select new
+            //                {
+            //                    ID = s.ID,
+            //                    Code = s.Code
+            //                };
+            //var itemdescription = from s in entity.Items
+            //                      select new
+            //                      {
+            //                          ID = s.ID,
+            //                          Description = s.Description
+            //                      };
+            //var refnumber = from s in entity.Requisitions
+            //                      select new
+            //                      {
+            //                          ID = s.ID,
+            //                          RefNumber = s.RefNumber
+            //                      };
+            var employees1 = from s in entity.Employees
+                           select new
+                          {
+                               ID = s.ID,
+                               FullName = s.FirstName + " " + s.LastName
+                           };
 
+            //ViewBag.ItemCode = new SelectList(entity.Items.Select(x => x.Code), "ID", "Code");
+          //  ViewBag.ItemDescription = new SelectList(entity.Items.Select(x => x.Items).Distinct(), "Code", "Description");
+            ViewBag.ItemCode = new SelectList(entity.Items.Select(p => p.Code), "ID", "Code");
+            ViewBag.ItemDescription = new SelectList(entity.Items.Select(p => p.Description),"ID", "Description");
+            ViewBag.Brand = new SelectList(entity.Items.Select(p => p.Brand).Distinct(), "ID", "Description");
+            ViewBag.Category = new SelectList(entity.Items.Select(p => p.Category).Distinct(), "ID", "Description");
             ViewBag.Vendor = new SelectList(entity.Vendors.OrderBy(v => v.GeneralName), "ID", "GeneralName");
             ViewBag.Location = new SelectList(loc, "ID", "Description");
+            ViewBag.RefNumber = new SelectList(entity.Requisitions.Select(p => p.RefNumber),"ID", "RefNumber");
+            ViewBag.EncodedBy = new SelectList(employees1, "ID", "FullName", "");
             #endregion
             DateTime dtDateFrom = DateTime.Now.Date;
             DateTime dtDateTo = DateTime.Now;
 
-            string _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
+            string _sortbybrand = "Brand: ALL", _sortbydesc = "ItemDescription: ALL", _sortbyrefnum = "Reference Number: ALL", _sortbycode = "ItemCode: ALL", _sortbyencodedby = "EncodedBy: ALL", _sortbycategory ="Category: ALL",_sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
             if (!String.IsNullOrEmpty(dateFrom))
             {
                 dtDateFrom = Convert.ToDateTime(dateFrom).Date;
@@ -1098,6 +1131,65 @@ namespace MoostBrand.Controllers
 
             _lstReq = _lstReq.Where(r => r.Requisition.RequestedDate >= dtDateFrom && r.Requisition.RequestedDate <= dtDateTo).ToList();
 
+
+            if (!String.IsNullOrEmpty(itemcode))
+            {
+                //  var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
+                _lstReq = _lstReq.Where(p => p.Item.Code == itemcode ).ToList();
+                string _code = entity.Items.Find(itemcode).Code;
+                _sortbycode = "Code:" + _code;
+            }
+            if (!String.IsNullOrEmpty(itemcode))
+            {
+                //  var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
+                _lstReq = _lstReq.Where(p => p.Item.Description == itemdesc).ToList();
+                string _desc = entity.Items.Find(itemdesc).Description;
+                _sortbydesc = "Description:" + _desc;
+            }
+            if (!String.IsNullOrEmpty(itemcode))
+            {
+                //  var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
+                _lstReq = _lstReq.Where(p => p.Requisition.RefNumber == refnum).ToList();
+                string _refnum = entity.Requisitions.Find(refnum).RefNumber;
+                _sortbyrefnum = "Reference Number:" + _refnum;
+            }
+            //if (encodedby != null)
+            //{
+            //    //  var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
+            //    _lstReq = _lstReq.Where(p => p.Employee.EmployeeFullName==encodedby).ToList();
+            //    string _encoded = entity.Employees.Find(encodedby).EmployeeFullName;
+            //    _sortbyencodedby = "EncodedBy:" + _encoded;
+            //}
+            if (brand != null)
+            {
+                //  var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
+                _lstReq = _lstReq.Where(p => p.Item.BrandID == brand).ToList();
+                string _brand = entity.Brands.Find(brand).Description;
+                _sortbybrand = "Brand:" + _brand;
+            }
+            if (category != null)
+            {
+                // string _category = entity.Categories.Find(category).Description;
+                _lstReq = _lstReq.Where(p => p.Item.CategoryID == category).ToList();
+                string _category = entity.Categories.Find(category).Description;
+                _sortbycategory = "Category:" + _category;
+            }
+
+            if (vendor != null)
+            {
+                //  var items = entity.Items.Where(p => p.VendorCoding == vendor).Select(p => p.Code);
+                _lstReq = _lstReq.Where(p => p.Item.VendorCoding == vendor && p.Item.VendorCoding != null).ToList();
+                string _vendor = entity.Vendors.Find(vendor).Name;
+                _sortbyvendor = "Vendor:" + _vendor;
+            }
+
+            if (location != null)
+            {
+                _lstReq = _lstReq.Where(p => p.Requisition.LocationID == location).ToList();
+                string _location = entity.Locations.Find(location).Description;
+                _sortbylocation = "Location:" + _location;
+
+            }
 
             //if (vendor != null)
             //{
@@ -1260,6 +1352,133 @@ namespace MoostBrand.Controllers
 
             List<ReportParameter> _parameter = new List<ReportParameter>();
             _parameter.Add(new ReportParameter("DateRange", dtDateFrom.ToString("MMMM dd, yyyy") + " - " + dtDateTo.ToString("MMMM dd, yyyy")));
+            _parameter.Add(new ReportParameter("SortByBrand", _sortbybrand));
+            _parameter.Add(new ReportParameter("SortByCategory", _sortbycategory));
+            _parameter.Add(new ReportParameter("SortByVendor", _sortbyvendor));
+            _parameter.Add(new ReportParameter("SortByLocation", _sortbylocation));
+            _parameter.Add(new ReportParameter("SortByItemCode", _sortbycode));
+            _parameter.Add(new ReportParameter("SortByItemDescription", _sortbydesc));
+            _parameter.Add(new ReportParameter("SortByReferenceNumber", _sortbyrefnum));
+            //_parameter.Add(new ReportParameter("SortByEncodedBy", _sortbyencodedby));
+            reportViewer.LocalReport.DataSources.Add(_rds);
+            reportViewer.LocalReport.Refresh();
+            reportViewer.LocalReport.SetParameters(_parameter);
+
+            ViewBag.ReportViewer = reportViewer;
+
+            ViewBag.DateFrom = dtDateFrom.ToString("MM/dd/yyyy");
+            ViewBag.DateTo = dtDateTo.ToString("MM/dd/yyyy");
+
+            return View();
+        }
+  
+    public ActionResult StockAdjustmentReport(string dateFrom, string dateTo, int? vendor, int? brand, int? category, int? location)
+        {
+            var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
+            #region DROPDOWNS
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Description = x.Description
+                            });
+
+            ViewBag.Brand = new SelectList(entity.Items.Select(p => p.Brand).Distinct(), "ID", "Description");
+            ViewBag.Category = new SelectList(entity.Items.Select(p => p.Category).Distinct(), "ID", "Description");
+            ViewBag.Vendor = new SelectList(entity.Vendors.OrderBy(v => v.GeneralName), "ID", "GeneralName");
+            ViewBag.Location = new SelectList(loc, "ID", "Description");
+            #endregion
+            DateTime dtDateFrom = DateTime.Now.Date;
+            DateTime dtDateTo = DateTime.Now;
+
+            string _sortbybrand = "Brand: ALL", _sortbycategory = "Category: ALL", _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
+            if (!String.IsNullOrEmpty(dateFrom))
+            {
+                dtDateFrom = Convert.ToDateTime(dateFrom).Date;
+            }
+
+            if (!String.IsNullOrEmpty(dateTo))
+            {
+                dtDateTo = Convert.ToDateTime(dateTo);
+            }
+
+            var _lst = entity.StockAdjustmentDetails.ToList();
+
+            _lst = _lst.Where(r => r.StockAdjustment.ErrorDate >= dtDateFrom && r.StockAdjustment.ErrorDate <= dtDateTo.AddDays(1)).ToList();
+
+
+            if (brand != null)
+            {
+                //  var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
+                _lst = _lst.Where(p => p.Items.BrandID == brand).ToList();
+                string _brand = entity.Brands.Find(brand).Description;
+                _sortbybrand = "Brand:" + _brand;
+            }
+
+            if (category != null)
+            {
+                // string _category = entity.Categories.Find(category).Description;
+                _lst = _lst.Where(p => p.Items.CategoryID == category).ToList();
+                string _category = entity.Categories.Find(category).Description;
+                _sortbycategory = "Category:" + _category;
+            }
+
+            if (vendor != null)
+            {
+                //  var items = entity.Items.Where(p => p.VendorCoding == vendor).Select(p => p.Code);
+                _lst = _lst.Where(p => p.Items.VendorCoding == vendor && p.Items.VendorCoding != null).ToList();
+                string _vendor = entity.Vendors.Find(vendor).Name;
+                _sortbyvendor = "Vendor:" + _vendor;
+            }
+
+            if (location != null)
+            {
+                _lst = _lst.Where(p => p.StockAdjustment.LocationID == location).ToList();
+                string _location = entity.Locations.Find(location).Description;
+                _sortbylocation = "Location:" + _location;
+
+            }
+
+         
+            var lstStockAdjustment = (from i in _lst
+                          select new
+                          {
+                              PostedDate = i.StockAdjustment.PostedDate != null ? i.StockAdjustment.PostedDate.ToString() : "",
+                              orderbyDate = i.StockAdjustment.ErrorDate,
+                              ErrorDate = i.StockAdjustment.ErrorDate.ToString(),
+                              RefNumber = i.StockAdjustment != null ? i.StockAdjustment.ReferenceNo : "",
+                              Brand = i.Inventory.Items.Brand.Description ?? "",
+                              ItemCode = i.Inventory.ItemCode != null ? i.Inventory.ItemCode : "",
+                              ItemDesc = i.Inventory.Description != null ? i.Inventory.Description : "",
+                              UOM = i.Inventory.InventoryUoM != null ? i.Inventory.InventoryUoM : "",
+                              InStock = i.Inventory.InStock,
+                              OldQuantity = i.OldQuantity.Value,
+                              NewQuantity = i.NewQuantity.Value,
+                              Location = i.StockAdjustment.Location != null ? i.StockAdjustment.Location.Description : i.StockAdjustment.Location.Description,
+                              EncodedBy = i.StockAdjustment.Employee1 != null ? i.StockAdjustment.Employee1.FirstName + ' ' + i.StockAdjustment.Employee1.LastName : "",
+                              ApprovedBy = i.StockAdjustment.Employee2 != null ? i.StockAdjustment.Employee2.FirstName + ' ' + i.StockAdjustment.Employee2.LastName : "",
+                              Remarks = i.StockAdjustment.Comments
+                          }).ToList();
+
+
+
+            ReportViewer reportViewer = new ReportViewer();
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+            ReportDataSource _rds = new ReportDataSource();
+            _rds.Name = "dsAdjust";
+            _rds.Value = lstStockAdjustment.OrderBy(p => p.orderbyDate);
+
+            reportViewer.KeepSessionAlive = false;
+            reportViewer.LocalReport.DataSources.Clear();
+            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Views\Report\rdlc\Adjust.rdlc";
+
+            List<ReportParameter> _parameter = new List<ReportParameter>();
+            _parameter.Add(new ReportParameter("DateRange", dtDateFrom.ToString("MMMM dd, yyyy") + " - " + dtDateTo.ToString("MMMM dd, yyyy")));
+            _parameter.Add(new ReportParameter("SortByBrand", _sortbybrand));
+            _parameter.Add(new ReportParameter("SortByCategory", _sortbycategory));
+            _parameter.Add(new ReportParameter("SortByVendor", _sortbyvendor));
+            _parameter.Add(new ReportParameter("SortByLocation", _sortbylocation));
 
             reportViewer.LocalReport.DataSources.Add(_rds);
             reportViewer.LocalReport.Refresh();
@@ -1272,7 +1491,6 @@ namespace MoostBrand.Controllers
 
             return View();
         }
-
 
     }
 }

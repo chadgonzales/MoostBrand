@@ -12,6 +12,7 @@
         public Inventory()
         {
             StockTransferDetails = new HashSet<StockTransferDetail>();
+            StockAdjustmentDetails = new HashSet<StockAdjustmentDetail>();
         }
         public int ID { get; set; }
 
@@ -69,5 +70,7 @@
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransferDetail> StockTransferDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<StockAdjustmentDetail> StockAdjustmentDetails { get; set; }
     }
 }
