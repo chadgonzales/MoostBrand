@@ -1548,7 +1548,7 @@ namespace MoostBrand.Controllers
         //    return View();
         //}
 
-        public ActionResult DiscrepancyReport(string dateFrom, string dateTo, int? brand, int? category, int? vendor, int? location, string itemcode, string itemdesc, int? encodedby, string refnum)
+        public ActionResult DiscrepancyReport(string dateFrom, string dateTo, int? brand, int? category, int? vendor, int? location, int? itemcode, int? itemdesc, int? encodedby, int? refnum)
         {
             var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
 
@@ -1613,27 +1613,27 @@ namespace MoostBrand.Controllers
             _lstReq = _lstReq.Where(r => r.Requisition.RequestedDate >= dtDateFrom && r.Requisition.RequestedDate <= dtDateTo).ToList();
 
 
-            if (!String.IsNullOrEmpty(itemcode))
+            if (itemcode != null)
             {
-                _lstReq = _lstReq.Where(p => p.Item.Code == itemcode).ToList();
+                _lstReq = _lstReq.Where(p => p.Item.ID == itemcode).ToList();
                 string _code = entity.Items.Find(itemcode).Code;
                 _sortbycode = "Code:" + _code;
             }
-            if (!String.IsNullOrEmpty(itemdesc))
+            if (itemdesc != null)
             {
-                _lstReq = _lstReq.Where(p => p.Item.Description == itemdesc).ToList();
+                _lstReq = _lstReq.Where(p => p.Item.ID == itemdesc).ToList();
                 string _desc = entity.Items.Find(itemdesc).Description;
                 _sortbydesc = "Description:" + _desc;
             }
-            if (!String.IsNullOrEmpty(refnum))
+            if (refnum != null)
             {
-                _lstReq = _lstReq.Where(p => p.Requisition.RefNumber == refnum).ToList();
+                _lstReq = _lstReq.Where(p => p.Requisition.ID == refnum).ToList();
                 string _refnum = entity.Requisitions.Find(refnum).RefNumber;
                 _sortbyrefnum = "Reference Number:" + _refnum;
             }
             if (encodedby != null)
             {
-                _lstReq = _lstReq.Where(p => p.Requisition.EncodedBy == encodedby).ToList();
+                _lstReq = _lstReq.Where(p => p.Requisition.ID== encodedby).ToList();
                 string _encoded = entity.Employees.Find(encodedby).EmployeeFullName;
                 _sortbyencodedby = "EncodedBy:" + _encoded;
             }
@@ -1904,7 +1904,7 @@ namespace MoostBrand.Controllers
                               OldQuantity = i.OldQuantity.Value,
                               NewQuantity = i.NewQuantity.Value,
                               Location = i.StockAdjustment.Location != null ? i.StockAdjustment.Location.Description : i.StockAdjustment.Location.Description,
-                              EncodedBy = i.StockAdjustment.Employee1 != null ? i.StockAdjustment.Employee1.FirstName + ' ' + i.StockAdjustment.Employee1.LastName : "",
+                              EncodedBy = i.StockAdjustment.Employee4 != null ? i.StockAdjustment.Employee4.FirstName + ' ' + i.StockAdjustment.Employee1.LastName : "",
                               ApprovedBy = i.StockAdjustment.Employee2 != null ? i.StockAdjustment.Employee2.FirstName + ' ' + i.StockAdjustment.Employee2.LastName : "",
                               Remarks = i.StockAdjustment.Comments
                           }).ToList();
