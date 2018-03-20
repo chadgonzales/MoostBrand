@@ -159,11 +159,15 @@ namespace MoostBrand.Controllers
                 {
                     entity.Brands.Remove(brand);
                     entity.SaveChanges();
+                  
                 }
-                catch { }
+                catch{
+                    ModelState.AddModelError(String.Empty, "Brand is tagged in an item. Delete Failed!");
+                    return View(brand);
+                }
                 // TODO: Add delete logic here
-
                 return RedirectToAction("Index");
+
             }
             catch
             {
