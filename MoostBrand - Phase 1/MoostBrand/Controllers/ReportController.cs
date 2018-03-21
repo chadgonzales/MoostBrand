@@ -482,7 +482,7 @@ namespace MoostBrand.Controllers
             string _sortbycode = "Item Code: ALL", _sortbydesc = "Item Description: ALL", _sortbyLocation = "Location: ALL";
 
             DateTime dt = Convert.ToDateTime("12/10/2017").Date;
-            var _lst = entity.StockLedgers.Where(p => p.Date >= dt).ToList();
+            var _lst = entity.StockLedgers.Where(p => p.Date < dt).ToList();
 
             if (!String.IsNullOrEmpty(itemcode))
             {
