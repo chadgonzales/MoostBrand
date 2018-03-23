@@ -18,6 +18,7 @@ namespace MoostBrand.DAL
             RequisitionDetails = new HashSet<RequisitionDetail>();
             RequisitionDetails1 = new HashSet<RequisitionDetail>();
             StockAdjustmentDetails = new HashSet<StockAdjustmentDetail>();
+       
         }
 
         public int ID { get; set; }
@@ -110,7 +111,7 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAdjustmentDetail> StockAdjustmentDetails { get; set; }
-
+      
 
         [Display(Name = "Upload Image")]
         [ValidateImage]

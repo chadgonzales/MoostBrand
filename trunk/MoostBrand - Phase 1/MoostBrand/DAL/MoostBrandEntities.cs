@@ -315,6 +315,11 @@ namespace MoostBrand.DAL
               .WithRequired(e => e.Inventory)
               .HasForeignKey(e => e.ItemID);
 
+            modelBuilder.Entity<Inventory>()
+          .HasMany(e => e.RequisitionDetails)
+          .WithRequired(e => e.Inventory)
+          .HasForeignKey(e => e.ItemID);
+
 
             modelBuilder.Entity<Item>()
                 .HasMany(e => e.RequisitionDetails1)
@@ -326,11 +331,7 @@ namespace MoostBrand.DAL
                .WithRequired(e => e.Items)
                .HasForeignKey(e => e.ItemID);
 
-            modelBuilder.Entity<Inventory>()
-                .HasMany(e => e.StockAdjustmentDetails)
-                .WithRequired(e => e.Inventory)
-                .HasForeignKey(e => e.ItemID);
-
+          
             modelBuilder.Entity<Location>()
                 .HasMany(e => e.Inventories)
                 .WithOptional(e => e.Location)

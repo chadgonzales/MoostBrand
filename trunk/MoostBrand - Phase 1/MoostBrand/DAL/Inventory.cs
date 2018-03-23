@@ -13,6 +13,7 @@
         {
             StockTransferDetails = new HashSet<StockTransferDetail>();
             StockAdjustmentDetails = new HashSet<StockAdjustmentDetail>();
+            RequisitionDetails = new HashSet<RequisitionDetail>();
         }
         public int ID { get; set; }
 
@@ -65,12 +66,16 @@
 
         public virtual InventoryStatu InventoryStatu { get; set; }
         public virtual Location Location { get; set; }
-
+      
         public virtual Item Items { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransferDetail> StockTransferDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockAdjustmentDetail> StockAdjustmentDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RequisitionDetail> RequisitionDetails { get; set; }
+
+
     }
 }

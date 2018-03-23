@@ -1,5 +1,20 @@
 ﻿@using ReportViewerForMvc
 
+<script type="text/javascript">
+    function DateCheck() {
+        var StartDate = document.getElementById('txtStartDate').value;
+        var EndDate = document.getElementById('txtEndDate').value;
+        var eDate = new Date(EndDate);
+        var sDate = new Date(StartDate);
+        if (StartDate != '' && EndDate != '' && sDate > eDate) {
+            alert("Please ensure that the End Date is greater than or equal to the Start Date.");
+            $("#btn").addClass('disabled');
+            return false;
+        } else {
+            $("#btn").removeClass('disabled');
+        }
+    }
+</script>
 
     @{
         ViewBag.Title = "StockAdjustmentReport";
@@ -73,12 +88,46 @@
                 </div>
             </div>
 
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">ItemCode</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("itemcode", (IEnumerable<SelectListItem>)ViewBag.ItemCode, "all", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">ItemDescription</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("itemdesc", (IEnumerable<SelectListItem>)ViewBag.ItemDescription, "all", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">EncodedBy</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("encodedby", (IEnumerable<SelectListItem>)ViewBag.EncodedBy, "all", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Reference Number</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("refnum", (IEnumerable<SelectListItem>)ViewBag.RefNumber, "all", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
 
 
 
             <div class="col-md-4 col-md-push-6 no-padding">
                 <div class="form-group">
-                    <input type="submit" value="Submit" class="btn btn-dark-blue pull-right" />
+                    <input type="submit" id="btn" value="Submit" class="btn btn-dark-blue pull-right" />
                 </div>
             </div>
 

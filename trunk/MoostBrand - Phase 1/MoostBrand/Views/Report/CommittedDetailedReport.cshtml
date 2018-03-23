@@ -16,24 +16,22 @@
     }
 </script>
 
+    @{
+        ViewBag.Title = "CommittedDetailedReport";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
 
-@{
-    ViewBag.Title = "DiscrepancyReport";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-
-<div class="panel-heading">
-    <h4 class="panel-title">Discrepancy Report</h4>
-</div>
+    <div class="panel-heading">
+        <h4 class="panel-title">Committed Detailed Report</h4>
+    </div>
 
 
-<div class="panel-body">
+    <div class="panel-body">
 
-    <div class="clearfix"></div>
+        <div class="clearfix"></div>
 
-    @using (Html.BeginForm())
-    {
+        @using (Html.BeginForm())
+        {
         <div class="form-horizontal" style="margin-bottom:16px;">
 
             <div class="col-md-6">
@@ -52,8 +50,6 @@
                     </div>
                 </div>
             </div>
-            
-
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label col-md-3">Brand</label>
@@ -72,7 +68,6 @@
                 </div>
             </div>
 
-          
 
             <div class="col-md-6">
                 <div class="form-group">
@@ -82,7 +77,7 @@
                     </div>
                 </div>
             </div>
-            
+
 
             <div class="col-md-6">
                 <div class="form-group">
@@ -101,7 +96,7 @@
                     </div>
                 </div>
             </div>
-           
+
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label col-md-3">ItemDescription</label>
@@ -111,14 +106,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="control-label col-md-3">EncodedBy</label>
-                    <div class="col-md-6">
-                        @Html.DropDownList("encodedby", (IEnumerable<SelectListItem>)ViewBag.EncodedBy, "all", new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
+          
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="control-label col-md-3">Reference Number</label>
@@ -127,23 +115,33 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">Sales Person</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("salesperson", (IEnumerable<SelectListItem>)ViewBag.SalesPerson, "all", new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
 
-            
-            <div class="col-md-4 col-md-push-6 no-padding">
+
+
+            <div class="col-md-3 col-md-push-6 no-padding">
                 <div class="form-group">
                     <input type="submit" id="btn" value="Submit" class="btn btn-dark-blue pull-right" />
                 </div>
             </div>
-          
+
 
             <div class="clearfix"></div>
 
         </div>
-    }
+        }
 
-    <!--#ReportViewer1-->
-    <div class="report-viewer">
-        @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { @style = "border: none; width:100% !important;" })
+        <!--#ReportViewer1-->
+        <div class="report-viewer">
+            @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { @style = "border: none; width:100% !important;" })
+        </div>
+
     </div>
 
-</div>

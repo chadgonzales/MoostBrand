@@ -1178,7 +1178,7 @@
         <Top>6.54844cm</Top>
         <Left>0.28223cm</Left>
         <Height>0.5in</Height>
-        <Width>14.43701in</Width>
+        <Width>14.437in</Width>
         <ZIndex>5</ZIndex>
         <Style>
           <Border>
@@ -1205,10 +1205,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>DateRange</rd:DefaultName>
-        <Top>2.01562in</Top>
-        <Left>0.35181in</Left>
+        <Top>2.04318in</Top>
+        <Left>0.11111in</Left>
         <Height>0.25in</Height>
-        <Width>2.375in</Width>
+        <Width>1.89472in</Width>
         <ZIndex>6</ZIndex>
         <Style>
           <Border>
@@ -1239,10 +1239,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>DateRange</rd:DefaultName>
-        <Top>2.01562in</Top>
-        <Left>2.79625in</Left>
+        <Top>2.04318in</Top>
+        <Left>2.07528in</Left>
         <Height>0.25in</Height>
-        <Width>2.375in</Width>
+        <Width>1.97917in</Width>
         <ZIndex>7</ZIndex>
         <Style>
           <Border>
@@ -1273,10 +1273,10 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>DateRange</rd:DefaultName>
-        <Top>2.01562in</Top>
-        <Left>6.81835in</Left>
+        <Top>2.04318in</Top>
+        <Left>4.12389in</Left>
         <Height>0.25in</Height>
-        <Width>2.375in</Width>
+        <Width>1.89583in</Width>
         <ZIndex>8</ZIndex>
         <Style>
           <Border>
@@ -1307,11 +1307,131 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>DateRange</rd:DefaultName>
-        <Top>2.01562in</Top>
-        <Left>9.32655in</Left>
+        <Top>2.04318in</Top>
+        <Left>6.08917in</Left>
         <Height>0.25in</Height>
-        <Width>1.46054in</Width>
+        <Width>1.14804in</Width>
         <ZIndex>9</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox13">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!SortByItemCode.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox13</rd:DefaultName>
+        <Top>5.22468cm</Top>
+        <Left>18.55891cm</Left>
+        <Height>0.6cm</Height>
+        <Width>3.39959cm</Width>
+        <ZIndex>10</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox15">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!SortByItemDescription.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox15</rd:DefaultName>
+        <Top>5.22468cm</Top>
+        <Left>22.13488cm</Left>
+        <Height>0.6cm</Height>
+        <Width>6.29081cm</Width>
+        <ZIndex>11</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox16">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!SortByReferenceNumber.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox16</rd:DefaultName>
+        <Top>5.22468cm</Top>
+        <Left>28.60208cm</Left>
+        <Height>0.6cm</Height>
+        <Width>4.80188cm</Width>
+        <ZIndex>12</ZIndex>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+          <PaddingLeft>2pt</PaddingLeft>
+          <PaddingRight>2pt</PaddingRight>
+          <PaddingTop>2pt</PaddingTop>
+          <PaddingBottom>2pt</PaddingBottom>
+        </Style>
+      </Textbox>
+      <Textbox Name="Textbox17">
+        <CanGrow>true</CanGrow>
+        <KeepTogether>true</KeepTogether>
+        <Paragraphs>
+          <Paragraph>
+            <TextRuns>
+              <TextRun>
+                <Value>=Parameters!SortByEncodedBy.Value</Value>
+                <Style />
+              </TextRun>
+            </TextRuns>
+            <Style />
+          </Paragraph>
+        </Paragraphs>
+        <rd:DefaultName>Textbox17</rd:DefaultName>
+        <Top>5.22468cm</Top>
+        <Left>33.58034cm</Left>
+        <Height>0.6cm</Height>
+        <Width>4.00812cm</Width>
+        <ZIndex>13</ZIndex>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1326,7 +1446,7 @@
     <Height>4.28125in</Height>
     <Style />
   </Body>
-  <Width>15.15254in</Width>
+  <Width>17.50671in</Width>
   <Page>
     <PageHeight>29.7cm</PageHeight>
     <PageWidth>21cm</PageWidth>
@@ -1447,6 +1567,28 @@
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
     <ReportParameter Name="SortByLocation">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="SortByItemCode">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="SortByItemDescription">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="SortByReferenceNumber">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="SortByEncodedBy">
       <DataType>String</DataType>
       <Nullable>true</Nullable>
       <AllowBlank>true</AllowBlank>
