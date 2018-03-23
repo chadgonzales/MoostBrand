@@ -50,7 +50,7 @@ namespace MoostBrand.DAL
         public virtual ApprovalStatu ApprovalStatu { get; set; }
 
         public virtual Item Item { get; set; }
-       
+        public virtual Inventory Inventory { get; set; }
 
         public virtual Item Item1 { get; set; }
 

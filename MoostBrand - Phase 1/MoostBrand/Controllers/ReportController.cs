@@ -1642,6 +1642,8 @@ namespace MoostBrand.Controllers
                 _lstReq = _lstReq.Where(p => p.Item.BrandID == brand).ToList();
                 string _brand = entity.Brands.Find(brand).Description;
                 _sortbybrand = "Brand:" + _brand;
+
+               
             }
             if (category != null)
             {
@@ -1808,7 +1810,7 @@ namespace MoostBrand.Controllers
             _parameter.Add(new ReportParameter("SortByItemCode", _sortbycode));
             _parameter.Add(new ReportParameter("SortByItemDescription", _sortbydesc));
             _parameter.Add(new ReportParameter("SortByReferenceNumber", _sortbyrefnum));
-            //_parameter.Add(new ReportParameter("SortByEncodedBy", _sortbyencodedby));
+            _parameter.Add(new ReportParameter("SortByEncodedBy", _sortbyencodedby));
             reportViewer.LocalReport.DataSources.Add(_rds);
             reportViewer.LocalReport.Refresh();
             reportViewer.LocalReport.SetParameters(_parameter);
@@ -1821,7 +1823,7 @@ namespace MoostBrand.Controllers
             return View();
         }
 
-        public ActionResult StockAdjustmentReport(string dateFrom, string dateTo, int? vendor, int? brand, int? category, int? location)
+        public ActionResult StockAdjustmentReport(string dateFrom, string dateTo, int? brand, int? category, int? vendor, int? location, int? itemcode, int? itemdesc, int? encodedby, int? refnum)
         {
             var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
             #region DROPDOWNS
@@ -1832,15 +1834,45 @@ namespace MoostBrand.Controllers
                                 Description = x.Description
                             });
 
+            var itemcodes = from s in entity.Items
+                            select new
+                            {
+                                ID = s.ID,
+                                Code = s.Code
+                            };
+            var itemdescription = from s in entity.Items
+                                  select new
+                                  {
+                                      ID = s.ID,
+                                      Description = s.Description
+                                  };
+            var refnumber = from s in entity.StockAdjustments
+                            select new
+                            {
+                                ID = s.ID,
+                                ReferenceNo = s.ReferenceNo
+                            };
+            var employees1 = from s in entity.Employees
+                             select new
+                             {
+                                 ID = s.ID,
+                                 FullName = s.FirstName + " " + s.LastName
+                             };
+
+            ViewBag.ItemCode = new SelectList(itemcodes, "ID", "Code");
+            ViewBag.ItemDescription = new SelectList(itemdescription, "ID", "Description");
             ViewBag.Brand = new SelectList(entity.Items.Select(p => p.Brand).Distinct(), "ID", "Description");
             ViewBag.Category = new SelectList(entity.Items.Select(p => p.Category).Distinct(), "ID", "Description");
             ViewBag.Vendor = new SelectList(entity.Vendors.OrderBy(v => v.GeneralName), "ID", "GeneralName");
             ViewBag.Location = new SelectList(loc, "ID", "Description");
+            ViewBag.RefNumber = new SelectList(refnumber, "ID", "ReferenceNo");
+            ViewBag.EncodedBy = new SelectList(employees1, "ID", "FullName");
+
             #endregion
             DateTime dtDateFrom = DateTime.Now.Date;
             DateTime dtDateTo = DateTime.Now;
 
-            string _sortbybrand = "Brand: ALL", _sortbycategory = "Category: ALL", _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
+            string _sortbybrand = "Brand: ALL", _sortbydesc = "ItemDescription: ALL", _sortbyrefnum = "Reference Number: ALL", _sortbycode = "ItemCode: ALL", _sortbyencodedby = "EncodedBy: ALL", _sortbycategory = "Category: ALL", _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
             if (!String.IsNullOrEmpty(dateFrom))
             {
                 dtDateFrom = Convert.ToDateTime(dateFrom).Date;
@@ -1855,13 +1887,37 @@ namespace MoostBrand.Controllers
 
             _lst = _lst.Where(r => r.StockAdjustment.ErrorDate >= dtDateFrom && r.StockAdjustment.ErrorDate <= dtDateTo.AddDays(1)).ToList();
 
-
+            if (itemcode != null)
+            {
+                _lst = _lst.Where(p => p.Items.ID == itemcode).ToList();
+                string _code = entity.Items.Find(itemcode).Code;
+                _sortbycode = "Code:" + _code;
+            }
+            if (itemdesc != null)
+            {
+                _lst = _lst.Where(p => p.Items.ID == itemdesc).ToList();
+                string _desc = entity.Items.Find(itemdesc).Description;
+                _sortbydesc = "Description:" + _desc;
+            }
+            if (refnum != null)
+            {
+                _lst = _lst.Where(p => p.StockAdjustment.ID == refnum).ToList();
+                string _refnum = entity.StockAdjustments.Find(refnum).ReferenceNo;
+                _sortbyrefnum = "Reference Number:" + _refnum;
+            }
+            if (encodedby != null)
+            {
+                _lst = _lst.Where(p => p.StockAdjustment.ID == encodedby).ToList();
+                string _encoded = entity.Employees.Find(encodedby).EmployeeFullName;
+                _sortbyencodedby = "EncodedBy:" + _encoded;
+            }
             if (brand != null)
             {
                 //  var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
                 _lst = _lst.Where(p => p.Items.BrandID == brand).ToList();
                 string _brand = entity.Brands.Find(brand).Description;
                 _sortbybrand = "Brand:" + _brand;
+
             }
 
             if (category != null)
@@ -1887,28 +1943,30 @@ namespace MoostBrand.Controllers
                 _sortbylocation = "Location:" + _location;
 
             }
+          
 
-         
+
             var lstStockAdjustment = (from i in _lst
-                          select new
+                                      select new
                           {
+
                               PostedDate = i.StockAdjustment.PostedDate != null ? i.StockAdjustment.PostedDate.ToString() : "",
-                              orderbyDate = i.StockAdjustment.ErrorDate,
-                              ErrorDate = i.StockAdjustment.ErrorDate.ToString(),
+                              orderbyDate = i.StockAdjustment.ErrorDate.ToString(),
+                              ErrorDate = i.StockAdjustment.ErrorDate,
                               RefNumber = i.StockAdjustment != null ? i.StockAdjustment.ReferenceNo : "",
-                              Brand = i.Inventory.Items.Brand.Description ?? "",
+                              Brand = i.Inventory.Items.Brand !=null ? i.Inventory.Items.Brand.Description : "",
                               ItemCode = i.Inventory.ItemCode != null ? i.Inventory.ItemCode : "",
-                              ItemDesc = i.Inventory.Description != null ? i.Inventory.Description : "",
+                              ItemDesc = i.Inventory.Items.Description != null ? i.Inventory.Description : "",
                               UOM = i.Inventory.InventoryUoM != null ? i.Inventory.InventoryUoM : "",
                               InStock = i.Inventory.InStock,
                               OldQuantity = i.OldQuantity.Value,
                               NewQuantity = i.NewQuantity.Value,
                               Location = i.StockAdjustment.Location != null ? i.StockAdjustment.Location.Description : i.StockAdjustment.Location.Description,
-                              EncodedBy = i.StockAdjustment.Employee4 != null ? i.StockAdjustment.Employee4.FirstName + ' ' + i.StockAdjustment.Employee1.LastName : "",
+                              EncodedBy = i.StockAdjustment.Employee4 != null ? i.StockAdjustment.Employee4.FirstName + ' ' + i.StockAdjustment.Employee4.LastName : "",
                               ApprovedBy = i.StockAdjustment.Employee2 != null ? i.StockAdjustment.Employee2.FirstName + ' ' + i.StockAdjustment.Employee2.LastName : "",
                               Remarks = i.StockAdjustment.Comments
                           }).ToList();
-
+       
 
 
             ReportViewer reportViewer = new ReportViewer();
@@ -1928,6 +1986,191 @@ namespace MoostBrand.Controllers
             _parameter.Add(new ReportParameter("SortByCategory", _sortbycategory));
             _parameter.Add(new ReportParameter("SortByVendor", _sortbyvendor));
             _parameter.Add(new ReportParameter("SortByLocation", _sortbylocation));
+            _parameter.Add(new ReportParameter("SortByItemCode", _sortbycode));
+            _parameter.Add(new ReportParameter("SortByItemDescription", _sortbydesc));
+            _parameter.Add(new ReportParameter("SortByReferenceNumber", _sortbyrefnum));
+            _parameter.Add(new ReportParameter("SortByEncodedBy", _sortbyencodedby));
+
+            reportViewer.LocalReport.DataSources.Add(_rds);
+            reportViewer.LocalReport.Refresh();
+            reportViewer.LocalReport.SetParameters(_parameter);
+
+            ViewBag.ReportViewer = reportViewer;
+
+            ViewBag.DateFrom = dtDateFrom.ToString("MM/dd/yyyy");
+            ViewBag.DateTo = dtDateTo.ToString("MM/dd/yyyy");
+
+            return View();
+        }
+        public ActionResult CommittedDetailedReport(string dateFrom, string dateTo, int? brand, int? category, int? vendor, int? location, int? itemcode, int? itemdesc, int? salesperson, int? refnum)
+        {
+            var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
+            #region DROPDOWNS
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Description = x.Description
+                            });
+
+            var itemcodes = from s in entity.Items
+                            select new
+                            {
+                                ID = s.ID,
+                                Code = s.Code
+                            };
+            var itemdescription = from s in entity.Items
+                                  select new
+                                  {
+                                      ID = s.ID,
+                                      Description = s.Description
+                                  };
+            var refnumber = from s in entity.Requisitions
+                            select new
+                            {
+                                ID = s.ID,
+                                RefNumber = s.RefNumber
+                            };
+            var slsperson = from s in entity.Employees
+                             select new
+                             {
+                                 ID = s.ID,
+                                 Fullname = s.FirstName + " " + s.LastName
+                             };
+
+            ViewBag.ItemCode = new SelectList(itemcodes, "ID", "Code");
+            ViewBag.ItemDescription = new SelectList(itemdescription, "ID", "Description");
+            ViewBag.Brand = new SelectList(entity.Items.Select(p => p.Brand).Distinct(), "ID", "Description");
+            ViewBag.Category = new SelectList(entity.Items.Select(p => p.Category).Distinct(), "ID", "Description");
+            ViewBag.Vendor = new SelectList(entity.Vendors.OrderBy(v => v.GeneralName), "ID", "GeneralName");
+            ViewBag.Location = new SelectList(loc, "ID", "Description");
+            ViewBag.RefNumber = new SelectList(refnumber, "ID", "RefNumber");
+            ViewBag.SalesPerson = new SelectList(slsperson, "ID", "Fullname");
+
+            #endregion
+            DateTime dtDateFrom = DateTime.Now.Date;
+            DateTime dtDateTo = DateTime.Now;
+
+            string _sortbybrand = "Brand: ALL", _sortbydesc = "ItemDescription: ALL", _sortbyrefnum = "Reference Number: ALL", _sortbycode = "ItemCode: ALL", _sortbysalesperson = "SalesPerson: ALL", _sortbycategory = "Category: ALL", _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
+            if (!String.IsNullOrEmpty(dateFrom))
+            {
+                dtDateFrom = Convert.ToDateTime(dateFrom).Date;
+            }
+
+            if (!String.IsNullOrEmpty(dateTo))
+            {
+                dtDateTo = Convert.ToDateTime(dateTo);
+            }
+
+            var _lst = entity.RequisitionDetails.Where(p => p.Requisition.ApprovalStatus==2).ToList();
+
+            _lst = _lst.Where(r => r.Requisition.RequestedDate >= dtDateFrom && r.Requisition.RequestedDate <= dtDateTo.AddDays(1)).ToList();
+
+            if (itemcode != null)
+            {
+                _lst = _lst.Where(p => p.Item.ID == itemcode).ToList();
+                string _code = entity.Items.Find(itemcode).Code;
+                _sortbycode = "Code:" + _code;
+            }
+            if (itemdesc != null)
+            {
+                _lst = _lst.Where(p => p.Item.ID == itemdesc).ToList();
+                string _desc = entity.Items.Find(itemdesc).Description;
+                _sortbydesc = "Description:" + _desc;
+            }
+            if (refnum != null)
+            {
+                _lst = _lst.Where(p => p.Requisition.ID == refnum).ToList();
+                string _refnum = entity.Requisitions.Find(refnum).RefNumber;
+                _sortbyrefnum = "Reference Number:" + _refnum;
+            }
+            if (salesperson != null)
+            {
+                _lst = _lst.Where(p => p.Requisition.ID== salesperson).ToList();
+                string _sales = entity.Employees.Find(salesperson).EmployeeFullName;
+                _sortbysalesperson = "SalesPerson:" + _sales;
+            }
+            if (brand != null)
+            {
+                //  var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
+                _lst = _lst.Where(p => p.Item.BrandID == brand).ToList();
+                string _brand = entity.Brands.Find(brand).Description;
+                _sortbybrand = "Brand:" + _brand;
+            }
+
+            if (category != null)
+            {
+                // string _category = entity.Categories.Find(category).Description;
+                _lst = _lst.Where(p => p.Item.CategoryID == category).ToList();
+                string _category = entity.Categories.Find(category).Description;
+                _sortbycategory = "Category:" + _category;
+            }
+
+            if (vendor != null)
+            {
+                //  var items = entity.Items.Where(p => p.VendorCoding == vendor).Select(p => p.Code);
+                _lst = _lst.Where(p => p.Item.VendorCoding == vendor && p.Item.VendorCoding != null).ToList();
+                string _vendor = entity.Vendors.Find(vendor).Name;
+                _sortbyvendor = "Vendor:" + _vendor;
+            }
+
+            if (location != null)
+            {
+                _lst = _lst.Where(p => p.Requisition.LocationID == location).ToList();
+                string _location = entity.Locations.Find(location).Description;
+                _sortbylocation = "Location:" + _location;
+
+            }
+
+
+
+            var lstCommittedDetail= (from i in _lst
+                                      select new
+                                      {
+
+                                          RequestedDate = i.Requisition.RequestedDate != null ? i.Requisition.RequestedDate.ToString() : "",
+                                          orderbyDate = i.Requisition.RequestedDate.ToString(),
+                                          RequiredDate = i.Requisition.DateRequired,
+                                          RefNumber = i.Requisition != null ? i.Requisition.RefNumber : "",
+                                          //Name
+                                          Brand = i.Item.Brand != null ? i.Item.Brand.Description : "",
+                                          ItemCode = i.Item.Code != null ? i.Item.Code : "",
+                                          ItemDesc = i.Item.Description != null ? i.Item.Description : "",
+                                          UOM = i.Inventory != null ? i.Inventory.InventoryUoM : "" ,
+                                         // InStock = i.Inventory.InStock,
+                                          ReservedQty= i.ReferenceQuantity !=null ? i.ReferenceQuantity : null,
+                                          RequestedQty= i.ReferenceQuantity != null ? i.ReferenceQuantity : null,
+                                          TotalCommitted= i.Committed != null ? i.Committed : null,
+                                          Location = i.Requisition.Location != null ? i.Requisition.Location.Description : i.Requisition.Location.Description,
+                                          Customer = i.Requisition != null ? i.Requisition.Customer : "",
+                                          SalesPerson = i.Requisition != null ? i.Requisition.Employee1.FirstName + " " + i.Requisition.Employee1.LastName : "",
+                                          RemainingBalance = i.Inventory != null ? i.Inventory.InStock : null,
+                                          Remarks = i.Remarks
+                                      }).ToList();
+
+            
+
+            ReportViewer reportViewer = new ReportViewer();
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+            ReportDataSource _rds = new ReportDataSource();
+            _rds.Name = "dsCommittedDetailed";
+            _rds.Value = lstCommittedDetail.OrderBy(p => p.orderbyDate);
+
+            reportViewer.KeepSessionAlive = false;
+            reportViewer.LocalReport.DataSources.Clear();
+            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Views\Report\rdlc\CommittedDetailed.rdlc";
+
+            List<ReportParameter> _parameter = new List<ReportParameter>();
+            _parameter.Add(new ReportParameter("DateRange", dtDateFrom.ToString("MMMM dd, yyyy") + " - " + dtDateTo.ToString("MMMM dd, yyyy")));
+            _parameter.Add(new ReportParameter("SortByBrand", _sortbybrand));
+            _parameter.Add(new ReportParameter("SortByCategory", _sortbycategory));
+            _parameter.Add(new ReportParameter("SortByVendor", _sortbyvendor));
+            _parameter.Add(new ReportParameter("SortByLocation", _sortbylocation));
+            _parameter.Add(new ReportParameter("SortByItemCode", _sortbycode));
+            _parameter.Add(new ReportParameter("SortByItemDescription", _sortbydesc));
+            _parameter.Add(new ReportParameter("SortByReferenceNumber", _sortbyrefnum));
+            _parameter.Add(new ReportParameter("SortBySalesPerson", _sortbysalesperson));
 
             reportViewer.LocalReport.DataSources.Add(_rds);
             reportViewer.LocalReport.Refresh();
@@ -1941,6 +2184,192 @@ namespace MoostBrand.Controllers
             return View();
         }
 
+        public ActionResult CommittedSummaryReport(string dateFrom, string dateTo, int? brand, int? category, int? vendor, int? location, int? itemcode, int? itemdesc, int? salesperson, int? refnum)
+        {
+            var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
+            #region DROPDOWNS
+            var loc = entity.Locations.Where(x => x.ID != 10)
+                            .Select(x => new
+                            {
+                                ID = x.ID,
+                                Description = x.Description
+                            });
+
+            var itemcodes = from s in entity.Items
+                            select new
+                            {
+                                ID = s.ID,
+                                Code = s.Code
+                            };
+            var itemdescription = from s in entity.Items
+                                  select new
+                                  {
+                                      ID = s.ID,
+                                      Description = s.Description
+                                  };
+        
+           
+
+            ViewBag.ItemCode = new SelectList(itemcodes, "ID", "Code");
+            ViewBag.ItemDescription = new SelectList(itemdescription, "ID", "Description");
+            ViewBag.Brand = new SelectList(entity.Items.Select(p => p.Brand).Distinct(), "ID", "Description");
+           // ViewBag.Category = new SelectList(entity.Items.Select(p => p.Category).Distinct(), "ID", "Description");
+         //   ViewBag.Vendor = new SelectList(entity.Vendors.OrderBy(v => v.GeneralName), "ID", "GeneralName");
+            ViewBag.Location = new SelectList(loc, "ID", "Description");
+          //  ViewBag.RefNumber = new SelectList(refnumber, "ID", "RefNumber");
+           // ViewBag.SalesPerson = new SelectList(slsperson, "ID", "Customer");
+
+            #endregion
+            DateTime dtDateFrom = DateTime.Now.Date;
+            DateTime dtDateTo = DateTime.Now;
+
+            string _sortbycode = "ItemCode: ALL", _sortbybrand = "Brand: ALL", _sortbydesc = "ItemDescription: ALL",  _sortbylocation = "Location: ALL";
+            if (!String.IsNullOrEmpty(dateFrom))
+            {
+                dtDateFrom = Convert.ToDateTime(dateFrom).Date;
+            }
+
+            if (!String.IsNullOrEmpty(dateTo))
+            {
+                dtDateTo = Convert.ToDateTime(dateTo);
+            }
+
+            var _lst = entity.RequisitionDetails.Where(r => r.Requisition.ApprovalStatus==2).ToList();
+
+            _lst = _lst.Where(r => r.Requisition.RequestedDate >= dtDateFrom && r.Requisition.RequestedDate <= dtDateTo.AddDays(1)).ToList();
+
+            if (itemcode != null)
+            {
+                _lst = _lst.Where(p => p.Item.ID == itemcode).ToList();
+                string _code = entity.Items.Find(itemcode).Code;
+                _sortbycode = "Code:" + _code;
+            }
+            if (itemdesc != null)
+            {
+                _lst = _lst.Where(p => p.Item.ID == itemdesc).ToList();
+                string _desc = entity.Items.Find(itemdesc).Description;
+                _sortbydesc = "Description:" + _desc;
+            }
+         
+            if (location != null)
+            {
+                _lst = _lst.Where(p => p.Requisition.LocationID == location).ToList();
+                string _location = entity.Locations.Find(location).Description;
+                _sortbylocation = "Location:" + _location;
+
+            }
+            if (brand != null)
+            {
+                //  var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
+                _lst = _lst.Where(p => p.Item.BrandID == brand).ToList();
+                string _brand = entity.Brands.Find(brand).Description;
+                _sortbybrand = "Brand:" + _brand;
+
+            }
+
+            //if (refnum != null)
+            //{
+            //    _lst = _lst.Where(p => p.Requisition.ID == refnum).ToList();
+            //    string _refnum = entity.Requisitions.Find(refnum).RefNumber;
+            //    _sortbyrefnum = "Reference Number:" + _refnum;
+            //}
+            //if (salesperson != null)
+            //{
+            //    _lst = _lst.Where(p => p.Requisition.ID == salesperson).ToList();
+            //    string _sales = entity.Requisitions.Find(salesperson).Customer;
+            //    _sortbysalesperson = "EncodedBy:" + _sales;
+            //}
+
+            //if (category != null)
+            //{
+            //    // string _category = entity.Categories.Find(category).Description;
+            //    _lst = _lst.Where(p => p.Item.CategoryID == category).ToList();
+            //    string _category = entity.Categories.Find(category).Description;
+            //    _sortbycategory = "Category:" + _category;
+            //}
+
+            //if (vendor != null)
+            //{
+            //    //  var items = entity.Items.Where(p => p.VendorCoding == vendor).Select(p => p.Code);
+            //    _lst = _lst.Where(p => p.Item.VendorCoding == vendor && p.Item.VendorCoding != null).ToList();
+            //    string _vendor = entity.Vendors.Find(vendor).Name;
+            //    _sortbyvendor = "Vendor:" + _vendor;
+            //}
+
+            var sl = entity.RequisitionDetails.Where(p => p.Requisition.RequestedDate >= dtDateFrom).ToList();
+
+            var lstCommittedSummary1 = (from p in sl.Where(p => p.Requisition.RequestedDate <= dtDateTo.AddDays(1)).ToList()
+                                 group p by new { p.ItemID , p.Requisition.LocationID, p.AprovalStatusID} into g
+                                 select new
+                                 {
+                                     ItemId = g.Key,
+                                     ReservedQty = g.Sum(p => p.ReferenceQuantity),
+                                     RequestedQty = g.Sum(p => p.ReferenceQuantity),
+                                     TotalCommitted = g.Sum(p => p.Committed),
+                                 }).ToList();
+
+
+            var lstCommittedSummary = (from i in _lst
+                                       select new
+                                       {
+
+                                           ItemCode = i.Item.Code != null ? i.Item.Code : "",
+                                           orderbyDate = i.Requisition.RequestedDate.ToString(),
+                                           Brand = i.Item.Brand != null ? i.Item.Brand.Description : "",
+                                           ItemDesc = i.Item.Description != null ? i.Item.Description : "",
+                                           UOM = i.Inventory != null ? i.Inventory.InventoryUoM : "",
+                                           // ReservedQty = i.ReferenceQuantity != null ? i.ReferenceQuantity : null,
+                                           // RequestedQty = i.ReferenceQuantity != null ? i.ReferenceQuantity : null,
+                                           // TotalCommitted = i.Committed != null ? i.Committed : null,
+                                           Locations = i.Requisition.Location != null ? i.Requisition.Location.Description : i.Requisition.Location.Description,
+                                           TotalCommitted = lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.AprovalStatusID==2) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.AprovalStatusID == 2).TotalCommitted : 0,
+                                           ReservedQty = lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.AprovalStatusID == 2) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.AprovalStatusID == 2).ReservedQty : 0,
+                                          RequestedQty = lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.AprovalStatusID == 2) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID  && p.ItemId.AprovalStatusID==2 ).RequestedQty : 0,
+                                      }).ToList();
+            var _lstCommittedSummary = (from i in lstCommittedSummary
+                                 select new
+                                 {
+                                     ItemCode = i.ItemCode,
+                                     orderbyDate = i.orderbyDate,
+                                     ItemDesc = i.ItemDesc,
+                                     Brand= i.Brand,
+                                     UOM = i.UOM,
+                                     Locations = i.Locations,
+                                    ReservedQty = i.ReservedQty,
+                                     RequestedQty = i.RequestedQty,
+                                     TotalCommitted = i.TotalCommitted,
+
+                                 }).ToList();
+
+                                     ReportViewer reportViewer = new ReportViewer();
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+
+            ReportDataSource _rds = new ReportDataSource();
+            _rds.Name = "dsCommittedSummary";
+            _rds.Value = _lstCommittedSummary.Distinct().OrderBy(o => o.orderbyDate).ThenBy(o => o.Locations).Select(p => p);
+
+            reportViewer.KeepSessionAlive = false;
+            reportViewer.LocalReport.DataSources.Clear();
+            reportViewer.LocalReport.ReportPath = Request.MapPath(Request.ApplicationPath) + @"Views\Report\rdlc\CommittedSummary.rdlc";
+
+            List<ReportParameter> _parameter = new List<ReportParameter>();
+            _parameter.Add(new ReportParameter("DateRange", dtDateFrom.ToString("MMMM dd, yyyy") + " - " + dtDateTo.ToString("MMMM dd, yyyy")));
+            _parameter.Add(new ReportParameter("SortByBrand", _sortbybrand));
+            _parameter.Add(new ReportParameter("SortByLocation", _sortbylocation));
+            _parameter.Add(new ReportParameter("SortByItemCode", _sortbycode));
+            _parameter.Add(new ReportParameter("SortByItemDescription", _sortbydesc));
+
+            reportViewer.LocalReport.DataSources.Add(_rds);
+            reportViewer.LocalReport.Refresh();
+            reportViewer.LocalReport.SetParameters(_parameter);
+
+            ViewBag.ReportViewer = reportViewer;
+
+            ViewBag.DateFrom = dtDateFrom.ToString("MM/dd/yyyy");
+            ViewBag.DateTo = dtDateTo.ToString("MM/dd/yyyy");
+
+            return View();
+        }
 
 
     }
