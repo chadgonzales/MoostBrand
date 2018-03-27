@@ -9,16 +9,13 @@
               <Width>1in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1in</Width>
+              <Width>1.45833in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.22443in</Width>
+              <Width>1.9154in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.65973in</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>1.19792in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.23958in</Width>
@@ -27,7 +24,7 @@
               <Width>1.13195in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.23958in</Width>
+              <Width>1.4514in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -143,39 +140,6 @@
                           <TextRuns>
                             <TextRun>
                               <Value>UOM</Value>
-                              <Style>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style />
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox1</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox7">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>Reserved Quantity</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -433,38 +397,6 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="ReservedQty">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>=Fields!ReservedQty.Value</Value>
-                              <Style>
-                                <FontSize>9pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style />
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>ReservedQty</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
                     <Textbox Name="RequestedQty">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
@@ -572,7 +504,6 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
-            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
@@ -591,7 +522,7 @@
         <DataSetName>dsCommittedSummary</DataSetName>
         <Left>0.06472in</Left>
         <Height>0.46875in</Height>
-        <Width>9.69319in</Width>
+        <Width>9.85639in</Width>
         <Style>
           <Border>
             <Style>None</Style>
