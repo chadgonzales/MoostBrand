@@ -765,7 +765,7 @@ namespace MoostBrand.Controllers
                 dtDateTo = Convert.ToDateTime(dateTo);
             }
 
-            var _lst = entity.RequisitionDetails.Where(r=>r.Requisition.ReqTypeID == 1 && r.Quantity > 0).ToList();
+            var _lst = entity.RequisitionDetails.Where(r=>r.Requisition.ReqTypeID == 1 && r.Quantity > 0 && r.Requisition.ApprovalStatus == 2).ToList();
 
             _lst = _lst.Where(r => r.Requisition.RequestedDate >= dtDateFrom && r.Requisition.RequestedDate <= dtDateTo.AddDays(1)).ToList();
 
@@ -2062,7 +2062,7 @@ namespace MoostBrand.Controllers
                 dtDateTo = Convert.ToDateTime(dateTo);
             }
 
-            var _lst = entity.RequisitionDetails.Where(p => p.Requisition.ApprovalStatus==2).ToList();
+            var _lst = entity.RequisitionDetails.Where(p => p.Requisition.ApprovalStatus==2 && p.Requisition.ReqTypeID == 2).ToList();
 
             _lst = _lst.Where(r => r.Requisition.RequestedDate >= dtDateFrom && r.Requisition.RequestedDate <= dtDateTo.AddDays(1)).ToList();
 
@@ -2138,15 +2138,15 @@ namespace MoostBrand.Controllers
                                           ItemDesc = i.Item.Description != null ? i.Item.Description : "",
                                           UOM = i.Inventory != null ? i.Inventory.InventoryUoM : "" ,
                                          // InStock = i.Inventory.InStock,
-                                          ReservedQty= i.ReferenceQuantity !=null ? i.ReferenceQuantity : null,
-                                          RequestedQty= i.ReferenceQuantity != null ? i.ReferenceQuantity : null,
-                                          TotalCommitted= i.Committed != null ? i.Committed : null,
+                                          ReservedQty=  0,
+                                          RequestedQty = i.Quantity != null ? i.Quantity : 0,
+                                          TotalCommitted= i.Committed != null ? i.Committed : 0,
                                           Location = i.Requisition.Location != null ? i.Requisition.Location.Description : i.Requisition.Location.Description,
-                                          Customer = i.Requisition != null ? i.Requisition.Customer : "",
-                                          SalesPerson = i.Requisition != null ? i.Requisition.Employee1.FirstName + " " + i.Requisition.Employee1.LastName : "",
-                                          RemainingBalance = i.Inventory != null ? i.Inventory.InStock : null,
+                                          Customer = i.Requisition.RequisitionTypeID == 4 ? i.Requisition != null ? i.Requisition.Customer : "" : "",
+                                          SalesPerson = i.Requisition.RequisitionTypeID == 4 ? i.Requisition != null ? i.Requisition.Employee1.FirstName + " " + i.Requisition.Employee1.LastName : "":"",
+                                          RemainingBalance = i.Requisition.RequisitionTypeID == 4 ? i.Inventory != null ? i.Inventory.InStock : 0 :0,
                                           Remarks = i.Remarks
-                                      }).ToList();
+                                      }).Where(p=> p.RequestedQty > 0).ToList();
 
             
 
@@ -2234,7 +2234,7 @@ namespace MoostBrand.Controllers
                 dtDateTo = Convert.ToDateTime(dateTo);
             }
 
-            var _lst = entity.RequisitionDetails.Where(r => r.Requisition.ApprovalStatus==2).ToList();
+            var _lst = entity.RequisitionDetails.Where(r => r.Requisition.ApprovalStatus== 2 && r.Requisition.ReqTypeID == 2).ToList();
 
             _lst = _lst.Where(r => r.Requisition.RequestedDate >= dtDateFrom && r.Requisition.RequestedDate <= dtDateTo.AddDays(1)).ToList();
 
@@ -2296,15 +2296,14 @@ namespace MoostBrand.Controllers
             //    _sortbyvendor = "Vendor:" + _vendor;
             //}
 
-            var sl = entity.RequisitionDetails.Where(p => p.Requisition.RequestedDate >= dtDateFrom).ToList();
 
-            var lstCommittedSummary1 = (from p in sl.Where(p => p.Requisition.RequestedDate <= dtDateTo.AddDays(1)).ToList()
-                                 group p by new { p.ItemID , p.Requisition.LocationID, p.AprovalStatusID} into g
+            var lstCommittedSummary1 = (from p in _lst
+                                 group p by new { p.ItemID , p.Requisition.LocationID} into g
                                  select new
                                  {
                                      ItemId = g.Key,
-                                     ReservedQty = g.Sum(p => p.ReferenceQuantity),
-                                     RequestedQty = g.Sum(p => p.ReferenceQuantity),
+                                     ReservedQty = g.Sum(p => p.Quantity),
+                                     RequestedQty = g.Sum(p => p.Quantity),
                                      TotalCommitted = g.Sum(p => p.Committed),
                                  }).ToList();
 
@@ -2322,10 +2321,11 @@ namespace MoostBrand.Controllers
                                            // RequestedQty = i.ReferenceQuantity != null ? i.ReferenceQuantity : null,
                                            // TotalCommitted = i.Committed != null ? i.Committed : null,
                                            Locations = i.Requisition.Location != null ? i.Requisition.Location.Description : i.Requisition.Location.Description,
-                                           TotalCommitted = lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.AprovalStatusID==2) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.AprovalStatusID == 2).TotalCommitted : 0,
-                                           ReservedQty = lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.AprovalStatusID == 2) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.AprovalStatusID == 2).ReservedQty : 0,
-                                          RequestedQty = lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.AprovalStatusID == 2) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID  && p.ItemId.AprovalStatusID==2 ).RequestedQty : 0,
+                                           TotalCommitted = lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.LocationID == i.Requisition.LocationID) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.LocationID == i.Requisition.LocationID).TotalCommitted : 0,
+                                           ReservedQty = 0,//lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.LocationID == i.Requisition.LocationID) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.LocationID == i.Requisition.LocationID).ReservedQty : 0,
+                                          RequestedQty = lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.LocationID == i.Requisition.LocationID) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.LocationID == i.Requisition.LocationID).RequestedQty : 0,
                                       }).ToList();
+
             var _lstCommittedSummary = (from i in lstCommittedSummary
                                  select new
                                  {
@@ -2339,9 +2339,9 @@ namespace MoostBrand.Controllers
                                      RequestedQty = i.RequestedQty,
                                      TotalCommitted = i.TotalCommitted,
 
-                                 }).ToList();
+                                 }).Where(p => p.RequestedQty > 0).ToList();
 
-                                     ReportViewer reportViewer = new ReportViewer();
+            ReportViewer reportViewer = new ReportViewer();
             reportViewer.ProcessingMode = ProcessingMode.Local;
 
             ReportDataSource _rds = new ReportDataSource();
