@@ -248,6 +248,87 @@
         });
     });
 
+    $('.add-item').click(function () {
+
+        $row = $(this).closest('tr.item-row');
+
+        $lblitem = $row.find('.item-id').text();
+        var id = $lblitem.toString();
+
+        var url = $('#AddItemWindow').data('url');
+        $.get(url, function (data) {
+            $('#ShowDialogAdd').html(data);
+
+            var addItemPartial = $("#addItemPartial");
+            addItemPartial.submit(function (e) {
+                var ordered = $("#Ordered");
+                var committed = $("#Committed");
+                var available = $("#Available");
+                ordered.prop('disabled', false);
+                committed.prop('disabled', false);
+                available.prop('disabled', false);
+                return true;
+            });
+
+            if (@ViewBag.Approved != "2") {
+
+                $('#AddItemWindow').modal('show');
+            }
+
+         $.ajax({
+             url: '@Url.Action("getItemDesc", "Receiving")',
+             data: { reqID: id },
+             type: 'get',
+             success: function (data) {
+                 $("#itemsearch").val(data.Description);
+                 $("#RequisitionDetailID").val(data.ID);
+             }
+         })
+        
+
+        $.ajax({
+            url: '@Url.Action("DisplayComputations", "Receiving")',
+            data: { reqID: id },
+            type: 'get',
+            success: function (data) {
+                $("#Committed").val(data.Committed);
+                $("#Ordered").val(data.Ordered);
+                $("#InStock").val(data.InStock);
+                $("#Quantity").val(data.Quantity);
+                $("#Hidden_Quantity").val(data.Quantity);
+            }
+        })
+
+        
+     
+        $('#Quantity').focusout(function () {
+
+            if (parseInt($("#Quantity").val()) <= parseInt($("#Hidden_Quantity").val()) && parseInt($("#Quantity").val()) > 0) {
+                var ordered = parseInt($('#Ordered').val());
+                var committed = parseInt($('#Committed').val());
+                var instock = parseInt($('#InStock').val());
+                console.log(instock);
+
+                $('#Available').val((instock + ordered) - committed);
+                $('#quantitymsg').text('');
+            }
+            else {
+
+                $('#quantitymsg').text('invalid quantity');
+                $("#Quantity").val($("#Hidden_Quantity").val());
+            }
+        })
+
+
+        // add class form-control to textarea and select
+        $("input[disabled]").addClass("form-control");
+        $("textarea").addClass("form-control");
+        $("select").addClass("form-control");
+
+        });
+      
+    });
+
     function ShowEdit(id) {
         var url = '@Url.Action("EditItemPartial", "Receiving")/' + id;
         $.get(url, function (data) {

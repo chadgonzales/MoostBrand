@@ -214,6 +214,8 @@ namespace MoostBrand.Controllers
             public string Description { get; set; }
         }
 
+       
+
         [HttpPost]
         public JsonResult getItems(string Code)
         {
@@ -431,6 +433,65 @@ namespace MoostBrand.Controllers
         }
 
            
+        }
+
+        public JsonResult getItemDesc(int? reqID)
+        {
+
+            List<ReqItems> lstItems = new List<ReqItems>();
+
+            int requisitionId = Convert.ToInt32(Session["reqID"]);
+
+            var _items1 = entity.RequisitionDetails.Where(rd => rd.RequisitionID == requisitionId && rd.AprovalStatusID == 2 && rd.ID == reqID && rd.Item.ItemStatus == 1)
+                        .ToList()
+                        .FindAll(rd => rd.Quantity > 0)
+                        .Select(ed => new
+                        {
+                            ID = ed.ID,
+                            Description = ed.Item.DescriptionPurchase
+                        });
+
+            var _items2 = entity.StockTransferDetails.Where(rd => rd.AprovalStatusID == 2 && rd.StockTransfer.RequisitionID == requisitionId
+                                                            && rd.RequisitionDetail.ID == reqID)
+                     .ToList()
+                     .FindAll(rd => rd.Quantity > 0)
+                     .Select(ed => new
+                     {
+                         ID = ed.RequisitionDetail.ID,
+                         Description = ed.RequisitionDetail.Item.DescriptionPurchase
+                     });
+
+            var _items3 = entity.StockTransferDetails.Where(rd => rd.AprovalStatusID == 2 && rd.StockTransferID == requisitionId
+                                                            && rd.StockTransfer.StockTransferTypeID == 4
+                                                            && rd.ID == reqID)
+                  .ToList()
+                  .FindAll(rd => rd.Quantity > 0)
+                  .Select(ed => new
+                  {
+                      ID = ed.ID,
+                      Description = ed.Inventories.Items.DescriptionPurchase
+                  });
+
+
+
+            var items = (from p in _items1 select p).Union(from q in _items2 select q);
+
+            var items2 = (from p in items select p).Union(from q in _items3 select q);
+
+            foreach (var i in items2)
+            {
+                lstItems.Add(
+                    new ReqItems
+                    {
+                        ID = i.ID,
+                        Description = i.Description
+                    });
+            }
+
+            var item = lstItems.FirstOrDefault();
+
+
+            return Json(item, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult getRequiLoc(int id, int type)
@@ -1492,6 +1553,74 @@ namespace MoostBrand.Controllers
             int pageNumber = (page ?? 1);
             return PartialView(items.ToPagedList(pageNumber, pageSize));
         }
+
+        // GET: Receiving/AvailableItems/5
+        [AccessChecker(Action = 1, ModuleID = 5)]
+        public ActionResult AvailableItems(int id, int? page)
+        {
+            List<ReqItems> lstItems = new List<ReqItems>();
+
+            int requisitionId = 0;
+            if (Convert.ToInt32(Session["reqID"]) != 0)
+            {
+                 requisitionId = Convert.ToInt32(Session["reqID"]);
+            }
+            else
+            {
+                 requisitionId = entity.Receivings.Find(id).RequisitionID.Value;
+            }
+
+            var _items1 = entity.RequisitionDetails.Where(rd => rd.RequisitionID == requisitionId && rd.AprovalStatusID == 2 && rd.Item.ItemStatus == 1)
+                        .ToList()
+                        .FindAll(rd => rd.Quantity > 0)
+                        .Select(ed => new
+                        {
+                            ID = ed.ID,
+                            Description = ed.Item.DescriptionPurchase
+                        });
+
+            var _items2 = entity.StockTransferDetails.Where(rd => rd.AprovalStatusID == 2 && rd.StockTransfer.RequisitionID == requisitionId)
+                     .ToList()
+                     .FindAll(rd => rd.Quantity > 0)
+                     .Select(ed => new
+                     {
+                         ID = ed.RequisitionDetail.ID,
+                         Description = ed.RequisitionDetail.Item.DescriptionPurchase
+                     });
+
+            var _items3 = entity.StockTransferDetails.Where(rd => rd.AprovalStatusID == 2 && rd.StockTransferID == requisitionId
+                                                            && rd.StockTransfer.StockTransferTypeID == 4)
+                  .ToList()
+                  .FindAll(rd => rd.Quantity > 0)
+                  .Select(ed => new
+                  {
+                      ID = ed.ID,
+                      Description = ed.Inventories.Items.DescriptionPurchase
+                  });
+
+
+
+            var items = (from p in _items1 select p).Union(from q in _items2 select q);
+
+            var items2 = (from p in items select p).Union(from q in _items3 select q);
+
+            foreach (var i in items2)
+            {
+                lstItems.Add(
+                    new ReqItems
+                    {
+                        ID = i.ID,
+                        Description = i.Description
+                    });
+            }
+            ViewBag.Rid = id;
+            ViewBag.Items = lstItems;
+
+            int pageSize = Convert.ToInt32(ConfigurationManager.AppSettings["pageSize"]);
+            int pageNumber = (page ?? 1);
+            return PartialView(lstItems.ToPagedList(pageNumber, pageSize));
+        }
+
 
         // GET: Receiving/DeniedItems/5
         [AccessChecker(Action = 1, ModuleID = 5)]
