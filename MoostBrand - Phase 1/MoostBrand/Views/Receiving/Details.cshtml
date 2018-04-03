@@ -321,8 +321,12 @@
                      </a>-->
             </div>
         </div>
-        
+        @if (ViewBag.isApproved == 1)
+        {
+            @Html.Action("AvailableItems", "Receiving", new { page = ViewBag.Page })
+        }
         @Html.Action("PendingItems", "Receiving", new { page = ViewBag.Page })
+
         <div class="panel-heading">
             <h4 class="panel-title">History</h4>
             <hr />
