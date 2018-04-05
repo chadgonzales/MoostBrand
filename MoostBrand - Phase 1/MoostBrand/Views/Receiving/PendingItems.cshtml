@@ -259,6 +259,7 @@
         $.get(url, function (data) {
             $('#ShowDialogAdd').html(data);
 
+
             var addItemPartial = $("#addItemPartial");
             addItemPartial.submit(function (e) {
                 var ordered = $("#Ordered");
@@ -270,11 +271,7 @@
                 return true;
             });
 
-            if (@ViewBag.Approved != "2") {
-
-                $('#AddItemWindow').modal('show');
-            }
-
+         
          $.ajax({
              url: '@Url.Action("getItemDesc", "Receiving")',
              data: { reqID: id },
@@ -319,7 +316,7 @@
             }
         })
 
-
+        $('#AddItemWindow').modal('show');
         // add class form-control to textarea and select
         $("input[disabled]").addClass("form-control");
         $("textarea").addClass("form-control");
