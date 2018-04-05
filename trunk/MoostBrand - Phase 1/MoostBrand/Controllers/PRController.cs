@@ -35,13 +35,16 @@ namespace MoostBrand.Controllers
         #region PRIVATE METHODS
         private string Generator(string prefix)
         {
-            startR: var cref = entity.Requisitions.Where(r => r.RefNumber.Contains(prefix)).Count();
+            int i = 0;
+            var cref = entity.Requisitions.Where(r => r.RefNumber.Contains(prefix)).Count();
+            startR: cref= cref + i;
 
             string refnum = string.Format(prefix + "-{0:000000}", cref);
 
             var pr = entity.Requisitions.ToList().FindAll(p => p.RefNumber == refnum);
             if (pr.Count() > 0)
             {
+                i++;
                 goto startR;
             }
 
