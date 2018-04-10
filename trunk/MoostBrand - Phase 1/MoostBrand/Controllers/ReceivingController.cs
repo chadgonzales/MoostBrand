@@ -1573,7 +1573,7 @@ namespace MoostBrand.Controllers
                  requisitionId = entity.Receivings.Find(id).RequisitionID.Value;
             }
 
-            var _items1 = entity.RequisitionDetails.Where(rd => rd.RequisitionID == requisitionId && rd.AprovalStatusID == 2 && rd.Item.ItemStatus == 1)
+            var _items1 = entity.RequisitionDetails.Where(rd => rd.RequisitionID == requisitionId && rd.AprovalStatusID == 2 && rd.Item.ItemStatus == 1 && rd.Requisition.ReqTypeID == 1)
                         .ToList()
                         .FindAll(rd => rd.Quantity > 0)
                         .Select(ed => new
