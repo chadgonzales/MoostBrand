@@ -128,7 +128,8 @@ namespace MoostBrand.DAL
                     string location = "";
                     if (Requisition.Location1 == null)
                     {
-                        location = "";//Requisition.Location.Description
+                       // location = "";//Requisition.Location.Description;
+                        location = Requisition.Location.Description;
                     }
                     else
                     {
