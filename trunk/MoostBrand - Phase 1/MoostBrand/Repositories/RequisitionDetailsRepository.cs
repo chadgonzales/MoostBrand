@@ -28,7 +28,8 @@ namespace MoostBrand.DAL
                 var com = entity.RequisitionDetails.Where(model => model.ItemID == itemID &&( model.AprovalStatusID == 2|| model.AprovalStatusID == 5)
                                                                                           && type.Contains(model.Requisition.RequisitionTypeID.Value)
                                                                                           && model.Requisition.Status == false
-                                                                                          && model.Requisition.LocationID == requi.LocationID);
+                                                                                          && model.Requisition.LocationID == requi.LocationID
+                                                                                          && model.Requisition.ApprovalStatus == 2);
                 var committed = com.Sum(x => x.Quantity);
                 c = Convert.ToInt32(committed);
                 if (committed == null)
@@ -76,8 +77,7 @@ namespace MoostBrand.DAL
                                                                                     && x.Requisition.LocationID == locationid
                                                                                     && x.Requisition.Status == false
                                                                                     && x.ItemID == itemID
-                                                                                    && x.Requisition.ApprovalStatus != 5 
-                                                                                    && x.Requisition.ApprovalStatus != 3);
+                                                                                    && x.Requisition.ApprovalStatus == 2);
             int po = 0;
             var ordered = requi.Sum(x => x.Quantity);
             po = Convert.ToInt32(ordered);
