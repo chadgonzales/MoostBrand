@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="TranscomModelStoreContainer" CdmEntityContainer="TranscomEntities">
+    <EntitySetMapping Name="Clients">
+      <EntityTypeMapping TypeName="TranscomModel.Client">
+        <MappingFragment StoreEntitySet="Client">
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="contactPerson" ColumnName="contactPerson" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="mobileNo" ColumnName="mobileNo" />
+          <ScalarProperty Name="landline" ColumnName="landline" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ClientReservations">
+      <EntityTypeMapping TypeName="TranscomModel.ClientReservation">
+        <MappingFragment StoreEntitySet="ClientReservation">
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="servedDate" ColumnName="servedDate" />
+          <ScalarProperty Name="reservationDate" ColumnName="reservationDate" />
+          <ScalarProperty Name="servedQty" ColumnName="servedQty" />
+          <ScalarProperty Name="qty" ColumnName="qty" />
+          <ScalarProperty Name="clientId" ColumnName="clientId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Rates">
+      <EntityTypeMapping TypeName="TranscomModel.Rate">
+        <MappingFragment StoreEntitySet="Rate">
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Shippers">
+      <EntityTypeMapping TypeName="TranscomModel.Shipper">
+        <MappingFragment StoreEntitySet="Shipper">
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="landline" ColumnName="landline" />
+          <ScalarProperty Name="contactPerson" ColumnName="contactPerson" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="clientId" ColumnName="clientId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="TranscomModel.User">
+        <MappingFragment StoreEntitySet="User">
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EIRDetails">
+      <EntityTypeMapping TypeName="TranscomModel.EIRDetail">
+        <MappingFragment StoreEntitySet="EIRDetail">
+          <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="licenseNo" ColumnName="licenseNo" />
+          <ScalarProperty Name="drive" ColumnName="drive" />
+          <ScalarProperty Name="truckPlateNo" ColumnName="truckPlateNo" />
+          <ScalarProperty Name="trailerId" ColumnName="trailerId" />
+          <ScalarProperty Name="eirId" ColumnName="eirId" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Status">
+      <EntityTypeMapping TypeName="TranscomModel.Status">
+        <MappingFragment StoreEntitySet="Status">
+          <ScalarProperty Name="status1" ColumnName="status" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Trailers">
+      <EntityTypeMapping TypeName="TranscomModel.Trailer">
+        <MappingFragment StoreEntitySet="Trailer">
+          <ScalarProperty Name="active" ColumnName="active" />
+          <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="plateNo" ColumnName="plateNo" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EIRHeaders">
+      <EntityTypeMapping TypeName="TranscomModel.EIRHeader">
+        <MappingFragment StoreEntitySet="EIRHeader">
+          <ScalarProperty Name="statusId" ColumnName="statusId" />
+          <ScalarProperty Name="inRef" ColumnName="inRef" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="date" ColumnName="date" />
+          <ScalarProperty Name="rateId" ColumnName="rateId" />
+          <ScalarProperty Name="qty" ColumnName="qty" />
+          <ScalarProperty Name="shipperId" ColumnName="shipperId" />
+          <ScalarProperty Name="clientId" ColumnName="clientId" />
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

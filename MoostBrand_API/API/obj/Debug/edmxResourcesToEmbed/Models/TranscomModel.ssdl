@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TranscomModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="name" Type="nvarchar" MaxLength="150" />
+    <Property Name="address" Type="nvarchar" MaxLength="250" />
+    <Property Name="landline" Type="nvarchar" MaxLength="50" />
+    <Property Name="mobileNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" />
+    <Property Name="contactPerson" Type="nvarchar" MaxLength="150" />
+    <Property Name="active" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="ClientReservation">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="clientId" Type="int" />
+    <Property Name="qty" Type="int" />
+    <Property Name="servedQty" Type="int" />
+    <Property Name="reservationDate" Type="datetime" />
+    <Property Name="servedDate" Type="datetime" />
+    <Property Name="userId" Type="int" />
+  </EntityType>
+  <EntityType Name="EIRDetail">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="eirId" Type="int" />
+    <Property Name="trailerId" Type="int" />
+    <Property Name="truckPlateNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="drive" Type="nvarchar" MaxLength="150" />
+    <Property Name="licenseNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="date" Type="datetime" />
+    <Property Name="statusId" Type="int" />
+  </EntityType>
+  <EntityType Name="EIRHeader">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" />
+    <Property Name="clientId" Type="int" />
+    <Property Name="shipperId" Type="int" />
+    <Property Name="qty" Type="int" />
+    <Property Name="rateId" Type="int" />
+    <Property Name="date" Type="datetime" />
+    <Property Name="userId" Type="int" />
+    <Property Name="inRef" Type="int" />
+    <Property Name="statusId" Type="int" />
+  </EntityType>
+  <EntityType Name="Rate">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="description" Type="nvarchar" MaxLength="150" />
+    <Property Name="amount" Type="money" />
+  </EntityType>
+  <EntityType Name="Shipper">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="clientId" Type="int" />
+    <Property Name="name" Type="nvarchar" MaxLength="150" />
+    <Property Name="address" Type="nvarchar" MaxLength="250" />
+    <Property Name="contactPerson" Type="nvarchar" MaxLength="150" />
+    <Property Name="landline" Type="nvarchar" MaxLength="50" />
+    <Property Name="mobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Status">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="status" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Trailer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="plateNo" Type="nvarchar" MaxLength="50" />
+    <Property Name="statusId" Type="int" />
+    <Property Name="active" Type="tinyint" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="nvarchar" MaxLength="50" />
+    <Property Name="password" Type="nvarchar" MaxLength="50" />
+    <Property Name="type" Type="nvarchar" MaxLength="50" />
+    <Property Name="active" Type="tinyint" />
+  </EntityType>
+  <Association Name="FK__ClientRes__clien__25869641">
+    <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+    <End Role="ClientReservation" Type="Self.ClientReservation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="ClientReservation">
+        <PropertyRef Name="clientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EIRDetail__eirId__30F848ED">
+    <End Role="EIRHeader" Type="Self.EIRHeader" Multiplicity="0..1" />
+    <End Role="EIRDetail" Type="Self.EIRDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EIRHeader">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRDetail">
+        <PropertyRef Name="eirId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EIRDetail__statu__31EC6D26">
+    <End Role="Status" Type="Self.Status" Multiplicity="0..1" />
+    <End Role="EIRDetail" Type="Self.EIRDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRDetail">
+        <PropertyRef Name="statusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EIRDetail__trail__300424B4">
+    <End Role="Trailer" Type="Self.Trailer" Multiplicity="0..1" />
+    <End Role="EIRDetail" Type="Self.EIRDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trailer">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRDetail">
+        <PropertyRef Name="trailerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EIRHeader__clien__2C3393D0">
+    <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+    <End Role="EIRHeader" Type="Self.EIRHeader" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRHeader">
+        <PropertyRef Name="clientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EIRHeader__rateI__2E1BDC42">
+    <End Role="Rate" Type="Self.Rate" Multiplicity="0..1" />
+    <End Role="EIRHeader" Type="Self.EIRHeader" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rate">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRHeader">
+        <PropertyRef Name="rateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EIRHeader__shipp__2D27B809">
+    <End Role="Shipper" Type="Self.Shipper" Multiplicity="0..1" />
+    <End Role="EIRHeader" Type="Self.EIRHeader" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Shipper">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRHeader">
+        <PropertyRef Name="shipperId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EIRHeader__userI__2F10007B">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="EIRHeader" Type="Self.EIRHeader" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRHeader">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Shipper__clientI__24927208">
+    <End Role="Client" Type="Self.Client" Multiplicity="0..1" />
+    <End Role="Shipper" Type="Self.Shipper" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Shipper">
+        <PropertyRef Name="clientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Trailer__statusI__239E4DCF">
+    <End Role="Status" Type="Self.Status" Multiplicity="0..1" />
+    <End Role="Trailer" Type="Self.Trailer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Trailer">
+        <PropertyRef Name="statusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ClientReservation_Users">
+    <End Role="User" Type="Self.User" Multiplicity="0..1" />
+    <End Role="ClientReservation" Type="Self.ClientReservation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="ClientReservation">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="TranscomModelStoreContainer">
+    <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ClientReservation" EntityType="Self.ClientReservation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EIRDetail" EntityType="Self.EIRDetail" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EIRHeader" EntityType="Self.EIRHeader" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Rate" EntityType="Self.Rate" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Shipper" EntityType="Self.Shipper" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Trailer" EntityType="Self.Trailer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__ClientRes__clien__25869641" Association="Self.FK__ClientRes__clien__25869641">
+      <End Role="Client" EntitySet="Client" />
+      <End Role="ClientReservation" EntitySet="ClientReservation" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EIRDetail__eirId__30F848ED" Association="Self.FK__EIRDetail__eirId__30F848ED">
+      <End Role="EIRHeader" EntitySet="EIRHeader" />
+      <End Role="EIRDetail" EntitySet="EIRDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EIRDetail__statu__31EC6D26" Association="Self.FK__EIRDetail__statu__31EC6D26">
+      <End Role="Status" EntitySet="Status" />
+      <End Role="EIRDetail" EntitySet="EIRDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EIRDetail__trail__300424B4" Association="Self.FK__EIRDetail__trail__300424B4">
+      <End Role="Trailer" EntitySet="Trailer" />
+      <End Role="EIRDetail" EntitySet="EIRDetail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EIRHeader__clien__2C3393D0" Association="Self.FK__EIRHeader__clien__2C3393D0">
+      <End Role="Client" EntitySet="Client" />
+      <End Role="EIRHeader" EntitySet="EIRHeader" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EIRHeader__rateI__2E1BDC42" Association="Self.FK__EIRHeader__rateI__2E1BDC42">
+      <End Role="Rate" EntitySet="Rate" />
+      <End Role="EIRHeader" EntitySet="EIRHeader" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EIRHeader__shipp__2D27B809" Association="Self.FK__EIRHeader__shipp__2D27B809">
+      <End Role="Shipper" EntitySet="Shipper" />
+      <End Role="EIRHeader" EntitySet="EIRHeader" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EIRHeader__userI__2F10007B" Association="Self.FK__EIRHeader__userI__2F10007B">
+      <End Role="User" EntitySet="User" />
+      <End Role="EIRHeader" EntitySet="EIRHeader" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Shipper__clientI__24927208" Association="Self.FK__Shipper__clientI__24927208">
+      <End Role="Client" EntitySet="Client" />
+      <End Role="Shipper" EntitySet="Shipper" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Trailer__statusI__239E4DCF" Association="Self.FK__Trailer__statusI__239E4DCF">
+      <End Role="Status" EntitySet="Status" />
+      <End Role="Trailer" EntitySet="Trailer" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ClientReservation_Users" Association="Self.FK_ClientReservation_Users">
+      <End Role="User" EntitySet="User" />
+      <End Role="ClientReservation" EntitySet="ClientReservation" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
