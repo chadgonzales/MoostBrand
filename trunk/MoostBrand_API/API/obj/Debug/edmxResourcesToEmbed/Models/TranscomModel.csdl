@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TranscomModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="TranscomEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Clients" EntityType="TranscomModel.Client" />
+    <EntitySet Name="ClientReservations" EntityType="TranscomModel.ClientReservation" />
+    <EntitySet Name="Rates" EntityType="TranscomModel.Rate" />
+    <EntitySet Name="Shippers" EntityType="TranscomModel.Shipper" />
+    <EntitySet Name="Users" EntityType="TranscomModel.User" />
+    <AssociationSet Name="FK__ClientRes__clien__25869641" Association="TranscomModel.FK__ClientRes__clien__25869641">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="ClientReservation" EntitySet="ClientReservations" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Shipper__clientI__24927208" Association="TranscomModel.FK__Shipper__clientI__24927208">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="Shipper" EntitySet="Shippers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ClientReservation_Users" Association="TranscomModel.FK_ClientReservation_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="ClientReservation" EntitySet="ClientReservations" />
+    </AssociationSet>
+    <EntitySet Name="EIRDetails" EntityType="TranscomModel.EIRDetail" />
+    <EntitySet Name="Status" EntityType="TranscomModel.Status" />
+    <EntitySet Name="Trailers" EntityType="TranscomModel.Trailer" />
+    <AssociationSet Name="FK__EIRDetail__statu__31EC6D26" Association="TranscomModel.FK__EIRDetail__statu__31EC6D26">
+      <End Role="Status" EntitySet="Status" />
+      <End Role="EIRDetail" EntitySet="EIRDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EIRDetail__trail__300424B4" Association="TranscomModel.FK__EIRDetail__trail__300424B4">
+      <End Role="Trailer" EntitySet="Trailers" />
+      <End Role="EIRDetail" EntitySet="EIRDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Trailer__statusI__239E4DCF" Association="TranscomModel.FK__Trailer__statusI__239E4DCF">
+      <End Role="Status" EntitySet="Status" />
+      <End Role="Trailer" EntitySet="Trailers" />
+    </AssociationSet>
+    <EntitySet Name="EIRHeaders" EntityType="TranscomModel.EIRHeader" />
+    <AssociationSet Name="FK__EIRHeader__clien__2C3393D0" Association="TranscomModel.FK__EIRHeader__clien__2C3393D0">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="EIRHeader" EntitySet="EIRHeaders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EIRDetail__eirId__30F848ED" Association="TranscomModel.FK__EIRDetail__eirId__30F848ED">
+      <End Role="EIRHeader" EntitySet="EIRHeaders" />
+      <End Role="EIRDetail" EntitySet="EIRDetails" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EIRHeader__rateI__2E1BDC42" Association="TranscomModel.FK__EIRHeader__rateI__2E1BDC42">
+      <End Role="Rate" EntitySet="Rates" />
+      <End Role="EIRHeader" EntitySet="EIRHeaders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EIRHeader__shipp__2D27B809" Association="TranscomModel.FK__EIRHeader__shipp__2D27B809">
+      <End Role="Shipper" EntitySet="Shippers" />
+      <End Role="EIRHeader" EntitySet="EIRHeaders" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EIRHeader__userI__2F10007B" Association="TranscomModel.FK__EIRHeader__userI__2F10007B">
+      <End Role="User" EntitySet="Users" />
+      <End Role="EIRHeader" EntitySet="EIRHeaders" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="address" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="landline" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="mobileNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="contactPerson" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="active" Type="Byte" />
+    <NavigationProperty Name="ClientReservations" Relationship="TranscomModel.FK__ClientRes__clien__25869641" FromRole="Client" ToRole="ClientReservation" />
+    <NavigationProperty Name="Shippers" Relationship="TranscomModel.FK__Shipper__clientI__24927208" FromRole="Client" ToRole="Shipper" />
+    <NavigationProperty Name="EIRHeaders" Relationship="TranscomModel.FK__EIRHeader__clien__2C3393D0" FromRole="Client" ToRole="EIRHeader" />
+  </EntityType>
+  <EntityType Name="ClientReservation">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="clientId" Type="Int32" />
+    <Property Name="qty" Type="Int32" />
+    <Property Name="servedQty" Type="Int32" />
+    <Property Name="reservationDate" Type="DateTime" Precision="3" />
+    <Property Name="servedDate" Type="DateTime" Precision="3" />
+    <Property Name="userId" Type="Int32" />
+    <NavigationProperty Name="Client" Relationship="TranscomModel.FK__ClientRes__clien__25869641" FromRole="ClientReservation" ToRole="Client" />
+    <NavigationProperty Name="User" Relationship="TranscomModel.FK_ClientReservation_Users" FromRole="ClientReservation" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Rate">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="amount" Type="Decimal" Precision="19" Scale="4" />
+    <NavigationProperty Name="EIRHeaders" Relationship="TranscomModel.FK__EIRHeader__rateI__2E1BDC42" FromRole="Rate" ToRole="EIRHeader" />
+  </EntityType>
+  <EntityType Name="Shipper">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="clientId" Type="Int32" />
+    <Property Name="name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="address" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="contactPerson" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="landline" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Client" Relationship="TranscomModel.FK__Shipper__clientI__24927208" FromRole="Shipper" ToRole="Client" />
+    <NavigationProperty Name="EIRHeaders" Relationship="TranscomModel.FK__EIRHeader__shipp__2D27B809" FromRole="Shipper" ToRole="EIRHeader" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="active" Type="Byte" />
+    <NavigationProperty Name="ClientReservations" Relationship="TranscomModel.FK_ClientReservation_Users" FromRole="User" ToRole="ClientReservation" />
+    <NavigationProperty Name="EIRHeaders" Relationship="TranscomModel.FK__EIRHeader__userI__2F10007B" FromRole="User" ToRole="EIRHeader" />
+  </EntityType>
+  <Association Name="FK__ClientRes__clien__25869641">
+    <End Type="TranscomModel.Client" Role="Client" Multiplicity="0..1" />
+    <End Type="TranscomModel.ClientReservation" Role="ClientReservation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="ClientReservation">
+        <PropertyRef Name="clientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Shipper__clientI__24927208">
+    <End Type="TranscomModel.Client" Role="Client" Multiplicity="0..1" />
+    <End Type="TranscomModel.Shipper" Role="Shipper" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Shipper">
+        <PropertyRef Name="clientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ClientReservation_Users">
+    <End Type="TranscomModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="TranscomModel.ClientReservation" Role="ClientReservation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="ClientReservation">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="EIRDetail">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="eirId" Type="Int32" />
+    <Property Name="trailerId" Type="Int32" />
+    <Property Name="truckPlateNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="drive" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="licenseNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="date" Type="DateTime" Precision="3" />
+    <Property Name="statusId" Type="Int32" />
+    <NavigationProperty Name="Status" Relationship="TranscomModel.FK__EIRDetail__statu__31EC6D26" FromRole="EIRDetail" ToRole="Status" />
+    <NavigationProperty Name="Trailer" Relationship="TranscomModel.FK__EIRDetail__trail__300424B4" FromRole="EIRDetail" ToRole="Trailer" />
+    <NavigationProperty Name="EIRHeader" Relationship="TranscomModel.FK__EIRDetail__eirId__30F848ED" FromRole="EIRDetail" ToRole="EIRHeader" />
+  </EntityType>
+  <EntityType Name="Status">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="status1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="EIRDetails" Relationship="TranscomModel.FK__EIRDetail__statu__31EC6D26" FromRole="Status" ToRole="EIRDetail" />
+    <NavigationProperty Name="Trailers" Relationship="TranscomModel.FK__Trailer__statusI__239E4DCF" FromRole="Status" ToRole="Trailer" />
+  </EntityType>
+  <EntityType Name="Trailer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="plateNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="statusId" Type="Int32" />
+    <Property Name="active" Type="Byte" />
+    <NavigationProperty Name="EIRDetails" Relationship="TranscomModel.FK__EIRDetail__trail__300424B4" FromRole="Trailer" ToRole="EIRDetail" />
+    <NavigationProperty Name="Status" Relationship="TranscomModel.FK__Trailer__statusI__239E4DCF" FromRole="Trailer" ToRole="Status" />
+  </EntityType>
+  <Association Name="FK__EIRDetail__statu__31EC6D26">
+    <End Type="TranscomModel.Status" Role="Status" Multiplicity="0..1" />
+    <End Type="TranscomModel.EIRDetail" Role="EIRDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRDetail">
+        <PropertyRef Name="statusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EIRDetail__trail__300424B4">
+    <End Type="TranscomModel.Trailer" Role="Trailer" Multiplicity="0..1" />
+    <End Type="TranscomModel.EIRDetail" Role="EIRDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Trailer">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRDetail">
+        <PropertyRef Name="trailerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Trailer__statusI__239E4DCF">
+    <End Type="TranscomModel.Status" Role="Status" Multiplicity="0..1" />
+    <End Type="TranscomModel.Trailer" Role="Trailer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Status">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Trailer">
+        <PropertyRef Name="statusId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="EIRHeader">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="clientId" Type="Int32" />
+    <Property Name="shipperId" Type="Int32" />
+    <Property Name="qty" Type="Int32" />
+    <Property Name="rateId" Type="Int32" />
+    <Property Name="date" Type="DateTime" Precision="3" />
+    <Property Name="userId" Type="Int32" />
+    <Property Name="inRef" Type="Int32" />
+    <Property Name="statusId" Type="Int32" />
+    <NavigationProperty Name="Client" Relationship="TranscomModel.FK__EIRHeader__clien__2C3393D0" FromRole="EIRHeader" ToRole="Client" />
+    <NavigationProperty Name="EIRDetails" Relationship="TranscomModel.FK__EIRDetail__eirId__30F848ED" FromRole="EIRHeader" ToRole="EIRDetail" />
+    <NavigationProperty Name="Rate" Relationship="TranscomModel.FK__EIRHeader__rateI__2E1BDC42" FromRole="EIRHeader" ToRole="Rate" />
+    <NavigationProperty Name="Shipper" Relationship="TranscomModel.FK__EIRHeader__shipp__2D27B809" FromRole="EIRHeader" ToRole="Shipper" />
+    <NavigationProperty Name="User" Relationship="TranscomModel.FK__EIRHeader__userI__2F10007B" FromRole="EIRHeader" ToRole="User" />
+  </EntityType>
+  <Association Name="FK__EIRHeader__clien__2C3393D0">
+    <End Type="TranscomModel.Client" Role="Client" Multiplicity="0..1" />
+    <End Type="TranscomModel.EIRHeader" Role="EIRHeader" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRHeader">
+        <PropertyRef Name="clientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EIRDetail__eirId__30F848ED">
+    <End Type="TranscomModel.EIRHeader" Role="EIRHeader" Multiplicity="0..1" />
+    <End Type="TranscomModel.EIRDetail" Role="EIRDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="EIRHeader">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRDetail">
+        <PropertyRef Name="eirId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EIRHeader__rateI__2E1BDC42">
+    <End Type="TranscomModel.Rate" Role="Rate" Multiplicity="0..1" />
+    <End Type="TranscomModel.EIRHeader" Role="EIRHeader" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rate">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRHeader">
+        <PropertyRef Name="rateId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EIRHeader__shipp__2D27B809">
+    <End Type="TranscomModel.Shipper" Role="Shipper" Multiplicity="0..1" />
+    <End Type="TranscomModel.EIRHeader" Role="EIRHeader" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Shipper">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRHeader">
+        <PropertyRef Name="shipperId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EIRHeader__userI__2F10007B">
+    <End Type="TranscomModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="TranscomModel.EIRHeader" Role="EIRHeader" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="EIRHeader">
+        <PropertyRef Name="userId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
