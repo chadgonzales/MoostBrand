@@ -89,7 +89,8 @@ namespace MoostBrand.Controllers
                     {
                         ID = _req.ID,
                         RefNumber = refNumber,
-                        SourceLoc = _req.Location.Description
+                        SourceLoc = _req.Location.Description,
+                        SourceDest = _req.Location1.ID
                     });
             }
 
@@ -126,7 +127,8 @@ namespace MoostBrand.Controllers
                     {
                         ID = _req.ID,
                         RefNumber = refNumber,
-                        SourceLoc = _req.Location.Description
+                        SourceLoc = _req.Location.Description,
+                        SourceDest = _req.Location1.ID
                     });
             }
             return Json(_lstReqCustom, JsonRequestBehavior.AllowGet);
@@ -250,6 +252,7 @@ namespace MoostBrand.Controllers
             public int ID { get; set; }
             public string RefNumber { get; set; }
             public string SourceLoc { get;  set; }
+            public int SourceDest { get; set; }
         }
 
         public class RecCustom
@@ -380,6 +383,7 @@ namespace MoostBrand.Controllers
             //ViewBag.ReservationID = new SelectList("", "ID", "RefNumber"); //new SelectList(_lstReqCustom, "ID", "RefNumber");
             //ViewBag.ReceivingID =  new SelectList("", "ID", "ReceivingID"); //new SelectList(lstRecCustom, "ID", "ReceivingID");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description");
+            ViewBag.Destination = new SelectList(loc,"ID","Description");
             var empList = new SelectList((from s in entity.Employees
                                           select new
                                           {
@@ -417,6 +421,7 @@ namespace MoostBrand.Controllers
             //ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2 && r.ReceivingDetails.Sum(p => p.Quantity) > 0), "ID", "ReceivingID");
             //ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2 && r.RequisitionDetails.Sum(p => p.Quantity) > 0), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
+            ViewBag.Destination = new SelectList(loc,"ID","Description",stocktransfer.DestinationID);
             var empList = from s in entity.Employees
                           select new
                           {
