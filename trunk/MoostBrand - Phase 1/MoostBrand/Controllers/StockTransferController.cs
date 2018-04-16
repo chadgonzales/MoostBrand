@@ -1024,19 +1024,22 @@ namespace MoostBrand.Controllers
                 var item = entity.StockTransferDetails.Find(itemID);
                 if (item != null)
                 {
-                    item.AprovalStatusID = 2;
-                    item.IsSync = false;
-
-                    var reqDetails = entity.RequisitionDetails.Find(item.RequisitionDetailID);
-                    if (reqDetails != null)
+                    if (item.AprovalStatusID == 1)
                     {
-                        reqDetails.Quantity = reqDetails.Quantity - item.Quantity;
+                        item.AprovalStatusID = 2;
+                        item.IsSync = false;
 
-                        entity.Entry(reqDetails).State = EntityState.Modified;
+                        var reqDetails = entity.RequisitionDetails.Find(item.RequisitionDetailID);
+                        if (reqDetails != null)
+                        {
+                            reqDetails.Quantity = reqDetails.Quantity - item.Quantity;
+
+                            entity.Entry(reqDetails).State = EntityState.Modified;
+                        }
+
+                        entity.Entry(item).State = EntityState.Modified;
+                        entity.SaveChanges();
                     }
-
-                    entity.Entry(item).State = EntityState.Modified;
-                    entity.SaveChanges();
 
                     #region WAC                    
                    

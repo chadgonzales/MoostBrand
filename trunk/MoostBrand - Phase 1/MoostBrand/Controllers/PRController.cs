@@ -1154,18 +1154,21 @@ namespace MoostBrand.Controllers
 
                 if(item != null)
                 {
-                    item.AprovalStatusID = 2;
-                    item.IsSync = false;
-                    if (item.Requisition.ReqTypeID != 2)
+                    if (item.AprovalStatusID == 1)
                     {
-                        item.Committed = Convert.ToInt32(getCommited(item.ItemID) + item.Committed);
+                        item.AprovalStatusID = 2;
+                        item.IsSync = false;
+                        if (item.Requisition.ReqTypeID != 2)
+                        {
+                            item.Committed = Convert.ToInt32(getCommited(item.ItemID) + item.Committed);
+                        }
+                        item.Ordered = getPurchaseOrder(itemID) + item.Quantity;
+                        int avail = (Convert.ToInt32(item.InStock) + Convert.ToInt32(item.Ordered)) - Convert.ToInt32(item.Committed);
+                        item.Available = avail;
+                        //item.InStock -= item.Quantity;
+                        entity.Entry(item).State = EntityState.Modified;
+                        //entity.SaveChanges();
                     }
-                    item.Ordered = getPurchaseOrder(itemID) + item.Quantity;
-                    int avail = (Convert.ToInt32(item.InStock) + Convert.ToInt32(item.Ordered)) - Convert.ToInt32(item.Committed);
-                    item.Available = avail;
-                    //item.InStock -= item.Quantity;
-                    entity.Entry(item).State = EntityState.Modified;
-                    //entity.SaveChanges();
                 }
                 //if (inventory != null)
                 //{

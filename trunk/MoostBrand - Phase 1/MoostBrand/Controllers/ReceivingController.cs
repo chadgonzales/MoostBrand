@@ -1650,45 +1650,45 @@ namespace MoostBrand.Controllers
                 var item = entity.ReceivingDetails.Find(itemID);
                 if (item != null)
                 {
-
-                    int requisitionId = Convert.ToInt32(Session["requisitionId"]);
-
-                    var reqDetail = entity.RequisitionDetails.Find(item.RequisitionDetailID);
-                    var stDetails = entity.StockTransferDetails.FirstOrDefault(s=>s.RequisitionDetailID == item.RequisitionDetailID);
-                    var dstDetails = entity.StockTransferDetails.FirstOrDefault(s => s.ID == item.RequisitionDetailID);
-                    if (reqDetail != null && item.Receiving.ReceivingTypeID == 1)
+                    if (item.AprovalStatusID == 1)
                     {
-                        reqDetail.Quantity = reqDetail.Quantity - item.Quantity;
+                        item.AprovalStatusID = 2;
+                        item.IsSync = false;
 
-                        entity.Entry(reqDetail).State = EntityState.Modified;
+                        int requisitionId = Convert.ToInt32(Session["requisitionId"]);
 
-                        item.InStock = reqDetailRepo.getInstockedReceiving(requisitionId, reqDetail.Item.Code) + item.Quantity;
+                        var reqDetail = entity.RequisitionDetails.Find(item.RequisitionDetailID);
+                        var stDetails = entity.StockTransferDetails.FirstOrDefault(s => s.RequisitionDetailID == item.RequisitionDetailID);
+                        var dstDetails = entity.StockTransferDetails.FirstOrDefault(s => s.ID == item.RequisitionDetailID);
+                        if (reqDetail != null && item.Receiving.ReceivingTypeID == 1)
+                        {
+                            reqDetail.Quantity = reqDetail.Quantity - item.Quantity;
+
+                            entity.Entry(reqDetail).State = EntityState.Modified;
+
+                            item.InStock = reqDetailRepo.getInstockedReceiving(requisitionId, reqDetail.Item.Code) + item.Quantity;
+                        }
+                        else if (stDetails != null && (item.Receiving.ReceivingTypeID != 6))
+                        {
+                            stDetails.Quantity = stDetails.Quantity - item.Quantity;
+
+                            entity.Entry(stDetails).State = EntityState.Modified;
+
+
+                            item.InStock = reqDetailRepo.getInstockedReceiving(requisitionId, reqDetail.Item.Code) + item.Quantity;
+                        }
+                        else if (stDetails != null && item.Receiving.ReceivingTypeID == 6)
+                        {
+                            dstDetails.Quantity = dstDetails.Quantity - item.Quantity;
+
+                            entity.Entry(dstDetails).State = EntityState.Modified;
+
+
+                            item.InStock = dstDetails.Inventories.InStock + item.Quantity;
+                        }
+
+                        entity.SaveChanges();
                     }
-                    else if (stDetails != null && (item.Receiving.ReceivingTypeID != 6 ))
-                    {
-                        stDetails.Quantity = stDetails.Quantity - item.Quantity;
-
-                        entity.Entry(stDetails).State = EntityState.Modified;
-
-
-                        item.InStock = reqDetailRepo.getInstockedReceiving(requisitionId, reqDetail.Item.Code) + item.Quantity;
-                    }
-                    else if (stDetails != null && item.Receiving.ReceivingTypeID == 6)
-                    {
-                        dstDetails.Quantity = dstDetails.Quantity - item.Quantity;
-
-                        entity.Entry(dstDetails).State = EntityState.Modified;
-
-
-                        item.InStock = dstDetails.Inventories.InStock + item.Quantity;
-                    }
-
-
-                    item.AprovalStatusID = 2;
-                    item.IsSync = false;
-
-                    
-                    entity.SaveChanges();
                 }
             }
             catch
