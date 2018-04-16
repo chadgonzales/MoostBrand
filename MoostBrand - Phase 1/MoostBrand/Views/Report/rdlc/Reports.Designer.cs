@@ -1855,6 +1855,8 @@ namespace MoostBrand.Views.Report.rdlc {
             
             private global::System.Data.DataColumn columnStatusOfOrder;
             
+            private global::System.Data.DataColumn columnPUR;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public dtUnserveDataTable() {
@@ -1970,6 +1972,14 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PURColumn {
+                get {
+                    return this.columnPUR;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2005,7 +2015,7 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtUnserveRow AdddtUnserveRow(string DateRequested, string PO, string ItemCode, string ItemPurDesc, string ItemSalesDesc, string UOM, string Quantity, string Location, string ReOrderLevel, string StatusOfOrder) {
+            public dtUnserveRow AdddtUnserveRow(string DateRequested, string PO, string ItemCode, string ItemPurDesc, string ItemSalesDesc, string UOM, string Quantity, string Location, string ReOrderLevel, string StatusOfOrder, string PUR) {
                 dtUnserveRow rowdtUnserveRow = ((dtUnserveRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DateRequested,
@@ -2017,7 +2027,8 @@ namespace MoostBrand.Views.Report.rdlc {
                         Quantity,
                         Location,
                         ReOrderLevel,
-                        StatusOfOrder};
+                        StatusOfOrder,
+                        PUR};
                 rowdtUnserveRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtUnserveRow);
                 return rowdtUnserveRow;
@@ -2050,6 +2061,7 @@ namespace MoostBrand.Views.Report.rdlc {
                 this.columnLocation = base.Columns["Location"];
                 this.columnReOrderLevel = base.Columns["ReOrderLevel"];
                 this.columnStatusOfOrder = base.Columns["StatusOfOrder"];
+                this.columnPUR = base.Columns["PUR"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2075,6 +2087,8 @@ namespace MoostBrand.Views.Report.rdlc {
                 base.Columns.Add(this.columnReOrderLevel);
                 this.columnStatusOfOrder = new global::System.Data.DataColumn("StatusOfOrder", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStatusOfOrder);
+                this.columnPUR = new global::System.Data.DataColumn("PUR", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPUR);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -6490,6 +6504,22 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string PUR {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtUnserve.PURColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PUR\' in table \'dtUnserve\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtUnserve.PURColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDateRequestedNull() {
                 return this.IsNull(this.tabledtUnserve.DateRequestedColumn);
             }
@@ -6606,6 +6636,18 @@ namespace MoostBrand.Views.Report.rdlc {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetStatusOfOrderNull() {
                 this[this.tabledtUnserve.StatusOfOrderColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPURNull() {
+                return this.IsNull(this.tabledtUnserve.PURColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPURNull() {
+                this[this.tabledtUnserve.PURColumn] = global::System.Convert.DBNull;
             }
         }
         

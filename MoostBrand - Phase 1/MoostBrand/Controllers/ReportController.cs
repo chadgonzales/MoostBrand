@@ -918,13 +918,14 @@ namespace MoostBrand.Controllers
 
             }
 
-           
+
             var lstUnserve = (from i in _lst
-                                select new
-                                {
-                                    DateRequested = i.Requisition.RequestedDate.ToString(),
-                                    orderByDate = i.Requisition.RequestedDate,
-                                    PO = i.Requisition.PONumber != null ? i.Requisition.PONumber : "" ,
+                              select new
+                              {
+                                  DateRequested = i.Requisition.RequestedDate.ToString(),
+                                  orderByDate = i.Requisition.RequestedDate,
+                                  PO = i.Requisition.PONumber != null ? i.Requisition.PONumber : "",
+                                  PUR = i.Requisition.RefNumber,
                                     ItemCode = i.Item.Code,
                                     ItemPurDesc =  i.Item.Description,
                                     ItemSalesDesc = i.Item.DescriptionPurchase,
@@ -1993,13 +1994,13 @@ namespace MoostBrand.Controllers
 
             if (itemcode != null)
             {
-                _lst = _lst.Where(p => p.Items.ID == itemcode).ToList();
+                _lst = _lst.Where(p => p.Inventory.Items.ID == itemcode).ToList();
                 string _code = entity.Items.Find(itemcode).Code;
                 _sortbycode = "Code:" + _code;
             }
             if (itemdesc != null)
             {
-                _lst = _lst.Where(p => p.Items.ID == itemdesc).ToList();
+                _lst = _lst.Where(p => p.Inventory.Items.ID == itemdesc).ToList();
                 string _desc = entity.Items.Find(itemdesc).Description;
                 _sortbydesc = "Description:" + _desc;
             }
@@ -2018,7 +2019,7 @@ namespace MoostBrand.Controllers
             if (brand != null)
             {
                 //  var items = entity.Items.Where(p => p.BrandID == brand).Select(p => p.Code);
-                _lst = _lst.Where(p => p.Items.BrandID == brand).ToList();
+                _lst = _lst.Where(p => p.Inventory.Items.BrandID == brand).ToList();
                 string _brand = entity.Brands.Find(brand).Description;
                 _sortbybrand = "Brand:" + _brand;
 
@@ -2027,7 +2028,7 @@ namespace MoostBrand.Controllers
             if (category != null)
             {
                 // string _category = entity.Categories.Find(category).Description;
-                _lst = _lst.Where(p => p.Items.CategoryID == category).ToList();
+                _lst = _lst.Where(p => p.Inventory.Items.CategoryID == category).ToList();
                 string _category = entity.Categories.Find(category).Description;
                 _sortbycategory = "Category:" + _category;
             }
@@ -2059,8 +2060,8 @@ namespace MoostBrand.Controllers
                               ErrorDate = i.StockAdjustment.ErrorDate,
                               RefNumber = i.StockAdjustment != null ? i.StockAdjustment.ReferenceNo : "",
                               Brand = i.Inventory.Items.Brand !=null ? i.Inventory.Items.Brand.Description : "",
-                              ItemCode = i.Inventory.ItemCode != null ? i.Inventory.ItemCode : "",
-                              ItemDesc = i.Inventory.Items.Description != null ? i.Inventory.Description : "",
+                              ItemCode = i.Inventory.Items.Code != null ? i.Inventory.Items.Code : "",
+                              ItemDesc = i.Inventory.Items.Description != null ? i.Inventory.Items.Description : "",
                               UOM = i.Inventory.InventoryUoM != null ? i.Inventory.InventoryUoM : "",
                               InStock = i.Inventory.InStock,
                               OldQuantity = i.OldQuantity.Value,
