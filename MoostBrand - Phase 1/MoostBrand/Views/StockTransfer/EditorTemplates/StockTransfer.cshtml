@@ -21,7 +21,8 @@
                                 id: item.ID,
                                 label: item.RefNumber,
                                 value: item.RefNumber,
-                                sourceloc:item.SourceLoc
+                                sourceloc: item.SourceLoc,
+                                sourcedest: item.SourceDest
                             };
                         }))
 
@@ -31,6 +32,9 @@
             select: function (event, ui) {
                 $("#RequisitionID").val(ui.item.id);
                 $("#sourceloc").val(ui.item.sourceloc);
+                $("#LocationID").val(ui.item.sourcedest);
+
+                generateStr();
             },
             messages: {
                 noResults: "", results: ""
@@ -79,7 +83,8 @@
                                 id: item.ID,
                                 label: item.RefNumber,
                                 value: item.RefNumber,
-                                sourceloc: item.SourceLoc
+                                sourceloc: item.SourceLoc,
+                                sourcedest: item.SourceDest
                             };
                         }))
 
@@ -89,6 +94,9 @@
             select: function (event, ui) {
                 $("#RequisitionID").val(ui.item.id);
                 $("#sourceloc").val(ui.item.sourceloc);
+                $("#LocationID").val(ui.item.sourcedest);
+
+                generateStr();
             },
             messages: {
                 noResults: "", results: ""
@@ -96,7 +104,36 @@
 
         });
       
-    })
+     })
+
+    function generateStr()
+    {     
+        _locID = $('#LocationID').val();
+        var url = "/StockTransfer/GetLocationCode/";
+
+        if ($('#LocationID').val() != '') {
+            $.ajax({
+                url: url,
+                data: { locID: _locID },
+                cache: false,
+                type: "POST",
+                success: function (data) {
+                    $.each(data, function (i, val) {
+                        console.log(val.Code);
+                        $.get("@Url.Action("GenerateSTRNumber", "StockTransfer")/STR " + val.Code + "", null, BindData);
+                    })
+                },
+                error: function (reponse) {
+                    alert("error : " + reponse);
+                }
+            });
+        }
+        else
+        {
+            $('#TransferID').val('');
+        }
+    
+    }
   
 
 </script>
@@ -167,22 +204,24 @@
                 <span class="symbol required"></span>
             </label>
             <div class="col-md-6">
-                @Html.TextBox("sourceloc", ViewBag.Location as string, new { @class = "form-control", @readonly = "readonly" })
+                @Html.TextBox("sourceloc", ViewBag.LocationID as string, new { @class = "form-control", @readonly = "readonly" })
                 @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="control-label col-md-2">
-            Destination
-            <span class="symbol required"></span>
-        </label>
-        <div class="col-md-6">
-            @Html.DropDownList("LocationID", String.Empty)
-            @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="control-label col-md-2">
+                Destination
+                <span class="symbol required"></span>
+            </label>
+            <div class="col-md-6">
+                @*@Html.TextBox("sourcedest", ViewBag.Destination as string, new { @class = "form-control", @readonly = "readonly" })*@
+                @Html.DropDownList("LocationID",null, string.Empty, new { @disabled = true })
+                @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
+            </div>
         </div>
-    </div>
+    
 
     <div class="form-group">
         <label class="control-label col-md-2">

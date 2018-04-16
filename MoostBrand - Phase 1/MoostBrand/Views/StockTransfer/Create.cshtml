@@ -111,107 +111,106 @@
         if ($('#StockTransferTypeID').val() == '') {
             $('#StockTransferTypeID').css({ "border": "1px solid red" })
             _passed = '1';
-        
+
         }
         else if ($('#ReceivingID').val() == '' && $("#StockTransferTypeID").val() == 2) {
             $('#ReceivingID').css({ "border": "1px solid red" })
             _passed = '2';
-           
+
         }
         else if ($('#RequisitionID').val() == '' && $("#StockTransferTypeID").val() == 1) {
             $('#RequisitionID').css({ "border": "1px solid red" })
             _passed = '3';
-           
+
         }
         else if ($('#LocationID').val() == '') {
             $('#LocationID').css({ "border": "1px solid red" })
             _passed = '4';
-            
+
         }
         else if ($('#TransferID').val() == '') {
             $('#TransferID').css({ "border": "1px solid red" })
             _passed = '5';
-            
+
         }
         else if ($('#STDAte').val() == '') {
             $('#STDAte').css({ "border": "1px solid red" })
             _passed = '6';
- 
+
         }
         else if ($('#TimeStarted').val() == '') {
             $('#TimeStarted').css({ "border": "1px solid red" })
             _passed = '7';
-           
+
         }
         else if ($('#TimeFinish').val() == '') {
             $(TimeFinish).css({ "border": "1px solid red" })
             _passed = '8';
-          
+
         }
         else if ($('#Driver').val() == '' ) {
             $('#Driver').css({ "border": "1px solid red" })
             _passed = '9';
-           
+
         }
 
         else if ($('#PlateNo').val() == '' ) {
             $('#PlateNo').css({ "border": "1px solid red" })
             _passed = '11';
-            
+
         }
         else if ($('._helper').val() == '' || $('._helper').val() == null) {
             //$('.helper-field').css({ "border": "1px solid red" })
             _passed = "Helper";
             //alert("Kindly fill up fields for Helper");
-           
+
         }
         else if ($('#RequestedBy').val() == '') {
             $('#RequestedBy').css({ "border": "1px solid red" })
             _passed = '13';
-           
+
         }
         else if ($('#ReceivedBy').val() == '') {
             $('#ReceivedBy').css({ "border": "1px solid red" })
             _passed = '14';
-           
+
         }
         else if ($('#ReleasedBy').val() == '') {
             $('#ReleasedBy').css({ "border": "1px solid red" })
             _passed = '15';
-           
+
         }
         else if ($('._operator').val() == '' || $('._operator').val() == null) {
             //$('.operator-field').css({ "border": "1px solid red" })
             _passed = "Operator";
-            
-           
+
+
         }
         else if ($('#CounterCheckedBy').val() == '' && $("#ReceivingTypeID").val() == 1) {
             $('#CounterCheckedBy').css({ "border": "1px solid red" })
             _passed = '18';
-          
+
         }
         else if ($('#EncodedBy').val() == '' && $("#ReceivingTypeID").val() == 1) {
             $('#EncodedBy').css({ "border": "1px solid red" })
             _passed = '19';
-           
+
         }
         else if ($('#PostedBy').val() == '' && $("#ReceivingTypeID").val() == 1) {
             $('#PostedBy').css({ "border": "1px solid red" })
             _passed = '20';
-            
-        }
 
+        }
         else
             _passed = "passed";
 
-       
-       
+
+
         return _passed;
 
     }
 
- 
+
 
     $('#StockTransferTypeID').change(function () {
         var text = $(this).val();
@@ -335,7 +334,7 @@
     function HideOrShow() {
 
         var val = $("#StockTransferTypeID").val();
-      
+
         if (val == "") {
             $("#rc").hide();
             $("#rq").hide();
@@ -347,18 +346,21 @@
             $("#rq").show();
             $("#sl").show();
             $('#sourceloc').val('');
+            $('#sourcedest').val('');
         } else if (val == 2) {
             $("#rc").show();
             $("#rq").hide();
             $("#res").hide();
             $("#sl").show();
             $('#sourceloc').val('');
+            $('#sourcedest').val('');
         } else if (val == 3) {
             $("#res").show();
             $("#rq").hide();
             $("#rc").hide();
             $("#sl").show();
             $('#sourceloc').val('');
+            $('#sourcedest').val('');
         }
         else {
             $("#rc").hide();
@@ -366,6 +368,7 @@
             $("#res").hide();
             $("#sl").hide();
             $('#sourceloc').val('');
+            $('#sourcedest').val('');
         }
 
     }
@@ -374,7 +377,7 @@
 
     });
 
-    $('#LocationID').change(function () {
+    $("#LocationID").on("change",function () {
         _locID = $('#LocationID').val();
         var url = "/StockTransfer/GetLocationCode/";
 
@@ -386,6 +389,7 @@
                 type: "POST",
                 success: function (data) {
                     $.each(data, function (i, val) {
+                        console.log(val.Code);
                         $.get("@Url.Action("GenerateSTRNumber", "StockTransfer")/STR " + val.Code + "", null, BindData);
                     })
                 },
@@ -397,11 +401,9 @@
         else
         {
             $('#TransferID').val('');
-
-          
         }
     });
-
+    $("#LocationID").trigger("change");
     //$('#ReservationID').change(function () {
 
     //    alert($('#ReservationID').val());
@@ -413,19 +415,20 @@
     //        success: function (r) {
     //        }
     //    });
-       
+
     //});
 
     function BindData(data) {
         $("#TransferID").val(data);
     }
 
+    _locID = $('#LocationID').val();
     function GetLocationCode(_locID) {
         var url = "/StockTransfer/GetLocationCode/";
 
         $.ajax({
             url: url,
-            data: { locID: _locID },
+            data: { locID: _locID},
             cache: false,
             type: "POST",
             success: function (data) {
@@ -436,6 +439,8 @@
             }
         });
     }
+
+
 
     jQuery.validator.unobtrusive.adapters.add("dropdown", function (options) {
         if (options.element.tagName.toUpperCase() == "SELECT" && options.element.type.toUpperCase() == "SELECT-ONE") {
