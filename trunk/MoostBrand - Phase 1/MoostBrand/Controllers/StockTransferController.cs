@@ -421,7 +421,7 @@ namespace MoostBrand.Controllers
             //ViewBag.ReceivingID = new SelectList(entity.Receivings.ToList().FindAll(r => r.ApprovalStatus == 2 && r.ReceivingDetails.Sum(p => p.Quantity) > 0), "ID", "ReceivingID");
             //ViewBag.ReservationID = new SelectList(entity.Requisitions.ToList().FindAll(r => r.ApprovalStatus == 2 && r.RequisitionDetails.Sum(p => p.Quantity) > 0), "ID", "RefNumber");
             ViewBag.LocationID = new SelectList(loc, "ID", "Description", stocktransfer.LocationID);
-            ViewBag.Destination = new SelectList(loc,"ID","Description",stocktransfer.DestinationID);
+            //ViewBag.Destination = new SelectList(loc,"ID","Description",stocktransfer.DestinationID);
             var empList = from s in entity.Employees
                           select new
                           {
