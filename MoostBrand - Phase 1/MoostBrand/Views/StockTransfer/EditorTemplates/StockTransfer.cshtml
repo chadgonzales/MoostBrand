@@ -217,8 +217,8 @@
             </label>
             <div class="col-md-6">
                 @*@Html.TextBox("sourcedest", ViewBag.Destination as string, new { @class = "form-control", @readonly = "readonly" })*@
-                @Html.DropDownList("LocationID",null, string.Empty, new { @disabled = true })
-                @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
+                @Html.DropDownList("LocationID",null, string.Empty)
+                @Html.ValidationMessageFor(model => model.DestinationID, "", new { @class = "text-danger" })
             </div>
         </div>
     
@@ -410,7 +410,7 @@
         $("input[disabled]").addClass("form-control");
         $("textarea").addClass("form-control");
         $("select").addClass("form-control");
-
+        $("#LocationID").attr("readonly", "readonly");
         $('.date-picker').datepicker({
             autoclose: true
         });
