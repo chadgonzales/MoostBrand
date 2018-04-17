@@ -218,7 +218,7 @@
             <div class="col-md-6">
                 @*@Html.TextBox("sourcedest", ViewBag.Destination as string, new { @class = "form-control", @readonly = "readonly" })*@
                 @Html.DropDownList("LocationID",null, string.Empty)
-                @Html.ValidationMessageFor(model => model.DestinationID, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
             </div>
         </div>
     
