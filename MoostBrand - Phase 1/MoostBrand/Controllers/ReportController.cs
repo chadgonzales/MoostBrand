@@ -1988,9 +1988,7 @@ namespace MoostBrand.Controllers
                 dtDateTo = Convert.ToDateTime(dateTo);
             }
 
-            var _lst = entity.StockAdjustmentDetails.ToList();
-
-            _lst = _lst.Where(r => r.StockAdjustment.ErrorDate >= dtDateFrom && r.StockAdjustment.ErrorDate <= dtDateTo.AddDays(1)).ToList();
+            var _lst = entity.StockAdjustmentDetails.Where(r=>r.StockAdjustment.ErrorDate >= dtDateFrom).ToList();
 
             if (itemcode != null)
             {
@@ -2051,14 +2049,14 @@ namespace MoostBrand.Controllers
           
 
 
-            var lstStockAdjustment = (from i in _lst
+            var lstStockAdjustment = (from i in _lst.Where(r=> r.StockAdjustment.ErrorDate <= dtDateTo.AddDays(1))
                                       select new
                           {
 
                               PostedDate = i.StockAdjustment.PostedDate != null ? i.StockAdjustment.PostedDate.ToString() : "",
                               orderbyDate = i.StockAdjustment.ErrorDate.ToString(),
                               ErrorDate = i.StockAdjustment.ErrorDate,
-                              RefNumber = i.StockAdjustment != null ? i.StockAdjustment.ReferenceNo : "",
+                              RefNumber = i.StockAdjustment != null ? i.StockAdjustment.No : "",
                               Brand = i.Inventory.Items.Brand !=null ? i.Inventory.Items.Brand.Description : "",
                               ItemCode = i.Inventory.Items.Code != null ? i.Inventory.Items.Code : "",
                               ItemDesc = i.Inventory.Items.Description != null ? i.Inventory.Items.Description : "",
