@@ -452,6 +452,7 @@ namespace MoostBrand.Controllers
                           ID = x.ID,
                           Description = x.Description
                       });
+           
 
             ViewBag.reqType = entity.RequisitionTypes.Where(model => model.ID == 4).ToList();
             ViewBag.PaymentStatusID = new SelectList(entity.PaymentStatus, "ID", "Status");
@@ -468,7 +469,7 @@ namespace MoostBrand.Controllers
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status");
             ViewBag.Destination = new SelectList(loc, "ID", "Description");
-
+            ViewBag.EncodedBy = new SelectList(employees, "ID", "FullName");
             return View(pr);
         }
 
@@ -536,6 +537,7 @@ namespace MoostBrand.Controllers
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", req.AuthorizedPerson);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName");
             ViewBag.Destination = new SelectList(loc, "ID", "Description", req.Destination);
+            ViewBag.EncodedBy = new SelectList(employees, "ID", "FullName");
             return View(req);
         }
 
@@ -571,6 +573,7 @@ namespace MoostBrand.Controllers
                 ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", pr.ValidatedBy);
                 ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", pr.ApprovalStatus);
                 ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", pr.ApprovedBy);
+                ViewBag.EncodedBy = new SelectList(employees, "ID", "FullName", pr.EncodedBy);
                 ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", pr.AuthorizedPerson);
                 ViewBag.Destination = new SelectList(loc.Where(p => p.ID != pr.LocationID), "ID", "Description", pr.Destination);
                 #endregion
@@ -641,6 +644,7 @@ namespace MoostBrand.Controllers
             ViewBag.ValidatedBy = new SelectList(employees, "ID", "FullName", req.ValidatedBy);
             ViewBag.ApprovalStatus = new SelectList(entity.ApprovalStatus, "ID", "Status", req.ApprovalStatus);
             ViewBag.ApprovedBy = new SelectList(employees, "ID", "FullName", req.ApprovedBy);
+            ViewBag.EncodedBy = new SelectList(employees, "ID", "FullName", req.EncodedBy);
             ViewBag.AuthorizedPerson = new SelectList(employees, "ID", "FullName", req.AuthorizedPerson);
             ViewBag.Destination = new SelectList(loc.Where(p => p.ID != req.LocationID), "ID", "Description", req.Destination);
             #endregion

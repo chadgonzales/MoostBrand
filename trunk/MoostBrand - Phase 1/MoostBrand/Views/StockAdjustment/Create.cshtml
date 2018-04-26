@@ -295,7 +295,13 @@
             $(this).css({ "border": "unset" })
         }
     });
-
+    $('#EncodedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
     $('#btnCreate1').click(function (event)
     {
         var _variable = Validate();
@@ -310,60 +316,64 @@
 
         var _passed;
         //txtEmail
-        if ($('#TransactionTypeID').val() == '') {
-            $('#TransactionTypeID').css({ "border": "1px solid red" })
+        if ($('#LocationID').val() == '') {
+            $('#LocationID').css({ "border": "1px solid red" })
             _passed = '1';
+
+        }
+        else if ($('#TransactionTypeID').val() == '') {
+            $('#TransactionTypeID').css({ "border": "1px solid red" })
+            _passed = '2';
 
         }
         else if ($('#ReferenceNo').val() == '') {
             $('#ReferenceNo').css({ "border": "1px solid red" })
-            _passed = '2';
+            _passed = '3';
 
         }
         else if ($('#PreparedBy').val() == '') {
             $('#PreparedBy').css({ "border": "1px solid red" })
-            _passed = '3';
+            _passed = '4';
 
         }
         else if ($('#LocationID').val() == '') {
             $('#LocationID').css({ "border": "1px solid red" })
-            _passed = '4';
+            _passed = '5';
 
         }
         else if ($('#AdjustedBy').val() == '') {
             $('#AdjustedBy').css({ "border": "1px solid red" })
-            _passed = '5';
+            _passed = '6';
 
         }
         else if ($('#ErrorDate').val() == '') {
             $('#ErrorDate').css({ "border": "1px solid red" })
-            _passed = '6';
+            _passed = '7';
 
         }
         else if ($('#ApprovedBy').val() == '') {
             $('#ApprovedBy').css({ "border": "1px solid red" })
-            _passed = '7';
+            _passed = '8';
 
         }
         else if ($('#PostedBy').val() == '') {
             $('#PostedBy').css({ "border": "1px solid red" })
-            _passed = '8';
+            _passed = '9';
 
         }
         else if ($('#PostedDate').val() == '') {
             $('#PostedDate').css({ "border": "1px solid red" })
-            _passed = '9';
+            _passed = '10';
 
         }
         else if ($('#EncodedBy').val() == '') {
             $('#EncodedBy').css({ "border": "1px solid red" })
-            _passed = '10';
+            _passed = '11';
 
         }
 
         else
             _passed = "passed";
-
 
 
         return _passed;

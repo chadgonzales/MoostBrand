@@ -416,7 +416,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
               </TablixCells>
@@ -1249,10 +1248,14 @@
           <DataField>CreatedBy</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="EncodedBy">
+          <DataField>EncodedBy</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>Inventory</rd:DataSetName>
-        <rd:SchemaPath>D:\PROGRAM\MoostBrand\trunk\MoostBrand\MoostBrand\Views\Report\rdlc\Reports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\Users\dennis\Desktop\Project\trunk\MoostBrand - Phase 1\MoostBrand\Views\Report\rdlc\Reports.xsd</rd:SchemaPath>
         <rd:TableName>dtStockTransfer</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

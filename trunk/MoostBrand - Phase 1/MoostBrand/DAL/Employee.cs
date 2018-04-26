@@ -18,6 +18,8 @@ namespace MoostBrand.DAL
             StockTransfers4 = new HashSet<StockTransfer>();
             StockTransfers5 = new HashSet<StockTransfer>();
             StockTransfers6 = new HashSet<StockTransfer>();
+            Reservations = new HashSet<Reservation>();
+            Inventories = new HashSet<Inventory>();
             Receivings = new HashSet<Receiving>();
             Receivings1 = new HashSet<Receiving>();
             Receivings2 = new HashSet<Receiving>();
@@ -85,6 +87,10 @@ namespace MoostBrand.DAL
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<StockTransfer> StockTransfers6 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reservation> Reservations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Inventory> Inventories { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Receiving> Receivings { get; set; }

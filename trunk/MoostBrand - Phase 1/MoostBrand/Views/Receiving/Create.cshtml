@@ -359,7 +359,6 @@
                     @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
-
             <div class="form-group">
                 @**@
                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -468,7 +467,7 @@
             _passed = '3';
 
         }
-        else if ($('#RequisitionID').val() == '') {
+        else if ($('#RequisitionID').val() == '' ) {
             $('#RequisitionID').css({ "border": "1px solid red" })
             _passed = '4';
             //alert(_passed);
@@ -553,15 +552,21 @@
         //    $('#CustName').css({ "border": "1px solid red" })
         //    _passed = '21';
 
-        //}
+            //}
+        else if ($('#InvoiceNumber').val() == '') {
+            $('#InvoiceNumber').css({ "border": "1px solid red" })
+            _passed = '21';
+
+        }
         else if ($('#ShipmentType').val() == '' && $("#ReceivingTypeID").val() == 4) {
             $('#ShipmentType').css({ "border": "1px solid red" })
             _passed = '22';
 
         }
+      
         else if ($('#ApprovedBy').val() == '') {
             $('#ApprovedBy').css({ "border": "1px solid red" })
-            _passed = '22';
+            _passed = '23';
 
         }
             //else if ($('#Remarks').val() == '') {
@@ -597,6 +602,13 @@
     });
 
 
+    $('#ReceivingTypeID').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
     $('#ReceivingID').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
@@ -604,7 +616,49 @@
             $(this).css({ "border": "unset" })
         }
     });
+    $('#LocationID').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
     $('#ReceivingDate').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ReceivedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#InvoiceReference').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    }); 
+    $('#Vendor').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#VendorCode').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#WaybillNumber').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
         if ($(this).val() != '') {
@@ -626,6 +680,13 @@
         }
     });
     $('#InvoiceNumber').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ShipmentType').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
         if ($(this).val() != '') {
@@ -660,6 +721,13 @@
             $(this).css({ "border": "unset" })
         }
     });
+    $('#ApprovedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
     $('#VanNumber').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
@@ -674,6 +742,29 @@
             $(this).css({ "border": "unset" })
         }
     });
+//BRANCH
+    $('#EncodedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#CheckedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    }); 
+    $('#InvoiceNumber').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+
 
     $(function () {
         HideOrShow(); //this calls it on load

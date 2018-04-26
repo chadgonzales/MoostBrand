@@ -255,6 +255,17 @@
                     @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Encoded By
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("EncodedBy")
+                    @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })@*not required*@
@@ -274,8 +285,26 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+        <div id="SaveWindow" class="modal fade" data-backdrop="static" data-keyboard="false">
+        <div id="ShowDialogSave" class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        Would you like to proceed?
+                    </h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">CLOSE</button>
+                    <button type="submit" class="btn btn-primary" onclick="Submit()" id="save">SUBMIT</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 }
 
 @section Scripts {
@@ -287,12 +316,13 @@
     $('#save').click(function (event) {
         var _variable = Validate();
         if (_variable == "passed") {
-            $('#submit').click();
+            //   $('#submit').click();
+            myModal();
         }
         else { alert('kindly fill up required fields'); }
 
     });
-
+   
     function Validate() {
 
         var _passed;
@@ -313,53 +343,61 @@
             $('#LocationID').css({ "border": "1px solid red" })
             _passed = '4';
         }
+        else if ($('#Destination').val() == '') {
+            $('#Destination').css({ "border": "1px solid red" })
+            _passed = '5';
+        }
         else if ($('#DateRequired').val() == '') {
             $('#DateRequired').css({ "border": "1px solid red" })
-            _passed = '5';
+            _passed = '6';
         }
         else if ($('#Customer').val() == '') {
             $('#Customer').css({ "border": "1px solid red" })
-            _passed = '6';
+            _passed = '7';
         }
         else if ($('#ReservationTypeID').val() == '') {
             $('#ReservationTypeID').css({ "border": "1px solid red" })
-            _passed = '7';
+            _passed = '8';
         }
         else if ($('#ReservedBy').val() == '') {
             $('#ReservedBy').css({ "border": "1px solid red" })
-            _passed = '8';
+            _passed = '9';
         }
         else if ($('#PaymentStatusID').val() == '') {
             $('#PaymentStatusID').css({ "border": "1px solid red" })
-            _passed = '9';
+            _passed = '10';
         }
         else if ($('#ValidityOfReservation').val() == '' && $("#PaymentStatusID").val() == 1) {
             $('#ValidityOfReservation').css({ "border": "1px solid red" })
-            _passed = '10';
+            _passed = '11';
         }
         else if ($('#InvoiceNumber').val() == '') {
             $('#InvoiceNumber').css({ "border": "1px solid red" })
-            _passed = '11';
+            _passed = '12';
         }
         else if ($('#AuthorizedPerson').val() == '') {
             $('#AuthorizedPerson').css({ "border": "1px solid red" })
-            _passed = '12';
+            _passed = '13';
         }
         else if ($('#ValidatedBy').val() == '') {
             $('#ValidatedBy').css({ "border": "1px solid red" })
-            _passed = '13';
+            _passed = '14';
         }
         else if ($('#ShipmentTypeID').val() == '') {
             $('#ShipmentTypeID').css({ "border": "1px solid red" })
-            _passed = '14';
+            _passed = '15';
         }
         else if ($('#ApprovalStatus').val() == '') {
             $('#ApprovalStatus').css({ "border": "1px solid red" })
-            _passed = '15';
+            _passed = '16';
         }
         else if ($('#ApprovedBy').val() == '') {
             $('#ApprovedBy').css({ "border": "1px solid red" })
-            _passed = '16';
+            _passed = '17';
+        }
+        else if ($('#EncodedBy').val() == '') {
+            $('#EncodedBy').css({ "border": "1px solid red" })
+            _passed = '18';
         }
         else
             _passed = "passed";
@@ -368,7 +406,36 @@
         return _passed;
 
     }
+    function myModal() {
+        $('#SaveWindow').modal('show');
+    }
+    function Submit() {
+        $(document).on("click", "#save", function () {
+            $('#submit').click();
 
+        });
+    }
+    $('#RequestedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#LocationID').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#Destination').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
     $('#RequestedDate').change(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
@@ -390,8 +457,21 @@
             $(this).css({ "border": "unset" })
         }
     });
-
     $('#Customer').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ReservationTypeID').keyup(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ReservedBy').keyup(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
         if ($(this).val() != '') {
@@ -405,7 +485,35 @@
             $(this).css({ "border": "unset" })
         }
     });
-    $('#AuthorizedPerson').keyup(function () {
+    $('#AuthorizedPerson').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ValidatedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ApprovalStatus').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#ApprovedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+    $('#EncodedBy').change(function () {
         var text = $(this).val();
         $(this).val(text.toUpperCase());
         if ($(this).val() != '') {
@@ -423,6 +531,7 @@
         var text = $(this).val();
         $(this).val(text.toUpperCase());
     });
+
 
     $(function () {
         if ($("#PaymentStatusID").val() == 1) {

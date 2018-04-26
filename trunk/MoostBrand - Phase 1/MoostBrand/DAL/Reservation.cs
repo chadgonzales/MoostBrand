@@ -31,6 +31,10 @@ namespace MoostBrand.DAL
 
         public int? EmployeeInCharge { get; set; }
 
+        public int? EncodedBy{ get; set; }
+
         public DateTime? DueDate { get; set; }
+
+        public virtual Employee Employee { get; set; }
     }
 }

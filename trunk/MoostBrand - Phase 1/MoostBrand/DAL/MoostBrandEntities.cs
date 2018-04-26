@@ -161,6 +161,16 @@ namespace MoostBrand.DAL
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Employee>()
+             .HasMany(e => e.Reservations)
+             .WithOptional(e => e.Employee)
+             .HasForeignKey(e => e.EncodedBy);
+
+            modelBuilder.Entity<Employee>()
+            .HasMany(e => e.Inventories)
+            .WithOptional(e => e.Employee)
+            .HasForeignKey(e => e.EncodedBy);
+
+            modelBuilder.Entity<Employee>()
                 .HasMany(e => e.Receivings)
                 .WithOptional(e => e.Employee)
                 .HasForeignKey(e => e.EncodedBy);
@@ -424,7 +434,7 @@ namespace MoostBrand.DAL
                 .HasMany(e => e.StockAdjustmentDetails)
                 .WithOptional(e => e.StockAdjustment)
                 .WillCascadeOnDelete();
-
+     
             modelBuilder.Entity<StockAllocation>()
                 .HasMany(e => e.StockAllocationDetails)
                 .WithOptional(e => e.StockAllocation)

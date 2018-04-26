@@ -72,7 +72,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("RequisitionTypeID", String.Empty)
+                    @Html.DropDownList("RequisitionTypeID")
                     @Html.ValidationMessageFor(model => model.RequisitionTypeID, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -355,7 +355,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.DropDownList("ApprovedBy", String.Empty)
+                    @Html.DropDownList("ApprovedBy")
                     @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
