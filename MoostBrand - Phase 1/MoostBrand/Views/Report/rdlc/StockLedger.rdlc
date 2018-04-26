@@ -38,6 +38,9 @@
             <TablixColumn>
               <Width>0.92709in</Width>
             </TablixColumn>
+            <TablixColumn>
+              <Width>1in</Width>
+            </TablixColumn>
           </TablixColumns>
           <TablixRows>
             <TablixRow>
@@ -383,6 +386,39 @@
                           <TextRuns>
                             <TextRun>
                               <Value>Location</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox1</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox1">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>EncodedBy</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -763,12 +799,46 @@
                     </Textbox>
                   </CellContents>
                 </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="EncodedBy">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!EncodedBy.Value</Value>
+                              <Style>
+                                <FontSize>8pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>EncodedBy</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <rd:Selected>true</rd:Selected>
+                  </CellContents>
+                </TablixCell>
               </TablixCells>
             </TablixRow>
           </TablixRows>
         </TablixBody>
         <TablixColumnHierarchy>
           <TablixMembers>
+            <TablixMember />
             <TablixMember />
             <TablixMember />
             <TablixMember />
@@ -800,7 +870,7 @@
         <Top>0.05556in</Top>
         <Left>0.06472in</Left>
         <Height>0.5in</Height>
-        <Width>9.54863in</Width>
+        <Width>10.54863in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -811,7 +881,7 @@
     <Height>2.26042in</Height>
     <Style />
   </Body>
-  <Width>9.66544in</Width>
+  <Width>11.73836in</Width>
   <Page>
     <PageHeader>
       <Height>1.67584in</Height>
@@ -1231,10 +1301,14 @@
           <DataField>Location</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="EncodedBy">
+          <DataField>EncodedBy</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>Inventory</rd:DataSetName>
-        <rd:SchemaPath>D:\PROGRAM\MoostBrand\trunk\MoostBrand\MoostBrand\Views\Report\rdlc\Reports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>C:\Users\dennis\Desktop\Project\trunk\MoostBrand - Phase 1\MoostBrand\Views\Report\rdlc\Reports.xsd</rd:SchemaPath>
         <rd:TableName>dtStockLedger</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

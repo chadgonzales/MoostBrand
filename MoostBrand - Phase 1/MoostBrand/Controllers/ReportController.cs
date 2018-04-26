@@ -410,8 +410,8 @@ namespace MoostBrand.Controllers
                                     UOM = i.Item.UnitOfMeasurement.Description != null ? i.Item.UnitOfMeasurement.Description : " ",
                                     CustomerName = i.Requisition.Customer != null ? i.Requisition.Customer : " ", //invRepo.getTotalStockTranfer(i.ItemCode,i.LocationCode.Value, dtDateFrom, dtDateTo),
                                     DateNeeded = i.Requisition.DateRequired != null ? i.Requisition.DateRequired.ToString() : " ",//invRepo.getTotalVariance(i.ID,i.LocationCode.Value, dtDateFrom, dtDateTo),
-                                    Status = i.Requisition.ReservationType.Type != null ? i.Requisition.ReservationType.Type : " "
-                                  
+                                    Status = i.Requisition.ReservationType.Type != null ? i.Requisition.ReservationType.Type : " ",
+                                   EncodedBy = i.Requisition.Employee4 != null ? i.Requisition.Employee4.FirstName + ' ' + i.Requisition.Employee4.LastName : ""
 
 
                                 }).ToList();
@@ -522,9 +522,9 @@ namespace MoostBrand.Controllers
                                     Variance = i.Variance != null ? i.Variance : 0,
                                     Date = i.Date != null ? i.Date.Value.ToString() : "",
                                     orderBydate = i.Date.Value,
-                                    Location = i.Inventories.LocationCode != null ? i.Inventories.Location.Description : " "
-
-                                }).ToList();
+                                    Location = i.Inventories.LocationCode != null ? i.Inventories.Location.Description : " ",
+                                    EncodedBy = i.Inventories.Employee != null ? i.Inventories.Employee.FirstName + ' ' + i.Inventories.Employee.LastName : "",
+                                  }).ToList();
 
 
             ReportViewer reportViewer = new ReportViewer();
@@ -935,9 +935,10 @@ namespace MoostBrand.Controllers
                                     ReOrderLevel =  entity.Inventories.FirstOrDefault(inv=>inv.ItemID == i.ItemID && inv.LocationCode == i.Requisition.LocationID) != null ?
                                                     (entity.Inventories.FirstOrDefault(inv => inv.ItemID == i.ItemID && inv.LocationCode == i.Requisition.LocationID).ReOrder != null ?
                                                     entity.Inventories.FirstOrDefault(inv => inv.ItemID == i.ItemID && inv.LocationCode == i.Requisition.LocationID).ReOrder : 0) : 0 , //from inventory
-                                    StatusOfOrder = ""
-
-                                }).ToList();
+                                    StatusOfOrder = "",
+                                    EncodedBy=i.Requisition.Employee4 !=null ? i.Requisition.Employee4.FirstName + ' ' + i.Requisition.Employee4.LastName : "",
+                                 
+                              }).ToList();
 
    
 
@@ -1026,21 +1027,21 @@ namespace MoostBrand.Controllers
 
 
             var lstStockReceiving = (from i in _lst
-                              select new
-                              {
-                                  DateCreated = i.Receiving.Requisition.RequestedDate.ToString(),
-                                  orderByDate = i.Receiving.Requisition.RequestedDate,
-                                  SRR = i.Receiving.ReceivingID != null ? i.Receiving.ReceivingID : "",
-                                  PO = i.RequisitionDetail.Requisition.PONumber,
-                                  ItemCode = i.RequisitionDetail.Item.Code,
-                                  ItemPurDesc = i.RequisitionDetail.Item.Description,
-                                  ItemSalesDesc = i.RequisitionDetail.Item.DescriptionPurchase,
-                                  UOM = i.RequisitionDetail.Item.UnitOfMeasurement.Description,
-                                  Quantity = i.ReferenceQuantity,
-                                  Location = i.Receiving.GetLocation,
-                                  ReceivedBy = i.Receiving.Employee2.FirstName+' '+i.Receiving.Employee2.LastName,
-                                  CreatedBy = i.Receiving.Requisition.Employee1.FirstName +' ' + i.Receiving.Requisition.Employee1.LastName
-
+                                     select new
+                                     {
+                                         DateCreated = i.Receiving.Requisition.RequestedDate.ToString(),
+                                         orderByDate = i.Receiving.Requisition.RequestedDate,
+                                         SRR = i.Receiving.ReceivingID != null ? i.Receiving.ReceivingID : "",
+                                         PO = i.RequisitionDetail.Requisition.PONumber,
+                                         ItemCode = i.RequisitionDetail.Item.Code,
+                                         ItemPurDesc = i.RequisitionDetail.Item.Description,
+                                         ItemSalesDesc = i.RequisitionDetail.Item.DescriptionPurchase,
+                                         UOM = i.RequisitionDetail.Item.UnitOfMeasurement.Description,
+                                         Quantity = i.ReferenceQuantity,
+                                         Location = i.Receiving.GetLocation,
+                                         ReceivedBy = i.Receiving.Employee2.FirstName + ' ' + i.Receiving.Employee2.LastName,
+                                         CreatedBy = i.Receiving.Requisition.Employee1.FirstName + ' ' + i.Receiving.Requisition.Employee1.LastName,
+                                         EncodedBy = i.Receiving.Requisition.Employee.FirstName + ' ' + i.Receiving.Requisition.Employee.LastName
                               }).ToList();
 
 
@@ -1312,7 +1313,7 @@ namespace MoostBrand.Controllers
                                          Location = i.StockTransfer.Requisition != null ? i.StockTransfer.Requisition.Location.Description : i.StockTransfer.Location.Description,
                                          ReceivedBy = i.StockTransfer.Employee3!=null ? i.StockTransfer.Employee3.FirstName + ' ' + i.StockTransfer.Employee3.LastName :"",
                                          CreatedBy = i.StockTransfer.Employee6 !=null ? i.StockTransfer.Employee6.FirstName + ' ' + i.StockTransfer.Employee6.LastName :""
-
+                                         
                                      }).ToList();
 
 
@@ -1928,7 +1929,7 @@ namespace MoostBrand.Controllers
             return View();
         }
 
-        public ActionResult StockAdjustmentReport(string dateFrom, string dateTo, int? brand, int? category, int? vendor, int? location, int? itemcode, int? itemdesc, int? encodedby, int? refnum)
+        public ActionResult StockAdjustmentReport(string dateFrom, string dateTo, int? brand, int? category, int? vendor, int? location, int? itemcode, int? itemdesc, int? encodedby, int? refnum,int? no)
         {
             var affectedRows1 = entity.Database.ExecuteSqlCommand("spUpdate_Inventory");
             #region DROPDOWNS
@@ -1951,6 +1952,12 @@ namespace MoostBrand.Controllers
                                       ID = s.ID,
                                       Description = s.Description
                                   };
+            var StockNo = from s in entity.StockAdjustments
+                            select new
+                            {
+                                ID = s.ID,
+                                No = s.No
+                            };
             var refnumber = from s in entity.StockAdjustments
                             select new
                             {
@@ -1971,13 +1978,14 @@ namespace MoostBrand.Controllers
             ViewBag.Vendor = new SelectList(entity.Vendors.OrderBy(v => v.GeneralName), "ID", "GeneralName");
             ViewBag.Location = new SelectList(loc, "ID", "Description");
             ViewBag.RefNumber = new SelectList(refnumber, "ID", "ReferenceNo");
+            ViewBag.StockNo = new SelectList(StockNo, "ID", "No");
             ViewBag.EncodedBy = new SelectList(employees1, "ID", "FullName");
 
             #endregion
             DateTime dtDateFrom = DateTime.Now.Date;
             DateTime dtDateTo = DateTime.Now;
 
-            string _sortbybrand = "Brand: ALL", _sortbydesc = "ItemDescription: ALL", _sortbyrefnum = "Reference Number: ALL", _sortbycode = "ItemCode: ALL", _sortbyencodedby = "EncodedBy: ALL", _sortbycategory = "Category: ALL", _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
+            string _sortbybrand = "Brand: ALL", _sortbydesc = "ItemDescription: ALL", _sortbyrefnum = "Reference Number: ALL", _sortbyNo = "No: ALL", _sortbycode = "ItemCode: ALL", _sortbyencodedby = "EncodedBy: ALL", _sortbycategory = "Category: ALL", _sortbyvendor = "Vendor: ALL", _sortbylocation = "Location: ALL";
             if (!String.IsNullOrEmpty(dateFrom))
             {
                 dtDateFrom = Convert.ToDateTime(dateFrom).Date;
@@ -2001,6 +2009,12 @@ namespace MoostBrand.Controllers
                 _lst = _lst.Where(p => p.Inventory.Items.ID == itemdesc).ToList();
                 string _desc = entity.Items.Find(itemdesc).Description;
                 _sortbydesc = "Description:" + _desc;
+            }
+            if (no != null)
+            {
+                _lst = _lst.Where(p => p.StockAdjustment.ID == no).ToList();
+                string _no = entity.StockAdjustments.Find(no).No;
+                _sortbyNo = "Stock Adjustment Number:" + _no;
             }
             if (refnum != null)
             {
@@ -2056,7 +2070,8 @@ namespace MoostBrand.Controllers
                               PostedDate = i.StockAdjustment.PostedDate != null ? i.StockAdjustment.PostedDate.ToString() : "",
                               orderbyDate = i.StockAdjustment.ErrorDate.ToString(),
                               ErrorDate = i.StockAdjustment.ErrorDate,
-                              RefNumber = i.StockAdjustment != null ? i.StockAdjustment.No : "",
+                              No = i.StockAdjustment != null ? i.StockAdjustment.ReferenceNo : "",
+                              RefNo = i.StockAdjustment != null ? i.StockAdjustment.No : "",
                               Brand = i.Inventory.Items.Brand !=null ? i.Inventory.Items.Brand.Description : "",
                               ItemCode = i.Inventory.Items.Code != null ? i.Inventory.Items.Code : "",
                               ItemDesc = i.Inventory.Items.Description != null ? i.Inventory.Items.Description : "",
@@ -2092,6 +2107,7 @@ namespace MoostBrand.Controllers
             _parameter.Add(new ReportParameter("SortByItemCode", _sortbycode));
             _parameter.Add(new ReportParameter("SortByItemDescription", _sortbydesc));
             _parameter.Add(new ReportParameter("SortByReferenceNumber", _sortbyrefnum));
+            _parameter.Add(new ReportParameter("SortByNo", _sortbyNo));
             _parameter.Add(new ReportParameter("SortByEncodedBy", _sortbyencodedby));
 
             reportViewer.LocalReport.DataSources.Add(_rds);
@@ -2248,7 +2264,8 @@ namespace MoostBrand.Controllers
                                           Customer = i.Requisition.RequisitionTypeID == 4 ? i.Requisition != null ? i.Requisition.Customer : "" : "",
                                           SalesPerson = i.Requisition.RequisitionTypeID == 4 ? i.Requisition != null ? i.Requisition.Employee1.FirstName + " " + i.Requisition.Employee1.LastName : "":"",
                                           RemainingBalance = i.Requisition.RequisitionTypeID == 4 ? i.Inventory != null ? i.Inventory.InStock : 0 :0,
-                                          Remarks = i.Remarks
+                                          Remarks = i.Remarks,
+                                          EncodedBy=i.Requisition.Employee4 != null ? i.Requisition.Employee4.FirstName + ' ' + i.Requisition.Employee4.LastName : " "
                                       }).Where(p=> p.RequestedQty > 0).ToList();
 
             
@@ -2426,7 +2443,8 @@ namespace MoostBrand.Controllers
                                            Locations = i.Requisition.Location != null ? i.Requisition.Location.Description : i.Requisition.Location.Description,
                                            TotalCommitted = lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ItemID && p.ItemId.LocationID == i.Requisition.LocationID) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ItemID && p.ItemId.LocationID == i.Requisition.LocationID).TotalCommitted : 0,
                                            ReservedQty = 0,//lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.LocationID == i.Requisition.LocationID) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ID && p.ItemId.LocationID == i.Requisition.LocationID).ReservedQty : 0,
-                                          RequestedQty = lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ItemID && p.ItemId.LocationID == i.Requisition.LocationID) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ItemID && p.ItemId.LocationID == i.Requisition.LocationID).RequestedQty : 0,
+                                           RequestedQty = lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ItemID && p.ItemId.LocationID == i.Requisition.LocationID) != null ? lstCommittedSummary1.FirstOrDefault(p => p.ItemId.ItemID == i.ItemID && p.ItemId.LocationID == i.Requisition.LocationID).RequestedQty : 0,
+                                           EncodedBy=i.Requisition.Employee4 != null ? i.Requisition.Employee4.LastName + ' ' + i.Requisition.Employee4.LastName : ""
                                       }).ToList();
 
             var _lstCommittedSummary = (from i in lstCommittedSummary
@@ -2441,6 +2459,7 @@ namespace MoostBrand.Controllers
                                      ReservedQty = i.ReservedQty,
                                      RequestedQty = i.RequestedQty,
                                      TotalCommitted = i.TotalCommitted,
+                                     EncodedBy=i.EncodedBy
 
                                  }).Where(p => p.RequestedQty > 0).ToList();
 

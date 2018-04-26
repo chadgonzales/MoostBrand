@@ -305,6 +305,17 @@
                     @Html.ValidationMessageFor(model => model.MaximumInventory, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <div class="form-group">
+                @*@Html.LabelFor(model => model.ApprovedBy, htmlAttributes: new { @class = "control-label col-md-2" })*@
+                <label class="control-label col-md-2">
+                    Encoded By
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("EncodedBy",String.Empty)
+                    @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-6">
@@ -389,7 +400,10 @@
             $('#Available').css({ "border": "1px solid red" })
             _passed = '14';
         }
-
+        else if ($('#EncodedBy').val() == '') {
+            $('#EncodedBy').css({ "border": "1px solid red" })
+            _passed = '14';
+        }
 
             //else if ($('#Remarks').val() == '') {
             //    $('#Remarks').css({ "border": "1px solid red" })
@@ -400,17 +414,29 @@
 
        // alert(_passed);
         return _passed;
-
     }
-
+   
+    $('#LocationCode').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
     $('#DailyAverageUsage').keyup(function () {
         var daily = $(this).val();
         var leadTime = $('#LeadTime').val();
 
         $('#ReOrder').val(daily * leadTime);
-
-    })
-
+    });
+    $('#ReOrder').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+  
     $('#LeadTime').keyup(function () {
         var leadTime = parseInt($(this).val());
         var daily = parseInt($('#DailyAverageUsage').val());
@@ -432,7 +458,13 @@
 
         $("#Available").val((instock + ordered) - committed);
     });
-  
+    $('#EncodedBy').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
 
     //$('#ItemID').change(function () {
     //    var text = $(this).val();

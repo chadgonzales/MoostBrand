@@ -256,17 +256,23 @@
                     @Html.ValidationMessageFor(model => model.MaximumInventory, "", new { @class = "text-danger" })
                 </div>
             </div>
-
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-6">
-                    <input type="submit" value="Save" class="btn btn-green hidden" id="submit" />
-                    <input type="submit" value="Save" class="btn btn-green" id="btnUpdate" />
-                    <a href='@Url.Action("Index")' class="btn btn-light-orange">
-                        Back to List
-                    </a>
+                @Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    @Html.DropDownList("EncodedBy", String.Empty)
+                    @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-6">
+                        <input type="submit" value="Save" class="btn btn-green hidden" id="submit" />
+                        <input type="submit" value="Save" class="btn btn-green" id="btnUpdate" />
+                        <a href='@Url.Action("Index")' class="btn btn-light-orange">
+                            Back to List
+                        </a>
+                    </div>
+                </div>
+            </div>
     </div>
 }
 

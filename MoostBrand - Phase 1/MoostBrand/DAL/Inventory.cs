@@ -56,6 +56,7 @@
         public int? MinimumInventory { get; set; }
 
         public int? MaximumInventory { get; set; }
+        public int? EncodedBy { get; set; }
 
         public int? DailyAverageUsage { get; set; }
 
@@ -66,7 +67,8 @@
 
         public virtual InventoryStatu InventoryStatu { get; set; }
         public virtual Location Location { get; set; }
-      
+        public virtual Employee Employee { get; set; }
+
         public virtual Item Items { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

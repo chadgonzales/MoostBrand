@@ -135,6 +135,14 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label col-md-3">StockAdjustment No</label>
+                    <div class="col-md-6">
+                        @Html.DropDownList("no", (IEnumerable<SelectListItem>)ViewBag.StockNo, "all", new { @class = "form-control ddl-item" })
+                    </div>
+                </div>
+            </div>
 
 
 

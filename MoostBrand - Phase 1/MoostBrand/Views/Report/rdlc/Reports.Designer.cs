@@ -1078,6 +1078,8 @@ namespace MoostBrand.Views.Report.rdlc {
             
             private global::System.Data.DataColumn columnStatus;
             
+            private global::System.Data.DataColumn columnEncodedBy;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public dtReservationDataTable() {
@@ -1193,6 +1195,14 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EncodedByColumn {
+                get {
+                    return this.columnEncodedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1228,7 +1238,7 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtReservationRow AdddtReservationRow(string DateCreated, string RefNumber, string ItemCode, string ItemSalesDesc, string ReservationQty, string QtyAfterReservation, string UOM, string CustomerName, string DateNeeded, string Status) {
+            public dtReservationRow AdddtReservationRow(string DateCreated, string RefNumber, string ItemCode, string ItemSalesDesc, string ReservationQty, string QtyAfterReservation, string UOM, string CustomerName, string DateNeeded, string Status, string EncodedBy) {
                 dtReservationRow rowdtReservationRow = ((dtReservationRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DateCreated,
@@ -1240,7 +1250,8 @@ namespace MoostBrand.Views.Report.rdlc {
                         UOM,
                         CustomerName,
                         DateNeeded,
-                        Status};
+                        Status,
+                        EncodedBy};
                 rowdtReservationRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtReservationRow);
                 return rowdtReservationRow;
@@ -1273,6 +1284,7 @@ namespace MoostBrand.Views.Report.rdlc {
                 this.columnCustomerName = base.Columns["CustomerName"];
                 this.columnDateNeeded = base.Columns["DateNeeded"];
                 this.columnStatus = base.Columns["Status"];
+                this.columnEncodedBy = base.Columns["EncodedBy"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1298,6 +1310,8 @@ namespace MoostBrand.Views.Report.rdlc {
                 base.Columns.Add(this.columnDateNeeded);
                 this.columnStatus = new global::System.Data.DataColumn("Status", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnStatus);
+                this.columnEncodedBy = new global::System.Data.DataColumn("EncodedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEncodedBy);
                 this.columnDateCreated.Caption = "ItemCode";
                 this.columnRefNumber.Caption = "ItemSalesDesc";
                 this.columnItemCode.Caption = "UOM";
@@ -1463,6 +1477,8 @@ namespace MoostBrand.Views.Report.rdlc {
             
             private global::System.Data.DataColumn columnLocation;
             
+            private global::System.Data.DataColumn columnEncodedBy;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public dtStockLedgerDataTable() {
@@ -1586,6 +1602,14 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EncodedByColumn {
+                get {
+                    return this.columnEncodedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1621,7 +1645,7 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtStockLedgerRow AdddtStockLedgerRow(string ItemCode, string ItemDesc, string Type, string Variance, string InQty, string OutQty, string BeginningBalance, string RemainingBalance, string ReferenceNo, string Date, string Location) {
+            public dtStockLedgerRow AdddtStockLedgerRow(string ItemCode, string ItemDesc, string Type, string Variance, string InQty, string OutQty, string BeginningBalance, string RemainingBalance, string ReferenceNo, string Date, string Location, string EncodedBy) {
                 dtStockLedgerRow rowdtStockLedgerRow = ((dtStockLedgerRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ItemCode,
@@ -1634,7 +1658,8 @@ namespace MoostBrand.Views.Report.rdlc {
                         RemainingBalance,
                         ReferenceNo,
                         Date,
-                        Location};
+                        Location,
+                        EncodedBy};
                 rowdtStockLedgerRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtStockLedgerRow);
                 return rowdtStockLedgerRow;
@@ -1668,6 +1693,7 @@ namespace MoostBrand.Views.Report.rdlc {
                 this.columnReferenceNo = base.Columns["ReferenceNo"];
                 this.columnDate = base.Columns["Date"];
                 this.columnLocation = base.Columns["Location"];
+                this.columnEncodedBy = base.Columns["EncodedBy"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1695,6 +1721,8 @@ namespace MoostBrand.Views.Report.rdlc {
                 base.Columns.Add(this.columnDate);
                 this.columnLocation = new global::System.Data.DataColumn("Location", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLocation);
+                this.columnEncodedBy = new global::System.Data.DataColumn("EncodedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEncodedBy);
                 this.columnItemDesc.Caption = "ItemPurchaseDesc";
                 this.columnType.Caption = "ItemSalesDesc";
                 this.columnVariance.Caption = "UOM";
@@ -1857,6 +1885,8 @@ namespace MoostBrand.Views.Report.rdlc {
             
             private global::System.Data.DataColumn columnPUR;
             
+            private global::System.Data.DataColumn columnEncodedBy;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public dtUnserveDataTable() {
@@ -1980,6 +2010,14 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EncodedByColumn {
+                get {
+                    return this.columnEncodedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2015,7 +2053,7 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtUnserveRow AdddtUnserveRow(string DateRequested, string PO, string ItemCode, string ItemPurDesc, string ItemSalesDesc, string UOM, string Quantity, string Location, string ReOrderLevel, string StatusOfOrder, string PUR) {
+            public dtUnserveRow AdddtUnserveRow(string DateRequested, string PO, string ItemCode, string ItemPurDesc, string ItemSalesDesc, string UOM, string Quantity, string Location, string ReOrderLevel, string StatusOfOrder, string PUR, string EncodedBy) {
                 dtUnserveRow rowdtUnserveRow = ((dtUnserveRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DateRequested,
@@ -2028,7 +2066,8 @@ namespace MoostBrand.Views.Report.rdlc {
                         Location,
                         ReOrderLevel,
                         StatusOfOrder,
-                        PUR};
+                        PUR,
+                        EncodedBy};
                 rowdtUnserveRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtUnserveRow);
                 return rowdtUnserveRow;
@@ -2062,6 +2101,7 @@ namespace MoostBrand.Views.Report.rdlc {
                 this.columnReOrderLevel = base.Columns["ReOrderLevel"];
                 this.columnStatusOfOrder = base.Columns["StatusOfOrder"];
                 this.columnPUR = base.Columns["PUR"];
+                this.columnEncodedBy = base.Columns["EncodedBy"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2089,6 +2129,8 @@ namespace MoostBrand.Views.Report.rdlc {
                 base.Columns.Add(this.columnStatusOfOrder);
                 this.columnPUR = new global::System.Data.DataColumn("PUR", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPUR);
+                this.columnEncodedBy = new global::System.Data.DataColumn("EncodedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEncodedBy);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2244,6 +2286,8 @@ namespace MoostBrand.Views.Report.rdlc {
             
             private global::System.Data.DataColumn columnCreatedBy;
             
+            private global::System.Data.DataColumn columnEncodedBy;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public dtStockReceivingDataTable() {
@@ -2367,6 +2411,14 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EncodedByColumn {
+                get {
+                    return this.columnEncodedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -2402,7 +2454,7 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtStockReceivingRow AdddtStockReceivingRow(string DateCreated, string SRR, string PO, string ItemCode, string ItemPurDesc, string ItemSalesDesc, string UOM, string Quantity, string Location, string ReceivedBy, string CreatedBy) {
+            public dtStockReceivingRow AdddtStockReceivingRow(string DateCreated, string SRR, string PO, string ItemCode, string ItemPurDesc, string ItemSalesDesc, string UOM, string Quantity, string Location, string ReceivedBy, string CreatedBy, string EncodedBy) {
                 dtStockReceivingRow rowdtStockReceivingRow = ((dtStockReceivingRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DateCreated,
@@ -2415,7 +2467,8 @@ namespace MoostBrand.Views.Report.rdlc {
                         Quantity,
                         Location,
                         ReceivedBy,
-                        CreatedBy};
+                        CreatedBy,
+                        EncodedBy};
                 rowdtStockReceivingRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtStockReceivingRow);
                 return rowdtStockReceivingRow;
@@ -2449,6 +2502,7 @@ namespace MoostBrand.Views.Report.rdlc {
                 this.columnLocation = base.Columns["Location"];
                 this.columnReceivedBy = base.Columns["ReceivedBy"];
                 this.columnCreatedBy = base.Columns["CreatedBy"];
+                this.columnEncodedBy = base.Columns["EncodedBy"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2476,6 +2530,8 @@ namespace MoostBrand.Views.Report.rdlc {
                 base.Columns.Add(this.columnReceivedBy);
                 this.columnCreatedBy = new global::System.Data.DataColumn("CreatedBy", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCreatedBy);
+                this.columnEncodedBy = new global::System.Data.DataColumn("EncodedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEncodedBy);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3060,6 +3116,8 @@ namespace MoostBrand.Views.Report.rdlc {
             
             private global::System.Data.DataColumn columnCreatedBy;
             
+            private global::System.Data.DataColumn columnEncodedBy;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public dtStockTransferDataTable() {
@@ -3183,6 +3241,14 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EncodedByColumn {
+                get {
+                    return this.columnEncodedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -3218,7 +3284,7 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtStockTransferRow AdddtStockTransferRow(string DateCreated, string STR, string RequisitionID, string ItemCode, string ItemPurDesc, string ItemSalesDesc, string UOM, string QtyOut, string Location, string ReceivedBy, string CreatedBy) {
+            public dtStockTransferRow AdddtStockTransferRow(string DateCreated, string STR, string RequisitionID, string ItemCode, string ItemPurDesc, string ItemSalesDesc, string UOM, string QtyOut, string Location, string ReceivedBy, string CreatedBy, string EncodedBy) {
                 dtStockTransferRow rowdtStockTransferRow = ((dtStockTransferRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         DateCreated,
@@ -3231,7 +3297,8 @@ namespace MoostBrand.Views.Report.rdlc {
                         QtyOut,
                         Location,
                         ReceivedBy,
-                        CreatedBy};
+                        CreatedBy,
+                        EncodedBy};
                 rowdtStockTransferRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtStockTransferRow);
                 return rowdtStockTransferRow;
@@ -3265,6 +3332,7 @@ namespace MoostBrand.Views.Report.rdlc {
                 this.columnLocation = base.Columns["Location"];
                 this.columnReceivedBy = base.Columns["ReceivedBy"];
                 this.columnCreatedBy = base.Columns["CreatedBy"];
+                this.columnEncodedBy = base.Columns["EncodedBy"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3292,6 +3360,8 @@ namespace MoostBrand.Views.Report.rdlc {
                 base.Columns.Add(this.columnReceivedBy);
                 this.columnCreatedBy = new global::System.Data.DataColumn("CreatedBy", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCreatedBy);
+                this.columnEncodedBy = new global::System.Data.DataColumn("EncodedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEncodedBy);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4067,7 +4137,7 @@ namespace MoostBrand.Views.Report.rdlc {
             
             private global::System.Data.DataColumn columnErrorDate;
             
-            private global::System.Data.DataColumn columnRefNumber;
+            private global::System.Data.DataColumn columnNo;
             
             private global::System.Data.DataColumn columnBrand;
             
@@ -4090,6 +4160,8 @@ namespace MoostBrand.Views.Report.rdlc {
             private global::System.Data.DataColumn columnApprovedBy;
             
             private global::System.Data.DataColumn columnRemarks;
+            
+            private global::System.Data.DataColumn columnRefNo;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -4142,9 +4214,9 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn RefNumberColumn {
+            public global::System.Data.DataColumn NoColumn {
                 get {
-                    return this.columnRefNumber;
+                    return this.columnNo;
                 }
             }
             
@@ -4238,6 +4310,14 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn RefNoColumn {
+                get {
+                    return this.columnRefNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -4273,12 +4353,12 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtAdjustmentRow AdddtAdjustmentRow(string PostedDate, string ErrorDate, string RefNumber, string Brand, string ItemCode, string ItemDesc, string UOM, string InStock, string OldQuantity, string NewQuantity, string Location, string EncodedBy, string ApprovedBy, string Remarks) {
+            public dtAdjustmentRow AdddtAdjustmentRow(string PostedDate, string ErrorDate, string No, string Brand, string ItemCode, string ItemDesc, string UOM, string InStock, string OldQuantity, string NewQuantity, string Location, string EncodedBy, string ApprovedBy, string Remarks, string RefNo) {
                 dtAdjustmentRow rowdtAdjustmentRow = ((dtAdjustmentRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         PostedDate,
                         ErrorDate,
-                        RefNumber,
+                        No,
                         Brand,
                         ItemCode,
                         ItemDesc,
@@ -4289,7 +4369,8 @@ namespace MoostBrand.Views.Report.rdlc {
                         Location,
                         EncodedBy,
                         ApprovedBy,
-                        Remarks};
+                        Remarks,
+                        RefNo};
                 rowdtAdjustmentRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtAdjustmentRow);
                 return rowdtAdjustmentRow;
@@ -4314,7 +4395,7 @@ namespace MoostBrand.Views.Report.rdlc {
             internal void InitVars() {
                 this.columnPostedDate = base.Columns["PostedDate"];
                 this.columnErrorDate = base.Columns["ErrorDate"];
-                this.columnRefNumber = base.Columns["RefNumber"];
+                this.columnNo = base.Columns["No"];
                 this.columnBrand = base.Columns["Brand"];
                 this.columnItemCode = base.Columns["ItemCode"];
                 this.columnItemDesc = base.Columns["ItemDesc"];
@@ -4326,6 +4407,7 @@ namespace MoostBrand.Views.Report.rdlc {
                 this.columnEncodedBy = base.Columns["EncodedBy"];
                 this.columnApprovedBy = base.Columns["ApprovedBy"];
                 this.columnRemarks = base.Columns["Remarks"];
+                this.columnRefNo = base.Columns["RefNo"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4335,8 +4417,8 @@ namespace MoostBrand.Views.Report.rdlc {
                 base.Columns.Add(this.columnPostedDate);
                 this.columnErrorDate = new global::System.Data.DataColumn("ErrorDate", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnErrorDate);
-                this.columnRefNumber = new global::System.Data.DataColumn("RefNumber", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnRefNumber);
+                this.columnNo = new global::System.Data.DataColumn("No", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNo);
                 this.columnBrand = new global::System.Data.DataColumn("Brand", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnBrand);
                 this.columnItemCode = new global::System.Data.DataColumn("ItemCode", typeof(string), null, global::System.Data.MappingType.Element);
@@ -4359,6 +4441,8 @@ namespace MoostBrand.Views.Report.rdlc {
                 base.Columns.Add(this.columnApprovedBy);
                 this.columnRemarks = new global::System.Data.DataColumn("Remarks", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRemarks);
+                this.columnRefNo = new global::System.Data.DataColumn("RefNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRefNo);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4508,6 +4592,8 @@ namespace MoostBrand.Views.Report.rdlc {
             
             private global::System.Data.DataColumn columnLocations;
             
+            private global::System.Data.DataColumn columnEncodedBy;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public dtCommittedReportSummaryDataTable() {
@@ -4607,6 +4693,14 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EncodedByColumn {
+                get {
+                    return this.columnEncodedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -4642,7 +4736,7 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public dtCommittedReportSummaryRow AdddtCommittedReportSummaryRow(string ItemCode, string Brand, string ItemDesc, string UOM, string ReservedQty, string RequestedQty, string TotalCommitted, string Locations) {
+            public dtCommittedReportSummaryRow AdddtCommittedReportSummaryRow(string ItemCode, string Brand, string ItemDesc, string UOM, string ReservedQty, string RequestedQty, string TotalCommitted, string Locations, string EncodedBy) {
                 dtCommittedReportSummaryRow rowdtCommittedReportSummaryRow = ((dtCommittedReportSummaryRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         ItemCode,
@@ -4652,7 +4746,8 @@ namespace MoostBrand.Views.Report.rdlc {
                         ReservedQty,
                         RequestedQty,
                         TotalCommitted,
-                        Locations};
+                        Locations,
+                        EncodedBy};
                 rowdtCommittedReportSummaryRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtCommittedReportSummaryRow);
                 return rowdtCommittedReportSummaryRow;
@@ -4683,6 +4778,7 @@ namespace MoostBrand.Views.Report.rdlc {
                 this.columnRequestedQty = base.Columns["RequestedQty"];
                 this.columnTotalCommitted = base.Columns["TotalCommitted"];
                 this.columnLocations = base.Columns["Locations"];
+                this.columnEncodedBy = base.Columns["EncodedBy"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4704,6 +4800,8 @@ namespace MoostBrand.Views.Report.rdlc {
                 base.Columns.Add(this.columnTotalCommitted);
                 this.columnLocations = new global::System.Data.DataColumn("Locations", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLocations);
+                this.columnEncodedBy = new global::System.Data.DataColumn("EncodedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEncodedBy);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -4869,6 +4967,8 @@ namespace MoostBrand.Views.Report.rdlc {
             
             private global::System.Data.DataColumn columnRemarks;
             
+            private global::System.Data.DataColumn columnEncodedBy;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public dtCommittedReportDetailedDataTable() {
@@ -5032,6 +5132,14 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn EncodedByColumn {
+                get {
+                    return this.columnEncodedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -5083,7 +5191,8 @@ namespace MoostBrand.Views.Report.rdlc {
                         string Customer, 
                         string SalesPerson, 
                         string RemainingBalance, 
-                        string Remarks) {
+                        string Remarks, 
+                        string EncodedBy) {
                 dtCommittedReportDetailedRow rowdtCommittedReportDetailedRow = ((dtCommittedReportDetailedRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         RequestedDate,
@@ -5101,7 +5210,8 @@ namespace MoostBrand.Views.Report.rdlc {
                         Customer,
                         SalesPerson,
                         RemainingBalance,
-                        Remarks};
+                        Remarks,
+                        EncodedBy};
                 rowdtCommittedReportDetailedRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdtCommittedReportDetailedRow);
                 return rowdtCommittedReportDetailedRow;
@@ -5140,6 +5250,7 @@ namespace MoostBrand.Views.Report.rdlc {
                 this.columnSalesPerson = base.Columns["SalesPerson"];
                 this.columnRemainingBalance = base.Columns["RemainingBalance"];
                 this.columnRemarks = base.Columns["Remarks"];
+                this.columnEncodedBy = base.Columns["EncodedBy"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5177,6 +5288,8 @@ namespace MoostBrand.Views.Report.rdlc {
                 base.Columns.Add(this.columnRemainingBalance);
                 this.columnRemarks = new global::System.Data.DataColumn("Remarks", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnRemarks);
+                this.columnEncodedBy = new global::System.Data.DataColumn("EncodedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnEncodedBy);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5886,6 +5999,22 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string EncodedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtReservation.EncodedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EncodedBy\' in table \'dtReservation\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtReservation.EncodedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDateCreatedNull() {
                 return this.IsNull(this.tabledtReservation.DateCreatedColumn);
             }
@@ -6002,6 +6131,18 @@ namespace MoostBrand.Views.Report.rdlc {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetStatusNull() {
                 this[this.tabledtReservation.StatusColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEncodedByNull() {
+                return this.IsNull(this.tabledtReservation.EncodedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEncodedByNull() {
+                this[this.tabledtReservation.EncodedByColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -6197,6 +6338,22 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string EncodedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtStockLedger.EncodedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EncodedBy\' in table \'dtStockLedger\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtStockLedger.EncodedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsItemCodeNull() {
                 return this.IsNull(this.tabledtStockLedger.ItemCodeColumn);
             }
@@ -6325,6 +6482,18 @@ namespace MoostBrand.Views.Report.rdlc {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetLocationNull() {
                 this[this.tabledtStockLedger.LocationColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEncodedByNull() {
+                return this.IsNull(this.tabledtStockLedger.EncodedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEncodedByNull() {
+                this[this.tabledtStockLedger.EncodedByColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -6520,6 +6689,22 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string EncodedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtUnserve.EncodedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EncodedBy\' in table \'dtUnserve\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtUnserve.EncodedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDateRequestedNull() {
                 return this.IsNull(this.tabledtUnserve.DateRequestedColumn);
             }
@@ -6648,6 +6833,18 @@ namespace MoostBrand.Views.Report.rdlc {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPURNull() {
                 this[this.tabledtUnserve.PURColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEncodedByNull() {
+                return this.IsNull(this.tabledtUnserve.EncodedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEncodedByNull() {
+                this[this.tabledtUnserve.EncodedByColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -6843,6 +7040,22 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string EncodedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtStockReceiving.EncodedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EncodedBy\' in table \'dtStockReceiving\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtStockReceiving.EncodedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDateCreatedNull() {
                 return this.IsNull(this.tabledtStockReceiving.DateCreatedColumn);
             }
@@ -6971,6 +7184,18 @@ namespace MoostBrand.Views.Report.rdlc {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCreatedByNull() {
                 this[this.tabledtStockReceiving.CreatedByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEncodedByNull() {
+                return this.IsNull(this.tabledtStockReceiving.EncodedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEncodedByNull() {
+                this[this.tabledtStockReceiving.EncodedByColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -7573,6 +7798,22 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string EncodedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtStockTransfer.EncodedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EncodedBy\' in table \'dtStockTransfer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtStockTransfer.EncodedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDateCreatedNull() {
                 return this.IsNull(this.tabledtStockTransfer.DateCreatedColumn);
             }
@@ -7701,6 +7942,18 @@ namespace MoostBrand.Views.Report.rdlc {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCreatedByNull() {
                 this[this.tabledtStockTransfer.CreatedByColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEncodedByNull() {
+                return this.IsNull(this.tabledtStockTransfer.EncodedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEncodedByNull() {
+                this[this.tabledtStockTransfer.EncodedByColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -8523,17 +8776,17 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string RefNumber {
+            public string No {
                 get {
                     try {
-                        return ((string)(this[this.tabledtAdjustment.RefNumberColumn]));
+                        return ((string)(this[this.tabledtAdjustment.NoColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'RefNumber\' in table \'dtAdjustment\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'No\' in table \'dtAdjustment\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledtAdjustment.RefNumberColumn] = value;
+                    this[this.tabledtAdjustment.NoColumn] = value;
                 }
             }
             
@@ -8715,6 +8968,22 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string RefNo {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtAdjustment.RefNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'RefNo\' in table \'dtAdjustment\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtAdjustment.RefNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsPostedDateNull() {
                 return this.IsNull(this.tabledtAdjustment.PostedDateColumn);
             }
@@ -8739,14 +9008,14 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsRefNumberNull() {
-                return this.IsNull(this.tabledtAdjustment.RefNumberColumn);
+            public bool IsNoNull() {
+                return this.IsNull(this.tabledtAdjustment.NoColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetRefNumberNull() {
-                this[this.tabledtAdjustment.RefNumberColumn] = global::System.Convert.DBNull;
+            public void SetNoNull() {
+                this[this.tabledtAdjustment.NoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -8879,6 +9148,18 @@ namespace MoostBrand.Views.Report.rdlc {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetRemarksNull() {
                 this[this.tabledtAdjustment.RemarksColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsRefNoNull() {
+                return this.IsNull(this.tabledtAdjustment.RefNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetRefNoNull() {
+                this[this.tabledtAdjustment.RefNoColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -9029,6 +9310,22 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string EncodedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtCommittedReportSummary.EncodedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EncodedBy\' in table \'dtCommittedReportSummary\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtCommittedReportSummary.EncodedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsItemCodeNull() {
                 return this.IsNull(this.tabledtCommittedReportSummary.ItemCodeColumn);
             }
@@ -9121,6 +9418,18 @@ namespace MoostBrand.Views.Report.rdlc {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetLocationsNull() {
                 this[this.tabledtCommittedReportSummary.LocationsColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEncodedByNull() {
+                return this.IsNull(this.tabledtCommittedReportSummary.EncodedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEncodedByNull() {
+                this[this.tabledtCommittedReportSummary.EncodedByColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -9403,6 +9712,22 @@ namespace MoostBrand.Views.Report.rdlc {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string EncodedBy {
+                get {
+                    try {
+                        return ((string)(this[this.tabledtCommittedReportDetailed.EncodedByColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'EncodedBy\' in table \'dtCommittedReportDetailed\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tabledtCommittedReportDetailed.EncodedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsRequestedDateNull() {
                 return this.IsNull(this.tabledtCommittedReportDetailed.RequestedDateColumn);
             }
@@ -9591,6 +9916,18 @@ namespace MoostBrand.Views.Report.rdlc {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetRemarksNull() {
                 this[this.tabledtCommittedReportDetailed.RemarksColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsEncodedByNull() {
+                return this.IsNull(this.tabledtCommittedReportDetailed.EncodedByColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetEncodedByNull() {
+                this[this.tabledtCommittedReportDetailed.EncodedByColumn] = global::System.Convert.DBNull;
             }
         }
         
