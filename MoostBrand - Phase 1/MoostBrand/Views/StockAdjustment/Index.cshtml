@@ -25,7 +25,6 @@
         </div>
 
         <div class="clearfix"></div>
-
     </div>
 
     <form id="action_form">
@@ -35,7 +34,7 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.ActionLink("Transaction Type", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+                        @Html.ActionLink("TransactionType", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
                     </th>
                     <th>
                         @Html.ActionLink("No", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
@@ -108,9 +107,7 @@
 </div>
 
 <script type="text/javascript">
-    function ReloadFunction() {
-        location.reload();
-    }
+  
 
     function Approve() {
         var prID = arguments[0];
@@ -120,6 +117,9 @@
         var frm = $("#action_form").serialize();
        
         $.post(url, frm);
+        location.reload();
+    }
+    function ReloadFunction() {
         location.reload();
     }
 

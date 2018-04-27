@@ -6,13 +6,14 @@
     <h4 class="panel-title">Stock Adjustment Details</h4>
     <hr />
 </div>
+
 <div class="panel-body">
     <div class="form-horizontal">
         <div class="form-group">
-            <label class="control-label col-md-2">Transaction Type</label>
+            <label class="control-label col-md-2">Stock Adjustment Number</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.TransactionType.Type)
+                    @Html.DisplayFor(model => model.No)
                 </label>
             </div>
         </div>
@@ -25,10 +26,18 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-2">Date</label>
+            <label class="control-label col-md-2">Transaction Type</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.ErrorDate)
+                    @Html.DisplayFor(model => model.TransactionType.Type)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Reference Number</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ReferenceNo)
                 </label>
             </div>
         </div>
@@ -42,7 +51,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-2">Encoded By</label>
+            <label class="control-label col-md-2">Adjusted By</label>
             <div class="col-md-6">
                 <label class="custom-label">
                     @Html.DisplayFor(model => model.Employee1.LastName),
@@ -50,12 +59,11 @@
                 </label>
             </div>
         </div>
- 
         <div class="form-group">
-            <label class="control-label col-md-2">Approved Status</label>
+            <label class="control-label col-md-2">Error Date</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.ApprovalStatu.Status)
+                    @Html.DisplayFor(model => model.ErrorDate)
                 </label>
             </div>
         </div>
@@ -86,10 +94,19 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-md-2">Reference Number</label>
+            <label class="control-label col-md-2">Encoded By</label>
             <div class="col-md-6">
                 <label class="custom-label">
-                    @Html.DisplayFor(model => model.ReferenceNo)
+                    @Html.DisplayFor(model => model.Employee1.LastName),
+                    @Html.DisplayFor(model => model.Employee1.FirstName)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Approval Status</label>
+            <div class="col-md-6">
+                <label class="custom-label">
+                    @Html.DisplayFor(model => model.ApprovalStatu.Status)
                 </label>
             </div>
         </div>
