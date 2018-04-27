@@ -20,13 +20,14 @@ namespace MoostBrand.Controllers
         // GET: StockAdjustment
         [AccessCheckerForDisablingButtons(ModuleID = 8)]
         [AccessChecker(Action = 1, ModuleID = 8)]
+        
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "type" : "";
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "trans" : "";
 
-            stledger();
+            //stledger();
 
             if (searchString != null)
             {
@@ -388,8 +389,8 @@ namespace MoostBrand.Controllers
                 var inv = entity.StockAdjustmentDetails.Where(p => p.StockAdjustmentID == _st.ID).ToList();
                 if (inv != null)
                 {
-                    try
-                    {
+                    //try
+                    //{
                         foreach (var _inv in inv)
                         {
                             var i = entity.Inventories.Find(_inv.ItemID);
@@ -411,8 +412,8 @@ namespace MoostBrand.Controllers
                             entity.StockLedgers.Add(_stockledger);
                             entity.SaveChanges();
                         }
-                    }
-                    catch { }
+                    //}
+                    //catch { }
 
                 }
 

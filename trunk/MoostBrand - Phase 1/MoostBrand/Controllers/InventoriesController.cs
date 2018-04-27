@@ -151,9 +151,16 @@ namespace MoostBrand.Controllers
                                 ID = x.ID,
                                 Description = x.Description
                             });
+            var employees = from s in entity.Employees
+                            select new
+                            {
+                                ID = s.ID,
+                                FullName = s.FirstName + " " + s.LastName
+                            };
 
             ViewBag.InventoryStatus = new SelectList(entity.InventoryStatus, "ID", "Status",2);
             ViewBag.LocationCode = new SelectList(loc, "ID", "Description");
+            ViewBag.EncodedBy = new SelectList(employees, "ID", "FullName");
             #endregion
 
             return View();
@@ -194,10 +201,16 @@ namespace MoostBrand.Controllers
                     ID = x.ID,
                     Description = x.Description
                 });
-
+            var employees = from s in entity.Employees
+                            select new
+                            {
+                                ID = s.ID,
+                                FullName = s.FirstName + " " + s.LastName
+                            };
 
             ViewBag.InventoryStatus = new SelectList(entity.InventoryStatus, "ID", "Status");
             ViewBag.LocationCode = new SelectList(loc, "ID", "Description");
+            ViewBag.EncodedBy = new SelectList(employees, "ID", "FullName", inventory.EncodedBy);
             #endregion
 
             return View(inventory);
@@ -225,9 +238,16 @@ namespace MoostBrand.Controllers
                           ID = x.ID,
                           Description = x.Description
                       });
+            var employees = from s in entity.Employees
+                            select new
+                            {
+                                ID=s.ID,
+                                FullName=s.FirstName + " " + s.LastName
+                            };
 
             ViewBag.InventoryStatus = new SelectList(entity.InventoryStatus, "ID", "Status", inventory.InventoryStatus);
             ViewBag.LocationCode = new SelectList(loc, "ID", "Description",inventory.LocationCode);
+            ViewBag.EncodedBy = new SelectList(employees, "ID", "FullName",inventory.EncodedBy);
             #endregion
 
             return View(inventory);
@@ -256,9 +276,17 @@ namespace MoostBrand.Controllers
                           ID = x.ID,
                           Description = x.Description
                       });
+            var employees = from s in entity.Employees
+                            select new
+                            {
+                                ID=s.ID,
+                                FullName = s.FirstName + " " + s.LastName
+
+                            };
 
             ViewBag.InventoryStatus = new SelectList(entity.InventoryStatus, "ID", "Status");
             ViewBag.LocationCode = new SelectList(loc, "ID", "Description");
+            ViewBag.EncodedBy = new SelectList(employees, "ID", "FullName");
             #endregion
 
             return View(inventory);
