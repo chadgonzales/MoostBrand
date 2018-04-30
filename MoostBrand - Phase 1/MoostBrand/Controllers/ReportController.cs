@@ -119,9 +119,9 @@ namespace MoostBrand.Controllers
                                 select new
                                 {
                                     ItemCode = i.ItemCode != null ? i.ItemCode : " ",
-                                    ItemPurchaseDesc = i.SalesDescription != null ? i.SalesDescription : " ",
-                                    ItemSalesDesc = i.Description != null ? i.Description : " ",
-                                    UOM = i.InventoryUoM != null ? i.InventoryUoM : " ",
+                                    ItemPurchaseDesc = i.Description != null ? i.Description : " ",
+                                    ItemSalesDesc = i.SalesDescription != null ? i.SalesDescription : " ",
+                                    UOM = i.Items == null ? "" : i.Items.UnitOfMeasurement == null ? "": i.Items.UnitOfMeasurement.Description,
                                     Location = i.Location.Description != null ? i.Location.Description : " ",
                                     ReOrderLevel = i.ReOrder != null ? i.ReOrder : 0,
                                     InQty = lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID && p.ItemId.Type.ToLower() == "stock in") != null ? lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID && p.ItemId.Type.ToLower() == "stock in").InQty : 0,
@@ -256,9 +256,9 @@ namespace MoostBrand.Controllers
                                 select new
                                 {
                                     ItemCode = i.ItemCode != null ? i.ItemCode : " ",
-                                    ItemPurchaseDesc = i.SalesDescription != null ? i.SalesDescription : " ",
-                                    ItemSalesDesc = i.Description != null ? i.Description : " ",
-                                    UOM = i.InventoryUoM != null ? i.InventoryUoM : " ",
+                                    ItemPurchaseDesc = i.Description != null ? i.Description : " ",
+                                    ItemSalesDesc = i.SalesDescription != null ? i.SalesDescription : " ",
+                                    UOM = i.Items == null ? "" : i.Items.UnitOfMeasurement == null ? "" : i.Items.UnitOfMeasurement.Description,
                                     Location = i.Location.Description != null ? i.Location.Description : " ",
                                     ReOrderLevel = i.ReOrder != null ? i.ReOrder : 0,
                                     InQty = 0,
@@ -927,17 +927,17 @@ namespace MoostBrand.Controllers
                                   RefNumber=i.Requisition.RefNumber,
                                   PO = i.Requisition.PONumber != null ? i.Requisition.PONumber : "",
                                   PUR = i.Requisition.RefNumber,
-                                    ItemCode = i.Item.Code,
-                                    ItemPurDesc =  i.Item.Description,
-                                    ItemSalesDesc = i.Item.DescriptionPurchase,
-                                    UOM =  i.Item.UnitOfMeasurement.Description,
-                                    Quantity = i.Quantity,
-                                    Location = i.Requisition.Location.Description,
-                                    ReOrderLevel =  entity.Inventories.FirstOrDefault(inv=>inv.ItemID == i.ItemID && inv.LocationCode == i.Requisition.LocationID) != null ?
-                                                    (entity.Inventories.FirstOrDefault(inv => inv.ItemID == i.ItemID && inv.LocationCode == i.Requisition.LocationID).ReOrder != null ?
-                                                    entity.Inventories.FirstOrDefault(inv => inv.ItemID == i.ItemID && inv.LocationCode == i.Requisition.LocationID).ReOrder : 0) : 0 , //from inventory
-                                    StatusOfOrder = "",
-                                    EncodedBy=i.Requisition.Employee4 !=null ? i.Requisition.Employee4.FirstName + ' ' + i.Requisition.Employee4.LastName : "",
+                                  ItemCode = i.Item.Code,
+                                  ItemPurDesc =  i.Item.Description,
+                                  ItemSalesDesc = i.Item.DescriptionPurchase,
+                                  UOM =  i.Item == null ?"": i.Item.UnitOfMeasurement.Description,
+                                  Quantity = i.Quantity,
+                                  Location = i.Requisition.Location.Description,
+                                  ReOrderLevel =  entity.Inventories.FirstOrDefault(inv=>inv.ItemID == i.ItemID && inv.LocationCode == i.Requisition.LocationID) != null ?
+                                                  (entity.Inventories.FirstOrDefault(inv => inv.ItemID == i.ItemID && inv.LocationCode == i.Requisition.LocationID).ReOrder != null ?
+                                                  entity.Inventories.FirstOrDefault(inv => inv.ItemID == i.ItemID && inv.LocationCode == i.Requisition.LocationID).ReOrder : 0) : 0 , //from inventory
+                                  StatusOfOrder = "",
+                                  EncodedBy=i.Requisition.Employee4 !=null ? i.Requisition.Employee4.FirstName + ' ' + i.Requisition.Employee4.LastName : "",
                                  
                               }).ToList();
 
@@ -1166,7 +1166,7 @@ namespace MoostBrand.Controllers
                                     ItemCode = i.ItemCode != null ? i.ItemCode : " ",
                                     ItemPurchaseDesc = i.SalesDescription != null ? i.SalesDescription : " ",
                                     ItemSalesDesc = i.Description != null ? i.Description : " ",
-                                    UOM = i.InventoryUoM != null ? i.InventoryUoM : " ",
+                                    UOM = i.Items == null ? "" : i.Items.UnitOfMeasurement == null ? "" : i.Items.UnitOfMeasurement.Description,
                                     Location = i.Location.Description != null ? i.Location.Description : " ",
                                     ReOrderLevel = i.ReOrder != null ? i.ReOrder : 0,
                                     InQty = lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID && p.ItemId.Type.ToLower() == "stock in") != null ? lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID && p.ItemId.Type.ToLower() == "stock in").InQty : 0,
@@ -1997,7 +1997,7 @@ namespace MoostBrand.Controllers
                 dtDateTo = Convert.ToDateTime(dateTo);
             }
 
-            var _lst = entity.StockAdjustmentDetails.Where(r=>r.StockAdjustment.ErrorDate >= dtDateFrom).ToList();
+            var _lst = entity.StockAdjustmentDetails.Where(r=>r.StockAdjustment.PostedDate >= dtDateFrom).ToList();
 
             if (itemcode != null)
             {
@@ -2061,30 +2061,30 @@ namespace MoostBrand.Controllers
                 _sortbylocation = "Location:" + _location;
 
             }
-          
 
 
-            var lstStockAdjustment = (from i in _lst.Where(r=> r.StockAdjustment.ErrorDate <= dtDateTo.AddDays(1))
+
+            var lstStockAdjustment = (from i in _lst.Where(r => r.StockAdjustment.PostedDate <= dtDateTo.AddDays(1))
                                       select new
-                          {
+                                      {
 
-                              PostedDate = i.StockAdjustment.PostedDate != null ? i.StockAdjustment.PostedDate.Value.ToString("MM/dd/yyyy") : "",
-                              orderbyDate = i.StockAdjustment.ErrorDate.ToString(),
-                              ErrorDate = i.StockAdjustment.ErrorDate != null ? i.StockAdjustment.ErrorDate.Value.ToString("MM/dd/yyyy") : "",
-                              No = i.StockAdjustment != null ? i.StockAdjustment.ReferenceNo : "",
-                              RefNo = i.StockAdjustment != null ? i.StockAdjustment.No : "",
-                              Brand = i.Inventory.Items.Brand !=null ? i.Inventory.Items.Brand.Description : "",
-                              ItemCode = i.Inventory.Items.Code != null ? i.Inventory.Items.Code : "",
-                              ItemDesc = i.Inventory.Items.Description != null ? i.Inventory.Items.Description : "",
-                              UOM = i.Inventory.InventoryUoM != null ? i.Inventory.InventoryUoM : "",
-                              InStock = i.Inventory.InStock,
-                              OldQuantity = i.OldQuantity.Value,
-                              NewQuantity = i.NewQuantity.Value,
-                              Location = i.StockAdjustment.Location != null ? i.StockAdjustment.Location.Description : i.StockAdjustment.Location.Description,
-                              EncodedBy = i.StockAdjustment.Employee4 != null ? i.StockAdjustment.Employee4.FirstName + ' ' + i.StockAdjustment.Employee4.LastName : "",
-                              ApprovedBy = i.StockAdjustment.Employee2 != null ? i.StockAdjustment.Employee2.FirstName + ' ' + i.StockAdjustment.Employee2.LastName : "",
-                              Remarks = i.StockAdjustment.Comments
-                          }).ToList();
+                                          PostedDate = i.StockAdjustment.PostedDate != null ? i.StockAdjustment.PostedDate.Value.ToString("MM/dd/yyyy") : "",
+                                          orderbyDate = i.StockAdjustment.PostedDate.ToString(),
+                                          ErrorDate = i.StockAdjustment.ErrorDate != null ? i.StockAdjustment.ErrorDate.Value.ToString("MM/dd/yyyy") : "",
+                                          No = i.StockAdjustment != null ? i.StockAdjustment.ReferenceNo : "",
+                                          RefNo = i.StockAdjustment != null ? i.StockAdjustment.No : "",
+                                          Brand = i.Inventory.Items.Brand != null ? i.Inventory.Items.Brand.Description : "",
+                                          ItemCode = i.Inventory.Items.Code != null ? i.Inventory.Items.Code : "",
+                                          ItemDesc = i.Inventory.Items.Description != null ? i.Inventory.Items.Description : "",
+                                          UOM = i.Inventory == null ? "" : i.Inventory.Items == null ? "" : i.Inventory.Items.UnitOfMeasurement == null? "": i.Inventory.Items.UnitOfMeasurement.Description,
+                                          InStock = i.Inventory.InStock,
+                                          OldQuantity = i.OldQuantity.Value,
+                                          NewQuantity = i.NewQuantity.Value,
+                                          Location = i.StockAdjustment.Location != null ? i.StockAdjustment.Location.Description : i.StockAdjustment.Location.Description,
+                                          EncodedBy = i.StockAdjustment.Employee4 != null ? i.StockAdjustment.Employee4.FirstName + ' ' + i.StockAdjustment.Employee4.LastName : "",
+                                          ApprovedBy = i.StockAdjustment.Employee2 != null ? i.StockAdjustment.Employee2.FirstName + ' ' + i.StockAdjustment.Employee2.LastName : "",
+                                          Remarks = i.StockAdjustment.Comments
+                                        }).ToList();
        
 
 
@@ -2249,16 +2249,16 @@ namespace MoostBrand.Controllers
                                       {
 
                                           RequestedDate = i.Requisition.RequestedDate != null ? i.Requisition.RequestedDate.ToString() : "",
-                                          orderbyDate = i.Requisition.RequestedDate.ToString(),
+                                          orderbyDate = i.Requisition.RequestedDate,
                                           RequiredDate = i.Requisition.DateRequired,
                                           RefNumber = i.Requisition != null ? i.Requisition.RefNumber : "",
                                           //Name
                                           Brand = i.Item.Brand != null ? i.Item.Brand.Description : "",
                                           ItemCode = i.Item.Code != null ? i.Item.Code : "",
                                           ItemDesc = i.Item.Description != null ? i.Item.Description : "",
-                                          UOM = i.Inventory != null ? i.Inventory.InventoryUoM : "" ,
-                                         // InStock = i.Inventory.InStock,
-                                          ReservedQty=  0,
+                                          UOM = i.Item == null? "" : i.Item.UnitOfMeasurement == null ? "" : i.Inventory.Items.UnitOfMeasurement.Description,
+                                          // InStock = i.Inventory.InStock,
+                                          ReservedQty =  0,
                                           RequestedQty = i.Quantity != null ? i.Quantity : 0,
                                           TotalCommitted= i.Committed != null ? i.Committed : 0,
                                           Location = i.Requisition.Location != null ? i.Requisition.Location.Description : i.Requisition.Location.Description,
@@ -2276,7 +2276,7 @@ namespace MoostBrand.Controllers
 
             ReportDataSource _rds = new ReportDataSource();
             _rds.Name = "dsCommittedDetailed";
-            _rds.Value = lstCommittedDetail.OrderBy(p => p.orderbyDate);
+            _rds.Value = lstCommittedDetail.Distinct().OrderBy(p => p.Location).ThenBy(p=>p.orderbyDate).ToList();
 
             reportViewer.KeepSessionAlive = false;
             reportViewer.LocalReport.DataSources.Clear();
@@ -2434,10 +2434,10 @@ namespace MoostBrand.Controllers
                                        {
 
                                            ItemCode = i.Item.Code != null ? i.Item.Code : "",
-                                           orderbyDate = i.Requisition.RequestedDate.ToString(),
+                                           orderbyDate = i.Requisition.RequestedDate,
                                            Brand = i.Item.Brand != null ? i.Item.Brand.Description : "",
                                            ItemDesc = i.Item.Description != null ? i.Item.Description : "",
-                                           UOM = i.Inventory != null ? i.Inventory.InventoryUoM : "",
+                                           UOM = i.Item == null ? "" : i.Item.UnitOfMeasurement == null ? "" : i.Inventory.Items.UnitOfMeasurement.Description,
                                            // ReservedQty = i.ReferenceQuantity != null ? i.ReferenceQuantity : null,
                                            // RequestedQty = i.ReferenceQuantity != null ? i.ReferenceQuantity : null,
                                            // TotalCommitted = i.Committed != null ? i.Committed : null,
@@ -2469,7 +2469,7 @@ namespace MoostBrand.Controllers
 
             ReportDataSource _rds = new ReportDataSource();
             _rds.Name = "dsCommittedSummary";
-            _rds.Value = _lstCommittedSummary.Distinct().OrderBy(o => o.orderbyDate).ThenBy(o => o.Locations).Select(p => p);
+            _rds.Value = _lstCommittedSummary.Distinct().OrderBy(o => o.Locations).ThenBy(o => o.orderbyDate).ToList();
 
             reportViewer.KeepSessionAlive = false;
             reportViewer.LocalReport.DataSources.Clear();
