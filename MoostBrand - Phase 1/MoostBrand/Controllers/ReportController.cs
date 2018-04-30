@@ -924,6 +924,7 @@ namespace MoostBrand.Controllers
                               {
                                   DateRequested = i.Requisition.RequestedDate.ToString(),
                                   orderByDate = i.Requisition.RequestedDate,
+                                  RefNumber=i.Requisition.RefNumber,
                                   PO = i.Requisition.PONumber != null ? i.Requisition.PONumber : "",
                                   PUR = i.Requisition.RefNumber,
                                     ItemCode = i.Item.Code,
@@ -2067,9 +2068,9 @@ namespace MoostBrand.Controllers
                                       select new
                           {
 
-                              PostedDate = i.StockAdjustment.PostedDate != null ? i.StockAdjustment.PostedDate.ToString() : "",
+                              PostedDate = i.StockAdjustment.PostedDate != null ? i.StockAdjustment.PostedDate.Value.ToString("MM/dd/yyyy") : "",
                               orderbyDate = i.StockAdjustment.ErrorDate.ToString(),
-                              ErrorDate = i.StockAdjustment.ErrorDate,
+                              ErrorDate = i.StockAdjustment.ErrorDate != null ? i.StockAdjustment.ErrorDate.Value.ToString("MM/dd/yyyy") : "",
                               No = i.StockAdjustment != null ? i.StockAdjustment.ReferenceNo : "",
                               RefNo = i.StockAdjustment != null ? i.StockAdjustment.No : "",
                               Brand = i.Inventory.Items.Brand !=null ? i.Inventory.Items.Brand.Description : "",

@@ -25,11 +25,12 @@ namespace MoostBrand.DAL
         public int? TransactionTypeID { get; set; }
 
         [Display(Name = "Error Date")]
-        public DateTime ErrorDate { get; set; }
+        public DateTime? ErrorDate { get; set; }
 
         public string _ErrorDate
         {
-            get { return ErrorDate.ToString("MM/dd/yyyy");  }
+             
+            get {  return ErrorDate.Value.ToString("MM/dd/yyyy"); }
         }
 
         [Required(ErrorMessage = "Location is Required")]
@@ -48,7 +49,10 @@ namespace MoostBrand.DAL
         public int? PostedBy { get; set; }
 
         public DateTime? PostedDate { get; set; }
-
+        public string _PostedDate
+        {
+            get { return PostedDate == null ? "" : PostedDate.Value.ToString("MM/dd/yyyy"); }
+        }
         public string Comments { get; set; }
 
         public int? EncodedBy { get; set; }
