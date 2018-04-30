@@ -31,7 +31,7 @@
                     <div class="col-md-8">
                         @{
                            
-                                @Html.DropDownList("InventoryID", null, htmlAttributes: new { @class = "form-control ddl-item" })
+                                @Html.DropDownList("InventoryID", null,"", htmlAttributes: new { @class = "form-control ddl-item" })
                                 @Html.ValidationMessageFor(model => model.InventoryID, "", new { @class = "text-danger" })
                             
                         }
@@ -73,13 +73,14 @@
         </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <input type="submit" value="Add Item" class="btn btn-green" />
+                <input type="submit" id="AddItem" value="Add Item" class="btn btn-green"  />
             </div>
     }
 </div><!-- /.modal-content -->
 
 <script>
 
+    $("#AddItem").attr('disabled', 'disabled');
     $("#StockTransferDirects").change(function () {
        
         var val = $("#InventoryID").val();
@@ -92,9 +93,13 @@
                 $("#InStock").val(data.InStock);
                 $("#Quantity").val(data.Quantity);
                 $("#Hidden_Quantity").val(data.Quantity);
-
+         
             }
         })
+
+     
+         
+        
     });
 
     //$('.ddl-item').select2({
@@ -119,7 +124,7 @@
 
     $("#InventoryID").change(function () {
         var val = $("#InventoryID").val();
-
+        
         $.ajax({
             url: '@Url.Action("DisplayComputations", "StockTransferDirects")',
             data: { recID: val },
@@ -130,8 +135,10 @@
                 $("#InStock").val(data.InStock);
                 $("#Quantity").val(data.Quantity);
                 $("#Hidden_Quantity").val(data.Quantity);
-
+                $("#AddItem").removeAttr('disabled');
             }
         })
+      
+       
     });
 </script>

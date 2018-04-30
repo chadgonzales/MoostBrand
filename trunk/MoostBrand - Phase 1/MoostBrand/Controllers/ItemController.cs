@@ -372,6 +372,7 @@ namespace MoostBrand.Controllers
         [HttpPost]
         public ActionResult Edit(Item item)
         {
+
             if (ModelState.IsValid)
             {
                 try
@@ -432,7 +433,7 @@ namespace MoostBrand.Controllers
             ViewBag.SizeID = new SelectList(entity.Sizes.ToList(), "ID", "Description", item.SizeID);
             ViewBag.UnitOfMeasurementID = new SelectList(entity.UnitOfMeasurements.ToList(), "ID", "Description", item.UnitOfMeasurementID);
             ViewBag.BrandID = new SelectList(entity.Brands.ToList(), "ID", "Description", item.BrandID);
-             ViewBag.ItemStatus = new SelectList(entity.ItemStatus.ToList(), "ID", "ItemStatus", item.ItemStatus);
+             ViewBag.ItemStatus = new SelectList(entity.ItemStatus.ToList(), "ID", "ItemStatus");
             ViewBag.VendorName = entity.Vendors.Find(item.VendorCoding) == null ? "" : entity.Vendors.Find(item.VendorCoding).GeneralName;
             return View(item);
         }
