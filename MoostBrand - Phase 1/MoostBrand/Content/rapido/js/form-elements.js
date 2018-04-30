@@ -97,6 +97,7 @@ var FormElements = function() {"use strict";
 	    autoclose: true
 	});
 
+
 	//function to initiate bootstrap-timepicker
 	var runTimePicker = function() {
 		$('.time-picker').timepicker();

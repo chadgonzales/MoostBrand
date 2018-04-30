@@ -105,7 +105,7 @@
                 </label>
                 <div class="col-md-6">
                     @*@Html.EditorFor(model => model.ErrorDate, new { htmlAttributes = new { @class = "form-control" , @hidden = "hidden"} })*@
-                    @Html.EditorFor(model => model.ErrorDate, new { htmlAttributes = new { @class = "form-control date-picker", @Value = Model.ErrorDate.Value.ToString("MM/dd/yyyy") } })
+                    @Html.EditorFor(model => model.ErrorDate, new { htmlAttributes = new { @class = "form-control", @Value = Model.ErrorDate.Value.ToString("MM/dd/yyyy") } })
                     @Html.ValidationMessageFor(model => model.ErrorDate, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -185,6 +185,15 @@
     </div>
 }
 <script language="javascript">
+
+    $(document).ready(function () {
+
+        $('#ErrorDate').datepicker({
+            endDate: '+0d',
+            autoclose: true
+        });
+
+    })
     $(function () {
         // add class form-control to textarea and select
         $("input[disabled]").addClass("form-control");
@@ -239,15 +248,6 @@
             $(this).css({ "border": "unset" })
         }
     });
-
-    $('#ErrorDate').change(function () {
-        var text = $(this).val();
-        $(this).val(text.toUpperCase());
-        if ($(this).val() != '') {
-            $(this).css({ "border": "unset" })
-        }
-    });
-
 
     $('#ApprovedBy').change(function () {
         var text = $(this).val();
