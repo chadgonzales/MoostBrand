@@ -103,7 +103,7 @@
                 <div class="col-md-6">
                     @*Model.ErrorDate.ToString("MM/dd/yyyy")*@
                     @*@Html.EditorFor(model => model.ErrorDate, new { htmlAttributes = new { @class = "form-control" , @hidden="hidden"} })*@
-                    @Html.EditorFor(model => model.ErrorDate, new { htmlAttributes = new { @class = "form-control date-picker", @Value = "" } })
+                    @Html.EditorFor(model => model.ErrorDate, new { htmlAttributes = new { @class = "form-control", @Value = "" } })
                     @Html.ValidationMessageFor(model => model.ErrorDate, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -195,6 +195,13 @@
                 $("#No").val(data);
             }
 
+        });
+
+
+
+        $('#ErrorDate').datepicker({
+            endDate: '+0d',
+            autoclose: true
         });
 
     })
@@ -302,6 +309,15 @@
             $(this).css({ "border": "unset" })
         }
     });
+
+    $('#Comments').change(function () {
+        var text = $(this).val();
+        $(this).val(text.toUpperCase());
+        if ($(this).val() != '') {
+            $(this).css({ "border": "unset" })
+        }
+    });
+
     $('#btnCreate1').click(function (event)
     {
         var _variable = Validate();
@@ -369,6 +385,11 @@
         else if ($('#EncodedBy').val() == '') {
             $('#EncodedBy').css({ "border": "1px solid red" })
             _passed = '11';
+
+        }
+        else if ($('#Comments').val() == '') {
+            $('#Comments').css({ "border": "1px solid red" })
+            _passed = '12';
 
         }
 

@@ -29,30 +29,29 @@
 <div class="panel-body">
 
     <div class="dataTables_wrapper no-footer">
-        <div class="dataTables_length">
+        <div class="col-md-2">
             <a href="@Url.Action("Create")" class="btn btn-green @Session["canedit"]" style="float:left;"> Create New <i class="fa fa-plus"></i></a>
         </div>
-        <div class="dataTables_filter">
+        <div class="col-md-10">
             @using (Html.BeginForm("Index", "PR", FormMethod.Post))
             {
                 <p>
-                    <div class="form-group">
-                        @*<label class="control-label col-md-3">Date From</label>*@
-                        <div class="col-md-6">
+                    <div class="form-group row">
+                        <div class="col-md-3 col-md-offset-1">
                             @Html.TextBox("DateFrom", ViewBag.FilterFrom as string, new { @class = "date-picker form-control", @placeholder = "Date From", @id = "txtStartDate" })
-                            @*<input type="text" name="DateFrom" class="date-picker form-control" value="@ViewBag.DateFrom" />*@
                         </div>
-                    </div>
-                    <div class="form-group">
-                        @*<label class="control-label col-md-3">Date To</label>*@
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             @Html.TextBox("DateTo", ViewBag.FilterTo as string, new { @class = "date-picker form-control", @placeholder = "Date To", @id = "txtEndDate", @onchange = "DateCheck()" })
-                            @*<input type="text" name="DateTo" class="date-picker form-control" value="@ViewBag.DateTo" />*@
+                        </div>
+                        <div class="col-md-3">
+                            @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @placeholder = "Search" })
+
+                        </div>
+                        <div class="col-md-2">
+                            <input type="submit" id="btn" value="Search" class="btn btn-green" />
                         </div>
                     </div>
-                    <br />
-                    @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control input-sm", @placeholder = "Search" })
-                    <input type="submit" id="btn" value="Search" class="btn btn-green" />
+                    
                 </p>
             }
 
