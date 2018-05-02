@@ -1188,7 +1188,8 @@ namespace MoostBrand.Controllers
 
                             else
                             {
-                                ModelState.AddModelError(string.Empty, "Not all items are approved");
+                                TempData["Error"] = "Not all items are approved";
+                                //ModelState.AddModelError(string.Empty, "Not all items are approved");
                             }
                         }
                     }

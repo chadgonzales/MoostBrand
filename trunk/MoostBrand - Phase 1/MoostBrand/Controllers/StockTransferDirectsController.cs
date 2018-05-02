@@ -504,6 +504,7 @@ namespace MoostBrand.Controllers
             
              ViewBag.Qty = entity.Inventories.FirstOrDefault(model => model.ID == st.InventoryID).InStock;
          
+            st.InStock = entity.Inventories.FirstOrDefault(model => model.ID == st.InventoryID).InStock;
 
             return PartialView(st);
         }
@@ -559,27 +560,63 @@ namespace MoostBrand.Controllers
                 }
 
                 sdetails.IsSync = false;
-                entity.Entry(sdetails).CurrentValues.SetValues(stocktransfer);
+                entity.Entry(sdetails).State = EntityState.Modified;
                 entity.SaveChanges();
 
                 var _st = entity.StockTransferDetails.Find(stocktransfer.ID);
                 _st.ReferenceQuantity = stocktransfer.Quantity;
                 entity.SaveChanges();
+
+                if (stocktransfer.AprovalStatusID == 1)
+                {
+                    #region WAC    
+
+                    #endregion
+                    return RedirectToAction("Details", new { id = sdetails.StockTransferID });
+                }
+                return RedirectToAction("ApprovedItems", new { id = sdetails.StockTransferID });
             }
             catch (Exception ex)
             {
                 TempData["PartialError"] = "There's an error.";
+                return PartialView();
             }
 
-            if (stocktransfer.AprovalStatusID == 1)
-            {
-                #region WAC    
-                
-                #endregion
-                return RedirectToAction("Details", new { id = id });
-            }
-            return RedirectToAction("ApprovedItems", new { id = stocktransfer.StockTransferID });
+           
         }
+
+        // GET: StockTransfer/DeleteItemPartial/5
+        [AccessChecker(Action = 3, ModuleID = 4)]
+        public ActionResult DeleteItemPartial(int id)
+        {
+            var st = entity.StockTransferDetails.Find(id);
+
+            return PartialView(st);
+        }
+
+        // POST: StockTransfer/DeleteItemPartial/5
+        [AccessChecker(Action = 3, ModuleID = 4)]
+        [HttpPost, ActionName("DeleteItemPartial")]
+        public ActionResult DeleteItemPartialConfirm(int id)
+        {
+            var st = entity.StockTransferDetails.Find(id);
+
+            int? reqID = st.StockTransferID;
+            try
+            {
+                entity.StockTransferDetails.Remove(st);
+                entity.SaveChanges();
+            }
+            catch
+            {
+                TempData["PartialError"] = "There's an error.";
+            }
+
+            //return RedirectToAction("PendingItems", new { id = reqID });
+
+            return RedirectToAction("Details", new { id = reqID });
+        }
+     
 
 
         // GET: StockTransferDirects/Delete/5
@@ -844,17 +881,20 @@ namespace MoostBrand.Controllers
 
                         return RedirectToAction("Index");
                     }
+                    else
+                    {
+                       // ModelState.AddModelError(string.Empty, "Transaction has no items");
+                        TempData["Error"] = "Transaction has no items";
+
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Not all items are approved");
+                    TempData["Error"] = "Not all items are approved";
+                   // ModelState.AddModelError(string.Empty, "Not all items are approved");
                 }
 
-            
-
-                return RedirectToAction("Index");
-
-        }
+            }
             catch (Exception e)
             {
                 e.Message.ToString();
