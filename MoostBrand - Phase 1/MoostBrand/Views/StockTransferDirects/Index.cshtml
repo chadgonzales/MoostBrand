@@ -12,7 +12,7 @@
     <div class="dataTables_wrapper no-footer">
         <div class="dataTables_length">
             <a href="@Url.Action("Create")" class="btn btn-green @Session["canedit"]" style="float:left;"> Create New <i class="fa fa-plus"></i></a>
-            <a href="@Url.Action("Index", "StockTransfer")" class="btn btn-green" style="float:left;"> Direct Transfer <i class="fa fa-plus"></i></a>
+            <a href="@Url.Action("Index", "StockTransfer")" class="btn btn-green" style="float:left;"> Stock Transfer <i class="fa fa-plus"></i></a>
         </div>
         <div class="dataTables_filter">
             @using (Html.BeginForm("Index", "StockTransferDirects", FormMethod.Post))
