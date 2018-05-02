@@ -30,6 +30,7 @@
     </div>
     <form id="action_form">
         @Html.AntiForgeryToken()
+        <div class="alert alert-danger">@TempData["Error"]</div>
         <table class="table table-striped table-bordered table-hover table-full-width dataTable no-footer">
             <thead>
                 <tr>
@@ -109,6 +110,10 @@
 
 
 <script type="text/javascript">
+
+    function ReloadFunction() {
+        location.reload();
+    }
     function Approve() {
         var prID = arguments[0];
 
@@ -116,11 +121,9 @@
 
         var frm = $("#action_form").serialize();
 
-        $.post(url, frm, ReloadFunction);
-
-        function ReloadFunction() {
-            location.reload();
-        }
+        $.post(url, frm);
+        location.reload();
+       
     }
 
     function Deny() {
@@ -130,10 +133,7 @@
 
         var frm = $("#action_form").serialize();
 
-        $.post(url, frm, ReloadFunction);
-
-        function ReloadFunction() {
-            location.reload();
-        }
+        $.post(url, frm);
+        location.reload();
     }
 </script>

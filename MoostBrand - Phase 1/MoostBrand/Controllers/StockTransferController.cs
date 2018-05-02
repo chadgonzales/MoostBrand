@@ -805,9 +805,13 @@ namespace MoostBrand.Controllers
                         }
                         else
                         {
-                            ModelState.AddModelError(string.Empty, "Not all items are approved");
+                            TempData["Error"] = "Not all items are approved";
                         }
                     }
+                }
+                else
+                {
+                    TempData["Error"] = "Transaction has no items";
                 }
             }
             catch (Exception e)
