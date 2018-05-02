@@ -34,7 +34,10 @@
         </div>*@
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Location, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+           Location
+            <span class="symbol required"></span>
+        </label>
         <div class="col-md-6">
             @Html.DropDownList("LocationID", String.Empty)
             @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
@@ -42,7 +45,10 @@
     </div>
 
     <div class="form-group">
-      <label class="control-label col-md-2">Destination</label> 
+      <label class="control-label col-md-2">
+          Destination
+          <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             @Html.DropDownList("DestinationID", String.Empty)
             @Html.ValidationMessageFor(model => model.LocationID, "", new { @class = "text-danger" })
@@ -51,7 +57,10 @@
 
 
     <div class="form-group">
-        @Html.LabelFor(model => model.TransferID, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+           Transfer ID
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             @Html.EditorFor(model => model.TransferID, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.TransferID, "", new { @class = "text-danger" })
@@ -59,14 +68,20 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.STDAte, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+           ST Date
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             @Html.EditorFor(model => model.STDAte, new { htmlAttributes = new { @class = "form-control date-picker" } })
             @Html.ValidationMessageFor(model => model.STDAte, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">
-        @Html.LabelFor(model => model.TimeStarted, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+           Time Started
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             <div class="input-group input-append bootstrap-timepicker">
                 @Html.EditorFor(model => model.TimeStarted, new { htmlAttributes = new { @class = "form-control time-picker" } })
@@ -77,7 +92,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.TimeFinish, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+            Time Finish
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             <div class="input-group input-append bootstrap-timepicker">
                 @Html.EditorFor(model => model.TimeFinish, new { htmlAttributes = new { @class = "form-control time-picker" } })
@@ -88,7 +106,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Driver, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+           Driver
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             @Html.EditorFor(model => model.Driver, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.Driver, "", new { @class = "text-danger" })
@@ -96,7 +117,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Helpers, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+            Helper
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             <div id="helper-fields">
                 @Html.EditorFor(model => model.Helpers, new { htmlAttributes = new { @class = "form-control" } })
@@ -106,7 +130,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.ReceivedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+            Received By
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             @Html.DropDownList("ReceivedBy", String.Empty)
             @Html.ValidationMessageFor(model => model.ReceivedBy, "", new { @class = "text-danger" })
@@ -114,7 +141,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.TimeReceived, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+            Time Received
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             <div class="input-group input-append bootstrap-timepicker">
                 @Html.EditorFor(model => model.TimeReceived, new { htmlAttributes = new { @class = "form-control time-picker" } })
@@ -125,7 +155,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.RequestedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+            Requested By
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             @Html.DropDownList("RequestedBy",String.Empty)
             @Html.ValidationMessageFor(model => model.RequestedBy, "", new { @class = "text-danger" })
@@ -133,7 +166,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.ReleasedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+            Released By
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             @Html.DropDownList("ReleasedBy", String.Empty)
             @Html.ValidationMessageFor(model => model.ReleasedBy, "", new { @class = "text-danger" })
@@ -141,7 +177,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Operators, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+            Operator
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             <div id="operator-fields">
                 @Html.EditorFor(model => model.Operators, new { htmlAttributes = new { @class = "form-control" } })
@@ -151,7 +190,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.CounterCheckedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+            Counter Checked By
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             @Html.DropDownList("CounterCheckedBy", String.Empty)
             @Html.ValidationMessageFor(model => model.CounterCheckedBy, "", new { @class = "text-danger" })
@@ -159,7 +201,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.EncodedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+            Encoded By
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             @Html.DropDownList("EncodedBy", String.Empty)
             @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
@@ -167,7 +212,10 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.PostedBy, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+            Posted By
+            <span class="symbol required"></span>
+        </label> 
         <div class="col-md-6">
             @Html.DropDownList("PostedBy",String.Empty)
             @Html.ValidationMessageFor(model => model.PostedBy, "", new { @class = "text-danger" })
@@ -176,7 +224,9 @@
 
 
     <div class="form-group">
-        @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+        <label class="control-label col-md-2">
+           Remarks
+        </label> 
         <div class="col-md-6">
             @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control"  })
             @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
