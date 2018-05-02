@@ -93,7 +93,7 @@
                     <span class="symbol required"></span>
                 </label>
                 <div class="col-md-6">
-                    @Html.TextBoxFor(model => model.RefNumber, new { @readonly = "readonly", @class = "form-control" })
+                    @Html.TextBoxFor(model => model.RefNumber, new { @class = "form-control",@readonly = "readonly" })
                     @Html.ValidationMessageFor(model => model.RefNumber, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -727,7 +727,7 @@
             $("#cr").hide();
             $("#brcr").hide();
         } else if (val == 2) { //BR
-            $.get("@Url.Action("GenerateRefNumber", "PR")/BR", null, BindData);
+         $.get("@Url.Action("GenerateRefNumber", "PR")/BR", null, BindData);
             $('._date').html('Requested Date');
             $("#br").show();
             $("#brcr").show();

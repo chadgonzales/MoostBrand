@@ -30,12 +30,42 @@ namespace MoostBrand.Controllers
 
 
         #endregion
+        private string CheckExistingRefNum(string referencenum)
+        {
+            var cref = entity.Requisitions.Where(r => r.RefNumber == referencenum);
+            if (cref == null)
+            {
 
+            }
+            else if (referencenum.Contains("PUR"))
+            {
+                referencenum = Generator("PUR");
+            }
+            else if (referencenum.Contains("BR"))
+            {
+                referencenum = Generator("BR");
+            }
+            else if (referencenum.Contains("WR"))
+            {
+                referencenum = Generator("WR");
+            }
+            else if (referencenum.Contains("CR"))
+            {
+                referencenum = Generator("CR");
+            }
+            else if (referencenum.Contains("OR"))
+            {
+                referencenum = Generator("OR");
+            }
+
+            return referencenum;
+        }
 
         #region PRIVATE METHODS
         private string Generator(string prefix)
         {
             int i = 0;
+
             var cref = entity.Requisitions.Where(r => r.RefNumber.Contains(prefix)).Count();
             startR: cref= cref + i;
 
@@ -583,17 +613,42 @@ namespace MoostBrand.Controllers
             {
                 try
                 {
+                    pr.RefNumber = CheckExistingRefNum(pr.RefNumber);
                     pr.ApprovalStatus = 1; //submitted
                     pr.Status = false;
 
-                    var checkPR = entity.Requisitions.Where(r => r.RefNumber == pr.RefNumber);
+                    //var checkPR = entity.Requisitions.Where(r => r.RefNumber == pr.RefNumber);
 
-                    if (checkPR.Count() > 0)
-                    {
-                        ModelState.AddModelError("", "The ref number already exists.");
-                    }
-                    else
-                    {
+                    //if (checkPR.Count() > 0)
+                    //{
+                    //    //ModelState.AddModelError("", "The ref number already exists.");
+                 
+                    //    int i = 0;
+                    //    var cref = entity.Requisitions.Where(r => r.RefNumber.Contains(prefix)).Count();
+                    //     startR: cref = cref + i;
+                    
+                    //    string refnum = string.Format(prefix + "-{0:000000}" , cref);
+
+                    //    var pr1 = entity.Requisitions.ToList().FindAll(p => p.RefNumber == refnum);
+                    //    if (pr1.Count > 0)
+                    //    {
+                    //        i++;
+                    //        goto startR;
+                    //    }
+
+                    //    //+ (Convert.ToInt32(lastemployee.RefNumber.Substring(8, lastemployee.RefNumber.Length - 8)) + 1).ToString()
+                    //    //return refnum;
+                    //    pr.RefNumber = refnum;
+
+                    //    entity.Requisitions.Add(pr);
+                    //    entity.SaveChanges();
+
+                    //        //return RedirectToAction("Index");
+
+                       
+                    //}
+                    //else
+                    //{
                         var newPR = SetNull(pr);
 
                         if (pr.LocationID == pr.Destination)
@@ -620,14 +675,14 @@ namespace MoostBrand.Controllers
                             //}
                         }
                     }
-                }
+                
                 catch(Exception e)
                 {
                     e.ToString();
                     ModelState.AddModelError("", "There's an error.");
                 }
             }
-
+         
             #region DROPDOWNS
             var employees = from s in entity.Employees
                             select new
@@ -665,7 +720,7 @@ namespace MoostBrand.Controllers
             }
 
             #endregion
-
+          
             return View(pr);
         }
 
