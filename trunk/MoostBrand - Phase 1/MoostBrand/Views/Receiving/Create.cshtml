@@ -133,20 +133,6 @@
                     </div>
                 </div>
 
-
-
-                <div class="form-group">
-
-                    <label class="control-label col-md-2">
-                        Encoded By
-                        <span class="symbol required"></span>
-                    </label>
-                    <div class="col-md-6">
-                        @Html.DropDownList("EncodedBy", String.Empty)
-                        @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
                 <div class="form-group">
 
                     <label class="control-label col-md-2">
@@ -357,6 +343,17 @@
                 <div class="col-md-6">
                     @Html.DropDownList("ApprovedBy",String.Empty)
                     @Html.ValidationMessageFor(model => model.ApprovedBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label class="control-label col-md-2">
+                    Encoded By
+                    <span class="symbol required"></span>
+                </label>
+                <div class="col-md-6">
+                    @Html.DropDownList("EncodedBy", String.Empty)
+                    @Html.ValidationMessageFor(model => model.EncodedBy, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group">

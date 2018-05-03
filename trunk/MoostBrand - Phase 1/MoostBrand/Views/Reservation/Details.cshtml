@@ -30,21 +30,20 @@
                         </label>
                     </div>
                 </div>
-                
-                <div class="form-group">
-                    <label class="control-label col-md-4">Requested Date</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.RequestedDate)
-                        </label>
-                    </div>
-                </div>
                 <div class="form-group">
                     <label class="control-label col-md-4">Sales Person</label>
                     <div class="col-md-8">
                         <label class="custom-label">
                             @Html.DisplayFor(model => model.Employee1.LastName),
                             @Html.DisplayFor(model => model.Employee1.FirstName)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Requested Date</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.RequestedDate)
                         </label>
                     </div>
                 </div>
@@ -57,6 +56,14 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="control-label col-md-4">Destination</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Location1.Description)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label col-md-4">Date Required</label>
                     <div class="col-md-8">
                         <label class="custom-label">
@@ -65,33 +72,30 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-4">Approval Status</label>
+                    <label class="control-label col-md-4">Project/Customer</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.ApprovalStatu.Status)
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="control-label col-md-4">Approved By</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.Employee.LastName),
-                            @Html.DisplayFor(model => model.Employee.FirstName)
+                            @Html.DisplayFor(model => model.Customer)
                         </label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-4">Remarks</label>
+                    <label class="control-label col-md-4">Reservation Type</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.Remarks)
+                            @Html.DisplayFor(model => model.ReservationType.Type)
                         </label>
                     </div>
                 </div>
-
-
+                <div class="form-group">
+                    <label class="control-label col-md-4">Reserved By</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.Employee2.LastName),
+                            @Html.DisplayFor(model => model.Employee2.FirstName)
+                        </label>
+                    </div>
+                </div>
                 <div id="brcr">
                     @*<div class="form-group">
                         <label class="control-label col-md-4">Driver</label>
@@ -106,31 +110,6 @@
             <div class="col-sm-6">
                 <div id="cr">
                     <div class="form-group">
-                        <label class="control-label col-md-4">Project/Customer</label>
-                        <div class="col-md-8">
-                            <label class="custom-label">
-                                @Html.DisplayFor(model => model.Customer)
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-4">Reservation Type</label>
-                        <div class="col-md-8">
-                            <label class="custom-label">
-                                @Html.DisplayFor(model => model.ReservationType.Type)
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-md-4">Reserved By</label>
-                        <div class="col-md-8">
-                            <label class="custom-label">
-                                @Html.DisplayFor(model => model.Employee2.LastName),
-                                @Html.DisplayFor(model => model.Employee2.FirstName)
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="control-label col-md-4">Payment Status</label>
                         <div class="col-md-8">
                             <label class="custom-label">
@@ -138,6 +117,7 @@
                             </label>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label class="control-label col-md-4">Invoice #</label>
                         <div class="col-md-8">
@@ -171,6 +151,41 @@
                             </label>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Approval Status</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.ApprovalStatu.Status)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Approved By</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Employee.LastName),
+                                @Html.DisplayFor(model => model.Employee.FirstName)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Encoded By</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Employee4.LastName),
+                                @Html.DisplayFor(model => model.Employee4.FirstName)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-4">Remarks</label>
+                        <div class="col-md-8">
+                            <label class="custom-label">
+                                @Html.DisplayFor(model => model.Remarks)
+                            </label>
+                        </div>
+                    </div>
+                  
                     @*<div class="form-group">
                         <label class="control-label col-md-4">Drop Ship Type</label>
                         <div class="col-md-8">

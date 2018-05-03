@@ -13,15 +13,6 @@
         <input type="text" value="@Model.requisition.Requisitions.RequisitionTypeID" id="txtReqType" hidden="hidden" />
         <div class="row">
             <div class="col-sm-6">
-
-                <div class="form-group">
-                    <label class="control-label col-md-4">Reference #</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.requisition.Requisitions.RefNumber)
-                        </label>
-                    </div>
-                </div>
                 <div class="form-group">
                     <label class="control-label col-md-4">Type</label>
                     <div class="col-md-8">
@@ -31,10 +22,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-md-4 _date"></label>
+                    <label class="control-label col-md-4">Reference #</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.requisition.Requisitions._RequestedDate)
+                            @Html.DisplayFor(model => model.requisition.Requisitions.RefNumber)
                         </label>
                     </div>
                 </div>
@@ -47,12 +38,12 @@
                         </label>
                     </div>
                 </div>
+
                 <div class="form-group">
-                    <label class="control-label col-md-4">Encoded By</label>
+                    <label class="control-label col-md-4 _date"></label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.requisition.Requisitions.Employee4.LastName),
-                            @Html.DisplayFor(model => model.requisition.Requisitions.Employee4.FirstName)
+                            @Html.DisplayFor(model => model.requisition.Requisitions._RequestedDate)
                         </label>
                     </div>
                 </div>
@@ -64,13 +55,30 @@
                         </label>
                     </div>
                 </div>
-
-
                 <div class="form-group">
                     <label class="control-label col-md-4">Date Required</label>
                     <div class="col-md-8">
                         <label class="custom-label">
                             @Html.DisplayFor(model => model.requisition.Requisitions.DateRequired)
+                        </label>
+                    </div>
+                </div>
+               
+                <div class="form-group">
+                    <label class="control-label col-md-4">Approved By</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.requisition.Requisitions.Employee.LastName),
+                            @Html.DisplayFor(model => model.requisition.Requisitions.Employee.FirstName)
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-md-4">Encoded By</label>
+                    <div class="col-md-8">
+                        <label class="custom-label">
+                            @Html.DisplayFor(model => model.requisition.Requisitions.Employee4.LastName),
+                            @Html.DisplayFor(model => model.requisition.Requisitions.Employee4.FirstName)
                         </label>
                     </div>
                 </div>
@@ -84,15 +92,16 @@
                     </div>
                 </div>
 
+
                 <div class="form-group">
-                    <label class="control-label col-md-4">Approved By</label>
+                    <label class="control-label col-md-4">Remarks</label>
                     <div class="col-md-8">
                         <label class="custom-label">
-                            @Html.DisplayFor(model => model.requisition.Requisitions.Employee.LastName),
-                            @Html.DisplayFor(model => model.requisition.Requisitions.Employee.FirstName)
+                            @Html.DisplayFor(model => model.requisition.Requisitions.Remarks)
                         </label>
                     </div>
                 </div>
+            
                 
                 <div id="pr">
                     <div class="form-group">
@@ -113,30 +122,13 @@
                     </div>
                 </div>
                 
-                <div id="brcr">
-                    <div class="form-group">
-                        <label class="control-label col-md-4">Driver</label>
-                        <div class="col-md-8">
-                            <label class="custom-label">
-                                @Html.DisplayFor(model => model.requisition.Requisitions.Driver)
-                            </label>
-                        </div>
-                    </div>
-                </div>
+            
                 
-                <div class="form-group">
-                    <label class="control-label col-md-4">Remarks</label>
-                    <div class="col-md-8">
-                        <label class="custom-label">
-                            @Html.DisplayFor(model => model.requisition.Requisitions.Remarks)
-                        </label>
-                    </div>
-                </div>
+            
 
             </div>
 
             <div class="col-sm-6">
-
                 <div id="cr">
                     <div class="form-group">
                         <label class="control-label col-md-4">Project/Customer</label>
@@ -459,7 +451,7 @@
             $("#br").hide();
             $("#pr").hide();
             $("#cr").show();
-            $("#brcr").show();
+            $("#brcr").hide();
         } else {
             $('._date').html("Requested Date");
             $("#br").hide();
