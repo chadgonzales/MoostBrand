@@ -29,6 +29,7 @@
               <xs:element name="TotalOrder" msprop:Generator_ColumnVarNameInTable="columnTotalOrder" msprop:Generator_ColumnPropNameInRow="TotalOrder" msprop:Generator_ColumnPropNameInTable="TotalOrderColumn" msprop:Generator_UserColumnName="TotalOrder" type="xs:string" minOccurs="0" />
               <xs:element name="ReOrderLevel" msprop:Generator_ColumnVarNameInTable="columnReOrderLevel" msprop:Generator_ColumnPropNameInRow="ReOrderLevel" msprop:Generator_ColumnPropNameInTable="ReOrderLevelColumn" msprop:Generator_UserColumnName="ReOrderLevel" type="xs:string" minOccurs="0" />
               <xs:element name="PcsPerBox" msprop:Generator_ColumnVarNameInTable="columnPcsPerBox" msprop:Generator_ColumnPropNameInRow="PcsPerBox" msprop:Generator_ColumnPropNameInTable="PcsPerBoxColumn" msprop:Generator_UserColumnName="PcsPerBox" type="xs:string" minOccurs="0" />
+              <xs:element name="EncodedBy" msprop:Generator_ColumnVarNameInTable="columnEncodedBy" msprop:Generator_ColumnPropNameInRow="EncodedBy" msprop:Generator_ColumnPropNameInTable="EncodedByColumn" msprop:Generator_UserColumnName="EncodedBy" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -82,6 +83,7 @@
               <xs:element name="StatusOfOrder" msprop:Generator_ColumnVarNameInTable="columnStatusOfOrder" msprop:Generator_ColumnPropNameInRow="StatusOfOrder" msprop:Generator_ColumnPropNameInTable="StatusOfOrderColumn" msprop:Generator_UserColumnName="StatusOfOrder" type="xs:string" minOccurs="0" />
               <xs:element name="PUR" msprop:Generator_ColumnVarNameInTable="columnPUR" msprop:Generator_ColumnPropNameInRow="PUR" msprop:Generator_ColumnPropNameInTable="PURColumn" msprop:Generator_UserColumnName="PUR" type="xs:string" minOccurs="0" />
               <xs:element name="EncodedBy" msprop:Generator_ColumnVarNameInTable="columnEncodedBy" msprop:Generator_ColumnPropNameInRow="EncodedBy" msprop:Generator_ColumnPropNameInTable="EncodedByColumn" msprop:Generator_UserColumnName="EncodedBy" type="xs:string" minOccurs="0" />
+              <xs:element name="RefNumber" msprop:Generator_ColumnVarNameInTable="columnRefNumber" msprop:Generator_ColumnPropNameInRow="RefNumber" msprop:Generator_ColumnPropNameInTable="RefNumberColumn" msprop:Generator_UserColumnName="RefNumber" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
