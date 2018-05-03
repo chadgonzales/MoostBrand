@@ -121,7 +121,7 @@ namespace MoostBrand.Controllers
                                     ItemCode = i.ItemCode != null ? i.ItemCode : " ",
                                     ItemPurchaseDesc = i.Description != null ? i.Description : " ",
                                     ItemSalesDesc = i.SalesDescription != null ? i.SalesDescription : " ",
-                                    UOM = i.Items == null ? "" : i.Items.UnitOfMeasurement == null ? "": i.Items.UnitOfMeasurement.Description,
+                                    UOM = i.Items == null ? "" : i.Items.UnitOfMeasurement == null ? "" : i.Items.UnitOfMeasurement.Description,
                                     Location = i.Location.Description != null ? i.Location.Description : " ",
                                     ReOrderLevel = i.ReOrder != null ? i.ReOrder : 0,
                                     InQty = lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID && p.ItemId.Type.ToLower() == "stock in") != null ? lstInventory1.FirstOrDefault(p => p.ItemId.InventoryID == i.ID && p.ItemId.Type.ToLower() == "stock in").InQty : 0,
@@ -133,9 +133,9 @@ namespace MoostBrand.Controllers
                                     ReservationName = lstInventory3.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode) != null ? lstInventory3.FirstOrDefault(p => p.ItemId.Code == i.ItemCode && p.ItemId.LocationID == i.LocationCode).ReservationName : " ",
                                     QOH = 0,
                                     PcsPerBox = i.Items.Quantity,
-                                    Instock = i.InStock != null || i.InStock > 0 ? i.InStock : 0
-
-
+                                    Instock = i.InStock != null || i.InStock > 0 ? i.InStock : 0,
+                                    EncodedBy = i.Employee != null ? i.Employee.FirstName + ' ' + i.Employee.LastName : "",
+                                  
                                 }).ToList();
 
             var _lstInventory = (from i in lstInventory
@@ -154,8 +154,8 @@ namespace MoostBrand.Controllers
                                     TotalOrder = i.TotalOrder - i.InQty,
                                     ReservationName = i.ReservationName,
                                     QOH = dtDateTo.Date.ToString() == DateTime.Now.Date.ToString() ? i.Instock : i.BegInstock + (i.InQty - i.OutQty) + i.AdjustedQty, //i.Instock,
-                                    PcsPerBox = i.PcsPerBox
-                                  
+                                    PcsPerBox = i.PcsPerBox,
+                                    EncodedBy=i.EncodedBy
 
                                  }).ToList();
 
@@ -269,8 +269,8 @@ namespace MoostBrand.Controllers
                                     ReservationName = " ",
                                     QOH = 0,
                                     PcsPerBox = i.Items.Quantity,
-                                    Instock =i.InStock != null ? i.InStock : 0
-
+                                    Instock =i.InStock != null ? i.InStock : 0,
+                                    EncodedBy = i.Employee != null ? i.Employee.FirstName + ' ' + i.Employee.LastName : " "
 
                                 }).ToList();
 
@@ -290,8 +290,8 @@ namespace MoostBrand.Controllers
                                      TotalOrder = i.TotalOrder,
                                      ReservationName = i.ReservationName,
                                      QOH = i.Instock,
-                                     PcsPerBox = i.PcsPerBox
-
+                                     PcsPerBox = i.PcsPerBox,
+                                     EncodedBy=i.EncodedBy
 
                                  }).ToList();
 
