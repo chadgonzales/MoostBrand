@@ -232,7 +232,7 @@
             @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
         </div>
     </div>
-
+    @Html.HiddenFor(model => model.StockTransferTypeID)
     @Html.HiddenFor(model => model.ApprovedBy)
     @Html.HiddenFor(model => model.ApprovedStatus)
 </div>
