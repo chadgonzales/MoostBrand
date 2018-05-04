@@ -160,6 +160,7 @@ namespace MoostBrand.Controllers
                         if (h.DeletedHelper == 1)
                         {
                             stockTransferDirect.Helpers.Remove(h);
+                        
                         }
 
                     }
@@ -381,7 +382,7 @@ namespace MoostBrand.Controllers
                     {
                         try
                         {
-                            if (helper.DeletedHelper == 1 && helper.HelperID != 0)
+                            if (helper.DeletedHelper == 1 && helper.HelperID != 0 )
                             {
                                 entity.Entry(helper).State = EntityState.Deleted;
                                 entity.SaveChanges();
@@ -389,8 +390,13 @@ namespace MoostBrand.Controllers
                             else if (helper.HelperID != stockTransferDirect.ID)
                             {
                                 helper.HelperID = stockTransferDirect.ID;
+                                //var doesExistAlready = entity.Helpers.Count(o=> o.StockTransferID == helper.StockTransferID);
+                                //if (doesExistAlready > 0)
+                                //{
+                                    
 
-                                if (helper.Name != null && helper.Name.Trim() != string.Empty)
+                                //}
+                           if (helper.Name != null && helper.Name.Trim() != string.Empty)
                                 {
                                     entity.Entry(helper).State = EntityState.Added;
                                     entity.SaveChanges();
@@ -449,9 +455,10 @@ namespace MoostBrand.Controllers
                     entity.SaveChanges();
                     return RedirectToAction("Index");
                 }
-                catch
+                catch(Exception e)
                 {
-                    ModelState.AddModelError("", "There's an error.");
+                    throw new Exception("There's an Error", e);
+                    //ModelState.AddModelError("", "There's an error.");
                 }
             }
 
